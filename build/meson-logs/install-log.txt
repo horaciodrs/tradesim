@@ -10,3 +10,4 @@
 /usr/share/com.github.horaciodrs.TradeSim/option-panel.css
 /usr/share/com.github.horaciodrs.TradeSim/stylesheet.css
 /usr/share/com.github.horaciodrs.TradeSim/variables.css
+/usr/share/com.github.horaciodrs.TradeSim

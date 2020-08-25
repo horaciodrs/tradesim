@@ -67,3 +67,15 @@
 1483	2189	1597970760	com.github.horaciodrs.TradeSim@exe/meson-generated_src_Layouts_HeaderBar.c.o	2ab7fab62c3dad4f
 2189	2583	1597970760	com.github.horaciodrs.TradeSim	a75fb702738871cf
 2583	3363	0	meson-install	9bd7faa9472bf40f
+52	498	1597971241	com.github.horaciodrs.TradeSim@exe/src/Layouts/HeaderBar.c	2f32653c4d457928
+52	498	1597971241	com.github.horaciodrs.TradeSim@exe/src/Layouts/Main.c	2f32653c4d457928
+52	498	1597971241	com.github.horaciodrs.TradeSim@exe/src/Widgets/ButtonImage.c	2f32653c4d457928
+52	498	1597971241	com.github.horaciodrs.TradeSim@exe/src/Widgets/HeaderBarButton.c	2f32653c4d457928
+52	498	1597971241	com.github.horaciodrs.TradeSim@exe/src/Widgets/ZoomButton.c	2f32653c4d457928
+52	498	1597971241	com.github.horaciodrs.TradeSim@exe/src/Widgets/TimeButton.c	2f32653c4d457928
+52	498	1597971241	com.github.horaciodrs.TradeSim@exe/src/Window.c	2f32653c4d457928
+52	498	1597971241	com.github.horaciodrs.TradeSim@exe/src/Application.c	2f32653c4d457928
+52	498	1597971241	com.github.horaciodrs.TradeSim@exe/src/Main.c	2f32653c4d457928
+498	966	1598317339	com.github.horaciodrs.TradeSim@exe/meson-generated_src_Layouts_HeaderBar.c.o	2ab7fab62c3dad4f
+967	1069	1598317339	com.github.horaciodrs.TradeSim	a75fb702738871cf
+1069	1559	0	meson-install	9bd7faa9472bf40f

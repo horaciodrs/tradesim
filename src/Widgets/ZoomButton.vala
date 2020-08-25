@@ -5,12 +5,12 @@ public class TradeSim.Widgets.ZoomButton : Gtk.Grid {
     public Gtk.Button zoom_out_button;
     public Gtk.Button zoom_default_button;
     public Gtk.Button zoom_in_button;
-    
+
 
     public ZoomButton (TradeSim.MainWindow window) {
         Object (
             main_window: window
-        );
+            );
     }
 
     construct {
@@ -26,20 +26,20 @@ public class TradeSim.Widgets.ZoomButton : Gtk.Grid {
         zoom_out_button.get_style_context ().add_class ("raised");
         zoom_out_button.get_style_context ().add_class ("button-zoom");
         zoom_out_button.can_focus = false;
-        zoom_out_button.tooltip_markup = Granite.markup_accel_tooltip ({"<Ctrl>minus"}, "Zoom Out");
+        zoom_out_button.tooltip_markup = Granite.markup_accel_tooltip ({ "<Ctrl>minus" }, "Zoom Out");
 
         zoom_default_button = new Gtk.Button.with_label ("100%");
         zoom_default_button.hexpand = true;
         zoom_default_button.clicked.connect (zoom_reset);
         zoom_default_button.can_focus = false;
-        zoom_default_button.tooltip_markup = Granite.markup_accel_tooltip ({"<Ctrl>0"}, "Reset Zoom");
+        zoom_default_button.tooltip_markup = Granite.markup_accel_tooltip ({ "<Ctrl>0" }, "Reset Zoom");
 
         zoom_in_button = new Gtk.Button.from_icon_name ("zoom-in-symbolic", Gtk.IconSize.MENU);
         zoom_in_button.clicked.connect (zoom_in);
         zoom_in_button.get_style_context ().add_class ("raised");
         zoom_in_button.get_style_context ().add_class ("button-zoom");
         zoom_in_button.can_focus = false;
-        zoom_in_button.tooltip_markup = Granite.markup_accel_tooltip ({"<Ctrl>plus"}, "Zoom In");
+        zoom_in_button.tooltip_markup = Granite.markup_accel_tooltip ({ "<Ctrl>plus" }, "Zoom In");
 
         attach (zoom_out_button, 0, 0, 1, 1);
         attach (zoom_default_button, 1, 0, 1, 1);
@@ -50,17 +50,17 @@ public class TradeSim.Widgets.ZoomButton : Gtk.Grid {
         label_btn.margin_top = 4;
 
         attach (label_btn, 0, 1, 3, 1);
-        //udpate_label ();
+        // udpate_label ();
 
         /*settings.changed["show-label"].connect ( () => {
             udpate_label ();
-        });*/
+           });*/
     }
 
     /*private void udpate_label () {
         label_btn.visible = settings.show_label;
         label_btn.no_show_all = !settings.show_label;
-    }*/
+       }*/
 
     public void zoom_out () {
         var zoom = int.parse (zoom_default_button.label) - 10;
@@ -72,7 +72,7 @@ public class TradeSim.Widgets.ZoomButton : Gtk.Grid {
         zoom_in_button.sensitive = true;
         zoom_default_button.label = "%.0f%%".printf (zoom);
 
-        //mainWindow.event_bus.request_zoom ("out");
+        // mainWindow.event_bus.request_zoom ("out");
     }
 
     public void zoom_in () {
@@ -85,7 +85,7 @@ public class TradeSim.Widgets.ZoomButton : Gtk.Grid {
         zoom_out_button.sensitive = true;
         zoom_default_button.label = "%.0f%%".printf (zoom);
 
-        //mainWindow.event_bus.request_zoom ("in");
+        // mainWindow.event_bus.request_zoom ("in");
     }
 
     public void zoom_reset () {
@@ -93,7 +93,8 @@ public class TradeSim.Widgets.ZoomButton : Gtk.Grid {
         zoom_out_button.sensitive = true;
         zoom_default_button.label = "100%";
 
-        //mainWindow.event_bus.request_zoom ("reset");
+        // mainWindow.event_bus.request_zoom ("reset");
     }
+
 }
 
