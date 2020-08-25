@@ -1,23 +1,23 @@
 /*
-* Copyright (c) 2020-2020 horaciodrs (https://github.com/horaciodrs/TradeSim)
-*
-* This file is part of TradeSim.
-*
-* TradeSim is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * Copyright (c) 2020-2020 horaciodrs (https://github.com/horaciodrs/TradeSim)
+ *
+ * This file is part of TradeSim.
+ *
+ * TradeSim is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* TradeSim is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
+ * TradeSim is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with Akira. If not, see <https://www.gnu.org/licenses/>.
-*
-* Authored by: Horacio Daniel Ros <horaciodrs@gmail.com>
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with Akira. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Authored by: Horacio Daniel Ros <horaciodrs@gmail.com>
+ */
 
 public class TradeSim.Widgets.TimeButton : Gtk.Grid {
 
@@ -27,12 +27,12 @@ public class TradeSim.Widgets.TimeButton : Gtk.Grid {
     public Gtk.Button m1;
     public Gtk.Button m15;
     public Gtk.Button h1;
-    public Gtk.Button tx;   //Botom para elegir un marco temporal personalizado
+    public Gtk.Button tx; // Botom para elegir un marco temporal personalizado
 
     public TimeButton (TradeSim.MainWindow window) {
         Object (
             main_window: window
-        );
+            );
     }
 
     construct {
@@ -72,7 +72,7 @@ public class TradeSim.Widgets.TimeButton : Gtk.Grid {
         time_container_label.margin_top = 4;
 
         attach (time_container_label, 0, 1, 4, 1);
-     
+
     }
 
 }
