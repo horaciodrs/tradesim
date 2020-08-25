@@ -1,0 +1,15 @@
+.headerbar-label {
+    font-size: 8pt;
+}
+
+.button-zoom {
+    padding: 0 6px;
+}
+
+.linked-flat button {
+    background-color: shade (@bg_color, 1);
+}
+
+.export-titlebar {
+    padding: 0;
+}

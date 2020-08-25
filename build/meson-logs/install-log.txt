@@ -1,0 +1,12 @@
+# List of files installed by Meson
+# Does not contain files installed by custom scripts.
+/usr/bin/com.github.horaciodrs.TradeSim
+/usr/share/com.github.horaciodrs.TradeSim/artboard.css
+/usr/share/com.github.horaciodrs.TradeSim/colors.css
+/usr/share/com.github.horaciodrs.TradeSim/dialogs.css
+/usr/share/com.github.horaciodrs.TradeSim/headerbar.css
+/usr/share/com.github.horaciodrs.TradeSim/layer.css
+/usr/share/com.github.horaciodrs.TradeSim/layout.css
+/usr/share/com.github.horaciodrs.TradeSim/option-panel.css
+/usr/share/com.github.horaciodrs.TradeSim/stylesheet.css
+/usr/share/com.github.horaciodrs.TradeSim/variables.css
