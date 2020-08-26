@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <schema path="/com/github/horaciodrs/tradesim/" id="com.github.horaciodrs.tradesim">
+        <key name="window-left" type="i">
+            <default>210</default>
+            <summary>Horizontal Position</summary>
+            <description>The saved horizontal position of TradeSim window</description>
+        </key>
+        <key name="window-top" type="i">
+            <default>210</default>
+            <summary>Vertical Position</summary>
+            <description>The saved vertical position of TradeSim window</description>
+        </key>
+        <key name="window-width" type="i">
+            <default>921</default>
+            <summary>Width size of TradeSim window</summary>
+            <description>The saved width size of TradeSim window</description>
+        </key>
+        <key name="window-height" type="i">
+            <default>721</default>
+            <summary>Height size of TradeSim window</summary>
+            <description>The saved height size of TradeSim window</description>
+        </key>
+    </schema>
+</schemalist>

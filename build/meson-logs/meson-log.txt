@@ -1,4 +1,4 @@
-Build started at 2020-08-20T21:18:32.287657
+Build started at 2020-08-25T22:04:15.253283
 Main binary: /usr/bin/python3
 Python system: Linux
 The Meson build system
@@ -15,11 +15,12 @@ Build machine cpu: x86_64
 Dependency gtk+-3.0 found: YES (cached)
 Dependency glib-2.0 found: YES (cached)
 Dependency granite found: YES (cached)
+Program meson/post_install.py found: YES (/usr/bin/env python3 /home/horacio/Vala/TradeSim/meson/post_install.py)
 Build targets in project: 1
 Found ninja-1.8.2 at /usr/bin/ninja
 Running compile:
-Working directory:  /tmp/tmphpx8gom_
-Command line:  cc /tmp/tmphpx8gom_/testfile.c -pipe -D_FILE_OFFSET_BITS=64 -c -o /tmp/tmphpx8gom_/output.obj -O0 --print-search-dirs 
+Working directory:  /tmp/tmp_5ikguvm
+Command line:  cc /tmp/tmp_5ikguvm/testfile.c -pipe -D_FILE_OFFSET_BITS=64 -c -o /tmp/tmp_5ikguvm/output.obj -O0 --print-search-dirs 
 
 Code:
  

@@ -2,11 +2,31 @@
  * generated from Main.vala, do not modify */
 
 /*
+ * Copyright (c) 2020-2020 horaciodrs (https://github.com/horaciodrs/TradeSim)
+ *
+ * This file is part of TradeSim.
+ *
+ * TradeSim is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-meson build --prefix=/usr
-ninja
+ * TradeSim is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
 
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with Akira. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Authored by: Horacio Daniel Ros <horaciodrs@gmail.com>
+ */
+/*
+
+        meson build --prefix=/usr
+        ninja
+
+ */
 
 
 #include <glib.h>
@@ -44,17 +64,17 @@ _vala_main (gchar** args,
 	gint result = 0;
 	TradeSimApplication* AppTradeSim = NULL;
 	TradeSimApplication* _tmp0_;
-#line 11 "/home/horacio/Vala/TradeSim/src/Main.vala"
+#line 31 "/home/horacio/Vala/TradeSim/src/Main.vala"
 	_tmp0_ = trade_sim_application_new ();
-#line 11 "/home/horacio/Vala/TradeSim/src/Main.vala"
+#line 31 "/home/horacio/Vala/TradeSim/src/Main.vala"
 	AppTradeSim = _tmp0_;
-#line 13 "/home/horacio/Vala/TradeSim/src/Main.vala"
+#line 33 "/home/horacio/Vala/TradeSim/src/Main.vala"
 	result = g_application_run ((GApplication*) AppTradeSim, args_length1, args);
-#line 13 "/home/horacio/Vala/TradeSim/src/Main.vala"
+#line 33 "/home/horacio/Vala/TradeSim/src/Main.vala"
 	_g_object_unref0 (AppTradeSim);
-#line 13 "/home/horacio/Vala/TradeSim/src/Main.vala"
+#line 33 "/home/horacio/Vala/TradeSim/src/Main.vala"
 	return result;
-#line 58 "Main.c"
+#line 78 "Main.c"
 }
 
 
@@ -62,9 +82,9 @@ int
 main (int argc,
       char ** argv)
 {
-#line 9 "/home/horacio/Vala/TradeSim/src/Main.vala"
+#line 29 "/home/horacio/Vala/TradeSim/src/Main.vala"
 	return _vala_main (argv, argc);
-#line 68 "Main.c"
+#line 88 "Main.c"
 }
 
 

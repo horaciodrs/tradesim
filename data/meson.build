@@ -4,6 +4,11 @@
 #)
 
 install_data(
+    'com.github.horaciodrs.tradesim.gschema.xml',
+    install_dir: join_paths(get_option('datadir'), 'glib-2.0', 'schemas')
+)
+
+install_data(
     'css/artboard.css',
     install_dir: join_paths(get_option('datadir'), 'com.github.horaciodrs.TradeSim')
 )

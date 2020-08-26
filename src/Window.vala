@@ -49,6 +49,10 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
         add (main_layout);
 
+        var settings = new GLib.Settings("com.github.horaciodrs.tradesim");
+
+        move(settings.get_int("window-left"), settings.get_int("window-top"));
+
         show_all ();
     }
 
