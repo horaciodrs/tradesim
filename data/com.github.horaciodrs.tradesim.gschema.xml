@@ -21,5 +21,15 @@
             <summary>Height size of TradeSim window</summary>
             <description>The saved height size of TradeSim window</description>
         </key>
+        <key name="window-left-pane-width" type="i">
+            <default>210</default>
+            <summary>Width size of TradeSim left pane</summary>
+            <description>The saved width size of TradeSim left pane</description>
+        </key>
+        <key name="window-top-pane-height" type="i">
+            <default>615</default>
+            <summary>Height size of TradeSim top pane</summary>
+            <description>The saved height size of TradeSim top pane</description>
+        </key>
     </schema>
 </schemalist>

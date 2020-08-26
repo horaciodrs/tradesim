@@ -26,8 +26,8 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtk.h>
-#include <gdk/gdk.h>
 #include <gio/gio.h>
+#include <gdk/gdk.h>
 
 
 #define TRADE_SIM_TYPE_MAIN_WINDOW (trade_sim_main_window_get_type ())
@@ -76,16 +76,29 @@ static GParamSpec* trade_sim_main_window_properties[TRADE_SIM_MAIN_WINDOW_NUM_PR
 
 typedef struct _TradeSimApplication TradeSimApplication;
 typedef struct _TradeSimApplicationClass TradeSimApplicationClass;
+typedef struct _TradeSimLayoutsMainPrivate TradeSimLayoutsMainPrivate;
 
 struct _TradeSimMainWindow {
 	GtkApplicationWindow parent_instance;
 	TradeSimMainWindowPrivate * priv;
 	TradeSimLayoutsHeaderBar* headerbar;
 	TradeSimLayoutsMain* main_layout;
+	GSettings* settings;
 };
 
 struct _TradeSimMainWindowClass {
 	GtkApplicationWindowClass parent_class;
+};
+
+struct _TradeSimLayoutsMain {
+	GtkBox parent_instance;
+	TradeSimLayoutsMainPrivate * priv;
+	GtkPaned* pane_top;
+	GtkPaned* pane_left;
+};
+
+struct _TradeSimLayoutsMainClass {
+	GtkBoxClass parent_class;
 };
 
 
@@ -98,6 +111,7 @@ GType trade_sim_application_get_type (void) G_GNUC_CONST;
 TradeSimMainWindow* trade_sim_main_window_new (TradeSimApplication* trade_sim_app);
 TradeSimMainWindow* trade_sim_main_window_construct (GType object_type,
                                                      TradeSimApplication* trade_sim_app);
+gboolean trade_sim_main_window_before_destroy (TradeSimMainWindow* self);
 static GObject * trade_sim_main_window_constructor (GType type,
                                              guint n_construct_properties,
                                              GObjectConstructParam * construct_properties);
@@ -107,6 +121,11 @@ TradeSimLayoutsHeaderBar* trade_sim_layouts_header_bar_construct (GType object_t
 TradeSimLayoutsMain* trade_sim_layouts_main_new (TradeSimMainWindow* window);
 TradeSimLayoutsMain* trade_sim_layouts_main_construct (GType object_type,
                                                        TradeSimMainWindow* window);
+static gboolean _trade_sim_main_window___lambda4_ (TradeSimMainWindow* self,
+                                            GdkEventAny* e);
+static gboolean __trade_sim_main_window___lambda4__gtk_widget_delete_event (GtkWidget* _sender,
+                                                                     GdkEventAny* event,
+                                                                     gpointer self);
 static void trade_sim_main_window_finalize (GObject * obj);
 
 
@@ -115,22 +134,132 @@ trade_sim_main_window_construct (GType object_type,
                                  TradeSimApplication* trade_sim_app)
 {
 	TradeSimMainWindow * self = NULL;
-#line 27 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 29 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	g_return_val_if_fail (trade_sim_app != NULL, NULL);
-#line 28 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 30 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	self = (TradeSimMainWindow*) g_object_new (object_type, "application", trade_sim_app, NULL);
-#line 27 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 29 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	return self;
-#line 125 "Window.c"
+#line 144 "Window.c"
 }
 
 
 TradeSimMainWindow*
 trade_sim_main_window_new (TradeSimApplication* trade_sim_app)
 {
-#line 27 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 29 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	return trade_sim_main_window_construct (TRADE_SIM_TYPE_MAIN_WINDOW, trade_sim_app);
-#line 134 "Window.c"
+#line 153 "Window.c"
+}
+
+
+gboolean
+trade_sim_main_window_before_destroy (TradeSimMainWindow* self)
+{
+	gboolean result = FALSE;
+	gint window_left = 0;
+	gint window_top = 0;
+	gint window_width = 0;
+	gint window_height = 0;
+	gint left_pane_width = 0;
+	gint top_pane_height = 0;
+	gint _tmp0_ = 0;
+	gint _tmp1_ = 0;
+	gint _tmp2_ = 0;
+	gint _tmp3_ = 0;
+	TradeSimLayoutsMain* _tmp4_;
+	GtkPaned* _tmp5_;
+	TradeSimLayoutsMain* _tmp6_;
+	GtkPaned* _tmp7_;
+	GSettings* _tmp8_;
+	GSettings* _tmp9_;
+	GSettings* _tmp10_;
+	GSettings* _tmp11_;
+	GSettings* _tmp12_;
+	GSettings* _tmp13_;
+#line 67 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	g_return_val_if_fail (self != NULL, FALSE);
+#line 76 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	gtk_window_get_size ((GtkWindow*) self, &_tmp0_, &_tmp1_);
+#line 76 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	window_width = _tmp0_;
+#line 76 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	window_height = _tmp1_;
+#line 77 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	gtk_window_get_position ((GtkWindow*) self, &_tmp2_, &_tmp3_);
+#line 77 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	window_left = _tmp2_;
+#line 77 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	window_top = _tmp3_;
+#line 79 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp4_ = self->main_layout;
+#line 79 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp5_ = _tmp4_->pane_left;
+#line 79 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	left_pane_width = gtk_paned_get_position (_tmp5_);
+#line 80 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp6_ = self->main_layout;
+#line 80 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp7_ = _tmp6_->pane_top;
+#line 80 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	top_pane_height = gtk_paned_get_position (_tmp7_);
+#line 82 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp8_ = self->settings;
+#line 82 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	g_settings_set_int (_tmp8_, "window-left", window_left);
+#line 83 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp9_ = self->settings;
+#line 83 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	g_settings_set_int (_tmp9_, "window-top", window_top);
+#line 84 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp10_ = self->settings;
+#line 84 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	g_settings_set_int (_tmp10_, "window-width", window_width);
+#line 85 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp11_ = self->settings;
+#line 85 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	g_settings_set_int (_tmp11_, "window-height", window_height);
+#line 87 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp12_ = self->settings;
+#line 87 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	g_settings_set_int (_tmp12_, "window-left-pane-width", left_pane_width);
+#line 88 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp13_ = self->settings;
+#line 88 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	g_settings_set_int (_tmp13_, "window-top-pane-height", top_pane_height);
+#line 90 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	result = FALSE;
+#line 90 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	return result;
+#line 235 "Window.c"
+}
+
+
+static gboolean
+_trade_sim_main_window___lambda4_ (TradeSimMainWindow* self,
+                                   GdkEventAny* e)
+{
+	gboolean result = FALSE;
+#line 60 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	g_return_val_if_fail (e != NULL, FALSE);
+#line 61 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	result = trade_sim_main_window_before_destroy (self);
+#line 61 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	return result;
+#line 250 "Window.c"
+}
+
+
+static gboolean
+__trade_sim_main_window___lambda4__gtk_widget_delete_event (GtkWidget* _sender,
+                                                            GdkEventAny* event,
+                                                            gpointer self)
+{
+	gboolean result;
+	result = _trade_sim_main_window___lambda4_ ((TradeSimMainWindow*) self, event);
+#line 60 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	return result;
+#line 263 "Window.c"
 }
 
 
@@ -151,60 +280,67 @@ trade_sim_main_window_constructor (GType type,
 	GdkScreen* _tmp5_;
 	GtkCssProvider* _tmp6_;
 	TradeSimLayoutsMain* _tmp7_;
-	GSettings* settings = NULL;
 	GSettings* _tmp8_;
 	GSettings* _tmp9_;
 	GSettings* _tmp10_;
+	GSettings* _tmp11_;
+	GSettings* _tmp12_;
+	TradeSimLayoutsMain* _tmp13_;
+	GtkPaned* _tmp14_;
+	GSettings* _tmp15_;
+	TradeSimLayoutsMain* _tmp16_;
+	GtkPaned* _tmp17_;
+	GSettings* _tmp18_;
 	GError* _inner_error0_ = NULL;
-#line 33 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 35 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	parent_class = G_OBJECT_CLASS (trade_sim_main_window_parent_class);
-#line 33 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 35 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	obj = parent_class->constructor (type, n_construct_properties, construct_properties);
-#line 33 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 35 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TRADE_SIM_TYPE_MAIN_WINDOW, TradeSimMainWindow);
-#line 36 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 38 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_tmp0_ = trade_sim_layouts_header_bar_new (self);
-#line 36 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 38 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	g_object_ref_sink (_tmp0_);
-#line 36 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 38 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_g_object_unref0 (self->headerbar);
-#line 36 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 38 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	self->headerbar = _tmp0_;
-#line 37 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 39 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_tmp1_ = trade_sim_layouts_main_new (self);
-#line 37 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 39 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	g_object_ref_sink (_tmp1_);
-#line 37 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 39 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_g_object_unref0 (self->main_layout);
-#line 37 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 39 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	self->main_layout = _tmp1_;
-#line 39 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 41 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_tmp2_ = self->headerbar;
-#line 39 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 41 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	gtk_window_set_titlebar ((GtkWindow*) self, (GtkWidget*) _tmp2_);
-#line 41 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 43 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_tmp3_ = gtk_css_provider_new ();
-#line 41 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 43 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	css_provider = _tmp3_;
-#line 42 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 44 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_tmp4_ = css_provider;
-#line 42 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 44 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	gtk_css_provider_load_from_path (_tmp4_, "/usr/share/com.github.horaciodrs.TradeSim/stylesheet.css", &_inner_error0_);
-#line 42 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 44 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	if (G_UNLIKELY (_inner_error0_ != NULL)) {
-#line 42 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 44 "/home/horacio/Vala/TradeSim/src/Window.vala"
 		_g_object_unref0 (css_provider);
-#line 42 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 44 "/home/horacio/Vala/TradeSim/src/Window.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error0_->message, g_quark_to_string (_inner_error0_->domain), _inner_error0_->code);
-#line 42 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 44 "/home/horacio/Vala/TradeSim/src/Window.vala"
 		g_clear_error (&_inner_error0_);
-#line 202 "Window.c"
+#line 338 "Window.c"
 	}
-#line 44 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 46 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_tmp5_ = gdk_screen_get_default ();
-#line 44 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 46 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_tmp6_ = css_provider;
-#line 44 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 46 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	gtk_style_context_add_provider_for_screen (_tmp5_, (GtkStyleProvider*) _tmp6_, (guint) GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 #line 50 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_tmp7_ = self->main_layout;
@@ -213,22 +349,46 @@ trade_sim_main_window_constructor (GType type,
 #line 52 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_tmp8_ = g_settings_new ("com.github.horaciodrs.tradesim");
 #line 52 "/home/horacio/Vala/TradeSim/src/Window.vala"
-	settings = _tmp8_;
+	_g_object_unref0 (self->settings);
+#line 52 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	self->settings = _tmp8_;
 #line 54 "/home/horacio/Vala/TradeSim/src/Window.vala"
-	_tmp9_ = settings;
+	_tmp9_ = self->settings;
 #line 54 "/home/horacio/Vala/TradeSim/src/Window.vala"
-	_tmp10_ = settings;
+	_tmp10_ = self->settings;
 #line 54 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	gtk_window_move ((GtkWindow*) self, g_settings_get_int (_tmp9_, "window-left"), g_settings_get_int (_tmp10_, "window-top"));
-#line 56 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 55 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp11_ = self->settings;
+#line 55 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp12_ = self->settings;
+#line 55 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	gtk_window_resize ((GtkWindow*) self, g_settings_get_int (_tmp11_, "window-width"), g_settings_get_int (_tmp12_, "window-height"));
+#line 57 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp13_ = self->main_layout;
+#line 57 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp14_ = _tmp13_->pane_left;
+#line 57 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp15_ = self->settings;
+#line 57 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	gtk_paned_set_position (_tmp14_, g_settings_get_int (_tmp15_, "window-left-pane-width"));
+#line 58 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp16_ = self->main_layout;
+#line 58 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp17_ = _tmp16_->pane_top;
+#line 58 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_tmp18_ = self->settings;
+#line 58 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	gtk_paned_set_position (_tmp17_, g_settings_get_int (_tmp18_, "window-top-pane-height"));
+#line 60 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	g_signal_connect_object ((GtkWidget*) self, "delete-event", (GCallback) __trade_sim_main_window___lambda4__gtk_widget_delete_event, self, 0);
+#line 64 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	gtk_widget_show_all ((GtkWidget*) self);
-#line 33 "/home/horacio/Vala/TradeSim/src/Window.vala"
-	_g_object_unref0 (settings);
-#line 33 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 35 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_g_object_unref0 (css_provider);
-#line 33 "/home/horacio/Vala/TradeSim/src/Window.vala"
+#line 35 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	return obj;
-#line 232 "Window.c"
+#line 392 "Window.c"
 }
 
 
@@ -241,7 +401,7 @@ trade_sim_main_window_class_init (TradeSimMainWindowClass * klass)
 	G_OBJECT_CLASS (klass)->constructor = trade_sim_main_window_constructor;
 #line 22 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	G_OBJECT_CLASS (klass)->finalize = trade_sim_main_window_finalize;
-#line 245 "Window.c"
+#line 405 "Window.c"
 }
 
 
@@ -261,9 +421,11 @@ trade_sim_main_window_finalize (GObject * obj)
 	_g_object_unref0 (self->headerbar);
 #line 25 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_g_object_unref0 (self->main_layout);
+#line 27 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	_g_object_unref0 (self->settings);
 #line 22 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	G_OBJECT_CLASS (trade_sim_main_window_parent_class)->finalize (obj);
-#line 267 "Window.c"
+#line 429 "Window.c"
 }
 
 

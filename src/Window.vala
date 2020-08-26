@@ -24,6 +24,8 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
     public TradeSim.Layouts.HeaderBar headerbar;
     public TradeSim.Layouts.Main main_layout;
 
+    public GLib.Settings settings;
+
     public MainWindow (TradeSim.Application trade_sim_app) {
         Object (
             application: trade_sim_app
@@ -45,15 +47,48 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
             Gdk.Screen.get_default (), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
             );
 
-
-
         add (main_layout);
 
-        var settings = new GLib.Settings("com.github.horaciodrs.tradesim");
+        settings = new GLib.Settings ("com.github.horaciodrs.tradesim");
 
-        move(settings.get_int("window-left"), settings.get_int("window-top"));
+        move (settings.get_int ("window-left"), settings.get_int ("window-top"));
+        resize (settings.get_int ("window-width"), settings.get_int ("window-height"));
+
+        main_layout.pane_left.set_position (settings.get_int ("window-left-pane-width"));
+        main_layout.pane_top.set_position (settings.get_int ("window-top-pane-height"));
+
+        delete_event.connect (e => {
+            return before_destroy ();
+        });
 
         show_all ();
+    }
+
+    public bool before_destroy () {
+
+        int window_left;
+        int window_top;
+        int window_width;
+        int window_height;
+        int left_pane_width;
+        int top_pane_height;
+
+        get_size (out window_width, out window_height);
+        get_position (out window_left, out window_top);
+
+        left_pane_width = main_layout.pane_left.get_position ();
+        top_pane_height = main_layout.pane_top.get_position ();
+
+        settings.set_int ("window-left", window_left);
+        settings.set_int ("window-top", window_top);
+        settings.set_int ("window-width", window_width);
+        settings.set_int ("window-height", window_height);
+
+        settings.set_int ("window-left-pane-width", left_pane_width);
+        settings.set_int ("window-top-pane-height", top_pane_height);
+
+        return false;
+
     }
 
 }
