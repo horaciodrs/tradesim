@@ -61,6 +61,7 @@ struct _TradeSimLayoutsMain {
 	TradeSimLayoutsMainPrivate * priv;
 	GtkPaned* pane_top;
 	GtkPaned* pane_left;
+	GtkNotebook* nb_chart_container;
 };
 
 struct _TradeSimLayoutsMainClass {
@@ -102,22 +103,22 @@ trade_sim_layouts_main_construct (GType object_type,
                                   TradeSimMainWindow* window)
 {
 	TradeSimLayoutsMain * self = NULL;
-#line 29 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+#line 31 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 	g_return_val_if_fail (window != NULL, NULL);
-#line 30 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+#line 32 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 	self = (TradeSimLayoutsMain*) g_object_new (object_type, "main-window", window, NULL);
-#line 29 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+#line 31 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 	return self;
-#line 112 "Main.c"
+#line 113 "Main.c"
 }
 
 
 TradeSimLayoutsMain*
 trade_sim_layouts_main_new (TradeSimMainWindow* window)
 {
-#line 29 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+#line 31 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 	return trade_sim_layouts_main_construct (TRADE_SIM_LAYOUTS_TYPE_MAIN, window);
-#line 121 "Main.c"
+#line 122 "Main.c"
 }
 
 
@@ -134,7 +135,7 @@ trade_sim_layouts_main_get_main_window (TradeSimLayoutsMain* self)
 	result = _tmp0_;
 #line 24 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 	return result;
-#line 138 "Main.c"
+#line 139 "Main.c"
 }
 
 
@@ -150,7 +151,7 @@ trade_sim_layouts_main_set_main_window (TradeSimLayoutsMain* self,
 		self->priv->_main_window = value;
 #line 24 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 		g_object_notify_by_pspec ((GObject *) self, trade_sim_layouts_main_properties[TRADE_SIM_LAYOUTS_MAIN_MAIN_WINDOW_PROPERTY]);
-#line 154 "Main.c"
+#line 155 "Main.c"
 	}
 }
 
@@ -163,91 +164,148 @@ trade_sim_layouts_main_constructor (GType type,
 	GObject * obj;
 	GObjectClass * parent_class;
 	TradeSimLayoutsMain * self;
-	GtkPaned* _tmp0_;
-	GtkPaned* _tmp1_;
-	GtkPaned* _tmp2_;
+	GtkNotebook* _tmp0_;
+	GtkNotebook* _tmp1_;
+	GtkNotebook* _tmp2_;
 	GtkLabel* _tmp3_;
 	GtkLabel* _tmp4_;
-	GtkPaned* _tmp5_;
+	GtkLabel* _tmp5_;
 	GtkLabel* _tmp6_;
-	GtkLabel* _tmp7_;
-	GtkPaned* _tmp8_;
-	GtkPaned* _tmp9_;
-	GtkPaned* _tmp10_;
+	GtkNotebook* _tmp7_;
+	GtkLabel* _tmp8_;
+	GtkLabel* _tmp9_;
+	GtkLabel* _tmp10_;
 	GtkLabel* _tmp11_;
-	GtkLabel* _tmp12_;
+	GtkPaned* _tmp12_;
 	GtkPaned* _tmp13_;
-#line 35 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	GtkPaned* _tmp14_;
+	GtkLabel* _tmp15_;
+	GtkLabel* _tmp16_;
+	GtkPaned* _tmp17_;
+	GtkNotebook* _tmp18_;
+	GtkPaned* _tmp19_;
+	GtkPaned* _tmp20_;
+	GtkPaned* _tmp21_;
+	GtkLabel* _tmp22_;
+	GtkLabel* _tmp23_;
+	GtkPaned* _tmp24_;
+#line 37 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 	parent_class = G_OBJECT_CLASS (trade_sim_layouts_main_parent_class);
-#line 35 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+#line 37 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 	obj = parent_class->constructor (type, n_construct_properties, construct_properties);
-#line 35 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+#line 37 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TRADE_SIM_LAYOUTS_TYPE_MAIN, TradeSimLayoutsMain);
-#line 37 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	_tmp0_ = (GtkPaned*) gtk_paned_new (GTK_ORIENTATION_VERTICAL);
-#line 37 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+#line 39 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp0_ = (GtkNotebook*) gtk_notebook_new ();
+#line 39 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 	g_object_ref_sink (_tmp0_);
-#line 37 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	_g_object_unref0 (self->pane_top);
-#line 37 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	self->pane_top = _tmp0_;
-#line 38 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	_tmp1_ = (GtkPaned*) gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
-#line 38 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	g_object_ref_sink (_tmp1_);
-#line 38 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	_g_object_unref0 (self->pane_left);
-#line 38 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	self->pane_left = _tmp1_;
-#line 40 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	_tmp2_ = self->pane_left;
-#line 40 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	_tmp3_ = (GtkLabel*) gtk_label_new ("Hola");
-#line 40 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+#line 39 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_g_object_unref0 (self->nb_chart_container);
+#line 39 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	self->nb_chart_container = _tmp0_;
+#line 41 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp1_ = self->nb_chart_container;
+#line 41 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	gtk_notebook_set_show_border (_tmp1_, FALSE);
+#line 43 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp2_ = self->nb_chart_container;
+#line 43 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp3_ = (GtkLabel*) gtk_label_new ("Contenido del grafico EURUSD");
+#line 43 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 	g_object_ref_sink (_tmp3_);
-#line 40 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+#line 43 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 	_tmp4_ = _tmp3_;
-#line 40 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	gtk_paned_pack1 (_tmp2_, (GtkWidget*) _tmp4_, TRUE, TRUE);
-#line 40 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+#line 43 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp5_ = (GtkLabel*) gtk_label_new ("EURUSD, M5");
+#line 43 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	g_object_ref_sink (_tmp5_);
+#line 43 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp6_ = _tmp5_;
+#line 43 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	gtk_notebook_append_page (_tmp2_, (GtkWidget*) _tmp4_, (GtkWidget*) _tmp6_);
+#line 43 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_g_object_unref0 (_tmp6_);
+#line 43 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 	_g_object_unref0 (_tmp4_);
-#line 41 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	_tmp5_ = self->pane_left;
-#line 41 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	_tmp6_ = (GtkLabel*) gtk_label_new ("Mundo");
-#line 41 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	g_object_ref_sink (_tmp6_);
-#line 41 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	_tmp7_ = _tmp6_;
-#line 41 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	gtk_paned_pack2 (_tmp5_, (GtkWidget*) _tmp7_, TRUE, TRUE);
-#line 41 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	_g_object_unref0 (_tmp7_);
-#line 43 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	_tmp8_ = self->pane_top;
-#line 43 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	_tmp9_ = self->pane_left;
-#line 43 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	gtk_paned_pack1 (_tmp8_, (GtkWidget*) _tmp9_, TRUE, FALSE);
 #line 44 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	_tmp10_ = self->pane_top;
+	_tmp7_ = self->nb_chart_container;
 #line 44 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	_tmp11_ = (GtkLabel*) gtk_label_new ("Bottom Bar");
+	_tmp8_ = (GtkLabel*) gtk_label_new ("Contenido del grafico USDJPY");
 #line 44 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	g_object_ref_sink (_tmp11_);
+	g_object_ref_sink (_tmp8_);
 #line 44 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	_tmp12_ = _tmp11_;
+	_tmp9_ = _tmp8_;
 #line 44 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	gtk_paned_pack2 (_tmp10_, (GtkWidget*) _tmp12_, TRUE, TRUE);
+	_tmp10_ = (GtkLabel*) gtk_label_new ("USDJPY, M5");
 #line 44 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	_g_object_unref0 (_tmp12_);
+	g_object_ref_sink (_tmp10_);
+#line 44 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp11_ = _tmp10_;
+#line 44 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	gtk_notebook_append_page (_tmp7_, (GtkWidget*) _tmp9_, (GtkWidget*) _tmp11_);
+#line 44 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_g_object_unref0 (_tmp11_);
+#line 44 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_g_object_unref0 (_tmp9_);
 #line 46 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	_tmp13_ = self->pane_top;
+	_tmp12_ = (GtkPaned*) gtk_paned_new (GTK_ORIENTATION_VERTICAL);
 #line 46 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
-	gtk_box_pack_start ((GtkBox*) self, (GtkWidget*) _tmp13_, TRUE, TRUE, (guint) 1);
-#line 35 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	g_object_ref_sink (_tmp12_);
+#line 46 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_g_object_unref0 (self->pane_top);
+#line 46 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	self->pane_top = _tmp12_;
+#line 47 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp13_ = (GtkPaned*) gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
+#line 47 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	g_object_ref_sink (_tmp13_);
+#line 47 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_g_object_unref0 (self->pane_left);
+#line 47 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	self->pane_left = _tmp13_;
+#line 49 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp14_ = self->pane_left;
+#line 49 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp15_ = (GtkLabel*) gtk_label_new ("Hola");
+#line 49 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	g_object_ref_sink (_tmp15_);
+#line 49 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp16_ = _tmp15_;
+#line 49 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	gtk_paned_pack1 (_tmp14_, (GtkWidget*) _tmp16_, TRUE, TRUE);
+#line 49 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_g_object_unref0 (_tmp16_);
+#line 50 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp17_ = self->pane_left;
+#line 50 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp18_ = self->nb_chart_container;
+#line 50 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	gtk_paned_pack2 (_tmp17_, (GtkWidget*) _tmp18_, TRUE, TRUE);
+#line 52 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp19_ = self->pane_top;
+#line 52 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp20_ = self->pane_left;
+#line 52 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	gtk_paned_pack1 (_tmp19_, (GtkWidget*) _tmp20_, TRUE, FALSE);
+#line 53 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp21_ = self->pane_top;
+#line 53 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp22_ = (GtkLabel*) gtk_label_new ("Bottom Bar");
+#line 53 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	g_object_ref_sink (_tmp22_);
+#line 53 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp23_ = _tmp22_;
+#line 53 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	gtk_paned_pack2 (_tmp21_, (GtkWidget*) _tmp23_, TRUE, TRUE);
+#line 53 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_g_object_unref0 (_tmp23_);
+#line 55 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_tmp24_ = self->pane_top;
+#line 55 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	gtk_box_pack_start ((GtkBox*) self, (GtkWidget*) _tmp24_, TRUE, TRUE, (guint) 1);
+#line 37 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 	return obj;
-#line 251 "Main.c"
+#line 309 "Main.c"
 }
 
 
@@ -268,7 +326,7 @@ trade_sim_layouts_main_class_init (TradeSimLayoutsMainClass * klass)
 	G_OBJECT_CLASS (klass)->finalize = trade_sim_layouts_main_finalize;
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRADE_SIM_LAYOUTS_MAIN_MAIN_WINDOW_PROPERTY, trade_sim_layouts_main_properties[TRADE_SIM_LAYOUTS_MAIN_MAIN_WINDOW_PROPERTY] = g_param_spec_object ("main-window", "main-window", "main-window", TRADE_SIM_TYPE_MAIN_WINDOW, G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
-#line 272 "Main.c"
+#line 330 "Main.c"
 }
 
 
@@ -277,7 +335,7 @@ trade_sim_layouts_main_instance_init (TradeSimLayoutsMain * self)
 {
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 	self->priv = TRADE_SIM_LAYOUTS_MAIN_GET_PRIVATE (self);
-#line 281 "Main.c"
+#line 339 "Main.c"
 }
 
 
@@ -291,9 +349,11 @@ trade_sim_layouts_main_finalize (GObject * obj)
 	_g_object_unref0 (self->pane_top);
 #line 27 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 	_g_object_unref0 (self->pane_left);
+#line 29 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
+	_g_object_unref0 (self->nb_chart_container);
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 	G_OBJECT_CLASS (trade_sim_layouts_main_parent_class)->finalize (obj);
-#line 297 "Main.c"
+#line 357 "Main.c"
 }
 
 
@@ -327,13 +387,13 @@ _vala_trade_sim_layouts_main_get_property (GObject * object,
 		g_value_set_object (value, trade_sim_layouts_main_get_main_window (self));
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 		break;
-#line 331 "Main.c"
+#line 391 "Main.c"
 		default:
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 		break;
-#line 337 "Main.c"
+#line 397 "Main.c"
 	}
 }
 
@@ -354,13 +414,13 @@ _vala_trade_sim_layouts_main_set_property (GObject * object,
 		trade_sim_layouts_main_set_main_window (self, g_value_get_object (value));
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 		break;
-#line 358 "Main.c"
+#line 418 "Main.c"
 		default:
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/Main.vala"
 		break;
-#line 364 "Main.c"
+#line 424 "Main.c"
 	}
 }
 

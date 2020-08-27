@@ -26,6 +26,8 @@ public class TradeSim.Layouts.Main : Gtk.Box {
     public Gtk.Paned pane_top;
     public Gtk.Paned pane_left;
 
+    public Gtk.Notebook nb_chart_container;
+
     public Main (TradeSim.MainWindow window) {
         Object (
             main_window: window
@@ -34,11 +36,18 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
     construct {
 
+        nb_chart_container = new Gtk.Notebook ();
+
+        nb_chart_container.set_show_border(false);
+
+        nb_chart_container.append_page (new Gtk.Label ("Contenido del grafico EURUSD"), new Gtk.Label ("EURUSD, M5"));
+        nb_chart_container.append_page (new Gtk.Label ("Contenido del grafico USDJPY"), new Gtk.Label ("USDJPY, M5"));
+
         pane_top = new Gtk.Paned (Gtk.Orientation.VERTICAL);
         pane_left = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
 
         pane_left.pack1 (new Gtk.Label ("Hola"), true, true);
-        pane_left.pack2 (new Gtk.Label ("Mundo"), true, true);
+        pane_left.pack2 (nb_chart_container, true, true);
 
         pane_top.pack1 (pane_left, true, false);
         pane_top.pack2 (new Gtk.Label ("Bottom Bar"), true, true);
