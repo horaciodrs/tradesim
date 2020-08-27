@@ -19,6 +19,23 @@
  * Authored by: Horacio Daniel Ros <horaciodrs@gmail.com>
  */
 
+
+/*
+
+   ejemplo mostrar un dialogo....
+   ==============================
+
+   private void action_preferences () {
+       var settings_dialog = new Akira.Dialogs.SettingsDialog (window);
+       settings_dialog.show_all ();
+       settings_dialog.present ();
+       settings_dialog.close.connect (() => {
+           window.event_bus.set_focus_on_canvas ();
+       });
+   }
+
+ */
+
 public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
     public TradeSim.Layouts.HeaderBar headerbar;
@@ -56,12 +73,37 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
         main_layout.pane_left.set_position (settings.get_int ("window-left-pane-width"));
         main_layout.pane_top.set_position (settings.get_int ("window-top-pane-height"));
+        change_theme (true);
+
+
+        /* ****************************** */
+        /* CLICK: Boton de Preferencias   */
+        /* ****************************** */
+        headerbar.preferencias.button.clicked.connect (e => {
+            var settings_dialog = new TradeSim.Dialogs.SettingsDialog (this);
+            settings_dialog.show_all ();
+            settings_dialog.present ();
+            settings_dialog.close.connect (() => {
+                // event_bus.set_focus_on_canvas ();
+            });
+        });
 
         delete_event.connect (e => {
             return before_destroy ();
         });
 
         show_all ();
+    }
+
+    public void change_theme (bool load_from_settings = false, bool value = false) {
+
+        if (load_from_settings) {
+            Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = settings.get_boolean ("window-dark-theme");
+        } else {
+            Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = value;
+            settings.set_boolean ("window-dark-theme", value);
+        }
+
     }
 
     public bool before_destroy () {

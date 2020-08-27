@@ -47,7 +47,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         dark_theme_switch = new SettingsSwitch ("dark-theme");
         grid.attach (dark_theme_switch, 1, 1, 1, 1);
 
-        dark_theme_switch.set_active(main_window.settings.get_boolean ("window-dark-theme"));
+        dark_theme_switch.set_active (main_window.settings.get_boolean ("window-dark-theme"));
 
         dark_theme_switch.notify["active"].connect (() => {
             main_window.change_theme (false, dark_theme_switch.get_state ());
