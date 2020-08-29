@@ -22,17 +22,7 @@
 
 /*
 
-   ejemplo mostrar un dialogo....
-   ==============================
-
-   private void action_preferences () {
-       var settings_dialog = new Akira.Dialogs.SettingsDialog (window);
-       settings_dialog.show_all ();
-       settings_dialog.present ();
-       settings_dialog.close.connect (() => {
-           window.event_bus.set_focus_on_canvas ();
-       });
-   }
+   javascript:return true;
 
  */
 
