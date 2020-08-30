@@ -40,30 +40,120 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public int mouse_x;
     public int mouse_y;
 
+    public bool show_cross_lines;
+
     public Canvas (TradeSim.MainWindow window) {
 
         main_window = window;
 
-        add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK | Gdk.EventMask.POINTER_MOTION_MASK);
+        add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK | Gdk.EventMask.POINTER_MOTION_MASK | Gdk.EventMask.LEAVE_NOTIFY_MASK);
 
         motion_notify_event.connect (this.on_mouse_over);
+
+        leave_notify_event.connect (this.on_mouse_out);
 
     }
 
     construct {
         set_size_request (640, 480);
+
+        show_cross_lines = false;
     }
 
-    public bool on_mouse_over(Gdk.EventMotion event){
+    public bool on_mouse_over (Gdk.EventMotion event) {
 
         mouse_x = (int) event.x;
         mouse_y = (int) event.y;
+        show_cross_lines = true;
 
         return true;
-        
+
+    }
+
+    public bool on_mouse_out (Gdk.EventCrossing event) {
+
+        show_cross_lines = false;
+
+        print ("out");
+
+        return true;
+
+    }
+
+    public void draw_cross_lines (Cairo.Context ctext) {
+
+        if (!show_cross_lines) {
+            return;
+        }
+
+        // horizontal
+        ctext.set_dash({5.0}, 0);
+        ctext.set_line_width (0.2);
+        ctext.set_source_rgba (0, 0, 0, 1);
+        ctext.move_to (0, mouse_y);
+        ctext.line_to (_width, mouse_y);
+        ctext.stroke ();
+
+        // vertical
+        ctext.set_line_width (0.2);
+        ctext.set_source_rgba (0, 0, 0, 1);
+        ctext.move_to (mouse_x, 0);
+        ctext.line_to (mouse_x, _height);
+        ctext.stroke ();
+
     }
 
     public void draw_candle (Cairo.Context ctext, int x, int y) {
+
+        int ancho = 10;
+        int alto = 40;
+
+        ctext.set_source_rgba (0, 0, 0, 1);
+        ctext.rectangle (x, y, ancho, alto);
+        ctext.fill ();
+
+    }
+
+    public void draw_candle_up (Cairo.Context ctext, int x, int y) {
+
+        int ancho = 10;
+        int alto = 40;
+
+        // left_border
+        ctext.set_line_width (1.0);
+        ctext.set_source_rgba (0, 0, 0, 1.0);
+        ctext.move_to (x, y);
+        ctext.line_to (x, y + alto);
+        ctext.stroke ();
+
+        // right_border
+        ctext.set_line_width (1.0);
+        ctext.set_source_rgba (0, 0, 0, 1.0);
+        ctext.move_to (x + ancho, y);
+        ctext.line_to (x + ancho, y + alto);
+        ctext.stroke ();
+
+        // top_border
+        ctext.set_line_width (1.0);
+        ctext.set_source_rgba (0, 0, 0, 1.0);
+        ctext.move_to (x - 1, y);
+        ctext.line_to (x + ancho + 1, y);
+        ctext.stroke ();
+
+        // bottom_border
+        ctext.set_line_width (1.0);
+        ctext.set_source_rgba (0, 0, 0, 1.0);
+        ctext.move_to (x - 1, y + alto);
+        ctext.line_to (x + ancho + 1, y + alto);
+        ctext.stroke ();
+
+        ctext.set_source_rgba (255, 255, 255, 1);
+        ctext.rectangle (x, y, ancho, alto);
+        ctext.fill ();
+
+    }
+
+    public void draw_candle_down (Cairo.Context ctext, int x, int y) {
 
         int ancho = 10;
         int alto = 40;
@@ -115,9 +205,9 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public void draw_chart (Cairo.Context ctext) {
 
         draw_candle (ctext, 20, 20);
-        draw_candle (ctext, 35, 30);
+        draw_candle_up (ctext, 35, 30);
         draw_candle (ctext, 50, 40);
-        draw_candle (ctext, 65, 35);
+        draw_candle_up (ctext, 65, 35);
 
     }
 
@@ -126,7 +216,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         _width = get_allocated_width ();
         _height = get_allocated_height ();
 
-        //print("hoa");
+        // print("hoa");
 
         /*
            cr.set_line_width (1.0);
@@ -143,6 +233,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         draw_chart (cr);
 
         draw_vertical_scale (cr);
+
+        draw_cross_lines (cr);
 
         cr.restore ();
         cr.save ();
