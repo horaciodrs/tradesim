@@ -1,4 +1,7 @@
 sources = files(
+    'Services/QuoteItem.vala',
+    'Services/QuotesManager.vala',
+
     'Layouts/HeaderBar.vala',
     'Layouts/Main.vala',
 

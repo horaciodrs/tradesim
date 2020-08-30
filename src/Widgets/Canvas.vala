@@ -28,9 +28,25 @@
 
    theme_type {0, 1}   0: Normal, 1: DarkVariant
 
-   theme_red[theme_type]
-   theme_green[theme_type]
-   theme_blue[theme_type]
+   canvas_background_theme_red[theme_type]
+   canvas_background_theme_green[theme_type]
+   canvas_background_theme_blue[theme_type]
+
+   canvas_candle_up_bg_theme_red[theme_type]
+   canvas_candle_up_bg_theme_green[theme_type]
+   canvas_candle_up_bg_theme_blue[theme_type]
+
+   canvas_candle_up_brd_theme_red[theme_type]
+   canvas_candle_up_brd_theme_green[theme_type]
+   canvas_candle_up_brd_theme_blue[theme_type]
+
+   canvas_candle_down_bg_theme_red[theme_type]
+   canvas_candle_down_bg_theme_green[theme_type]
+   canvas_candle_down_bg_theme_blue[theme_type]
+
+   canvas_candle_down_brd_theme_red[theme_type]
+   canvas_candle_down_brd_theme_green[theme_type]
+   canvas_candle_down_brd_theme_blue[theme_type]
 
  */
 
@@ -76,8 +92,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public bool on_mouse_out (Gdk.EventCrossing event) {
 
         show_cross_lines = false;
-
-        print ("out");
 
         return true;
 
