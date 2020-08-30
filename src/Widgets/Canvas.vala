@@ -21,13 +21,16 @@
 
 
 /*
-   Gdk.EventMask
+   TEMA DE COLORES
 
-   A set of bit-flags to indicate which events a window is to receive.
+   PARA CAMBIAR EL COLOR SEGUN SI SE USA EL TEMA OSCURO O NO...
+   UTILIZO UN ARRAY DONDE GUARDO POR RGB CADA TEMA.
 
-       GDK_MOTION_NOTIFY the pointer (usually a mouse) has moved
+   theme_type {0, 1}   0: Normal, 1: DarkVariant
 
-
+   theme_red[theme_type]
+   theme_green[theme_type]
+   theme_blue[theme_type]
 
  */
 
