@@ -21,4 +21,84 @@
 
 public class TradeSim.Services.QuoteItem {
 
+    public string ticker;
+    public string time_frame;
+
+    public DateTime date_time;
+
+    public double open_price;
+    public double close_price;
+    public double min_price;
+    public double max_price;
+
+    public QuoteItem (string _ticker) {
+        ticker = _ticker;
+    }
+
+    public void set_date_time (DateTime _date_time) {
+        date_time = _date_time;
+    }
+
+    public void set_open_price (double _open_price) {
+        open_price = _open_price;
+    }
+
+    public void set_close_price (double _close_price) {
+        close_price = _close_price;
+    }
+
+    public void set_min_price (double _min_price) {
+        min_price = _min_price;
+    }
+
+    public void set_max_price (double _max_price) {
+        max_price = _max_price;
+    }
+
+    private string get_formatted_price (string type) {
+
+        string return_value = "0.00000";
+        char[] buf = new char[double.DTOSTR_BUF_SIZE];
+
+        switch (type) {
+        case "open":
+            return_value = open_price.format (buf, "%g").concat ("00000");
+            break;
+        case "close":
+            return_value = close_price.format (buf, "%g").concat ("00000");
+            break;
+        case "min":
+            return_value = min_price.format (buf, "%g").concat ("00000");
+            break;
+        case "max":
+            return_value = max_price.format (buf, "%g").concat ("00000");
+            break;
+        default:
+            break;
+        }
+
+        return return_value.substring (0, 5);
+
+    }
+
+    public string get_formatted_date_time () {
+        return "21 Feb, 2011 at 10:04hs.";
+    }
+
+    public string get_open_price_formatted () {
+        return get_formatted_price ("open");
+    }
+
+    public string get_close_price_formatted () {
+        return get_formatted_price ("close");
+    }
+
+    public string get_min_price_formatted () {
+        return get_formatted_price ("min");
+    }
+
+    public string get_max_price_formatted () {
+        return get_formatted_price ("max");
+    }
+
 }

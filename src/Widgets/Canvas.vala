@@ -61,6 +61,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public bool show_cross_lines;
 
+    public TradeSim.Services.QuotesManager data;
+
     public Canvas (TradeSim.MainWindow window) {
 
         main_window = window;
@@ -75,8 +77,13 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     construct {
         set_size_request (640, 480);
-
         show_cross_lines = false;
+
+        var fecha_desde = new DateTime.local (2011, 2, 21, 10, 0, 0);
+        var fecha_hasta = new DateTime.local (2011, 2, 21, 10, 5, 0);
+
+        data = new TradeSim.Services.QuotesManager("EURUSD", "M1", fecha_desde, fecha_hasta);
+
     }
 
     public bool on_mouse_over (Gdk.EventMotion event) {
@@ -220,6 +227,12 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     }
 
     public void draw_chart (Cairo.Context ctext) {
+
+        //recorremos los datos y vamos creando las velas al alza o a la baja segun corresponda.
+        //tenemos una funcion que dado un precio nos devuelve una posición vertical.
+        //tenemos una función que dado un date_time nos devuelve una posicion horizontal.
+        //Estas funciones tienen en cuenta la escala establecida en base a los precios maximos y minimos
+        //y a la cantidad de velas a representar.
 
         draw_candle (ctext, 20, 20);
         draw_candle_up (ctext, 35, 30);
