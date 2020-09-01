@@ -256,11 +256,16 @@ void trade_sim_widgets_canvas_draw_candle_down (TradeSimWidgetsCanvas* self,
                                                 gint x,
                                                 gint y,
                                                 gint sizev);
+gdouble _r (gint red);
+gdouble _g (gint green);
+gdouble _b (gint blue);
 void trade_sim_widgets_canvas_write_text (TradeSimWidgetsCanvas* self,
                                           cairo_t* ctext,
                                           gint x,
                                           gint y,
                                           const gchar* txt);
+void trade_sim_widgets_canvas_draw_bg (TradeSimWidgetsCanvas* self,
+                                       cairo_t* ctext);
 void trade_sim_widgets_canvas_draw_vertical_scale (TradeSimWidgetsCanvas* self,
                                                    cairo_t* ctext);
 void trade_sim_widgets_canvas_draw_chart (TradeSimWidgetsCanvas* self,
@@ -293,7 +298,7 @@ _trade_sim_widgets_canvas_on_mouse_over_gtk_widget_motion_notify_event (GtkWidge
 	result = trade_sim_widgets_canvas_on_mouse_over ((TradeSimWidgetsCanvas*) self, event);
 #line 85 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	return result;
-#line 297 "Canvas.c"
+#line 302 "Canvas.c"
 }
 
 
@@ -306,7 +311,7 @@ _trade_sim_widgets_canvas_on_mouse_out_gtk_widget_leave_notify_event (GtkWidget*
 	result = trade_sim_widgets_canvas_on_mouse_out ((TradeSimWidgetsCanvas*) self, event);
 #line 87 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	return result;
-#line 310 "Canvas.c"
+#line 315 "Canvas.c"
 }
 
 
@@ -329,7 +334,7 @@ trade_sim_widgets_canvas_construct (GType object_type,
 	g_signal_connect_object ((GtkWidget*) self, "leave-notify-event", (GCallback) _trade_sim_widgets_canvas_on_mouse_out_gtk_widget_leave_notify_event, self, 0);
 #line 79 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	return self;
-#line 333 "Canvas.c"
+#line 338 "Canvas.c"
 }
 
 
@@ -338,7 +343,7 @@ trade_sim_widgets_canvas_new (TradeSimMainWindow* window)
 {
 #line 79 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	return trade_sim_widgets_canvas_construct (TRADE_SIM_WIDGETS_TYPE_CANVAS, window);
-#line 342 "Canvas.c"
+#line 347 "Canvas.c"
 }
 
 
@@ -353,7 +358,7 @@ trade_sim_widgets_canvas_get_media_figura_up (TradeSimWidgetsCanvas* self,
 	result = trade_sim_widgets_canvas_get_media_figura (self, _price + 100);
 #line 114 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	return result;
-#line 357 "Canvas.c"
+#line 362 "Canvas.c"
 }
 
 
@@ -377,7 +382,7 @@ string_strnlen (gchar* str,
 		result = maxlen;
 #line 1394 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		return result;
-#line 381 "Canvas.c"
+#line 386 "Canvas.c"
 	} else {
 		gchar* _tmp2_;
 #line 1396 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
@@ -386,7 +391,7 @@ string_strnlen (gchar* str,
 		result = (glong) (_tmp2_ - str);
 #line 1396 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		return result;
-#line 390 "Canvas.c"
+#line 395 "Canvas.c"
 	}
 }
 
@@ -407,17 +412,17 @@ string_substring (const gchar* self,
 	if (offset >= ((glong) 0)) {
 #line 1405 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		_tmp0_ = len >= ((glong) 0);
-#line 411 "Canvas.c"
+#line 416 "Canvas.c"
 	} else {
 #line 1405 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		_tmp0_ = FALSE;
-#line 415 "Canvas.c"
+#line 420 "Canvas.c"
 	}
 #line 1405 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 	if (_tmp0_) {
 #line 1407 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		string_length = string_strnlen ((gchar*) self, offset + len);
-#line 421 "Canvas.c"
+#line 426 "Canvas.c"
 	} else {
 		gint _tmp1_;
 		gint _tmp2_;
@@ -427,11 +432,11 @@ string_substring (const gchar* self,
 		_tmp2_ = _tmp1_;
 #line 1409 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		string_length = (glong) _tmp2_;
-#line 431 "Canvas.c"
+#line 436 "Canvas.c"
 	}
 #line 1412 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 	if (offset < ((glong) 0)) {
-#line 435 "Canvas.c"
+#line 440 "Canvas.c"
 		glong _tmp3_;
 #line 1413 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		_tmp3_ = string_length;
@@ -439,24 +444,24 @@ string_substring (const gchar* self,
 		offset = _tmp3_ + offset;
 #line 1414 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		g_return_val_if_fail (offset >= ((glong) 0), NULL);
-#line 443 "Canvas.c"
+#line 448 "Canvas.c"
 	} else {
 		glong _tmp4_;
 #line 1416 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		_tmp4_ = string_length;
 #line 1416 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		g_return_val_if_fail (offset <= _tmp4_, NULL);
-#line 450 "Canvas.c"
+#line 455 "Canvas.c"
 	}
 #line 1418 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 	if (len < ((glong) 0)) {
-#line 454 "Canvas.c"
+#line 459 "Canvas.c"
 		glong _tmp5_;
 #line 1419 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		_tmp5_ = string_length;
 #line 1419 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		len = _tmp5_ - offset;
-#line 460 "Canvas.c"
+#line 465 "Canvas.c"
 	}
 #line 1421 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 	_tmp6_ = string_length;
@@ -468,7 +473,7 @@ string_substring (const gchar* self,
 	result = _tmp7_;
 #line 1422 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 	return result;
-#line 472 "Canvas.c"
+#line 477 "Canvas.c"
 }
 
 
@@ -512,7 +517,7 @@ trade_sim_widgets_canvas_get_media_figura (TradeSimWidgetsCanvas* self,
 	_g_free0 (price);
 #line 124 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	return result;
-#line 516 "Canvas.c"
+#line 521 "Canvas.c"
 }
 
 
@@ -521,7 +526,7 @@ _g_date_time_ref0 (gpointer self)
 {
 #line 130 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	return self ? g_date_time_ref (self) : NULL;
-#line 525 "Canvas.c"
+#line 530 "Canvas.c"
 }
 
 
@@ -551,7 +556,7 @@ trade_sim_widgets_canvas_get_candle_count_betwen_dates (TradeSimWidgetsCanvas* s
 	return_value = 0;
 #line 134 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	while (TRUE) {
-#line 555 "Canvas.c"
+#line 560 "Canvas.c"
 		gboolean _tmp1_;
 		GDateTime* _tmp2_;
 		GDateTime* _tmp3_;
@@ -562,7 +567,7 @@ trade_sim_widgets_canvas_get_candle_count_betwen_dates (TradeSimWidgetsCanvas* s
 		if (!(!_tmp1_)) {
 #line 134 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 			break;
-#line 566 "Canvas.c"
+#line 571 "Canvas.c"
 		}
 #line 136 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 		_tmp2_ = aux_date;
@@ -578,14 +583,14 @@ trade_sim_widgets_canvas_get_candle_count_betwen_dates (TradeSimWidgetsCanvas* s
 		if (g_date_time_compare (_tmp4_, d2) > 0) {
 #line 139 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 			exit = TRUE;
-#line 582 "Canvas.c"
+#line 587 "Canvas.c"
 		} else {
 			gint _tmp5_;
 #line 141 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 			_tmp5_ = return_value;
 #line 141 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 			return_value = _tmp5_ + 1;
-#line 589 "Canvas.c"
+#line 594 "Canvas.c"
 		}
 	}
 #line 146 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
@@ -594,7 +599,7 @@ trade_sim_widgets_canvas_get_candle_count_betwen_dates (TradeSimWidgetsCanvas* s
 	_g_date_time_unref0 (aux_date);
 #line 146 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	return result;
-#line 598 "Canvas.c"
+#line 603 "Canvas.c"
 }
 
 
@@ -623,7 +628,7 @@ trade_sim_widgets_canvas_get_pos_x_by_date (TradeSimWidgetsCanvas* self,
 	result = (candle_spacing * candles) + (_tmp1_ * candles);
 #line 155 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	return result;
-#line 627 "Canvas.c"
+#line 632 "Canvas.c"
 }
 
 
@@ -656,7 +661,7 @@ trade_sim_widgets_canvas_get_pos_y_by_price (TradeSimWidgetsCanvas* self,
 	result = ((gint) (aux * _tmp1_)) / cont_value;
 #line 176 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	return result;
-#line 660 "Canvas.c"
+#line 665 "Canvas.c"
 }
 
 
@@ -695,7 +700,7 @@ trade_sim_widgets_canvas_vertical_scale_calculation (TradeSimWidgetsCanvas* self
 	_tmp3_ = self->priv->vertical_scale;
 #line 194 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	self->priv->scale_label_step = _tmp3_;
-#line 699 "Canvas.c"
+#line 704 "Canvas.c"
 }
 
 
@@ -733,7 +738,7 @@ trade_sim_widgets_canvas_horizontal_scale_calculation (TradeSimWidgetsCanvas* se
 	_tmp4_ = candles;
 #line 207 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	if (_tmp4_ != 0) {
-#line 737 "Canvas.c"
+#line 742 "Canvas.c"
 		gint _tmp5_;
 		gint _tmp6_;
 		gint _tmp7_;
@@ -746,7 +751,7 @@ trade_sim_widgets_canvas_horizontal_scale_calculation (TradeSimWidgetsCanvas* se
 		if (_tmp5_ < 50) {
 #line 209 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 			candles = 50;
-#line 750 "Canvas.c"
+#line 755 "Canvas.c"
 		}
 #line 211 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 		_tmp6_ = available_width;
@@ -760,11 +765,11 @@ trade_sim_widgets_canvas_horizontal_scale_calculation (TradeSimWidgetsCanvas* se
 		_tmp10_ = candles;
 #line 211 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 		self->priv->candle_width = (_tmp6_ - (_tmp7_ / (_tmp8_ * _tmp9_))) / _tmp10_;
-#line 764 "Canvas.c"
+#line 769 "Canvas.c"
 	} else {
 #line 213 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 		self->priv->candle_width = 10;
-#line 768 "Canvas.c"
+#line 773 "Canvas.c"
 	}
 }
 
@@ -794,7 +799,7 @@ trade_sim_widgets_canvas_on_mouse_over (TradeSimWidgetsCanvas* self,
 	result = TRUE;
 #line 224 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	return result;
-#line 798 "Canvas.c"
+#line 803 "Canvas.c"
 }
 
 
@@ -813,7 +818,7 @@ trade_sim_widgets_canvas_on_mouse_out (TradeSimWidgetsCanvas* self,
 	result = TRUE;
 #line 232 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	return result;
-#line 817 "Canvas.c"
+#line 822 "Canvas.c"
 }
 
 
@@ -841,7 +846,7 @@ trade_sim_widgets_canvas_draw_cross_lines (TradeSimWidgetsCanvas* self,
 	if (!_tmp0_) {
 #line 239 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 		return;
-#line 845 "Canvas.c"
+#line 850 "Canvas.c"
 	}
 #line 243 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	_tmp1_ = g_new0 (gdouble, 1);
@@ -887,7 +892,7 @@ trade_sim_widgets_canvas_draw_cross_lines (TradeSimWidgetsCanvas* self,
 	cairo_line_to (ctext, (gdouble) _tmp7_, (gdouble) _tmp8_);
 #line 255 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	cairo_stroke (ctext);
-#line 891 "Canvas.c"
+#line 896 "Canvas.c"
 }
 
 
@@ -933,7 +938,7 @@ trade_sim_widgets_canvas_draw_candle (TradeSimWidgetsCanvas* self,
 	_tmp4_ = candle_data->close_price;
 #line 273 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	if (_tmp3_ < _tmp4_) {
-#line 937 "Canvas.c"
+#line 942 "Canvas.c"
 		gint _tmp5_;
 		gint _tmp6_;
 		gint _tmp7_;
@@ -1020,7 +1025,7 @@ trade_sim_widgets_canvas_draw_candle (TradeSimWidgetsCanvas* self,
 		cairo_line_to (ctext, (gdouble) _tmp21_, (gdouble) _tmp22_);
 #line 299 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 		cairo_stroke (ctext);
-#line 1024 "Canvas.c"
+#line 1029 "Canvas.c"
 	} else {
 		gint _tmp23_;
 		gint _tmp24_;
@@ -1108,7 +1113,7 @@ trade_sim_widgets_canvas_draw_candle (TradeSimWidgetsCanvas* self,
 		cairo_line_to (ctext, (gdouble) _tmp39_, (gdouble) _tmp40_);
 #line 342 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 		cairo_stroke (ctext);
-#line 1112 "Canvas.c"
+#line 1117 "Canvas.c"
 	}
 }
 
@@ -1174,12 +1179,12 @@ trade_sim_widgets_canvas_draw_candle_up (TradeSimWidgetsCanvas* self,
 #line 379 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	cairo_stroke (ctext);
 #line 381 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	cairo_set_source_rgba (ctext, (gdouble) 255, (gdouble) 255, (gdouble) 255, (gdouble) 1);
+	cairo_set_source_rgba (ctext, _r (104), _g (183), _b (35), (gdouble) 1);
 #line 382 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	cairo_rectangle (ctext, (gdouble) x, (gdouble) y, (gdouble) ancho, (gdouble) alto);
 #line 383 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	cairo_fill (ctext);
-#line 1183 "Canvas.c"
+#line 1188 "Canvas.c"
 }
 
 
@@ -1204,12 +1209,12 @@ trade_sim_widgets_canvas_draw_candle_down (TradeSimWidgetsCanvas* self,
 #line 390 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	alto = sizev;
 #line 392 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	cairo_set_source_rgba (ctext, (gdouble) 0, (gdouble) 0, (gdouble) 0, (gdouble) 1);
+	cairo_set_source_rgba (ctext, _r (192), _g (38), _b (46), (gdouble) 1);
 #line 393 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	cairo_rectangle (ctext, (gdouble) x, (gdouble) y, (gdouble) ancho, (gdouble) alto);
 #line 394 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	cairo_fill (ctext);
-#line 1213 "Canvas.c"
+#line 1218 "Canvas.c"
 }
 
 
@@ -1246,7 +1251,33 @@ trade_sim_widgets_canvas_write_text (TradeSimWidgetsCanvas* self,
 	gtk_widget_queue_draw ((GtkWidget*) self);
 #line 398 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	_g_object_unref0 (layout);
-#line 1250 "Canvas.c"
+#line 1255 "Canvas.c"
+}
+
+
+void
+trade_sim_widgets_canvas_draw_bg (TradeSimWidgetsCanvas* self,
+                                  cairo_t* ctext)
+{
+	gint _tmp0_;
+	gint _tmp1_;
+#line 413 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	g_return_if_fail (self != NULL);
+#line 413 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	g_return_if_fail (ctext != NULL);
+#line 415 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	cairo_set_source_rgba (ctext, _r (255), _g (243), _b (148), (gdouble) 1);
+#line 416 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	_tmp0_ = self->_width;
+#line 416 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	_tmp1_ = self->_height;
+#line 416 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	cairo_rectangle (ctext, (gdouble) 0, (gdouble) 0, (gdouble) _tmp0_, (gdouble) _tmp1_);
+#line 417 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	cairo_fill (ctext);
+#line 418 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	cairo_stroke (ctext);
+#line 1281 "Canvas.c"
 }
 
 
@@ -1267,122 +1298,141 @@ trade_sim_widgets_canvas_draw_vertical_scale (TradeSimWidgetsCanvas* self,
 	gint _buf_size_;
 	gint _tmp4_;
 	gint _tmp5_;
-#line 413 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	g_return_if_fail (self != NULL);
-#line 413 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	g_return_if_fail (ctext != NULL);
-#line 415 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	_tmp0_ = self->priv->max_price;
-#line 415 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	precio_inicial = trade_sim_widgets_canvas_get_media_figura_up (self, _tmp0_);
-#line 416 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	_tmp1_ = self->priv->min_price;
-#line 416 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	precio_final = trade_sim_widgets_canvas_get_media_figura (self, _tmp1_);
-#line 418 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	pos_y = 0;
-#line 419 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	_tmp2_ = precio_inicial;
-#line 419 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	precio = (gdouble) _tmp2_;
-#line 420 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	_tmp3_ = g_new0 (gchar, G_ASCII_DTOSTR_BUF_SIZE);
-#line 420 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	buf = _tmp3_;
-#line 420 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	buf_length1 = G_ASCII_DTOSTR_BUF_SIZE;
-#line 420 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	_buf_size_ = buf_length1;
+	gint _tmp6_;
+	gint _tmp7_;
+	gint _tmp8_;
 #line 422 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	cairo_set_source_rgba (ctext, (gdouble) 255, (gdouble) 255, (gdouble) 255, (gdouble) 1);
-#line 423 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	_tmp4_ = self->_width;
-#line 423 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	_tmp5_ = self->_height;
-#line 423 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	cairo_rectangle (ctext, (gdouble) (_tmp4_ - 55), (gdouble) 0, (gdouble) 60, (gdouble) _tmp5_);
+	g_return_if_fail (self != NULL);
+#line 422 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	g_return_if_fail (ctext != NULL);
 #line 424 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	cairo_fill (ctext);
+	_tmp0_ = self->priv->max_price;
+#line 424 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	precio_inicial = trade_sim_widgets_canvas_get_media_figura_up (self, _tmp0_);
 #line 425 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	_tmp1_ = self->priv->min_price;
+#line 425 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	precio_final = trade_sim_widgets_canvas_get_media_figura (self, _tmp1_);
+#line 427 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	pos_y = 0;
+#line 428 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	_tmp2_ = precio_inicial;
+#line 428 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	precio = (gdouble) _tmp2_;
+#line 429 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	_tmp3_ = g_new0 (gchar, G_ASCII_DTOSTR_BUF_SIZE);
+#line 429 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	buf = _tmp3_;
+#line 429 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	buf_length1 = G_ASCII_DTOSTR_BUF_SIZE;
+#line 429 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	_buf_size_ = buf_length1;
+#line 431 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	cairo_set_source_rgba (ctext, _r (255), _g (225), _b (107), (gdouble) 1);
+#line 432 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	_tmp4_ = self->_width;
+#line 432 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	_tmp5_ = self->_height;
+#line 432 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	cairo_rectangle (ctext, (gdouble) (_tmp4_ - 55), (gdouble) 0, (gdouble) 60, (gdouble) _tmp5_);
+#line 433 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	cairo_fill (ctext);
+#line 434 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	cairo_stroke (ctext);
-#line 434 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 436 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	cairo_set_line_width (ctext, (gdouble) 1);
+#line 437 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	cairo_set_source_rgba (ctext, _r (212), _g (142), _b (21), (gdouble) 1);
+#line 438 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	_tmp6_ = self->_width;
+#line 438 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	cairo_move_to (ctext, (gdouble) (_tmp6_ - 55), (gdouble) 0);
+#line 439 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	_tmp7_ = self->_width;
+#line 439 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	_tmp8_ = self->_height;
+#line 439 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	cairo_line_to (ctext, (gdouble) (_tmp7_ - 55), (gdouble) _tmp8_);
+#line 440 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	cairo_stroke (ctext);
+#line 449 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	while (TRUE) {
-#line 1311 "Canvas.c"
-		gdouble _tmp6_;
-		gint _tmp7_;
-		gdouble show_price = 0.0;
-		gdouble _tmp8_;
-		gint _tmp9_;
+#line 1361 "Canvas.c"
+		gdouble _tmp9_;
 		gint _tmp10_;
+		gdouble show_price = 0.0;
 		gdouble _tmp11_;
-		gchar* _tmp12_;
-		gint _tmp12__length1;
-		const gchar* _tmp13_;
-		gchar* _tmp14_;
+		gint _tmp12_;
+		gint _tmp13_;
+		gdouble _tmp14_;
 		gchar* _tmp15_;
-		gchar* _tmp16_;
+		gint _tmp15__length1;
+		const gchar* _tmp16_;
 		gchar* _tmp17_;
-		gdouble _tmp18_;
-		gint _tmp19_;
-		gint _tmp20_;
-		gint _tmp21_;
-#line 434 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_tmp6_ = precio;
-#line 434 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_tmp7_ = precio_final;
-#line 434 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		if (!(_tmp6_ >= ((gdouble) _tmp7_))) {
-#line 434 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		gchar* _tmp18_;
+		gchar* _tmp19_;
+		gchar* _tmp20_;
+		gdouble _tmp21_;
+		gint _tmp22_;
+		gint _tmp23_;
+		gint _tmp24_;
+#line 449 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_tmp9_ = precio;
+#line 449 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_tmp10_ = precio_final;
+#line 449 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		if (!(_tmp9_ >= ((gdouble) _tmp10_))) {
+#line 449 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 			break;
-#line 1338 "Canvas.c"
+#line 1388 "Canvas.c"
 		}
-#line 436 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_tmp8_ = precio;
-#line 436 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		show_price = _tmp8_ / 100000;
-#line 438 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_tmp9_ = self->_width;
-#line 438 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_tmp10_ = pos_y;
-#line 438 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_tmp11_ = show_price;
-#line 438 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_tmp12_ = buf;
-#line 438 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_tmp12__length1 = buf_length1;
-#line 438 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_tmp13_ = g_ascii_formatd (_tmp12_, _tmp12__length1, "%g", _tmp11_);
-#line 438 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_tmp14_ = g_strconcat (_tmp13_, "0000", NULL);
-#line 438 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_tmp15_ = _tmp14_;
-#line 438 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_tmp16_ = string_substring (_tmp15_, (glong) 0, (glong) 7);
-#line 438 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_tmp17_ = _tmp16_;
-#line 438 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		trade_sim_widgets_canvas_write_text (self, ctext, _tmp9_ - 50, _tmp10_, _tmp17_);
-#line 438 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_g_free0 (_tmp17_);
-#line 438 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_g_free0 (_tmp15_);
-#line 440 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_tmp18_ = precio;
-#line 440 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_tmp19_ = self->priv->scale_step;
-#line 440 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		precio = _tmp18_ - _tmp19_;
-#line 441 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_tmp20_ = pos_y;
-#line 441 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		_tmp21_ = self->priv->scale_label_step;
-#line 441 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-		pos_y = _tmp20_ + _tmp21_;
-#line 1382 "Canvas.c"
+#line 451 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_tmp11_ = precio;
+#line 451 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		show_price = _tmp11_ / 100000;
+#line 453 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_tmp12_ = self->_width;
+#line 453 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_tmp13_ = pos_y;
+#line 453 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_tmp14_ = show_price;
+#line 453 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_tmp15_ = buf;
+#line 453 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_tmp15__length1 = buf_length1;
+#line 453 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_tmp16_ = g_ascii_formatd (_tmp15_, _tmp15__length1, "%g", _tmp14_);
+#line 453 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_tmp17_ = g_strconcat (_tmp16_, "0000", NULL);
+#line 453 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_tmp18_ = _tmp17_;
+#line 453 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_tmp19_ = string_substring (_tmp18_, (glong) 0, (glong) 7);
+#line 453 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_tmp20_ = _tmp19_;
+#line 453 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		trade_sim_widgets_canvas_write_text (self, ctext, _tmp12_ - 50, _tmp13_, _tmp20_);
+#line 453 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_g_free0 (_tmp20_);
+#line 453 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_g_free0 (_tmp18_);
+#line 455 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_tmp21_ = precio;
+#line 455 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_tmp22_ = self->priv->scale_step;
+#line 455 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		precio = _tmp21_ - _tmp22_;
+#line 456 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_tmp23_ = pos_y;
+#line 456 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		_tmp24_ = self->priv->scale_label_step;
+#line 456 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+		pos_y = _tmp23_ + _tmp24_;
+#line 1432 "Canvas.c"
 	}
-#line 413 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 422 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	buf = (g_free (buf), NULL);
-#line 1386 "Canvas.c"
+#line 1436 "Canvas.c"
 }
 
 
@@ -1390,23 +1440,23 @@ void
 trade_sim_widgets_canvas_draw_chart (TradeSimWidgetsCanvas* self,
                                      cairo_t* ctext)
 {
-#line 447 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 462 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	g_return_if_fail (self != NULL);
-#line 447 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 462 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	g_return_if_fail (ctext != NULL);
-#line 1398 "Canvas.c"
+#line 1448 "Canvas.c"
 	{
 		gint i = 0;
-#line 455 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 464 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 		i = 0;
-#line 1403 "Canvas.c"
+#line 1453 "Canvas.c"
 		{
 			gboolean _tmp0_ = FALSE;
-#line 455 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 464 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 			_tmp0_ = TRUE;
-#line 455 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 464 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 			while (TRUE) {
-#line 1410 "Canvas.c"
+#line 1460 "Canvas.c"
 				gint _tmp2_;
 				TradeSimServicesQuotesManager* _tmp3_;
 				GArray* _tmp4_;
@@ -1415,43 +1465,43 @@ trade_sim_widgets_canvas_draw_chart (TradeSimWidgetsCanvas* self,
 				GArray* _tmp7_;
 				gint _tmp8_;
 				TradeSimServicesQuoteItem* _tmp9_;
-#line 455 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 464 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 				if (!_tmp0_) {
-#line 1421 "Canvas.c"
+#line 1471 "Canvas.c"
 					gint _tmp1_;
-#line 455 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 464 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 					_tmp1_ = i;
-#line 455 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 464 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 					i = _tmp1_ + 1;
-#line 1427 "Canvas.c"
+#line 1477 "Canvas.c"
 				}
-#line 455 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 464 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 				_tmp0_ = FALSE;
-#line 455 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 464 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 				_tmp2_ = i;
-#line 455 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 464 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 				_tmp3_ = self->data;
-#line 455 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 464 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 				_tmp4_ = _tmp3_->quotes;
-#line 455 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 464 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 				_tmp5_ = _tmp4_->len;
-#line 455 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 464 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 				if (!(((guint) _tmp2_) < _tmp5_)) {
-#line 455 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 464 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 					break;
-#line 1443 "Canvas.c"
+#line 1493 "Canvas.c"
 				}
-#line 457 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 466 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 				_tmp6_ = self->data;
-#line 457 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 466 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 				_tmp7_ = _tmp6_->quotes;
-#line 457 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 466 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 				_tmp8_ = i;
-#line 457 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 466 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 				_tmp9_ = g_array_index (_tmp7_, TradeSimServicesQuoteItem*, (guint) _tmp8_);
-#line 457 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 466 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 				trade_sim_widgets_canvas_draw_candle (self, ctext, _tmp9_);
-#line 1455 "Canvas.c"
+#line 1505 "Canvas.c"
 			}
 		}
 	}
@@ -1464,33 +1514,35 @@ trade_sim_widgets_canvas_real_draw (GtkWidget* base,
 {
 	TradeSimWidgetsCanvas * self;
 	gboolean result = FALSE;
-#line 468 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 472 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	self = (TradeSimWidgetsCanvas*) base;
-#line 468 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 472 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	g_return_val_if_fail (cr != NULL, FALSE);
-#line 470 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	self->_width = gtk_widget_get_allocated_width ((GtkWidget*) self);
-#line 471 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	self->_height = gtk_widget_get_allocated_height ((GtkWidget*) self);
-#line 473 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	trade_sim_widgets_canvas_vertical_scale_calculation (self);
 #line 474 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	trade_sim_widgets_canvas_horizontal_scale_calculation (self);
+	self->_width = gtk_widget_get_allocated_width ((GtkWidget*) self);
+#line 475 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	self->_height = gtk_widget_get_allocated_height ((GtkWidget*) self);
 #line 477 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	trade_sim_widgets_canvas_vertical_scale_calculation (self);
+#line 478 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	trade_sim_widgets_canvas_horizontal_scale_calculation (self);
+#line 480 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	trade_sim_widgets_canvas_draw_bg (self, cr);
+#line 482 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	trade_sim_widgets_canvas_draw_chart (self, cr);
-#line 479 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	trade_sim_widgets_canvas_draw_vertical_scale (self, cr);
-#line 481 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	trade_sim_widgets_canvas_draw_cross_lines (self, cr);
-#line 483 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	cairo_restore (cr);
 #line 484 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	trade_sim_widgets_canvas_draw_vertical_scale (self, cr);
+#line 486 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	trade_sim_widgets_canvas_draw_cross_lines (self, cr);
+#line 488 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+	cairo_restore (cr);
+#line 489 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	cairo_save (cr);
-#line 486 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 491 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	result = TRUE;
-#line 486 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 491 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	return result;
-#line 1494 "Canvas.c"
+#line 1546 "Canvas.c"
 }
 
 
@@ -1500,15 +1552,15 @@ trade_sim_widgets_canvas_real_size_allocate (GtkWidget* base,
 {
 	TradeSimWidgetsCanvas * self;
 	GtkAllocation _tmp0_;
-#line 489 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 495 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	self = (TradeSimWidgetsCanvas*) base;
-#line 489 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 495 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	g_return_if_fail (allocation != NULL);
-#line 492 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 498 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	_tmp0_ = *allocation;
-#line 492 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
+#line 498 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	GTK_WIDGET_CLASS (trade_sim_widgets_canvas_parent_class)->size_allocate ((GtkWidget*) G_TYPE_CHECK_INSTANCE_CAST (self, gtk_drawing_area_get_type (), GtkDrawingArea), &_tmp0_);
-#line 1512 "Canvas.c"
+#line 1564 "Canvas.c"
 }
 
 
@@ -1591,7 +1643,7 @@ trade_sim_widgets_canvas_constructor (GType type,
 	trade_sim_widgets_canvas_vertical_scale_calculation (self);
 #line 91 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	return obj;
-#line 1595 "Canvas.c"
+#line 1647 "Canvas.c"
 }
 
 
@@ -1610,7 +1662,7 @@ trade_sim_widgets_canvas_class_init (TradeSimWidgetsCanvasClass * klass)
 	G_OBJECT_CLASS (klass)->constructor = trade_sim_widgets_canvas_constructor;
 #line 53 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	G_OBJECT_CLASS (klass)->finalize = trade_sim_widgets_canvas_finalize;
-#line 1614 "Canvas.c"
+#line 1666 "Canvas.c"
 }
 
 
@@ -1619,7 +1671,7 @@ trade_sim_widgets_canvas_instance_init (TradeSimWidgetsCanvas * self)
 {
 #line 53 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	self->priv = TRADE_SIM_WIDGETS_CANVAS_GET_PRIVATE (self);
-#line 1623 "Canvas.c"
+#line 1675 "Canvas.c"
 }
 
 
@@ -1641,7 +1693,7 @@ trade_sim_widgets_canvas_finalize (GObject * obj)
 	_trade_sim_services_quotes_manager_unref0 (self->data);
 #line 53 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	G_OBJECT_CLASS (trade_sim_widgets_canvas_parent_class)->finalize (obj);
-#line 1645 "Canvas.c"
+#line 1697 "Canvas.c"
 }
 
 
