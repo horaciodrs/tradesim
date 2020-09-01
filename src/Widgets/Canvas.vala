@@ -177,6 +177,26 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
+    private int get_price_by_pos_y (int y) {
+
+        /*
+        Desarrollar funcon que devuelva un precio segun una coordenada y
+        */
+
+        /*
+        var aux_max_price = get_media_figura_up (max_price);
+        int aux_precio = (int) (precio * 100000);
+        var cont_value = 1000;
+
+        var aux = aux_max_price - aux_precio;
+
+        
+
+        return (int) (aux * vertical_scale) / cont_value;
+        */
+
+    }
+
     private void vertical_scale_calculation () {
 
         // buscar cantidad de medias figuras...
@@ -410,12 +430,36 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
+    public void draw_line(Cairo.Context ctext, int x1, int y1, int x2, int y2, double size, int r, int g, int b, bool dash = false, double dash_type = 5.0){
+
+        ctext.set_dash ({}, 0);
+
+        if(dash){
+            ctext.set_dash ({dash_type}, 0);
+        }
+
+        ctext.set_line_width (size);
+        ctext.set_source_rgba (_r(r), _g(g), _b(b), 1);
+        ctext.move_to (x1, y1);
+        ctext.line_to (x2, y2);
+        ctext.stroke ();
+
+    }
+
     public void draw_bg (Cairo.Context ctext) {
 
         ctext.set_source_rgba (_r (255), _g (243), _b (148), 1);
-        ctext.rectangle (0, 0, _width, _height);
+        ctext.rectangle (0, 0, _width - 55, _height);
         ctext.fill ();
         ctext.stroke ();
+
+    }
+
+    public void draw_cursor_price_label(Cairo.Context ctext, string price){
+
+        ctext.set_source_rgba (_r (173), _g (95), _b (0), 1);
+        ctext.rectangle (_width - 55, mouse_y-10, 55, 20);
+        ctext.fill ();
 
     }
 
@@ -450,6 +494,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
             double show_price = precio / 100000;
 
+            draw_line(ctext, 0, pos_y, _width - 55, pos_y, 0.3, 212, 142, 21, false);
+
             write_text (ctext, _width - 50, pos_y, show_price.format (buf, "%g").concat ("0000").substring (0, 7));
 
             precio -= scale_step;
@@ -479,11 +525,13 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         draw_bg (cr);
 
-        draw_chart (cr);
-
         draw_vertical_scale (cr);
 
+        draw_chart (cr);
+
         draw_cross_lines (cr);
+
+        draw_cursor_price_label(cr, "");
 
         cr.restore ();
         cr.save ();
