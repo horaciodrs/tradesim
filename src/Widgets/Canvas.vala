@@ -164,13 +164,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         var aux = aux_max_price - aux_precio;
 
-        // print ("aux_max_price=" + aux_max_price.to_string () + "\n");
-        // print ("aux_precio=" + aux_precio.to_string () + "\n");
-        // print ("aux_max_price - aux_precio" + aux.to_string () + "\n");
-        // print ("------\n");
-
-        // print("vertical_scale=" + vertical_scale.to_string() + "\n");
-
         // si 10 es vertical_scale cuanto es aux
 
         return (int) (aux * vertical_scale) / cont_value;
@@ -207,14 +200,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         var cantidad = (int) (aux_max_price - aux_min_price) / cont_value;
 
-        // print(cantidad.to_string() + "\n");
-
         vertical_scale = _height / cantidad;
 
         scale_step = cont_value;
         scale_label_step = vertical_scale;
-
-        // print("scale_step=" + scale_step.to_string() + "\n");
 
     }
 
@@ -292,9 +281,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         int cola_x;
 
         if (candle_data.open_price < candle_data.close_price) {
-            /*print("candle up " + candle_data.date_time.to_string() +": \n");
-               print("posx:" + posx.to_string() + "\n");
-               print("--------\n");*/
 
             draw_candle_up (ctext, posx, posy, posy2 - posy);
 
@@ -320,30 +306,12 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             ctext.stroke ();
 
         } else {
-            /*print("candle down " + candle_data.date_time.to_string() +": \n");
-               print("open_price:" + candle_data.open_price.to_string() + "\n");
-               print("close_price:" + candle_data.close_price.to_string() + "\n");
-               print("posx:" + posx.to_string() + "\n");
-               print("posy:" + posy.to_string() + "\n");
-               print("posy2:" + posy2.to_string() + "\n");
-               print("--------\n");*/
 
             draw_candle_down (ctext, posx, posy, posy2 - posy);
 
             cola_x = posx + (int) (candle_width / 2);
             cola_up_posy = posy;
             cola_up_posy2 = get_pos_y_by_price (candle_data.max_price);
-
-            /*print("candle down " + candle_data.date_time.to_string() +": \n");
-               print("open_price:" + candle_data.open_price.to_string() + "\n");
-               print("max_price:" + candle_data.max_price.to_string() + "\n");
-               print("min_price:" + candle_data.min_price.to_string() + "\n");
-               print("posx:" + posx.to_string() + "\n");
-               print("cola_x:" + cola_x.to_string() + "\n");
-               print("canlde_width:" + candle_width.to_string() + "\n");
-               print("cola_up_posy:" + cola_up_posy.to_string() + "\n");
-               print("cola_up_posy2:" + cola_up_posy2.to_string() + "\n");
-               print("--------\n");*/
 
             // cola arriba
             ctext.set_line_width (1);
@@ -497,13 +465,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         ctext.move_to (_width - 55, 0);
         ctext.line_to (_width - 55, _height);
         ctext.stroke ();
-
-        // print("precio=" +precio.to_string() + "\n" );
-        // print("precio_final=" +precio_final.to_string() + "\n" );
-        // print("------\n");
-
-        // print("precio(1.14700):" + get_pos_y_by_price(1.14700).to_string() + "\n");
-        // print("precio(1.14590):" + get_pos_y_by_price(1.14590).to_string() + "\n");
 
         while (precio >= precio_final) {
 
