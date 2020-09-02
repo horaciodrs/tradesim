@@ -91,7 +91,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     }
 
     construct {
-        
+
         set_size_request (640, 480);
         show_cross_lines = false;
 
@@ -111,6 +111,33 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         candle_width = 10;
 
         vertical_scale_calculation ();
+
+    }
+
+    private string get_date_time_by_pos_x (int pos_x) {
+
+        string return_value = "";
+
+
+        // int candles = get_candle_count_betwen_dates (date_from, date_time);
+        DateTime candle_date_time = date_from;
+        int candles = 1;
+        int candle_spacing = 5;
+        int test_value = candle_spacing + candle_width;
+
+        if (test_value != 0) {
+
+            candles = (int) pos_x / (test_value);
+
+            candle_date_time = candle_date_time.add_minutes (candles);
+
+            return_value = candle_date_time.to_string ();
+
+            return_value = return_value.substring(0, 16) + "hs";
+
+        }
+
+        return return_value;
 
     }
 
@@ -348,7 +375,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         int ancho = candle_width;
         int alto = sizev;
 
-        draw_candle_border(ctext, x, y, sizev);
+        draw_candle_border (ctext, x, y, sizev);
 
         ctext.set_source_rgba (_r (104), _g (183), _b (35), 1);
         ctext.rectangle (x, y, ancho, alto);
@@ -361,7 +388,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         int ancho = candle_width;
         int alto = sizev;
 
-        draw_candle_border(ctext, x, y, sizev);
+        draw_candle_border (ctext, x, y, sizev);
 
         ctext.set_source_rgba (_r (192), _g (38), _b (46), 1);
         ctext.rectangle (x, y, ancho, alto);
@@ -446,6 +473,30 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
+    public void draw_cursor_datetime_label (Cairo.Context ctext) {
+
+        
+        ctext.set_dash ({}, 0);
+
+        ctext.set_source_rgba (_r (173), _g (95), _b (0), 1);
+        ctext.rectangle (mouse_x - 70, _height-24, 140, 24);
+        ctext.fill ();
+
+        ctext.move_to (mouse_x, _height-24);
+        ctext.rel_line_to (-10, 0);
+        ctext.rel_line_to (10, -10);
+        ctext.rel_line_to (10, 10);
+        ctext.close_path ();
+
+        ctext.set_line_width (1.0);
+        ctext.set_source_rgb (_r (173), _g (95), _b (0));
+        ctext.fill_preserve ();
+        ctext.stroke ();
+
+        write_text (ctext, mouse_x - 56, _height - 20, get_date_time_by_pos_x (mouse_x));
+
+    }
+
     public void draw_cursor_price_label (Cairo.Context ctext) {
 
         ctext.set_dash ({}, 0);
@@ -465,6 +516,20 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         ctext.stroke ();
 
         write_text (ctext, _width - 50, mouse_y - 9, get_str_price_by_pos_y (mouse_y));
+
+    }
+
+    public void draw_horizontal_scale (Cairo.Context ctext) {
+
+        ctext.set_source_rgba (_r (255), _g (225), _b (107), 1);
+        ctext.rectangle (0, _height - 24, _width - 56, _height);
+        ctext.fill ();
+
+        ctext.set_line_width (0.7);
+        ctext.set_source_rgba (_r (212), _g (142), _b (21), 1);
+        ctext.move_to (0, _height - 24);
+        ctext.line_to (_width - 56, _height - 24);
+        ctext.stroke ();
 
     }
 
@@ -524,12 +589,14 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         draw_bg (cr);
 
         draw_vertical_scale (cr);
+        draw_horizontal_scale (cr);
 
         draw_chart (cr);
 
         draw_cross_lines (cr);
 
         draw_cursor_price_label (cr);
+        draw_cursor_datetime_label (cr);
 
         cr.restore ();
         cr.save ();
