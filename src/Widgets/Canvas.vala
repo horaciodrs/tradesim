@@ -72,6 +72,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     private string time_frame;
     private string ticker;
 
+    private double candles_cola_size;
+
     public bool show_cross_lines;
 
     public TradeSim.Services.QuotesManager data;
@@ -89,8 +91,11 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     }
 
     construct {
+        
         set_size_request (640, 480);
         show_cross_lines = false;
+
+        candles_cola_size = 0.8;
 
         date_from = new DateTime.local (2011, 2, 21, 10, 0, 0);
         date_to = new DateTime.local (2011, 2, 21, 10, 5, 0);
@@ -289,7 +294,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             cola_up_posy2 = get_pos_y_by_price (candle_data.max_price);
 
             // cola arriba
-            ctext.set_line_width (1);
+            ctext.set_dash ({}, 0);
+            ctext.set_line_width (candles_cola_size);
             ctext.set_source_rgba (0, 0, 0, 1);
             ctext.move_to (cola_x, cola_up_posy2);
             ctext.line_to (cola_x, posy2);
@@ -299,7 +305,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             cola_down_posy2 = get_pos_y_by_price (candle_data.min_price);
 
             // cola abajo
-            ctext.set_line_width (1);
+            ctext.set_dash ({}, 0);
+            ctext.set_line_width (candles_cola_size);
             ctext.set_source_rgba (0, 0, 0, 1);
             ctext.move_to (cola_x, cola_down_posy);
             ctext.line_to (cola_x, cola_down_posy2);
@@ -314,7 +321,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             cola_up_posy2 = get_pos_y_by_price (candle_data.max_price);
 
             // cola arriba
-            ctext.set_line_width (1);
+            ctext.set_dash ({}, 0);
+            ctext.set_line_width (candles_cola_size);
             ctext.set_source_rgba (0, 0, 0, 1);
             ctext.move_to (cola_x, cola_up_posy2);
             ctext.line_to (cola_x, cola_up_posy);
@@ -324,7 +332,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             cola_down_posy2 = get_pos_y_by_price (candle_data.min_price);
 
             // cola abajo
-            ctext.set_line_width (1);
+            ctext.set_dash ({}, 0);
+            ctext.set_line_width (candles_cola_size);
             ctext.set_source_rgba (0, 0, 0, 1);
             ctext.move_to (cola_x, cola_down_posy);
             ctext.line_to (cola_x, cola_down_posy2);
@@ -338,6 +347,34 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         int ancho = candle_width;
         int alto = sizev;
+
+        draw_candle_border(ctext, x, y, sizev);
+
+        ctext.set_source_rgba (_r (104), _g (183), _b (35), 1);
+        ctext.rectangle (x, y, ancho, alto);
+        ctext.fill ();
+
+    }
+
+    public void draw_candle_down (Cairo.Context ctext, int x, int y, int sizev) {
+
+        int ancho = candle_width;
+        int alto = sizev;
+
+        draw_candle_border(ctext, x, y, sizev);
+
+        ctext.set_source_rgba (_r (192), _g (38), _b (46), 1);
+        ctext.rectangle (x, y, ancho, alto);
+        ctext.fill ();
+
+    }
+
+    public void draw_candle_border (Cairo.Context ctext, int x, int y, int sizev) {
+
+        int ancho = candle_width;
+        int alto = sizev;
+
+        ctext.set_dash ({}, 0);
 
         // left_border
         ctext.set_line_width (1);
@@ -366,21 +403,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         ctext.move_to (x - 1, y + alto);
         ctext.line_to (x + ancho + 1, y + alto);
         ctext.stroke ();
-
-        ctext.set_source_rgba (_r (104), _g (183), _b (35), 1);
-        ctext.rectangle (x, y, ancho, alto);
-        ctext.fill ();
-
-    }
-
-    public void draw_candle_down (Cairo.Context ctext, int x, int y, int sizev) {
-
-        int ancho = candle_width;
-        int alto = sizev;
-
-        ctext.set_source_rgba (_r (192), _g (38), _b (46), 1);
-        ctext.rectangle (x, y, ancho, alto);
-        ctext.fill ();
 
     }
 
