@@ -179,21 +179,22 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     private int get_price_by_pos_y (int y) {
 
-        /*
-        Desarrollar funcon que devuelva un precio segun una coordenada y
-        */
+        /* ES LA FUNCION INVERSA DE "get_pos_y_by_price" */
 
-        /*
         var aux_max_price = get_media_figura_up (max_price);
-        int aux_precio = (int) (precio * 100000);
         var cont_value = 1000;
 
-        var aux = aux_max_price - aux_precio;
+        return (int) aux_max_price - (y * cont_value) / vertical_scale;
 
-        
+    }
 
-        return (int) (aux * vertical_scale) / cont_value;
-        */
+    private string get_str_price_by_pos_y (int y) {
+
+        int a = get_price_by_pos_y (y);
+        char[] buf = new char[double.DTOSTR_BUF_SIZE];
+        double show_price = a / 100000.00;
+
+        return show_price.format (buf, "%g").concat ("0000").substring (0, 7);
 
     }
 
@@ -430,16 +431,16 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
-    public void draw_line(Cairo.Context ctext, int x1, int y1, int x2, int y2, double size, int r, int g, int b, bool dash = false, double dash_type = 5.0){
+    public void draw_line (Cairo.Context ctext, int x1, int y1, int x2, int y2, double size, int r, int g, int b, bool dash = false, double dash_type = 5.0) {
 
         ctext.set_dash ({}, 0);
 
-        if(dash){
-            ctext.set_dash ({dash_type}, 0);
+        if (dash) {
+            ctext.set_dash ({ dash_type }, 0);
         }
 
         ctext.set_line_width (size);
-        ctext.set_source_rgba (_r(r), _g(g), _b(b), 1);
+        ctext.set_source_rgba (_r (r), _g (g), _b (b), 1);
         ctext.move_to (x1, y1);
         ctext.line_to (x2, y2);
         ctext.stroke ();
@@ -455,11 +456,25 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
-    public void draw_cursor_price_label(Cairo.Context ctext, string price){
+    public void draw_cursor_price_label (Cairo.Context ctext) {
+
+        ctext.set_dash ({}, 0);
 
         ctext.set_source_rgba (_r (173), _g (95), _b (0), 1);
-        ctext.rectangle (_width - 55, mouse_y-10, 55, 20);
+        ctext.rectangle (_width - 55, mouse_y - 10, 55, 20);
         ctext.fill ();
+
+        ctext.move_to (_width - 55, mouse_y + 10);
+        ctext.rel_line_to (-10, -10);
+        ctext.rel_line_to (10, -10);
+        ctext.close_path ();
+
+        ctext.set_line_width (1.0);
+        ctext.set_source_rgb (_r (173), _g (95), _b (0));
+        ctext.fill_preserve ();
+        ctext.stroke ();
+
+        write_text (ctext, _width - 50, mouse_y - 9, get_str_price_by_pos_y (mouse_y));
 
     }
 
@@ -478,7 +493,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         ctext.stroke ();
 
         ctext.set_line_width (1);
-        ctext.set_source_rgba (_r(212), _g(142), _b(21), 1);
+        ctext.set_source_rgba (_r (212), _g (142), _b (21), 1);
         ctext.move_to (_width - 55, 0);
         ctext.line_to (_width - 55, _height);
         ctext.stroke ();
@@ -494,7 +509,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
             double show_price = precio / 100000;
 
-            draw_line(ctext, 0, pos_y, _width - 55, pos_y, 0.3, 212, 142, 21, false);
+            draw_line (ctext, 0, pos_y, _width - 55, pos_y, 0.3, 212, 142, 21, false);
 
             write_text (ctext, _width - 50, pos_y, show_price.format (buf, "%g").concat ("0000").substring (0, 7));
 
@@ -531,7 +546,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         draw_cross_lines (cr);
 
-        draw_cursor_price_label(cr, "");
+        draw_cursor_price_label (cr);
 
         cr.restore ();
         cr.save ();
