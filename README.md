@@ -19,4 +19,10 @@ Test your strategies on the Linux Trading Simulator, Create reports, learn, try 
 ## Installation:
 Remember **TradeSim it's under development and it's on alpha state**. Only install for testing.
 
-Run the command **sudo ninja install** into the terminal. In the future you can install from **Elementary Os App Center.**
+Run the following commands into the terminal:
+
+- **cd build**
+- **meson build --prefix=/usr**
+- **sudo ninja install**
+
+In the future you can install from **Elementary Os App Center.**
