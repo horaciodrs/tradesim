@@ -9,6 +9,8 @@ Test your strategies on the Linux Trading Simulator, Create reports, learn, try 
 ## Features:
 - Multiple instruments
 - Reports
+- Dark variant theme
+- Configurable data source
 
 ## Screenshot:
 ![GitHub Logo](/data/screenshots/Main.png)
