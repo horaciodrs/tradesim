@@ -629,8 +629,9 @@ trade_sim_dialogs_settings_dialog_get_about_box (TradeSimDialogsSettingsDialog* 
 #line 80 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_label_set_selectable (app_version, TRUE);
 #line 82 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp10_ = (GtkLabel*) gtk_label_new ("WARNING!\n" \
-"TradeSim is still under development and not ready for production.");
+	_tmp10_ = (GtkLabel*) gtk_label_new ("Remember!\n" \
+" TradeSim it's under development and it's on alpha state. Only install" \
+" for testing.");
 #line 82 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_object_ref_sink (_tmp10_);
 #line 82 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
