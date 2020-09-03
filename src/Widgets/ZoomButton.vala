@@ -63,27 +63,31 @@ public class TradeSim.Widgets.ZoomButton : Gtk.Grid {
        }*/
 
     public void zoom_out () {
-        var zoom = int.parse (zoom_default_button.label) - 10;
-        zoom_out_button.sensitive = (zoom > 10);
-        if (zoom < 10) {
+        var zoom = int.parse (zoom_default_button.label) - 25;
+        zoom_out_button.sensitive = (zoom > 25);
+        if (zoom < 25) {
             return;
         }
 
         zoom_in_button.sensitive = true;
         zoom_default_button.label = "%.0f%%".printf (zoom);
 
+        main_window.change_zoom_level(int.parse (zoom_default_button.label) / 100.000);
+
         // mainWindow.event_bus.request_zoom ("out");
     }
 
     public void zoom_in () {
-        var zoom = int.parse (zoom_default_button.label) + 10;
-        zoom_in_button.sensitive = (zoom < 1000);
-        if (zoom > 1000) {
+        var zoom = int.parse (zoom_default_button.label) + 25;
+        zoom_in_button.sensitive = (zoom < 150);
+        if (zoom > 150) {
             return;
         }
 
         zoom_out_button.sensitive = true;
         zoom_default_button.label = "%.0f%%".printf (zoom);
+
+        main_window.change_zoom_level(int.parse (zoom_default_button.label) / 100.000);
 
         // mainWindow.event_bus.request_zoom ("in");
     }

@@ -7,11 +7,14 @@
   <name>TradeSim</name>
   <summary>The Linux Trading Simulator</summary>
   <description>
-    <p>Test your strategies on the Linux Trading Simulator, Create reports, Try or develop new trading strategies for your trading.</p>
+    <p>Test your strategies on the Linux Trading Simulator, create reports, learn, try or develop new strategies for your trading.</p>
     <p>Features:</p>
     <ul>
-      <li>Multiple instruments</li>
-      <li>Reports</li>
+      <li>Multiple instruments.</li>
+      <li>Create Reports to display your performance as a virtual trader.</li>
+      <li>Dark variant theme.</li>
+      <li>Configurable data source.</li>
+      <li>Draw Fibonacci analisys tool.</li>
     </ul>
   </description>
   <releases>

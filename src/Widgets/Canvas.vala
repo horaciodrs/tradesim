@@ -59,6 +59,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public int mouse_x;
     public int mouse_y;
 
+    private double zoom_factor;
+    private int vertical_scale_width;
     private int min_candles;
     private int max_candles;
     private int min_price;
@@ -97,8 +99,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         candles_cola_size = 0.8;
 
-        date_from = new DateTime.local (2011, 2, 21, 10, 0, 0);
-        date_to = new DateTime.local (2011, 2, 21, 10, 5, 0);
+        date_from = new DateTime.local (2011, 2, 21, 10, 0, 0); //date_to se calcula de acuerdo al nivel de zoom.
+
+        change_zoom_level (1.000);
+        
         ticker = "EURUSD";
         time_frame = "M1";
 
@@ -109,8 +113,41 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         min_price = 105000; // precios convertidos a entero de 6 digitos.
         max_price = 117000;
         candle_width = 10;
+        vertical_scale_width = 55;
+        
 
         vertical_scale_calculation ();
+        horizontal_scale_calculation ();
+
+    }
+
+    public void change_zoom_level (double factor) {
+
+        int total_candles_size = 1;
+
+        zoom_factor = factor;
+
+        if (factor == 1.000) {
+            total_candles_size = 45;
+        } else if (factor == 0.750) {
+            total_candles_size = 65;
+        } else if (factor == 0.500) {
+            total_candles_size = 90;
+        } else if (factor == 0.250) {
+            total_candles_size = 120;
+        } else if (factor == 0.125) {
+            total_candles_size = 150;
+        } else if (factor == 1.125) {
+            total_candles_size = 35;
+        } else if (factor == 1.250) {
+            total_candles_size = 25;
+        } else if (factor == 1.500) {
+            total_candles_size = 15;
+        } else if (factor == 1.750) {
+            total_candles_size = 10;
+        }
+
+        date_to = date_from.add_minutes (total_candles_size);
 
     }
 
@@ -133,7 +170,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
             return_value = candle_date_time.to_string ();
 
-            return_value = return_value.substring(0, 16) + "hs";
+            return_value = return_value.substring (0, 16) + "hs";
 
         }
 
@@ -243,14 +280,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         int candles = get_candle_count_betwen_dates (date_from, date_to);
         int candle_spacing = 5;
-        int price_scale_width = 50; // debe ser globar. es el ancho de la escala de precios.
-        int available_width = _width - price_scale_width;
+        int available_width = _width - vertical_scale_width;
 
         if (candles != 0) {
-            if (candles < 50) {
-                candles = 50;
-            }
-            candle_width = (available_width - available_width / (candle_spacing * candles)) / candles;
+            candle_width = (int) (available_width / (candles + 2)) - candle_spacing;
         } else {
             candle_width = 10;
         }
@@ -467,7 +500,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public void draw_bg (Cairo.Context ctext) {
 
         ctext.set_source_rgba (_r (255), _g (243), _b (148), 1);
-        ctext.rectangle (0, 0, _width - 55, _height);
+        ctext.rectangle (0, 0, _width - vertical_scale_width, _height);
         ctext.fill ();
         ctext.stroke ();
 
@@ -475,14 +508,14 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public void draw_cursor_datetime_label (Cairo.Context ctext) {
 
-        
+
         ctext.set_dash ({}, 0);
 
         ctext.set_source_rgba (_r (173), _g (95), _b (0), 1);
-        ctext.rectangle (mouse_x - 70, _height-24, 140, 24);
+        ctext.rectangle (mouse_x - 70, _height - 24, 140, 24);
         ctext.fill ();
 
-        ctext.move_to (mouse_x, _height-24);
+        ctext.move_to (mouse_x, _height - 24);
         ctext.rel_line_to (-10, 0);
         ctext.rel_line_to (10, -10);
         ctext.rel_line_to (10, 10);
@@ -502,10 +535,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         ctext.set_dash ({}, 0);
 
         ctext.set_source_rgba (_r (173), _g (95), _b (0), 1);
-        ctext.rectangle (_width - 55, mouse_y - 10, 55, 20);
+        ctext.rectangle (_width - vertical_scale_width, mouse_y - 10, vertical_scale_width, 20);
         ctext.fill ();
 
-        ctext.move_to (_width - 55, mouse_y + 10);
+        ctext.move_to (_width - vertical_scale_width, mouse_y + 10);
         ctext.rel_line_to (-10, -10);
         ctext.rel_line_to (10, -10);
         ctext.close_path ();
@@ -515,7 +548,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         ctext.fill_preserve ();
         ctext.stroke ();
 
-        write_text (ctext, _width - 50, mouse_y - 9, get_str_price_by_pos_y (mouse_y));
+        write_text (ctext, _width - (vertical_scale_width - 5), mouse_y - 9, get_str_price_by_pos_y (mouse_y));
 
     }
 
@@ -543,23 +576,23 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         char[] buf = new char[double.DTOSTR_BUF_SIZE];
 
         ctext.set_source_rgba (_r (255), _g (225), _b (107), 1);
-        ctext.rectangle (_width - 55, 0, 60, _height);
+        ctext.rectangle (_width - vertical_scale_width, 0, 60, _height);
         ctext.fill ();
         ctext.stroke ();
 
         ctext.set_line_width (1);
         ctext.set_source_rgba (_r (212), _g (142), _b (21), 1);
-        ctext.move_to (_width - 55, 0);
-        ctext.line_to (_width - 55, _height);
+        ctext.move_to (_width - vertical_scale_width, 0);
+        ctext.line_to (_width - vertical_scale_width, _height);
         ctext.stroke ();
 
         while (precio >= precio_final) {
 
             double show_price = precio / 100000;
 
-            draw_line (ctext, 0, pos_y, _width - 55, pos_y, 0.3, 212, 142, 21, false);
+            draw_line (ctext, 0, pos_y, _width - vertical_scale_width, pos_y, 0.3, 212, 142, 21, false);
 
-            write_text (ctext, _width - 50, pos_y, show_price.format (buf, "%g").concat ("0000").substring (0, 7));
+            write_text (ctext, _width - (vertical_scale_width - 5), pos_y, show_price.format (buf, "%g").concat ("0000").substring (0, 7));
 
             precio -= scale_step;
             pos_y += scale_label_step;
@@ -570,9 +603,20 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public void draw_chart (Cairo.Context ctext) {
 
-        for (int i = 0 ; i < data.quotes.length ; i++) {
+        // dibujar solo la cantidad fecha desde hasta....
 
-            draw_candle (ctext, data.quotes.index (i));
+        DateTime cursor_date = date_from;
+        int i = 0;
+
+        while (cursor_date.compare (date_to) <= 0) {
+
+            if (i < data.quotes.length) {
+                draw_candle (ctext, data.quotes.index (i));
+                i++;
+                cursor_date = cursor_date.add_minutes (1);
+            } else {
+                break;
+            }
 
         }
 
