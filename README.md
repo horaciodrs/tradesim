@@ -17,4 +17,4 @@ Test your strategies on the Linux Trading Simulator, Create reports, learn, try 
 ![GitHub Logo](/data/screenshots/Main.png)
 
 ## Installation:
-Run the command **sudo meson install** into the terminal. In the future you can install from **Elementary Os App Center.**
+Remember **TradeSim it's under development and it's on alpha state**. Only install for testing. Run the command **sudo meson install** into the terminal. In the future you can install from **Elementary Os App Center.**
