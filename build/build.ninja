@@ -127,6 +127,14 @@ build com.github.horaciodrs.TradeSim@exe/meson-generated_src_Main.c.o: c_COMPILE
 build com.github.horaciodrs.TradeSim: c_LINKER com.github.horaciodrs.TradeSim@exe/meson-generated_src_Utils_Utilities.c.o com.github.horaciodrs.TradeSim@exe/meson-generated_src_Services_QuoteItem.c.o com.github.horaciodrs.TradeSim@exe/meson-generated_src_Services_QuotesManager.c.o com.github.horaciodrs.TradeSim@exe/meson-generated_src_Layouts_HeaderBar.c.o com.github.horaciodrs.TradeSim@exe/meson-generated_src_Layouts_Main.c.o com.github.horaciodrs.TradeSim@exe/meson-generated_src_Widgets_ButtonImage.c.o com.github.horaciodrs.TradeSim@exe/meson-generated_src_Widgets_HeaderBarButton.c.o com.github.horaciodrs.TradeSim@exe/meson-generated_src_Widgets_ZoomButton.c.o com.github.horaciodrs.TradeSim@exe/meson-generated_src_Widgets_TimeButton.c.o com.github.horaciodrs.TradeSim@exe/meson-generated_src_Widgets_Canvas.c.o com.github.horaciodrs.TradeSim@exe/meson-generated_src_Dialogs_SettingsDialog.c.o com.github.horaciodrs.TradeSim@exe/meson-generated_src_Window.c.o com.github.horaciodrs.TradeSim@exe/meson-generated_src_Application.c.o com.github.horaciodrs.TradeSim@exe/meson-generated_src_Main.c.o | /usr/lib/x86_64-linux-gnu/libgtk-3.so /usr/lib/x86_64-linux-gnu/libgdk-3.so /usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so /usr/lib/x86_64-linux-gnu/libpango-1.0.so /usr/lib/x86_64-linux-gnu/libatk-1.0.so /usr/lib/x86_64-linux-gnu/libcairo-gobject.so /usr/lib/x86_64-linux-gnu/libcairo.so /usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so /usr/lib/x86_64-linux-gnu/libgio-2.0.so /usr/lib/x86_64-linux-gnu/libgobject-2.0.so /usr/lib/x86_64-linux-gnu/libglib-2.0.so /usr/lib/x86_64-linux-gnu/libgranite.so /usr/lib/x86_64-linux-gnu/libgee-0.8.so
  LINK_ARGS = -Wl,--no-undefined -Wl,--as-needed -Wl,--start-group /usr/lib/x86_64-linux-gnu/libgtk-3.so /usr/lib/x86_64-linux-gnu/libgdk-3.so /usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so /usr/lib/x86_64-linux-gnu/libpango-1.0.so /usr/lib/x86_64-linux-gnu/libatk-1.0.so /usr/lib/x86_64-linux-gnu/libcairo-gobject.so /usr/lib/x86_64-linux-gnu/libcairo.so /usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so /usr/lib/x86_64-linux-gnu/libgio-2.0.so /usr/lib/x86_64-linux-gnu/libgobject-2.0.so /usr/lib/x86_64-linux-gnu/libglib-2.0.so /usr/lib/x86_64-linux-gnu/libgranite.so /usr/lib/x86_64-linux-gnu/libgee-0.8.so -Wl,--end-group
 
+build data/com.github.horaciodrs.TradeSim.desktop: CUSTOM_COMMAND ../data/com.github.horaciodrs.TradeSim.desktop.in
+ COMMAND = /usr/bin/meson --internal msgfmthelper ../data/com.github.horaciodrs.TradeSim.desktop.in data/com.github.horaciodrs.TradeSim.desktop desktop /home/horacio/Vala/TradeSim/po/extra
+ description = Generating$ com.github.horaciodrs.TradeSim.desktop_data_merge$ with$ a$ custom$ command.
+
+build data/com.github.horaciodrs.TradeSim.appdata.xml: CUSTOM_COMMAND ../data/com.github.horaciodrs.TradeSim.appdata.xml.in
+ COMMAND = /usr/bin/meson --internal msgfmthelper ../data/com.github.horaciodrs.TradeSim.appdata.xml.in data/com.github.horaciodrs.TradeSim.appdata.xml xml /home/horacio/Vala/TradeSim/po/extra
+ description = Generating$ com.github.horaciodrs.TradeSim.appdata.xml_data_merge$ with$ a$ custom$ command.
+
 # Test rules
 
 build meson-test: CUSTOM_COMMAND all PHONY
@@ -173,13 +181,19 @@ build meson-uninstall: CUSTOM_COMMAND PHONY
 
 build uninstall: phony meson-uninstall
 
-build all: phony com.github.horaciodrs.TradeSim
+build all: phony com.github.horaciodrs.TradeSim data/com.github.horaciodrs.TradeSim.desktop data/com.github.horaciodrs.TradeSim.appdata.xml
 
 default all
 
 build clean: phony meson-clean
 
-build meson-clean: CUSTOM_COMMAND PHONY
+build meson-clean-ctlist: CUSTOM_COMMAND PHONY
+ COMMAND = /usr/bin/meson --internal cleantrees /home/horacio/Vala/TradeSim/build/meson-private/cleantrees.dat
+ description = Cleaning$ custom$ target$ directories.
+
+build clean-ctlist: phony meson-clean-ctlist
+
+build meson-clean: CUSTOM_COMMAND PHONY | clean-ctlist
  COMMAND = ninja -t clean
  description = Cleaning.
 

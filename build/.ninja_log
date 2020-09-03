@@ -64,3 +64,9 @@
 465	555	1599053645	com.github.horaciodrs.TradeSim@exe/meson-generated_src_Services_QuotesManager.c.o	1e11333f55d7db0e
 555	643	1599053645	com.github.horaciodrs.TradeSim	d82f389c853b8b35
 643	979	0	meson-install	9bd7faa9472bf40f
+0	304	1599097067	build.ninja	e6d6e611c0fd9b14
+52	296	1599097067	data/com.github.horaciodrs.TradeSim.desktop	d3c1c0c4220989bc
+52	298	1599097067	data/com.github.horaciodrs.TradeSim.appdata.xml	24a166aef159e421
+2	503	0	meson-install	9bd7faa9472bf40f
+2	245	1599097373	data/com.github.horaciodrs.TradeSim.desktop	d3c1c0c4220989bc
+245	583	0	meson-install	9bd7faa9472bf40f

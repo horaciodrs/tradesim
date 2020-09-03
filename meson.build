@@ -1,5 +1,7 @@
 project('com.github.horaciodrs.TradeSim', 'vala', 'c')
 
+i18n = import('i18n')
+
 subdir('src')
 
 executable(
