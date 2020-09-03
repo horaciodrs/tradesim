@@ -22,7 +22,7 @@
     </release>
   </releases>
   <provides>
-    <binary>com.github.horaciodrs.tradesim</binary>
+    <binary>com.github.horaciodrs.TradeSim</binary>
   </provides>
   <content_rating type="oars-1.1">
     <content_attribute id="violence-cartoon">none</content_attribute>
@@ -54,10 +54,15 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <developer_name>Horacio Daniel Ros</developer_name>
-  <url type="homepage">https://github.com/horaciodrs/tradesim</url>
-  <url type="bugtracker">https://github.com/horaciodrs/tradesim/issues</url>
-  <url type="help">https://github.com/horaciodrs/tradesim/issues</url>
+  <url type="homepage">https://github.com/horaciodrs/TradeSim</url>
+  <url type="bugtracker">https://github.com/horaciodrs/TradeSim/issues</url>
+  <url type="help">https://github.com/horaciodrs/TradeSim/issues</url>
   <update_contact>horaciodrs@gmail.com</update_contact>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/horaciodrs/TradeSim/master/data/screenshots/Main.png</image>
+    </screenshot>
+  </screenshots>
   <custom>
     <value key="x-appcenter-color-primary">#d48e15</value>
     <value key="x-appcenter-color-primary-text">#ad5f00</value>
