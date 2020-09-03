@@ -137,7 +137,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         vertical_scale_width = 55;
 
         _horizontal_scale_height = 24;
-        _horizontal_scroll_height = 24;
+        _horizontal_scroll_height = 12;
 
 
         vertical_scale_calculation ();
@@ -645,13 +645,13 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public void draw_horizontal_scale (Cairo.Context ctext) {
 
         ctext.set_source_rgba (_r (255), _g (225), _b (107), 1);
-        ctext.rectangle (0, _available_height, _width - 56, _available_height);
+        ctext.rectangle (0, _available_height, _width, _available_height);
         ctext.fill ();
 
         ctext.set_line_width (0.7);
         ctext.set_source_rgba (_r (212), _g (142), _b (21), 1);
         ctext.move_to (0, _available_height);
-        ctext.line_to (_width - 56, _available_height);
+        ctext.line_to (_width, _available_height);
         ctext.stroke ();
 
     }

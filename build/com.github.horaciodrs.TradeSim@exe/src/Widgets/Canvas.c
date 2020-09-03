@@ -2268,7 +2268,7 @@ trade_sim_widgets_canvas_draw_horizontal_scale (TradeSimWidgetsCanvas* self,
 #line 648 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	_tmp2_ = self->_available_height;
 #line 648 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	cairo_rectangle (ctext, (gdouble) 0, (gdouble) _tmp0_, (gdouble) (_tmp1_ - 56), (gdouble) _tmp2_);
+	cairo_rectangle (ctext, (gdouble) 0, (gdouble) _tmp0_, (gdouble) _tmp1_, (gdouble) _tmp2_);
 #line 649 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	cairo_fill (ctext);
 #line 651 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
@@ -2284,7 +2284,7 @@ trade_sim_widgets_canvas_draw_horizontal_scale (TradeSimWidgetsCanvas* self,
 #line 654 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	_tmp5_ = self->_available_height;
 #line 654 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	cairo_line_to (ctext, (gdouble) (_tmp4_ - 56), (gdouble) _tmp5_);
+	cairo_line_to (ctext, (gdouble) _tmp4_, (gdouble) _tmp5_);
 #line 655 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	cairo_stroke (ctext);
 #line 2291 "Canvas.c"
@@ -2728,7 +2728,7 @@ trade_sim_widgets_canvas_constructor (GType type,
 #line 139 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	self->_horizontal_scale_height = 24;
 #line 140 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	self->_horizontal_scroll_height = 24;
+	self->_horizontal_scroll_height = 12;
 #line 143 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	trade_sim_widgets_canvas_vertical_scale_calculation (self);
 #line 144 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
