@@ -11,6 +11,7 @@ sources = files(
     'Widgets/HeaderBarButton.vala',
     'Widgets/ZoomButton.vala',
     'Widgets/TimeButton.vala',
+    'Widgets/CanvasContainer.vala',
     'Widgets/Canvas.vala',
 
     'Dialogs/SettingsDialog.vala',

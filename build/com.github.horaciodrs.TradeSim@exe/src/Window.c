@@ -85,6 +85,17 @@ typedef struct _TradeSimApplication TradeSimApplication;
 typedef struct _TradeSimApplicationClass TradeSimApplicationClass;
 typedef struct _TradeSimLayoutsMainPrivate TradeSimLayoutsMainPrivate;
 
+#define TRADE_SIM_WIDGETS_TYPE_CANVAS_CONTAINER (trade_sim_widgets_canvas_container_get_type ())
+#define TRADE_SIM_WIDGETS_CANVAS_CONTAINER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRADE_SIM_WIDGETS_TYPE_CANVAS_CONTAINER, TradeSimWidgetsCanvasContainer))
+#define TRADE_SIM_WIDGETS_CANVAS_CONTAINER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRADE_SIM_WIDGETS_TYPE_CANVAS_CONTAINER, TradeSimWidgetsCanvasContainerClass))
+#define TRADE_SIM_WIDGETS_IS_CANVAS_CONTAINER(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRADE_SIM_WIDGETS_TYPE_CANVAS_CONTAINER))
+#define TRADE_SIM_WIDGETS_IS_CANVAS_CONTAINER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRADE_SIM_WIDGETS_TYPE_CANVAS_CONTAINER))
+#define TRADE_SIM_WIDGETS_CANVAS_CONTAINER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRADE_SIM_WIDGETS_TYPE_CANVAS_CONTAINER, TradeSimWidgetsCanvasContainerClass))
+
+typedef struct _TradeSimWidgetsCanvasContainer TradeSimWidgetsCanvasContainer;
+typedef struct _TradeSimWidgetsCanvasContainerClass TradeSimWidgetsCanvasContainerClass;
+typedef struct _TradeSimWidgetsCanvasContainerPrivate TradeSimWidgetsCanvasContainerPrivate;
+
 #define TRADE_SIM_WIDGETS_TYPE_CANVAS (trade_sim_widgets_canvas_get_type ())
 #define TRADE_SIM_WIDGETS_CANVAS(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRADE_SIM_WIDGETS_TYPE_CANVAS, TradeSimWidgetsCanvas))
 #define TRADE_SIM_WIDGETS_CANVAS_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRADE_SIM_WIDGETS_TYPE_CANVAS, TradeSimWidgetsCanvasClass))
@@ -165,10 +176,20 @@ struct _TradeSimLayoutsMain {
 	GtkPaned* pane_top;
 	GtkPaned* pane_left;
 	GtkNotebook* nb_chart_container;
-	TradeSimWidgetsCanvas* chart_canvas;
+	TradeSimWidgetsCanvasContainer* canvas_container;
 };
 
 struct _TradeSimLayoutsMainClass {
+	GtkBoxClass parent_class;
+};
+
+struct _TradeSimWidgetsCanvasContainer {
+	GtkBox parent_instance;
+	TradeSimWidgetsCanvasContainerPrivate * priv;
+	TradeSimWidgetsCanvas* chart_canvas;
+};
+
+struct _TradeSimWidgetsCanvasContainerClass {
 	GtkBoxClass parent_class;
 };
 
@@ -217,6 +238,7 @@ TradeSimMainWindow* trade_sim_main_window_construct (GType object_type,
                                                      TradeSimApplication* trade_sim_app);
 void trade_sim_main_window_change_zoom_level (TradeSimMainWindow* self,
                                               gdouble factor);
+GType trade_sim_widgets_canvas_container_get_type (void) G_GNUC_CONST;
 GType trade_sim_widgets_canvas_get_type (void) G_GNUC_CONST;
 void trade_sim_widgets_canvas_change_zoom_level (TradeSimWidgetsCanvas* self,
                                                  gdouble factor);
@@ -267,7 +289,7 @@ trade_sim_main_window_construct (GType object_type,
 	self = (TradeSimMainWindow*) g_object_new (object_type, "application", trade_sim_app, NULL);
 #line 36 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	return self;
-#line 271 "Window.c"
+#line 293 "Window.c"
 }
 
 
@@ -276,7 +298,7 @@ trade_sim_main_window_new (TradeSimApplication* trade_sim_app)
 {
 #line 36 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	return trade_sim_main_window_construct (TRADE_SIM_TYPE_MAIN_WINDOW, trade_sim_app);
-#line 280 "Window.c"
+#line 302 "Window.c"
 }
 
 
@@ -285,16 +307,19 @@ trade_sim_main_window_change_zoom_level (TradeSimMainWindow* self,
                                          gdouble factor)
 {
 	TradeSimLayoutsMain* _tmp0_;
-	TradeSimWidgetsCanvas* _tmp1_;
+	TradeSimWidgetsCanvasContainer* _tmp1_;
+	TradeSimWidgetsCanvas* _tmp2_;
 #line 88 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	g_return_if_fail (self != NULL);
 #line 90 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_tmp0_ = self->main_layout;
 #line 90 "/home/horacio/Vala/TradeSim/src/Window.vala"
-	_tmp1_ = _tmp0_->chart_canvas;
+	_tmp1_ = _tmp0_->canvas_container;
 #line 90 "/home/horacio/Vala/TradeSim/src/Window.vala"
-	trade_sim_widgets_canvas_change_zoom_level (_tmp1_, factor);
-#line 298 "Window.c"
+	_tmp2_ = _tmp1_->chart_canvas;
+#line 90 "/home/horacio/Vala/TradeSim/src/Window.vala"
+	trade_sim_widgets_canvas_change_zoom_level (_tmp2_, factor);
+#line 323 "Window.c"
 }
 
 
@@ -307,7 +332,7 @@ trade_sim_main_window_change_theme (TradeSimMainWindow* self,
 	g_return_if_fail (self != NULL);
 #line 98 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	if (load_from_settings) {
-#line 311 "Window.c"
+#line 336 "Window.c"
 		GtkSettings* _tmp0_;
 		GSettings* _tmp1_;
 #line 99 "/home/horacio/Vala/TradeSim/src/Window.vala"
@@ -316,7 +341,7 @@ trade_sim_main_window_change_theme (TradeSimMainWindow* self,
 		_tmp1_ = self->settings;
 #line 99 "/home/horacio/Vala/TradeSim/src/Window.vala"
 		g_object_set (_tmp0_, "gtk-application-prefer-dark-theme", g_settings_get_boolean (_tmp1_, "window-dark-theme"), NULL);
-#line 320 "Window.c"
+#line 345 "Window.c"
 	} else {
 		GtkSettings* _tmp2_;
 		GSettings* _tmp3_;
@@ -328,7 +353,7 @@ trade_sim_main_window_change_theme (TradeSimMainWindow* self,
 		_tmp3_ = self->settings;
 #line 102 "/home/horacio/Vala/TradeSim/src/Window.vala"
 		g_settings_set_boolean (_tmp3_, "window-dark-theme", value);
-#line 332 "Window.c"
+#line 357 "Window.c"
 	}
 }
 
@@ -411,7 +436,7 @@ trade_sim_main_window_before_destroy (TradeSimMainWindow* self)
 	result = FALSE;
 #line 130 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	return result;
-#line 415 "Window.c"
+#line 440 "Window.c"
 }
 
 
@@ -427,7 +452,7 @@ ___lambda9__gtk_dialog_close (GtkDialog* _sender,
 {
 #line 76 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	__lambda9_ ((TradeSimMainWindow*) self);
-#line 431 "Window.c"
+#line 456 "Window.c"
 }
 
 
@@ -462,7 +487,7 @@ _trade_sim_main_window___lambda4_ (TradeSimMainWindow* self,
 	g_signal_connect_object ((GtkDialog*) _tmp3_, "close", (GCallback) ___lambda9__gtk_dialog_close, self, 0);
 #line 72 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_g_object_unref0 (settings_dialog);
-#line 466 "Window.c"
+#line 491 "Window.c"
 }
 
 
@@ -472,7 +497,7 @@ __trade_sim_main_window___lambda4__gtk_button_clicked (GtkButton* _sender,
 {
 #line 72 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_trade_sim_main_window___lambda4_ ((TradeSimMainWindow*) self, _sender);
-#line 476 "Window.c"
+#line 501 "Window.c"
 }
 
 
@@ -487,7 +512,7 @@ _trade_sim_main_window___lambda10_ (TradeSimMainWindow* self,
 	result = trade_sim_main_window_before_destroy (self);
 #line 82 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	return result;
-#line 491 "Window.c"
+#line 516 "Window.c"
 }
 
 
@@ -500,7 +525,7 @@ __trade_sim_main_window___lambda10__gtk_widget_delete_event (GtkWidget* _sender,
 	result = _trade_sim_main_window___lambda10_ ((TradeSimMainWindow*) self, event);
 #line 81 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	return result;
-#line 504 "Window.c"
+#line 529 "Window.c"
 }
 
 
@@ -578,7 +603,7 @@ trade_sim_main_window_constructor (GType type,
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error0_->message, g_quark_to_string (_inner_error0_->domain), _inner_error0_->code);
 #line 51 "/home/horacio/Vala/TradeSim/src/Window.vala"
 		g_clear_error (&_inner_error0_);
-#line 582 "Window.c"
+#line 607 "Window.c"
 	}
 #line 53 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_tmp5_ = gdk_screen_get_default ();
@@ -642,7 +667,7 @@ trade_sim_main_window_constructor (GType type,
 	_g_object_unref0 (css_provider);
 #line 42 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	return obj;
-#line 646 "Window.c"
+#line 671 "Window.c"
 }
 
 
@@ -655,7 +680,7 @@ trade_sim_main_window_class_init (TradeSimMainWindowClass * klass)
 	G_OBJECT_CLASS (klass)->constructor = trade_sim_main_window_constructor;
 #line 29 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	G_OBJECT_CLASS (klass)->finalize = trade_sim_main_window_finalize;
-#line 659 "Window.c"
+#line 684 "Window.c"
 }
 
 
@@ -679,7 +704,7 @@ trade_sim_main_window_finalize (GObject * obj)
 	_g_object_unref0 (self->settings);
 #line 29 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	G_OBJECT_CLASS (trade_sim_main_window_parent_class)->finalize (obj);
-#line 683 "Window.c"
+#line 708 "Window.c"
 }
 
 

@@ -1,4 +1,4 @@
-Build started at 2020-09-02T22:37:47.039493
+Build started at 2020-09-03T17:45:23.798404
 Main binary: /usr/bin/python3
 Python system: Linux
 The Meson build system
@@ -19,8 +19,8 @@ Program meson/post_install.py found: YES (/usr/bin/env python3 /home/horacio/Val
 Build targets in project: 3
 Found ninja-1.8.2 at /usr/bin/ninja
 Running compile:
-Working directory:  /tmp/tmpblm6y9t5
-Command line:  cc /tmp/tmpblm6y9t5/testfile.c -pipe -D_FILE_OFFSET_BITS=64 -c -o /tmp/tmpblm6y9t5/output.obj -O0 --print-search-dirs 
+Working directory:  /tmp/tmp9n6zx_m4
+Command line:  cc /tmp/tmp9n6zx_m4/testfile.c -pipe -D_FILE_OFFSET_BITS=64 -c -o /tmp/tmp9n6zx_m4/output.obj -O0 --print-search-dirs 
 
 Code:
  

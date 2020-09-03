@@ -87,7 +87,7 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
     public void change_zoom_level(double factor){
 
-        main_layout.chart_canvas.change_zoom_level(factor);
+        main_layout.canvas_container.chart_canvas.change_zoom_level(factor);
      
         //print("cambiando nivel de zoom: " + factor.to_string() + "\n");
 

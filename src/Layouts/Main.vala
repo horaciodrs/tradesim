@@ -28,7 +28,9 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
     public Gtk.Notebook nb_chart_container;
 
-    public TradeSim.Widgets.Canvas chart_canvas;
+    public TradeSim.Widgets.CanvasContainer canvas_container;
+
+    
 
     /*
         Goo.Canvas VS Gtk.DrawingArea (INVESTIGAR)
@@ -48,13 +50,13 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
     construct {
 
-        chart_canvas = new TradeSim.Widgets.Canvas(main_window);
+        canvas_container = new TradeSim.Widgets.CanvasContainer(main_window);
 
         nb_chart_container = new Gtk.Notebook ();
 
         nb_chart_container.set_show_border(false);
 
-        nb_chart_container.append_page (chart_canvas, new Gtk.Label ("EURUSD, M5"));
+        nb_chart_container.append_page (canvas_container, new Gtk.Label ("EURUSD, M5"));
         nb_chart_container.append_page (new Gtk.Label ("Contenido del grafico USDJPY"), new Gtk.Label ("USDJPY, M5"));
 
         pane_top = new Gtk.Paned (Gtk.Orientation.VERTICAL);
