@@ -15,3 +15,6 @@ Test your strategies on the Linux Trading Simulator, Create reports, learn, try 
 
 ## Screenshot:
 ![GitHub Logo](/data/screenshots/Main.png)
+
+## Installation:
+Run the command **sudo meson install** into the terminal. In the future you can install from **Elementary Os App Center.**
