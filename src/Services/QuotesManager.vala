@@ -38,6 +38,9 @@ public class TradeSim.Services.QuotesManager {
     private double[] global_min_price;
     private double[] global_max_price;
 
+    private double max_price { get; set; }
+    private double min_price { get; set; }
+
     /* */
 
     public QuotesManager (string _ticker, string _time_frame, DateTime _start_date, DateTime _end_date) {
@@ -49,7 +52,7 @@ public class TradeSim.Services.QuotesManager {
 
         quotes = new Array<TradeSim.Services.QuoteItem> ();
 
-        //fixed test data...
+        // fixed test data...
 
         global_open_price = { 1.08758, 1.09520, 1.09794, 1.09054, 1.08376, 1.07956, 1.08324, 1.08384, 1.08070, 1.08474, 1.08186, 1.08046, 1.08197, 1.09150, 1.09234, 1.09790, 1.09506, 1.09024, 1.08972, 1.09822, 1.10091, 1.10773, 1.11053, 1.11345, 1.11692, 1.12332, 1.13364, 1.12915, 1.12942, 1.13384, 1.13751, 1.12980, 1.12554, 1.13228, 1.12632, 1.12436, 1.12049, 1.11776, 1.12617, 1.13088, 1.12507, 1.12178, 1.12184, 1.12424, 1.12331, 1.12512, 1.12394, 1.12479, 1.13097, 1.12742, 1.13298, 1.12852, 1.13002, 1.13433, 1.14001, 1.14120, 1.13836, 1.14282, 1.14474 };
         global_max_price = { 1.09725, 1.10192, 1.09794, 1.09258, 1.08460, 1.08342, 1.08755, 1.08506, 1.08852, 1.08965, 1.08240, 1.08510, 1.09271, 1.09761, 1.09991, 1.10084, 1.09538, 1.09146, 1.09960, 1.10310, 1.10938, 1.11454, 1.11541, 1.11961, 1.12579, 1.13624, 1.13839, 1.13200, 1.13638, 1.14222, 1.14036, 1.13406, 1.13327, 1.13534, 1.12942, 1.12615, 1.12544, 1.12700, 1.13487, 1.13260, 1.12598, 1.12395, 1.12878, 1.12620, 1.12751, 1.13026, 1.12518, 1.13455, 1.13325, 1.13516, 1.13708, 1.13248, 1.13750, 1.14088, 1.14520, 1.14418, 1.14438, 1.14679, 1.15398 };
@@ -77,14 +80,14 @@ public class TradeSim.Services.QuotesManager {
 
         DateTime actual_date = start_date;
 
-        for(int i = 0; i < global_close_price.length; i++){
+        for (int i = 0 ; i < global_close_price.length ; i++) {
 
             /*
                Se cargan los datos para esa fecha.
                Si no hay datos se toman los de la fecha mas proxima anterior.
              */
 
-        
+
             var new_quote = new TradeSim.Services.QuoteItem (ticker);
 
             new_quote.set_date_time (actual_date);
@@ -96,11 +99,101 @@ public class TradeSim.Services.QuotesManager {
 
             quotes.append_val (new_quote);
 
-            //ATENCION: SOLO TIME_FRAME M1 => IMPLEMENTAR EL RESTO.
+            // ATENCION: SOLO TIME_FRAME M1 => IMPLEMENTAR EL RESTO.
 
             actual_date = actual_date.add_minutes (1);
 
         }
+
+        calc_max_min_values ();
+
+    }
+
+    private void calc_max_min_values () {
+
+
+        if(quotes.length > 0){
+            max_price = quotes.index (0).max_price;
+            min_price = quotes.index (0).min_price;
+        }
+
+        for (int i = 0 ; i < quotes.length ; i++) {
+            for (int z = 0 ; z < quotes.length ; z++) {
+
+                if (quotes.index (z).max_price > max_price) {
+                    max_price = quotes.index (z).max_price;
+                }
+
+                if (quotes.index (z).min_price < min_price) {
+                    min_price = quotes.index (z).min_price;
+                }
+
+            }
+        }
+
+    }
+
+    public int get_max_price_by_datetimes (DateTime dt1, DateTime dt2) {
+
+        double local_max = -1;
+
+        //calc_max_min_values ();
+        //return (int) (max_price * 100000);
+
+        if (quotes.length > 0) {
+            local_max = quotes.index (0).max_price;
+        } else {
+            return (int) (local_max * 100000);
+        }
+
+        for (int i = 0 ; i < quotes.length ; i++) {
+            for (int z = 0 ; z < quotes.length ; z++) {
+
+                if ((quotes.index (z).date_time.compare (dt1) > 0) && (quotes.index (z).date_time.compare (dt2) < 0)) {
+
+                    if (quotes.index (z).max_price > local_max) {
+                        local_max = quotes.index (z).max_price * 1.00000;
+                    }
+                }
+
+            }
+        }
+
+        //print ("max:" + local_max.to_string () + "\n");
+
+        return (int) (local_max * 100000);
+
+    }
+
+    public int get_min_price_by_datetimes (DateTime dt1, DateTime dt2) {
+
+        double local_min = 0;
+
+        //calc_max_min_values ();
+        //return (int) (min_price * 100000);
+
+        if (quotes.length > 0) {
+            local_min = quotes.index (0).min_price;
+        } else {
+            return (int) local_min;
+        }
+
+        for (int i = 0 ; i < quotes.length ; i++) {
+            for (int z = 0 ; z < quotes.length ; z++) {
+
+                if ((quotes.index (z).date_time.compare (dt1) > 0) && (quotes.index (z).date_time.compare (dt2) < 0)) {
+
+                    if (quotes.index (z).min_price < local_min) {
+                        local_min = quotes.index (z).min_price * 1.00000;
+                    }
+                }
+
+            }
+        }
+
+        // print("min:" + local_min.to_string() + "\n");
+
+        return (int) (local_min * 100000);
 
     }
 
@@ -116,7 +209,7 @@ public class TradeSim.Services.QuotesManager {
 
         for (int i = 0 ; i < quotes.length ; i++) {
 
-            if (quotes.index (i).date_time.compare(cuote_time) == 0) {
+            if (quotes.index (i).date_time.compare (cuote_time) == 0) {
                 return_value = quotes.index (i);
                 break;
             }

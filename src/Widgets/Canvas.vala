@@ -133,8 +133,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         min_candles = 100;
         max_candles = 200;
-        min_price = 105000; // precios convertidos a entero de 6 digitos.
-        max_price = 117000;
+        update_extreme_prices ();
         candle_width = 10;
         vertical_scale_width = 55;
 
@@ -144,6 +143,17 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         vertical_scale_calculation ();
         horizontal_scale_calculation ();
+
+    }
+
+    private void update_extreme_prices () {
+
+        min_price = (int) (0.99 * data.get_min_price_by_datetimes (date_from, date_to)); // min_price = 105000;
+        max_price = (int) (1.002 * data.get_max_price_by_datetimes (date_from, date_to)); // max_price = 117000;
+
+        /*print("DateFrom:" + date_from.to_string() + " DateTo:" + date_to.to_string() + "\n");
+           print("Min: " + min_price.to_string() + "\n");
+           print("Max: " + max_price.to_string() + "\n");*/
 
     }
 
@@ -174,6 +184,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         }
 
         date_to = date_from.add_minutes (total_candles_size);
+
+        if (data != null) {
+            update_extreme_prices ();
+        }
 
     }
 
@@ -314,7 +328,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         var aux_max_price = get_media_figura_up (max_price);
         var aux_min_price = get_media_figura (min_price);
 
-        var cantidad = (int) (aux_max_price - aux_min_price) / cont_value;
+        var cantidad = (int) ((aux_max_price - aux_min_price) / cont_value);
 
         vertical_scale = _available_height / cantidad;
 
@@ -370,26 +384,26 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             }
 
             /*
-            Si el scroll tiene para recorrer x cantidad de pixeles hay que ver en que porcentaje de esos pixeles
-            se encuentra para determinar que cantidad de velas hay que deplazar la fecha desde.
-            */
+               Si el scroll tiene para recorrer x cantidad de pixeles hay que ver en que porcentaje de esos pixeles
+               se encuentra para determinar que cantidad de velas hay que deplazar la fecha desde.
+             */
 
-            DateTime fecha_inicial = new DateTime.local (2011, 2, 21, 10, 0, 0); //es la fecha minima que tiene el data source.
+            DateTime fecha_inicial = new DateTime.local (2011, 2, 21, 10, 0, 0); // es la fecha minima que tiene el data source.
 
             int pixeles_por_recorrer = (_width - vertical_scale_width) - _horizontal_scroll_width;
             int pixeles_recorridos = _horizontal_scroll_x;
             var porcentaje = (double) (1.00 * pixeles_recorridos / pixeles_por_recorrer);
-            var velas_entre_fechas = get_candle_count_betwen_dates(date_from, date_to);
+            var velas_entre_fechas = get_candle_count_betwen_dates (date_from, date_to);
 
             var velas_step = (int) (velas_entre_fechas * porcentaje);
 
             /*print("porcentaje:" + porcentaje.to_string() + "\n");
-            print("velas entre fechas:" + velas_entre_fechas.to_string() + "\n");
-            print("velas step:" + velas_step.to_string() + "\n");*/
+               print("velas entre fechas:" + velas_entre_fechas.to_string() + "\n");
+               print("velas step:" + velas_step.to_string() + "\n");*/
 
-            date_from = fecha_inicial.add_minutes(velas_step);
-            
-            change_zoom_level(zoom_factor);
+            date_from = fecha_inicial.add_minutes (velas_step);
+
+            change_zoom_level (zoom_factor);
 
         }
 
@@ -445,6 +459,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     }
 
     public void draw_candle (Cairo.Context ctext, TradeSim.Services.QuoteItem candle_data) {
+
+        if(candle_data.date_time == null){
+            return;
+        }
 
         int posy = get_pos_y_by_price (candle_data.open_price);
         int posy2 = get_pos_y_by_price (candle_data.close_price);
@@ -636,7 +654,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             ctext.rectangle (_horizontal_scroll_x, _height - _horizontal_scroll_height + 2, _horizontal_scroll_width, _horizontal_scroll_height - 4);
             ctext.fill ();
 
-        }else{
+        } else {
             _horizontal_scroll_active = false;
         }
 
@@ -750,11 +768,11 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         // dibujar solo la cantidad fecha desde hasta....
 
         DateTime cursor_date = date_from;
-        
+
         while (cursor_date.compare (date_to) < 0) {
-    
-            draw_candle (ctext, data.get_quote_by_time(cursor_date));
-            
+
+            draw_candle (ctext, data.get_quote_by_time (cursor_date));
+
             cursor_date = cursor_date.add_minutes (1);
 
         }
