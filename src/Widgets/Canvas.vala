@@ -369,7 +369,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             get_window ().set_cursor (new Gdk.Cursor (Gdk.CursorType.CROSS));
         }
 
-        if ((_horizontal_scroll_moving) && (_horizontal_scroll_active)) {
+        if ((_horizontal_scroll_moving) && (_horizontal_scroll_active) && (mouse_y > (_height - _horizontal_scroll_height))) {
 
             _horizontal_scroll_x = mouse_x - _horizontal_scroll_distancia;
 
