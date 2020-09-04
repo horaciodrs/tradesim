@@ -116,7 +116,7 @@ public class TradeSim.Services.QuotesManager {
 
         for (int i = 0 ; i < quotes.length ; i++) {
 
-            if (quotes.index (i).date_time == cuote_time) {
+            if (quotes.index (i).date_time.compare(cuote_time) == 0) {
                 return_value = quotes.index (i);
                 break;
             }

@@ -66,6 +66,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public int _horizontal_scroll_distancia;
 
     public bool _horizontal_scroll_moving;
+    public bool _horizontal_scroll_active;
 
     private double zoom_factor;
     private int vertical_scale_width;
@@ -112,6 +113,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         show_cross_lines = false;
         show_horizontal_scale_label = false;
         show_vertical_scale_label = false;
+        _horizontal_scroll_active = false;
 
         _horizontal_scroll_x = 0;
         _horizontal_scroll_distancia = 0;
@@ -172,6 +174,27 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         }
 
         date_to = date_from.add_minutes (total_candles_size);
+
+    }
+
+    private DateTime get_date_time_fecha_by_pos_x (int pos_x) {
+
+
+        // int candles = get_candle_count_betwen_dates (date_from, date_time);
+        DateTime candle_date_time = date_from;
+        int candles = 1;
+        int candle_spacing = 5;
+        int test_value = candle_spacing + candle_width;
+
+        if (test_value != 0) {
+
+            candles = (int) pos_x / (test_value);
+
+            candle_date_time = candle_date_time.add_minutes (candles);
+
+        }
+
+        return candle_date_time;
 
     }
 
@@ -332,7 +355,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             get_window ().set_cursor (new Gdk.Cursor (Gdk.CursorType.CROSS));
         }
 
-        if (_horizontal_scroll_moving) {
+        if ((_horizontal_scroll_moving) && (_horizontal_scroll_active)) {
 
             _horizontal_scroll_x = mouse_x - _horizontal_scroll_distancia;
 
@@ -345,6 +368,28 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             if (max_x > _width - vertical_scale_width) {
                 _horizontal_scroll_x = _width - vertical_scale_width - _horizontal_scroll_width;
             }
+
+            /*
+            Si el scroll tiene para recorrer x cantidad de pixeles hay que ver en que porcentaje de esos pixeles
+            se encuentra para determinar que cantidad de velas hay que deplazar la fecha desde.
+            */
+
+            DateTime fecha_inicial = new DateTime.local (2011, 2, 21, 10, 0, 0); //es la fecha minima que tiene el data source.
+
+            int pixeles_por_recorrer = (_width - vertical_scale_width) - _horizontal_scroll_width;
+            int pixeles_recorridos = _horizontal_scroll_x;
+            var porcentaje = (double) (1.00 * pixeles_recorridos / pixeles_por_recorrer);
+            var velas_entre_fechas = get_candle_count_betwen_dates(date_from, date_to);
+
+            var velas_step = (int) (velas_entre_fechas * porcentaje);
+
+            /*print("porcentaje:" + porcentaje.to_string() + "\n");
+            print("velas entre fechas:" + velas_entre_fechas.to_string() + "\n");
+            print("velas step:" + velas_step.to_string() + "\n");*/
+
+            date_from = fecha_inicial.add_minutes(velas_step);
+            
+            change_zoom_level(zoom_factor);
 
         }
 
@@ -576,16 +621,25 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public void draw_horizontal_scrollbar (Cairo.Context ctext) {
 
-        int displayed_size = 100;
-        int display_size = 200;
+        int displayed_size = get_candle_count_betwen_dates (date_from, date_to);
+        uint display_size = data.quotes.length;
         double scrollbar_size_factor = displayed_size * 1.00 / display_size; // por ejemplo si es 0.5 la barra tiene la mitad de available_width;
         double aux = (_width - vertical_scale_width - 1.00) * scrollbar_size_factor;
 
         _horizontal_scroll_width = int.parse (aux.to_string ());
 
-        ctext.set_source_rgba (_r (212), _g (142), _b (21), 1);
-        ctext.rectangle (_horizontal_scroll_x, _height - _horizontal_scroll_height + 2, _horizontal_scroll_width, _horizontal_scroll_height - 4);
-        ctext.fill ();
+        if (_horizontal_scroll_width < _width - vertical_scale_width - 1.00) {
+
+            _horizontal_scroll_active = true;
+
+            ctext.set_source_rgba (_r (212), _g (142), _b (21), 1);
+            ctext.rectangle (_horizontal_scroll_x, _height - _horizontal_scroll_height + 2, _horizontal_scroll_width, _horizontal_scroll_height - 4);
+            ctext.fill ();
+
+        }else{
+            _horizontal_scroll_active = false;
+        }
+
 
     }
 
@@ -696,17 +750,12 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         // dibujar solo la cantidad fecha desde hasta....
 
         DateTime cursor_date = date_from;
-        int i = 0;
-
-        while (cursor_date.compare (date_to) <= 0) {
-
-            if (i < data.quotes.length) {
-                draw_candle (ctext, data.quotes.index (i));
-                i++;
-                cursor_date = cursor_date.add_minutes (1);
-            } else {
-                break;
-            }
+        
+        while (cursor_date.compare (date_to) < 0) {
+    
+            draw_candle (ctext, data.get_quote_by_time(cursor_date));
+            
+            cursor_date = cursor_date.add_minutes (1);
 
         }
 

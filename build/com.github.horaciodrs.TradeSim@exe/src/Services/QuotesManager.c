@@ -1073,7 +1073,7 @@ trade_sim_services_quotes_manager_get_quote_by_time (TradeSimServicesQuotesManag
 #line 119 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp10_ = _tmp9_->date_time;
 #line 119 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-				if (_tmp10_ == cuote_time) {
+				if (g_date_time_compare (_tmp10_, cuote_time) == 0) {
 #line 1078 "QuotesManager.c"
 					GArray* _tmp11_;
 					gint _tmp12_;
