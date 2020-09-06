@@ -43,6 +43,16 @@ typedef struct _TradeSimServicesQuotesManager TradeSimServicesQuotesManager;
 typedef struct _TradeSimServicesQuotesManagerClass TradeSimServicesQuotesManagerClass;
 typedef struct _TradeSimServicesQuotesManagerPrivate TradeSimServicesQuotesManagerPrivate;
 
+#define TRADE_SIM_SERVICES_TYPE_DATABASE (trade_sim_services_database_get_type ())
+#define TRADE_SIM_SERVICES_DATABASE(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRADE_SIM_SERVICES_TYPE_DATABASE, TradeSimServicesDatabase))
+#define TRADE_SIM_SERVICES_DATABASE_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRADE_SIM_SERVICES_TYPE_DATABASE, TradeSimServicesDatabaseClass))
+#define TRADE_SIM_SERVICES_IS_DATABASE(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRADE_SIM_SERVICES_TYPE_DATABASE))
+#define TRADE_SIM_SERVICES_IS_DATABASE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRADE_SIM_SERVICES_TYPE_DATABASE))
+#define TRADE_SIM_SERVICES_DATABASE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRADE_SIM_SERVICES_TYPE_DATABASE, TradeSimServicesDatabaseClass))
+
+typedef struct _TradeSimServicesDatabase TradeSimServicesDatabase;
+typedef struct _TradeSimServicesDatabaseClass TradeSimServicesDatabaseClass;
+
 #define TRADE_SIM_SERVICES_TYPE_QUOTE_ITEM (trade_sim_services_quote_item_get_type ())
 #define TRADE_SIM_SERVICES_QUOTE_ITEM(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRADE_SIM_SERVICES_TYPE_QUOTE_ITEM, TradeSimServicesQuoteItem))
 #define TRADE_SIM_SERVICES_QUOTE_ITEM_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRADE_SIM_SERVICES_TYPE_QUOTE_ITEM, TradeSimServicesQuoteItemClass))
@@ -54,6 +64,7 @@ typedef struct _TradeSimServicesQuoteItem TradeSimServicesQuoteItem;
 typedef struct _TradeSimServicesQuoteItemClass TradeSimServicesQuoteItemClass;
 #define _g_free0(var) (var = (g_free (var), NULL))
 #define _g_date_time_unref0(var) ((var == NULL) ? NULL : (var = (g_date_time_unref (var), NULL)))
+#define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
 #define _g_array_unref0(var) ((var == NULL) ? NULL : (var = (g_array_unref (var), NULL)))
 #define _trade_sim_services_quote_item_unref0(var) ((var == NULL) ? NULL : (var = (trade_sim_services_quote_item_unref (var), NULL)))
 typedef struct _TradeSimServicesQuoteItemPrivate TradeSimServicesQuoteItemPrivate;
@@ -67,7 +78,9 @@ struct _TradeSimServicesQuotesManager {
 	GDateTime* start_date;
 	GDateTime* end_date;
 	gchar* time_frame;
+	TradeSimServicesDatabase* db;
 	gchar* db_file_location;
+	gboolean run_load;
 	GArray* quotes;
 };
 
@@ -131,6 +144,7 @@ void trade_sim_services_value_take_quotes_manager (GValue* value,
                                                    gpointer v_object);
 gpointer trade_sim_services_value_get_quotes_manager (const GValue* value);
 GType trade_sim_services_quotes_manager_get_type (void) G_GNUC_CONST;
+GType trade_sim_services_database_get_type (void) G_GNUC_CONST;
 gpointer trade_sim_services_quote_item_ref (gpointer instance);
 void trade_sim_services_quote_item_unref (gpointer instance);
 GParamSpec* trade_sim_services_param_spec_quote_item (const gchar* name,
@@ -148,12 +162,17 @@ GType trade_sim_services_quote_item_get_type (void) G_GNUC_CONST;
 TradeSimServicesQuotesManager* trade_sim_services_quotes_manager_new (const gchar* _ticker,
                                                                       const gchar* _time_frame,
                                                                       GDateTime* _start_date,
-                                                                      GDateTime* _end_date);
+                                                                      GDateTime* _end_date,
+                                                                      gboolean _run_load);
 TradeSimServicesQuotesManager* trade_sim_services_quotes_manager_construct (GType object_type,
                                                                             const gchar* _ticker,
                                                                             const gchar* _time_frame,
                                                                             GDateTime* _start_date,
-                                                                            GDateTime* _end_date);
+                                                                            GDateTime* _end_date,
+                                                                            gboolean _run_load);
+TradeSimServicesDatabase* trade_sim_services_database_new (gboolean skip_tables);
+TradeSimServicesDatabase* trade_sim_services_database_construct (GType object_type,
+                                                                 gboolean skip_tables);
 void trade_sim_services_quotes_manager_load (TradeSimServicesQuotesManager* self);
 void trade_sim_services_quotes_manager_change_time_frame (TradeSimServicesQuotesManager* self);
 void trade_sim_services_quotes_manager_change_start_date (TradeSimServicesQuotesManager* self);
@@ -194,9 +213,9 @@ static void trade_sim_services_quotes_manager_finalize (TradeSimServicesQuotesMa
 static gpointer
 _g_date_time_ref0 (gpointer self)
 {
-#line 50 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 55 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	return self ? g_date_time_ref (self) : NULL;
-#line 200 "QuotesManager.c"
+#line 219 "QuotesManager.c"
 }
 
 
@@ -205,575 +224,592 @@ trade_sim_services_quotes_manager_construct (GType object_type,
                                              const gchar* _ticker,
                                              const gchar* _time_frame,
                                              GDateTime* _start_date,
-                                             GDateTime* _end_date)
+                                             GDateTime* _end_date,
+                                             gboolean _run_load)
 {
 	TradeSimServicesQuotesManager* self = NULL;
-	gchar* _tmp0_;
+	TradeSimServicesDatabase* _tmp0_;
 	gchar* _tmp1_;
-	GDateTime* _tmp2_;
+	gchar* _tmp2_;
 	GDateTime* _tmp3_;
-	GArray* _tmp4_;
-	gdouble* _tmp5_;
+	GDateTime* _tmp4_;
+	GArray* _tmp5_;
 	gdouble* _tmp6_;
 	gdouble* _tmp7_;
 	gdouble* _tmp8_;
-#line 46 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	gdouble* _tmp9_;
+	gboolean _tmp10_;
+#line 49 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_val_if_fail (_ticker != NULL, NULL);
-#line 46 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 49 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_val_if_fail (_time_frame != NULL, NULL);
-#line 46 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 49 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_val_if_fail (_start_date != NULL, NULL);
-#line 46 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 49 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_val_if_fail (_end_date != NULL, NULL);
-#line 46 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 49 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	self = (TradeSimServicesQuotesManager*) g_type_create_instance (object_type);
-#line 48 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp0_ = g_strdup (_ticker);
-#line 48 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 51 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp0_ = trade_sim_services_database_new (FALSE);
+#line 51 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_g_object_unref0 (self->db);
+#line 51 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->db = _tmp0_;
+#line 53 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp1_ = g_strdup (_ticker);
+#line 53 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_g_free0 (self->ticker);
-#line 48 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->ticker = _tmp0_;
-#line 49 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp1_ = g_strdup (_time_frame);
-#line 49 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 53 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->ticker = _tmp1_;
+#line 54 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp2_ = g_strdup (_time_frame);
+#line 54 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_g_free0 (self->time_frame);
-#line 49 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->time_frame = _tmp1_;
-#line 50 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp2_ = _g_date_time_ref0 (_start_date);
-#line 50 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 54 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->time_frame = _tmp2_;
+#line 55 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp3_ = _g_date_time_ref0 (_start_date);
+#line 55 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_g_date_time_unref0 (self->start_date);
-#line 50 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->start_date = _tmp2_;
-#line 51 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp3_ = _g_date_time_ref0 (_end_date);
-#line 51 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 55 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->start_date = _tmp3_;
+#line 56 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp4_ = _g_date_time_ref0 (_end_date);
+#line 56 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_g_date_time_unref0 (self->end_date);
-#line 51 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->end_date = _tmp3_;
-#line 53 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp4_ = g_array_new (TRUE, TRUE, sizeof (TradeSimServicesQuoteItem*));
-#line 53 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 56 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->end_date = _tmp4_;
+#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->run_load = _run_load;
+#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp5_ = g_array_new (TRUE, TRUE, sizeof (TradeSimServicesQuoteItem*));
+#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_g_array_unref0 (self->quotes);
-#line 53 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->quotes = _tmp4_;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_ = g_new0 (gdouble, 59);
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[0] = 1.08758;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[1] = 1.09520;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[2] = 1.09794;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[3] = 1.09054;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[4] = 1.08376;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[5] = 1.07956;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[6] = 1.08324;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[7] = 1.08384;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[8] = 1.08070;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[9] = 1.08474;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[10] = 1.08186;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[11] = 1.08046;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[12] = 1.08197;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[13] = 1.09150;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[14] = 1.09234;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[15] = 1.09790;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[16] = 1.09506;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[17] = 1.09024;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[18] = 1.08972;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[19] = 1.09822;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[20] = 1.10091;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[21] = 1.10773;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[22] = 1.11053;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[23] = 1.11345;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[24] = 1.11692;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[25] = 1.12332;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[26] = 1.13364;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[27] = 1.12915;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[28] = 1.12942;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[29] = 1.13384;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[30] = 1.13751;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[31] = 1.12980;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[32] = 1.12554;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[33] = 1.13228;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[34] = 1.12632;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[35] = 1.12436;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[36] = 1.12049;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[37] = 1.11776;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[38] = 1.12617;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[39] = 1.13088;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[40] = 1.12507;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[41] = 1.12178;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[42] = 1.12184;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[43] = 1.12424;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[44] = 1.12331;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[45] = 1.12512;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[46] = 1.12394;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[47] = 1.12479;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[48] = 1.13097;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[49] = 1.12742;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[50] = 1.13298;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[51] = 1.12852;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[52] = 1.13002;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[53] = 1.13433;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[54] = 1.14001;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[55] = 1.14120;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[56] = 1.13836;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[57] = 1.14282;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp5_[58] = 1.14474;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->priv->global_open_price = (g_free (self->priv->global_open_price), NULL);
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->priv->global_open_price = _tmp5_;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->priv->global_open_price_length1 = 59;
-#line 57 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->priv->_global_open_price_size_ = self->priv->global_open_price_length1;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->quotes = _tmp5_;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp6_ = g_new0 (gdouble, 59);
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[0] = 1.09725;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[1] = 1.10192;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[0] = 1.08758;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[1] = 1.09520;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp6_[2] = 1.09794;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[3] = 1.09258;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[4] = 1.08460;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[5] = 1.08342;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[6] = 1.08755;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[7] = 1.08506;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[8] = 1.08852;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[9] = 1.08965;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[10] = 1.08240;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[11] = 1.08510;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[12] = 1.09271;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[13] = 1.09761;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[14] = 1.09991;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[15] = 1.10084;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[16] = 1.09538;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[17] = 1.09146;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[18] = 1.09960;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[19] = 1.10310;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[20] = 1.10938;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[21] = 1.11454;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[22] = 1.11541;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[23] = 1.11961;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[24] = 1.12579;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[25] = 1.13624;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[26] = 1.13839;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[27] = 1.13200;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[28] = 1.13638;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[29] = 1.14222;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[30] = 1.14036;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[31] = 1.13406;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[32] = 1.13327;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[33] = 1.13534;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[34] = 1.12942;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[35] = 1.12615;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[36] = 1.12544;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[37] = 1.12700;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[38] = 1.13487;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[39] = 1.13260;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[40] = 1.12598;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[41] = 1.12395;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[42] = 1.12878;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[43] = 1.12620;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[44] = 1.12751;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[45] = 1.13026;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[46] = 1.12518;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[47] = 1.13455;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[48] = 1.13325;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[49] = 1.13516;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[50] = 1.13708;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[51] = 1.13248;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[52] = 1.13750;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[53] = 1.14088;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[54] = 1.14520;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[55] = 1.14418;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[56] = 1.14438;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[57] = 1.14679;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp6_[58] = 1.15398;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->priv->global_max_price = (g_free (self->priv->global_max_price), NULL);
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->priv->global_max_price = _tmp6_;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->priv->global_max_price_length1 = 59;
-#line 58 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->priv->_global_max_price_size_ = self->priv->global_max_price_length1;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[3] = 1.09054;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[4] = 1.08376;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[5] = 1.07956;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[6] = 1.08324;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[7] = 1.08384;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[8] = 1.08070;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[9] = 1.08474;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[10] = 1.08186;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[11] = 1.08046;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[12] = 1.08197;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[13] = 1.09150;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[14] = 1.09234;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[15] = 1.09790;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[16] = 1.09506;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[17] = 1.09024;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[18] = 1.08972;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[19] = 1.09822;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[20] = 1.10091;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[21] = 1.10773;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[22] = 1.11053;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[23] = 1.11345;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[24] = 1.11692;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[25] = 1.12332;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[26] = 1.13364;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[27] = 1.12915;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[28] = 1.12942;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[29] = 1.13384;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[30] = 1.13751;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[31] = 1.12980;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[32] = 1.12554;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[33] = 1.13228;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[34] = 1.12632;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[35] = 1.12436;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[36] = 1.12049;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[37] = 1.11776;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[38] = 1.12617;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[39] = 1.13088;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[40] = 1.12507;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[41] = 1.12178;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[42] = 1.12184;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[43] = 1.12424;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[44] = 1.12331;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[45] = 1.12512;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[46] = 1.12394;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[47] = 1.12479;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[48] = 1.13097;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[49] = 1.12742;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[50] = 1.13298;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[51] = 1.12852;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[52] = 1.13002;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[53] = 1.13433;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[54] = 1.14001;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[55] = 1.14120;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[56] = 1.13836;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[57] = 1.14282;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp6_[58] = 1.14474;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->priv->global_open_price = (g_free (self->priv->global_open_price), NULL);
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->priv->global_open_price = _tmp6_;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->priv->global_open_price_length1 = 59;
+#line 63 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->priv->_global_open_price_size_ = self->priv->global_open_price_length1;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp7_ = g_new0 (gdouble, 59);
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[0] = 1.08330;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[1] = 1.09346;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[2] = 1.08957;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[3] = 1.08261;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[4] = 1.07820;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[5] = 1.07666;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[6] = 1.08150;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[7] = 1.08006;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[8] = 1.07845;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[9] = 1.08117;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[10] = 1.07750;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[11] = 1.07890;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[12] = 1.07998;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[13] = 1.09022;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[14] = 1.09190;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[15] = 1.09372;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[16] = 1.08854;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[17] = 1.08706;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[18] = 1.08925;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[19] = 1.09338;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[20] = 1.09917;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[21] = 1.10698;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[22] = 1.11004;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[23] = 1.11154;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[24] = 1.11668;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[25] = 1.11946;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[26] = 1.12784;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[27] = 1.12682;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[28] = 1.12410;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[29] = 1.13217;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[30] = 1.12886;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[31] = 1.12126;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[32] = 1.12266;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[33] = 1.12277;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[34] = 1.12070;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[35] = 1.11855;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[36] = 1.11684;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[37] = 1.11684;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[38] = 1.12333;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[39] = 1.12483;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[40] = 1.11906;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[41] = 1.11953;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[42] = 1.12176;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[43] = 1.11910;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[44] = 1.11848;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[45] = 1.12234;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[46] = 1.12194;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[47] = 1.12430;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[48] = 1.12590;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[49] = 1.12624;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[50] = 1.12803;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[51] = 1.12548;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[52] = 1.13002;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[53] = 1.13254;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[54] = 1.13910;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[55] = 1.13705;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[56] = 1.13778;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[57] = 1.14024;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp7_[58] = 1.14230;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->priv->global_min_price = (g_free (self->priv->global_min_price), NULL);
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->priv->global_min_price = _tmp7_;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->priv->global_min_price_length1 = 59;
-#line 59 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->priv->_global_min_price_size_ = self->priv->global_min_price_length1;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[0] = 1.09725;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[1] = 1.10192;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[2] = 1.09794;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[3] = 1.09258;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[4] = 1.08460;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[5] = 1.08342;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[6] = 1.08755;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[7] = 1.08506;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[8] = 1.08852;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[9] = 1.08965;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[10] = 1.08240;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[11] = 1.08510;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[12] = 1.09271;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[13] = 1.09761;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[14] = 1.09991;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[15] = 1.10084;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[16] = 1.09538;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[17] = 1.09146;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[18] = 1.09960;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[19] = 1.10310;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[20] = 1.10938;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[21] = 1.11454;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[22] = 1.11541;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[23] = 1.11961;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[24] = 1.12579;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[25] = 1.13624;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[26] = 1.13839;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[27] = 1.13200;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[28] = 1.13638;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[29] = 1.14222;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[30] = 1.14036;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[31] = 1.13406;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[32] = 1.13327;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[33] = 1.13534;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[34] = 1.12942;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[35] = 1.12615;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[36] = 1.12544;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[37] = 1.12700;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[38] = 1.13487;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[39] = 1.13260;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[40] = 1.12598;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[41] = 1.12395;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[42] = 1.12878;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[43] = 1.12620;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[44] = 1.12751;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[45] = 1.13026;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[46] = 1.12518;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[47] = 1.13455;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[48] = 1.13325;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[49] = 1.13516;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[50] = 1.13708;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[51] = 1.13248;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[52] = 1.13750;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[53] = 1.14088;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[54] = 1.14520;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[55] = 1.14418;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[56] = 1.14438;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[57] = 1.14679;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp7_[58] = 1.15398;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->priv->global_max_price = (g_free (self->priv->global_max_price), NULL);
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->priv->global_max_price = _tmp7_;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->priv->global_max_price_length1 = 59;
+#line 64 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->priv->_global_max_price_size_ = self->priv->global_max_price_length1;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp8_ = g_new0 (gdouble, 59);
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[0] = 1.09520;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[1] = 1.09794;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[2] = 1.09054;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[3] = 1.08376;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[4] = 1.07956;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[5] = 1.08324;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[6] = 1.08384;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[7] = 1.08070;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[8] = 1.08474;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[9] = 1.08186;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[10] = 1.08046;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[11] = 1.08197;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[12] = 1.09150;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[13] = 1.09234;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[14] = 1.09790;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[15] = 1.09506;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[16] = 1.09024;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[17] = 1.08972;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[18] = 1.09822;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[19] = 1.10091;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[20] = 1.10773;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[21] = 1.11053;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[22] = 1.11345;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[23] = 1.11692;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[24] = 1.12332;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[25] = 1.13364;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[26] = 1.12915;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[27] = 1.12942;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[28] = 1.13384;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[29] = 1.13751;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[30] = 1.12980;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[31] = 1.12554;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[32] = 1.13228;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[33] = 1.12632;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[34] = 1.12436;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[35] = 1.12049;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[36] = 1.11776;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[37] = 1.12617;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[38] = 1.13088;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[39] = 1.12507;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[40] = 1.12178;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[41] = 1.12184;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[42] = 1.12424;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[43] = 1.12331;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[44] = 1.12512;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[45] = 1.12394;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[46] = 1.12479;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[47] = 1.13097;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[48] = 1.12742;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[49] = 1.13298;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[50] = 1.12852;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[51] = 1.13002;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[52] = 1.13433;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[53] = 1.14001;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[54] = 1.14120;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[55] = 1.13826;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[56] = 1.14282;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[57] = 1.14474;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	_tmp8_[58] = 1.15268;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[0] = 1.08330;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[1] = 1.09346;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[2] = 1.08957;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[3] = 1.08261;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[4] = 1.07820;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[5] = 1.07666;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[6] = 1.08150;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[7] = 1.08006;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[8] = 1.07845;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[9] = 1.08117;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[10] = 1.07750;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[11] = 1.07890;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[12] = 1.07998;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[13] = 1.09022;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[14] = 1.09190;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[15] = 1.09372;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[16] = 1.08854;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[17] = 1.08706;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[18] = 1.08925;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[19] = 1.09338;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[20] = 1.09917;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[21] = 1.10698;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[22] = 1.11004;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[23] = 1.11154;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[24] = 1.11668;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[25] = 1.11946;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[26] = 1.12784;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[27] = 1.12682;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[28] = 1.12410;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[29] = 1.13217;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[30] = 1.12886;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[31] = 1.12126;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[32] = 1.12266;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[33] = 1.12277;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[34] = 1.12070;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[35] = 1.11855;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[36] = 1.11684;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[37] = 1.11684;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[38] = 1.12333;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[39] = 1.12483;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[40] = 1.11906;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[41] = 1.11953;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[42] = 1.12176;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[43] = 1.11910;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[44] = 1.11848;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[45] = 1.12234;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[46] = 1.12194;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[47] = 1.12430;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[48] = 1.12590;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[49] = 1.12624;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[50] = 1.12803;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[51] = 1.12548;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[52] = 1.13002;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[53] = 1.13254;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[54] = 1.13910;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[55] = 1.13705;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[56] = 1.13778;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[57] = 1.14024;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp8_[58] = 1.14230;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->priv->global_min_price = (g_free (self->priv->global_min_price), NULL);
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->priv->global_min_price = _tmp8_;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->priv->global_min_price_length1 = 59;
+#line 65 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->priv->_global_min_price_size_ = self->priv->global_min_price_length1;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_ = g_new0 (gdouble, 59);
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[0] = 1.09520;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[1] = 1.09794;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[2] = 1.09054;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[3] = 1.08376;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[4] = 1.07956;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[5] = 1.08324;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[6] = 1.08384;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[7] = 1.08070;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[8] = 1.08474;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[9] = 1.08186;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[10] = 1.08046;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[11] = 1.08197;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[12] = 1.09150;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[13] = 1.09234;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[14] = 1.09790;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[15] = 1.09506;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[16] = 1.09024;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[17] = 1.08972;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[18] = 1.09822;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[19] = 1.10091;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[20] = 1.10773;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[21] = 1.11053;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[22] = 1.11345;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[23] = 1.11692;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[24] = 1.12332;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[25] = 1.13364;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[26] = 1.12915;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[27] = 1.12942;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[28] = 1.13384;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[29] = 1.13751;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[30] = 1.12980;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[31] = 1.12554;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[32] = 1.13228;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[33] = 1.12632;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[34] = 1.12436;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[35] = 1.12049;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[36] = 1.11776;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[37] = 1.12617;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[38] = 1.13088;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[39] = 1.12507;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[40] = 1.12178;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[41] = 1.12184;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[42] = 1.12424;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[43] = 1.12331;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[44] = 1.12512;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[45] = 1.12394;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[46] = 1.12479;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[47] = 1.13097;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[48] = 1.12742;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[49] = 1.13298;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[50] = 1.12852;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[51] = 1.13002;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[52] = 1.13433;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[53] = 1.14001;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[54] = 1.14120;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[55] = 1.13826;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[56] = 1.14282;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[57] = 1.14474;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp9_[58] = 1.15268;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	self->priv->global_close_price = (g_free (self->priv->global_close_price), NULL);
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->priv->global_close_price = _tmp8_;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->priv->global_close_price = _tmp9_;
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	self->priv->global_close_price_length1 = 59;
-#line 60 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 66 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	self->priv->_global_close_price_size_ = self->priv->global_close_price_length1;
-#line 62 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	trade_sim_services_quotes_manager_load (self);
-#line 46 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 68 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_tmp10_ = self->run_load;
+#line 68 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	if (_tmp10_) {
+#line 69 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+		trade_sim_services_quotes_manager_load (self);
+#line 809 "QuotesManager.c"
+	}
+#line 49 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	return self;
-#line 777 "QuotesManager.c"
+#line 813 "QuotesManager.c"
 }
 
 
@@ -781,47 +817,48 @@ TradeSimServicesQuotesManager*
 trade_sim_services_quotes_manager_new (const gchar* _ticker,
                                        const gchar* _time_frame,
                                        GDateTime* _start_date,
-                                       GDateTime* _end_date)
+                                       GDateTime* _end_date,
+                                       gboolean _run_load)
 {
-#line 46 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	return trade_sim_services_quotes_manager_construct (TRADE_SIM_SERVICES_TYPE_QUOTES_MANAGER, _ticker, _time_frame, _start_date, _end_date);
-#line 789 "QuotesManager.c"
+#line 49 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	return trade_sim_services_quotes_manager_construct (TRADE_SIM_SERVICES_TYPE_QUOTES_MANAGER, _ticker, _time_frame, _start_date, _end_date, _run_load);
+#line 826 "QuotesManager.c"
 }
 
 
 void
 trade_sim_services_quotes_manager_change_time_frame (TradeSimServicesQuotesManager* self)
 {
-#line 67 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 75 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_if_fail (self != NULL);
-#line 798 "QuotesManager.c"
+#line 835 "QuotesManager.c"
 }
 
 
 void
 trade_sim_services_quotes_manager_change_start_date (TradeSimServicesQuotesManager* self)
 {
-#line 71 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 79 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_if_fail (self != NULL);
-#line 807 "QuotesManager.c"
+#line 844 "QuotesManager.c"
 }
 
 
 void
 trade_sim_services_quotes_manager_change_end_date (TradeSimServicesQuotesManager* self)
 {
-#line 75 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 83 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_if_fail (self != NULL);
-#line 816 "QuotesManager.c"
+#line 853 "QuotesManager.c"
 }
 
 
 static gpointer
 _trade_sim_services_quote_item_ref0 (gpointer self)
 {
-#line 100 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 108 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	return self ? trade_sim_services_quote_item_ref (self) : NULL;
-#line 825 "QuotesManager.c"
+#line 862 "QuotesManager.c"
 }
 
 
@@ -831,27 +868,27 @@ trade_sim_services_quotes_manager_load (TradeSimServicesQuotesManager* self)
 	GDateTime* actual_date = NULL;
 	GDateTime* _tmp0_;
 	GDateTime* _tmp1_;
-#line 79 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 87 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_if_fail (self != NULL);
-#line 81 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 89 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp0_ = self->start_date;
-#line 81 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 89 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp1_ = _g_date_time_ref0 (_tmp0_);
-#line 81 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 89 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	actual_date = _tmp1_;
-#line 843 "QuotesManager.c"
+#line 880 "QuotesManager.c"
 	{
 		gint i = 0;
-#line 83 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 91 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		i = 0;
-#line 848 "QuotesManager.c"
+#line 885 "QuotesManager.c"
 		{
 			gboolean _tmp2_ = FALSE;
-#line 83 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 91 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 			_tmp2_ = TRUE;
-#line 83 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 91 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 			while (TRUE) {
-#line 855 "QuotesManager.c"
+#line 892 "QuotesManager.c"
 				gint _tmp4_;
 				gdouble* _tmp5_;
 				gint _tmp5__length1;
@@ -885,117 +922,117 @@ trade_sim_services_quotes_manager_load (TradeSimServicesQuotesManager* self)
 				TradeSimServicesQuoteItem* _tmp28_;
 				GDateTime* _tmp29_;
 				GDateTime* _tmp30_;
-#line 83 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 91 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				if (!_tmp2_) {
-#line 891 "QuotesManager.c"
+#line 928 "QuotesManager.c"
 					gint _tmp3_;
-#line 83 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 91 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					_tmp3_ = i;
-#line 83 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 91 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					i = _tmp3_ + 1;
-#line 897 "QuotesManager.c"
+#line 934 "QuotesManager.c"
 				}
-#line 83 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 91 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp2_ = FALSE;
-#line 83 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 91 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp4_ = i;
-#line 83 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 91 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp5_ = self->priv->global_close_price;
-#line 83 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 91 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp5__length1 = self->priv->global_close_price_length1;
-#line 83 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 91 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				if (!(_tmp4_ < _tmp5__length1)) {
-#line 83 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 91 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					break;
-#line 911 "QuotesManager.c"
+#line 948 "QuotesManager.c"
 				}
-#line 91 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 99 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp6_ = self->ticker;
-#line 91 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 99 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp7_ = trade_sim_services_quote_item_new (_tmp6_);
-#line 91 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 99 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				new_quote = _tmp7_;
-#line 93 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 101 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp8_ = new_quote;
-#line 93 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 101 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp9_ = actual_date;
-#line 93 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 101 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				trade_sim_services_quote_item_set_date_time (_tmp8_, _tmp9_);
-#line 95 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 103 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp10_ = new_quote;
-#line 95 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 103 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp11_ = self->priv->global_open_price;
-#line 95 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 103 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp11__length1 = self->priv->global_open_price_length1;
-#line 95 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 103 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp12_ = i;
-#line 95 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 103 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp13_ = _tmp11_[_tmp12_];
-#line 95 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 103 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				trade_sim_services_quote_item_set_open_price (_tmp10_, _tmp13_);
-#line 96 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 104 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp14_ = new_quote;
-#line 96 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 104 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp15_ = self->priv->global_close_price;
-#line 96 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 104 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp15__length1 = self->priv->global_close_price_length1;
-#line 96 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 104 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp16_ = i;
-#line 96 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 104 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp17_ = _tmp15_[_tmp16_];
-#line 96 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 104 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				trade_sim_services_quote_item_set_close_price (_tmp14_, _tmp17_);
-#line 97 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 105 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp18_ = new_quote;
-#line 97 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 105 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp19_ = self->priv->global_min_price;
-#line 97 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 105 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp19__length1 = self->priv->global_min_price_length1;
-#line 97 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 105 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp20_ = i;
-#line 97 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 105 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp21_ = _tmp19_[_tmp20_];
-#line 97 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 105 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				trade_sim_services_quote_item_set_min_price (_tmp18_, _tmp21_);
-#line 98 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 106 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp22_ = new_quote;
-#line 98 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 106 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp23_ = self->priv->global_max_price;
-#line 98 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 106 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp23__length1 = self->priv->global_max_price_length1;
-#line 98 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 106 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp24_ = i;
-#line 98 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 106 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp25_ = _tmp23_[_tmp24_];
-#line 98 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 106 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				trade_sim_services_quote_item_set_max_price (_tmp22_, _tmp25_);
-#line 100 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 108 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp26_ = self->quotes;
-#line 100 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 108 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp27_ = new_quote;
-#line 100 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 108 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp28_ = _trade_sim_services_quote_item_ref0 (_tmp27_);
-#line 100 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 108 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				g_array_append_val (_tmp26_, _tmp28_);
-#line 104 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 112 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp29_ = actual_date;
-#line 104 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 112 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp30_ = g_date_time_add_minutes (_tmp29_, 1);
-#line 104 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 112 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_g_date_time_unref0 (actual_date);
-#line 104 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 112 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				actual_date = _tmp30_;
-#line 83 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 91 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_trade_sim_services_quote_item_unref0 (new_quote);
-#line 991 "QuotesManager.c"
+#line 1028 "QuotesManager.c"
 			}
 		}
 	}
-#line 108 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 116 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	trade_sim_services_quotes_manager_calc_max_min_values (self);
-#line 79 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 87 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_g_date_time_unref0 (actual_date);
-#line 999 "QuotesManager.c"
+#line 1036 "QuotesManager.c"
 }
 
 
@@ -1004,90 +1041,90 @@ trade_sim_services_quotes_manager_calc_max_min_values (TradeSimServicesQuotesMan
 {
 	GArray* _tmp0_;
 	guint _tmp1_;
-#line 112 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 120 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_if_fail (self != NULL);
-#line 115 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 123 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp0_ = self->quotes;
-#line 115 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 123 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp1_ = _tmp0_->len;
-#line 115 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 123 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	if (_tmp1_ > ((guint) 0)) {
-#line 1016 "QuotesManager.c"
+#line 1053 "QuotesManager.c"
 		GArray* _tmp2_;
 		TradeSimServicesQuoteItem* _tmp3_;
 		gdouble _tmp4_;
 		GArray* _tmp5_;
 		TradeSimServicesQuoteItem* _tmp6_;
 		gdouble _tmp7_;
-#line 116 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 124 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		_tmp2_ = self->quotes;
-#line 116 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 124 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		_tmp3_ = g_array_index (_tmp2_, TradeSimServicesQuoteItem*, (guint) 0);
-#line 116 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 124 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		_tmp4_ = _tmp3_->max_price;
-#line 116 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 124 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		trade_sim_services_quotes_manager_set_max_price (self, _tmp4_);
-#line 117 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 125 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		_tmp5_ = self->quotes;
-#line 117 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 125 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		_tmp6_ = g_array_index (_tmp5_, TradeSimServicesQuoteItem*, (guint) 0);
-#line 117 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 125 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		_tmp7_ = _tmp6_->min_price;
-#line 117 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 125 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		trade_sim_services_quotes_manager_set_min_price (self, _tmp7_);
-#line 1039 "QuotesManager.c"
+#line 1076 "QuotesManager.c"
 	}
 	{
 		gint i = 0;
-#line 120 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 128 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		i = 0;
-#line 1045 "QuotesManager.c"
+#line 1082 "QuotesManager.c"
 		{
 			gboolean _tmp8_ = FALSE;
-#line 120 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 128 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 			_tmp8_ = TRUE;
-#line 120 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 128 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 			while (TRUE) {
-#line 1052 "QuotesManager.c"
+#line 1089 "QuotesManager.c"
 				gint _tmp10_;
 				GArray* _tmp11_;
 				guint _tmp12_;
-#line 120 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 128 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				if (!_tmp8_) {
-#line 1058 "QuotesManager.c"
+#line 1095 "QuotesManager.c"
 					gint _tmp9_;
-#line 120 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 128 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					_tmp9_ = i;
-#line 120 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 128 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					i = _tmp9_ + 1;
-#line 1064 "QuotesManager.c"
+#line 1101 "QuotesManager.c"
 				}
-#line 120 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 128 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp8_ = FALSE;
-#line 120 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 128 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp10_ = i;
-#line 120 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 128 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp11_ = self->quotes;
-#line 120 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 128 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp12_ = _tmp11_->len;
-#line 120 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 128 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				if (!(((guint) _tmp10_) < _tmp12_)) {
-#line 120 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 128 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					break;
-#line 1078 "QuotesManager.c"
+#line 1115 "QuotesManager.c"
 				}
 				{
 					gint z = 0;
-#line 121 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 129 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					z = 0;
-#line 1084 "QuotesManager.c"
+#line 1121 "QuotesManager.c"
 					{
 						gboolean _tmp13_ = FALSE;
-#line 121 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 129 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 						_tmp13_ = TRUE;
-#line 121 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 129 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 						while (TRUE) {
-#line 1091 "QuotesManager.c"
+#line 1128 "QuotesManager.c"
 							gint _tmp15_;
 							GArray* _tmp16_;
 							guint _tmp17_;
@@ -1101,87 +1138,87 @@ trade_sim_services_quotes_manager_calc_max_min_values (TradeSimServicesQuotesMan
 							TradeSimServicesQuoteItem* _tmp29_;
 							gdouble _tmp30_;
 							gdouble _tmp31_;
-#line 121 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 129 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							if (!_tmp13_) {
-#line 1107 "QuotesManager.c"
+#line 1144 "QuotesManager.c"
 								gint _tmp14_;
-#line 121 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 129 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp14_ = z;
-#line 121 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 129 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								z = _tmp14_ + 1;
-#line 1113 "QuotesManager.c"
+#line 1150 "QuotesManager.c"
 							}
-#line 121 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 129 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp13_ = FALSE;
-#line 121 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 129 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp15_ = z;
-#line 121 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 129 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp16_ = self->quotes;
-#line 121 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 129 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp17_ = _tmp16_->len;
-#line 121 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 129 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							if (!(((guint) _tmp15_) < _tmp17_)) {
-#line 121 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 129 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								break;
-#line 1127 "QuotesManager.c"
+#line 1164 "QuotesManager.c"
 							}
-#line 123 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 131 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp18_ = self->quotes;
-#line 123 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 131 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp19_ = z;
-#line 123 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 131 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp20_ = g_array_index (_tmp18_, TradeSimServicesQuoteItem*, (guint) _tmp19_);
-#line 123 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 131 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp21_ = _tmp20_->max_price;
-#line 123 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 131 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp22_ = self->priv->_max_price;
-#line 123 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 131 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							if (_tmp21_ > _tmp22_) {
-#line 1141 "QuotesManager.c"
+#line 1178 "QuotesManager.c"
 								GArray* _tmp23_;
 								gint _tmp24_;
 								TradeSimServicesQuoteItem* _tmp25_;
 								gdouble _tmp26_;
-#line 124 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 132 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp23_ = self->quotes;
-#line 124 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 132 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp24_ = z;
-#line 124 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 132 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp25_ = g_array_index (_tmp23_, TradeSimServicesQuoteItem*, (guint) _tmp24_);
-#line 124 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 132 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp26_ = _tmp25_->max_price;
-#line 124 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 132 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								trade_sim_services_quotes_manager_set_max_price (self, _tmp26_);
-#line 1156 "QuotesManager.c"
+#line 1193 "QuotesManager.c"
 							}
-#line 127 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 135 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp27_ = self->quotes;
-#line 127 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 135 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp28_ = z;
-#line 127 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 135 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp29_ = g_array_index (_tmp27_, TradeSimServicesQuoteItem*, (guint) _tmp28_);
-#line 127 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 135 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp30_ = _tmp29_->min_price;
-#line 127 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 135 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp31_ = self->priv->_min_price;
-#line 127 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 135 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							if (_tmp30_ < _tmp31_) {
-#line 1170 "QuotesManager.c"
+#line 1207 "QuotesManager.c"
 								GArray* _tmp32_;
 								gint _tmp33_;
 								TradeSimServicesQuoteItem* _tmp34_;
 								gdouble _tmp35_;
-#line 128 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 136 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp32_ = self->quotes;
-#line 128 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 136 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp33_ = z;
-#line 128 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 136 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp34_ = g_array_index (_tmp32_, TradeSimServicesQuoteItem*, (guint) _tmp33_);
-#line 128 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 136 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp35_ = _tmp34_->min_price;
-#line 128 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 136 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								trade_sim_services_quotes_manager_set_min_price (self, _tmp35_);
-#line 1185 "QuotesManager.c"
+#line 1222 "QuotesManager.c"
 							}
 						}
 					}
@@ -1202,94 +1239,94 @@ trade_sim_services_quotes_manager_get_max_price_by_datetimes (TradeSimServicesQu
 	GArray* _tmp0_;
 	guint _tmp1_;
 	gdouble _tmp34_;
-#line 136 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 144 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_val_if_fail (self != NULL, 0);
-#line 136 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 144 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_val_if_fail (dt1 != NULL, 0);
-#line 136 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 144 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_val_if_fail (dt2 != NULL, 0);
-#line 138 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 146 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	local_max = (gdouble) -1;
-#line 143 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 151 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp0_ = self->quotes;
-#line 143 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 151 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp1_ = _tmp0_->len;
-#line 143 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 151 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	if (_tmp1_ > ((guint) 0)) {
-#line 1220 "QuotesManager.c"
+#line 1257 "QuotesManager.c"
 		GArray* _tmp2_;
 		TradeSimServicesQuoteItem* _tmp3_;
 		gdouble _tmp4_;
-#line 144 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 152 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		_tmp2_ = self->quotes;
-#line 144 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 152 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		_tmp3_ = g_array_index (_tmp2_, TradeSimServicesQuoteItem*, (guint) 0);
-#line 144 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 152 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		_tmp4_ = _tmp3_->max_price;
-#line 144 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 152 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		local_max = _tmp4_;
-#line 1232 "QuotesManager.c"
+#line 1269 "QuotesManager.c"
 	} else {
 		gdouble _tmp5_;
-#line 146 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 154 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		_tmp5_ = local_max;
-#line 146 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 154 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		result = (gint) (_tmp5_ * 100000);
-#line 146 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 154 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		return result;
-#line 1241 "QuotesManager.c"
+#line 1278 "QuotesManager.c"
 	}
 	{
 		gint i = 0;
-#line 149 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 157 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		i = 0;
-#line 1247 "QuotesManager.c"
+#line 1284 "QuotesManager.c"
 		{
 			gboolean _tmp6_ = FALSE;
-#line 149 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 157 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 			_tmp6_ = TRUE;
-#line 149 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 157 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 			while (TRUE) {
-#line 1254 "QuotesManager.c"
+#line 1291 "QuotesManager.c"
 				gint _tmp8_;
 				GArray* _tmp9_;
 				guint _tmp10_;
-#line 149 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 157 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				if (!_tmp6_) {
-#line 1260 "QuotesManager.c"
+#line 1297 "QuotesManager.c"
 					gint _tmp7_;
-#line 149 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 157 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					_tmp7_ = i;
-#line 149 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 157 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					i = _tmp7_ + 1;
-#line 1266 "QuotesManager.c"
+#line 1303 "QuotesManager.c"
 				}
-#line 149 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 157 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp6_ = FALSE;
-#line 149 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 157 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp8_ = i;
-#line 149 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 157 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp9_ = self->quotes;
-#line 149 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 157 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp10_ = _tmp9_->len;
-#line 149 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 157 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				if (!(((guint) _tmp8_) < _tmp10_)) {
-#line 149 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 157 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					break;
-#line 1280 "QuotesManager.c"
+#line 1317 "QuotesManager.c"
 				}
 				{
 					gint z = 0;
-#line 150 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 158 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					z = 0;
-#line 1286 "QuotesManager.c"
+#line 1323 "QuotesManager.c"
 					{
 						gboolean _tmp11_ = FALSE;
-#line 150 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 158 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 						_tmp11_ = TRUE;
-#line 150 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 158 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 						while (TRUE) {
-#line 1293 "QuotesManager.c"
+#line 1330 "QuotesManager.c"
 							gint _tmp13_;
 							GArray* _tmp14_;
 							guint _tmp15_;
@@ -1298,97 +1335,97 @@ trade_sim_services_quotes_manager_get_max_price_by_datetimes (TradeSimServicesQu
 							gint _tmp18_;
 							TradeSimServicesQuoteItem* _tmp19_;
 							GDateTime* _tmp20_;
-#line 150 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 158 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							if (!_tmp11_) {
-#line 1304 "QuotesManager.c"
+#line 1341 "QuotesManager.c"
 								gint _tmp12_;
-#line 150 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 158 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp12_ = z;
-#line 150 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 158 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								z = _tmp12_ + 1;
-#line 1310 "QuotesManager.c"
+#line 1347 "QuotesManager.c"
 							}
-#line 150 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 158 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp11_ = FALSE;
-#line 150 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 158 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp13_ = z;
-#line 150 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 158 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp14_ = self->quotes;
-#line 150 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 158 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp15_ = _tmp14_->len;
-#line 150 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 158 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							if (!(((guint) _tmp13_) < _tmp15_)) {
-#line 150 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 158 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								break;
-#line 1324 "QuotesManager.c"
+#line 1361 "QuotesManager.c"
 							}
-#line 152 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 160 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp17_ = self->quotes;
-#line 152 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 160 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp18_ = z;
-#line 152 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 160 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp19_ = g_array_index (_tmp17_, TradeSimServicesQuoteItem*, (guint) _tmp18_);
-#line 152 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 160 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp20_ = _tmp19_->date_time;
-#line 152 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 160 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							if (g_date_time_compare (_tmp20_, dt1) > 0) {
-#line 1336 "QuotesManager.c"
+#line 1373 "QuotesManager.c"
 								GArray* _tmp21_;
 								gint _tmp22_;
 								TradeSimServicesQuoteItem* _tmp23_;
 								GDateTime* _tmp24_;
-#line 152 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 160 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp21_ = self->quotes;
-#line 152 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 160 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp22_ = z;
-#line 152 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 160 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp23_ = g_array_index (_tmp21_, TradeSimServicesQuoteItem*, (guint) _tmp22_);
-#line 152 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 160 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp24_ = _tmp23_->date_time;
-#line 152 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 160 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp16_ = g_date_time_compare (_tmp24_, dt2) < 0;
-#line 1351 "QuotesManager.c"
+#line 1388 "QuotesManager.c"
 							} else {
-#line 152 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 160 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp16_ = FALSE;
-#line 1355 "QuotesManager.c"
+#line 1392 "QuotesManager.c"
 							}
-#line 152 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 160 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							if (_tmp16_) {
-#line 1359 "QuotesManager.c"
+#line 1396 "QuotesManager.c"
 								GArray* _tmp25_;
 								gint _tmp26_;
 								TradeSimServicesQuoteItem* _tmp27_;
 								gdouble _tmp28_;
 								gdouble _tmp29_;
-#line 154 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 162 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp25_ = self->quotes;
-#line 154 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 162 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp26_ = z;
-#line 154 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 162 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp27_ = g_array_index (_tmp25_, TradeSimServicesQuoteItem*, (guint) _tmp26_);
-#line 154 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 162 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp28_ = _tmp27_->max_price;
-#line 154 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 162 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp29_ = local_max;
-#line 154 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 162 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								if (_tmp28_ > _tmp29_) {
-#line 1377 "QuotesManager.c"
+#line 1414 "QuotesManager.c"
 									GArray* _tmp30_;
 									gint _tmp31_;
 									TradeSimServicesQuoteItem* _tmp32_;
 									gdouble _tmp33_;
-#line 155 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 163 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 									_tmp30_ = self->quotes;
-#line 155 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 163 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 									_tmp31_ = z;
-#line 155 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 163 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 									_tmp32_ = g_array_index (_tmp30_, TradeSimServicesQuoteItem*, (guint) _tmp31_);
-#line 155 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 163 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 									_tmp33_ = _tmp32_->max_price;
-#line 155 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 163 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 									local_max = _tmp33_ * 1.00000;
-#line 1392 "QuotesManager.c"
+#line 1429 "QuotesManager.c"
 								}
 							}
 						}
@@ -1397,13 +1434,13 @@ trade_sim_services_quotes_manager_get_max_price_by_datetimes (TradeSimServicesQu
 			}
 		}
 	}
-#line 164 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 172 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp34_ = local_max;
-#line 164 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 172 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	result = (gint) (_tmp34_ * 100000);
-#line 164 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 172 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	return result;
-#line 1407 "QuotesManager.c"
+#line 1444 "QuotesManager.c"
 }
 
 
@@ -1417,94 +1454,94 @@ trade_sim_services_quotes_manager_get_min_price_by_datetimes (TradeSimServicesQu
 	GArray* _tmp0_;
 	guint _tmp1_;
 	gdouble _tmp34_;
-#line 168 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 176 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_val_if_fail (self != NULL, 0);
-#line 168 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 176 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_val_if_fail (dt1 != NULL, 0);
-#line 168 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 176 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_val_if_fail (dt2 != NULL, 0);
-#line 170 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 178 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	local_min = (gdouble) 0;
-#line 175 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 183 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp0_ = self->quotes;
-#line 175 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 183 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp1_ = _tmp0_->len;
-#line 175 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 183 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	if (_tmp1_ > ((guint) 0)) {
-#line 1435 "QuotesManager.c"
+#line 1472 "QuotesManager.c"
 		GArray* _tmp2_;
 		TradeSimServicesQuoteItem* _tmp3_;
 		gdouble _tmp4_;
-#line 176 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 184 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		_tmp2_ = self->quotes;
-#line 176 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 184 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		_tmp3_ = g_array_index (_tmp2_, TradeSimServicesQuoteItem*, (guint) 0);
-#line 176 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 184 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		_tmp4_ = _tmp3_->min_price;
-#line 176 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 184 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		local_min = _tmp4_;
-#line 1447 "QuotesManager.c"
+#line 1484 "QuotesManager.c"
 	} else {
 		gdouble _tmp5_;
-#line 178 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 186 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		_tmp5_ = local_min;
-#line 178 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 186 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		result = (gint) _tmp5_;
-#line 178 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 186 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		return result;
-#line 1456 "QuotesManager.c"
+#line 1493 "QuotesManager.c"
 	}
 	{
 		gint i = 0;
-#line 181 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 189 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		i = 0;
-#line 1462 "QuotesManager.c"
+#line 1499 "QuotesManager.c"
 		{
 			gboolean _tmp6_ = FALSE;
-#line 181 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 189 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 			_tmp6_ = TRUE;
-#line 181 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 189 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 			while (TRUE) {
-#line 1469 "QuotesManager.c"
+#line 1506 "QuotesManager.c"
 				gint _tmp8_;
 				GArray* _tmp9_;
 				guint _tmp10_;
-#line 181 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 189 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				if (!_tmp6_) {
-#line 1475 "QuotesManager.c"
+#line 1512 "QuotesManager.c"
 					gint _tmp7_;
-#line 181 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 189 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					_tmp7_ = i;
-#line 181 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 189 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					i = _tmp7_ + 1;
-#line 1481 "QuotesManager.c"
+#line 1518 "QuotesManager.c"
 				}
-#line 181 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 189 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp6_ = FALSE;
-#line 181 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 189 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp8_ = i;
-#line 181 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 189 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp9_ = self->quotes;
-#line 181 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 189 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp10_ = _tmp9_->len;
-#line 181 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 189 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				if (!(((guint) _tmp8_) < _tmp10_)) {
-#line 181 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 189 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					break;
-#line 1495 "QuotesManager.c"
+#line 1532 "QuotesManager.c"
 				}
 				{
 					gint z = 0;
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 190 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					z = 0;
-#line 1501 "QuotesManager.c"
+#line 1538 "QuotesManager.c"
 					{
 						gboolean _tmp11_ = FALSE;
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 190 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 						_tmp11_ = TRUE;
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 190 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 						while (TRUE) {
-#line 1508 "QuotesManager.c"
+#line 1545 "QuotesManager.c"
 							gint _tmp13_;
 							GArray* _tmp14_;
 							guint _tmp15_;
@@ -1513,97 +1550,97 @@ trade_sim_services_quotes_manager_get_min_price_by_datetimes (TradeSimServicesQu
 							gint _tmp18_;
 							TradeSimServicesQuoteItem* _tmp19_;
 							GDateTime* _tmp20_;
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 190 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							if (!_tmp11_) {
-#line 1519 "QuotesManager.c"
+#line 1556 "QuotesManager.c"
 								gint _tmp12_;
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 190 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp12_ = z;
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 190 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								z = _tmp12_ + 1;
-#line 1525 "QuotesManager.c"
+#line 1562 "QuotesManager.c"
 							}
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 190 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp11_ = FALSE;
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 190 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp13_ = z;
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 190 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp14_ = self->quotes;
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 190 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp15_ = _tmp14_->len;
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 190 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							if (!(((guint) _tmp13_) < _tmp15_)) {
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 190 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								break;
-#line 1539 "QuotesManager.c"
+#line 1576 "QuotesManager.c"
 							}
-#line 184 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 192 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp17_ = self->quotes;
-#line 184 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 192 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp18_ = z;
-#line 184 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 192 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp19_ = g_array_index (_tmp17_, TradeSimServicesQuoteItem*, (guint) _tmp18_);
-#line 184 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 192 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							_tmp20_ = _tmp19_->date_time;
-#line 184 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 192 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							if (g_date_time_compare (_tmp20_, dt1) > 0) {
-#line 1551 "QuotesManager.c"
+#line 1588 "QuotesManager.c"
 								GArray* _tmp21_;
 								gint _tmp22_;
 								TradeSimServicesQuoteItem* _tmp23_;
 								GDateTime* _tmp24_;
-#line 184 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 192 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp21_ = self->quotes;
-#line 184 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 192 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp22_ = z;
-#line 184 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 192 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp23_ = g_array_index (_tmp21_, TradeSimServicesQuoteItem*, (guint) _tmp22_);
-#line 184 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 192 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp24_ = _tmp23_->date_time;
-#line 184 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 192 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp16_ = g_date_time_compare (_tmp24_, dt2) < 0;
-#line 1566 "QuotesManager.c"
+#line 1603 "QuotesManager.c"
 							} else {
-#line 184 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 192 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp16_ = FALSE;
-#line 1570 "QuotesManager.c"
+#line 1607 "QuotesManager.c"
 							}
-#line 184 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 192 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 							if (_tmp16_) {
-#line 1574 "QuotesManager.c"
+#line 1611 "QuotesManager.c"
 								GArray* _tmp25_;
 								gint _tmp26_;
 								TradeSimServicesQuoteItem* _tmp27_;
 								gdouble _tmp28_;
 								gdouble _tmp29_;
-#line 186 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 194 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp25_ = self->quotes;
-#line 186 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 194 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp26_ = z;
-#line 186 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 194 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp27_ = g_array_index (_tmp25_, TradeSimServicesQuoteItem*, (guint) _tmp26_);
-#line 186 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 194 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp28_ = _tmp27_->min_price;
-#line 186 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 194 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								_tmp29_ = local_min;
-#line 186 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 194 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 								if (_tmp28_ < _tmp29_) {
-#line 1592 "QuotesManager.c"
+#line 1629 "QuotesManager.c"
 									GArray* _tmp30_;
 									gint _tmp31_;
 									TradeSimServicesQuoteItem* _tmp32_;
 									gdouble _tmp33_;
-#line 187 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 195 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 									_tmp30_ = self->quotes;
-#line 187 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 195 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 									_tmp31_ = z;
-#line 187 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 195 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 									_tmp32_ = g_array_index (_tmp30_, TradeSimServicesQuoteItem*, (guint) _tmp31_);
-#line 187 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 195 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 									_tmp33_ = _tmp32_->min_price;
-#line 187 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 195 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 									local_min = _tmp33_ * 1.00000;
-#line 1607 "QuotesManager.c"
+#line 1644 "QuotesManager.c"
 								}
 							}
 						}
@@ -1612,13 +1649,13 @@ trade_sim_services_quotes_manager_get_min_price_by_datetimes (TradeSimServicesQu
 			}
 		}
 	}
-#line 196 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 204 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp34_ = local_min;
-#line 196 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 204 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	result = (gint) (_tmp34_ * 100000);
-#line 196 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 204 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	return result;
-#line 1622 "QuotesManager.c"
+#line 1659 "QuotesManager.c"
 }
 
 
@@ -1628,17 +1665,17 @@ trade_sim_services_quotes_manager_add_quote (TradeSimServicesQuotesManager* self
 {
 	GArray* _tmp0_;
 	TradeSimServicesQuoteItem* _tmp1_;
-#line 200 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 208 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_if_fail (self != NULL);
-#line 200 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 208 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_if_fail (quote_item != NULL);
-#line 202 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 210 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp0_ = self->quotes;
-#line 202 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 210 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp1_ = _trade_sim_services_quote_item_ref0 (quote_item);
-#line 202 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 210 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_array_append_val (_tmp0_, _tmp1_);
-#line 1642 "QuotesManager.c"
+#line 1679 "QuotesManager.c"
 }
 
 
@@ -1650,29 +1687,29 @@ trade_sim_services_quotes_manager_get_quote_by_time (TradeSimServicesQuotesManag
 	TradeSimServicesQuoteItem* return_value = NULL;
 	const gchar* _tmp0_;
 	TradeSimServicesQuoteItem* _tmp1_;
-#line 206 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 214 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 206 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 214 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_val_if_fail (cuote_time != NULL, NULL);
-#line 208 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 216 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp0_ = self->ticker;
-#line 208 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 216 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp1_ = trade_sim_services_quote_item_new (_tmp0_);
-#line 208 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 216 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	return_value = _tmp1_;
-#line 1664 "QuotesManager.c"
+#line 1701 "QuotesManager.c"
 	{
 		gint i = 0;
-#line 210 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 218 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		i = 0;
-#line 1669 "QuotesManager.c"
+#line 1706 "QuotesManager.c"
 		{
 			gboolean _tmp2_ = FALSE;
-#line 210 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 218 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 			_tmp2_ = TRUE;
-#line 210 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 218 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 			while (TRUE) {
-#line 1676 "QuotesManager.c"
+#line 1713 "QuotesManager.c"
 				gint _tmp4_;
 				GArray* _tmp5_;
 				guint _tmp6_;
@@ -1680,69 +1717,69 @@ trade_sim_services_quotes_manager_get_quote_by_time (TradeSimServicesQuotesManag
 				gint _tmp8_;
 				TradeSimServicesQuoteItem* _tmp9_;
 				GDateTime* _tmp10_;
-#line 210 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 218 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				if (!_tmp2_) {
-#line 1686 "QuotesManager.c"
+#line 1723 "QuotesManager.c"
 					gint _tmp3_;
-#line 210 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 218 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					_tmp3_ = i;
-#line 210 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 218 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					i = _tmp3_ + 1;
-#line 1692 "QuotesManager.c"
+#line 1729 "QuotesManager.c"
 				}
-#line 210 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 218 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp2_ = FALSE;
-#line 210 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 218 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp4_ = i;
-#line 210 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 218 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp5_ = self->quotes;
-#line 210 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 218 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp6_ = _tmp5_->len;
-#line 210 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 218 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				if (!(((guint) _tmp4_) < _tmp6_)) {
-#line 210 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 218 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					break;
-#line 1706 "QuotesManager.c"
+#line 1743 "QuotesManager.c"
 				}
-#line 212 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 220 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp7_ = self->quotes;
-#line 212 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 220 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp8_ = i;
-#line 212 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 220 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp9_ = g_array_index (_tmp7_, TradeSimServicesQuoteItem*, (guint) _tmp8_);
-#line 212 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 220 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				_tmp10_ = _tmp9_->date_time;
-#line 212 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 220 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 				if (g_date_time_compare (_tmp10_, cuote_time) == 0) {
-#line 1718 "QuotesManager.c"
+#line 1755 "QuotesManager.c"
 					GArray* _tmp11_;
 					gint _tmp12_;
 					TradeSimServicesQuoteItem* _tmp13_;
 					TradeSimServicesQuoteItem* _tmp14_;
-#line 213 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 221 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					_tmp11_ = self->quotes;
-#line 213 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 221 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					_tmp12_ = i;
-#line 213 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 221 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					_tmp13_ = g_array_index (_tmp11_, TradeSimServicesQuoteItem*, (guint) _tmp12_);
-#line 213 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 221 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					_tmp14_ = _trade_sim_services_quote_item_ref0 (_tmp13_);
-#line 213 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 221 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					_trade_sim_services_quote_item_unref0 (return_value);
-#line 213 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 221 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					return_value = _tmp14_;
-#line 214 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 222 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 					break;
-#line 1737 "QuotesManager.c"
+#line 1774 "QuotesManager.c"
 				}
 			}
 		}
 	}
-#line 219 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 227 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	result = return_value;
-#line 219 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 227 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	return result;
-#line 1746 "QuotesManager.c"
+#line 1783 "QuotesManager.c"
 }
 
 
@@ -1751,15 +1788,15 @@ trade_sim_services_quotes_manager_get_max_price (TradeSimServicesQuotesManager* 
 {
 	gdouble result;
 	gdouble _tmp0_;
-#line 41 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 44 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_val_if_fail (self != NULL, 0.0);
-#line 41 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 44 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp0_ = self->priv->_max_price;
-#line 41 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 44 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	result = _tmp0_;
-#line 41 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 44 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	return result;
-#line 1763 "QuotesManager.c"
+#line 1800 "QuotesManager.c"
 }
 
 
@@ -1767,11 +1804,11 @@ static void
 trade_sim_services_quotes_manager_set_max_price (TradeSimServicesQuotesManager* self,
                                                  gdouble value)
 {
-#line 41 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 44 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_if_fail (self != NULL);
-#line 41 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 44 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	self->priv->_max_price = value;
-#line 1775 "QuotesManager.c"
+#line 1812 "QuotesManager.c"
 }
 
 
@@ -1780,15 +1817,15 @@ trade_sim_services_quotes_manager_get_min_price (TradeSimServicesQuotesManager* 
 {
 	gdouble result;
 	gdouble _tmp0_;
-#line 42 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 45 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_val_if_fail (self != NULL, 0.0);
-#line 42 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 45 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_tmp0_ = self->priv->_min_price;
-#line 42 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 45 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	result = _tmp0_;
-#line 42 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 45 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	return result;
-#line 1792 "QuotesManager.c"
+#line 1829 "QuotesManager.c"
 }
 
 
@@ -1796,11 +1833,11 @@ static void
 trade_sim_services_quotes_manager_set_min_price (TradeSimServicesQuotesManager* self,
                                                  gdouble value)
 {
-#line 42 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 45 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_return_if_fail (self != NULL);
-#line 42 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 45 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	self->priv->_min_price = value;
-#line 1804 "QuotesManager.c"
+#line 1841 "QuotesManager.c"
 }
 
 
@@ -1809,7 +1846,7 @@ trade_sim_services_value_quotes_manager_init (GValue* value)
 {
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	value->data[0].v_pointer = NULL;
-#line 1813 "QuotesManager.c"
+#line 1850 "QuotesManager.c"
 }
 
 
@@ -1820,7 +1857,7 @@ trade_sim_services_value_quotes_manager_free_value (GValue* value)
 	if (value->data[0].v_pointer) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		trade_sim_services_quotes_manager_unref (value->data[0].v_pointer);
-#line 1824 "QuotesManager.c"
+#line 1861 "QuotesManager.c"
 	}
 }
 
@@ -1833,11 +1870,11 @@ trade_sim_services_value_quotes_manager_copy_value (const GValue* src_value,
 	if (src_value->data[0].v_pointer) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		dest_value->data[0].v_pointer = trade_sim_services_quotes_manager_ref (src_value->data[0].v_pointer);
-#line 1837 "QuotesManager.c"
+#line 1874 "QuotesManager.c"
 	} else {
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		dest_value->data[0].v_pointer = NULL;
-#line 1841 "QuotesManager.c"
+#line 1878 "QuotesManager.c"
 	}
 }
 
@@ -1847,7 +1884,7 @@ trade_sim_services_value_quotes_manager_peek_pointer (const GValue* value)
 {
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	return value->data[0].v_pointer;
-#line 1851 "QuotesManager.c"
+#line 1888 "QuotesManager.c"
 }
 
 
@@ -1859,30 +1896,30 @@ trade_sim_services_value_quotes_manager_collect_value (GValue* value,
 {
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	if (collect_values[0].v_pointer) {
-#line 1863 "QuotesManager.c"
+#line 1900 "QuotesManager.c"
 		TradeSimServicesQuotesManager * object;
 		object = collect_values[0].v_pointer;
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		if (object->parent_instance.g_class == NULL) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 			return g_strconcat ("invalid unclassed object pointer for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
-#line 1870 "QuotesManager.c"
+#line 1907 "QuotesManager.c"
 		} else if (!g_value_type_compatible (G_TYPE_FROM_INSTANCE (object), G_VALUE_TYPE (value))) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 			return g_strconcat ("invalid object type `", g_type_name (G_TYPE_FROM_INSTANCE (object)), "' for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
-#line 1874 "QuotesManager.c"
+#line 1911 "QuotesManager.c"
 		}
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		value->data[0].v_pointer = trade_sim_services_quotes_manager_ref (object);
-#line 1878 "QuotesManager.c"
+#line 1915 "QuotesManager.c"
 	} else {
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		value->data[0].v_pointer = NULL;
-#line 1882 "QuotesManager.c"
+#line 1919 "QuotesManager.c"
 	}
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	return NULL;
-#line 1886 "QuotesManager.c"
+#line 1923 "QuotesManager.c"
 }
 
 
@@ -1898,25 +1935,25 @@ trade_sim_services_value_quotes_manager_lcopy_value (const GValue* value,
 	if (!object_p) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
-#line 1902 "QuotesManager.c"
+#line 1939 "QuotesManager.c"
 	}
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	if (!value->data[0].v_pointer) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		*object_p = NULL;
-#line 1908 "QuotesManager.c"
+#line 1945 "QuotesManager.c"
 	} else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		*object_p = value->data[0].v_pointer;
-#line 1912 "QuotesManager.c"
+#line 1949 "QuotesManager.c"
 	} else {
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		*object_p = trade_sim_services_quotes_manager_ref (value->data[0].v_pointer);
-#line 1916 "QuotesManager.c"
+#line 1953 "QuotesManager.c"
 	}
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	return NULL;
-#line 1920 "QuotesManager.c"
+#line 1957 "QuotesManager.c"
 }
 
 
@@ -1936,7 +1973,7 @@ trade_sim_services_param_spec_quotes_manager (const gchar* name,
 	G_PARAM_SPEC (spec)->value_type = object_type;
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	return G_PARAM_SPEC (spec);
-#line 1940 "QuotesManager.c"
+#line 1977 "QuotesManager.c"
 }
 
 
@@ -1947,7 +1984,7 @@ trade_sim_services_value_get_quotes_manager (const GValue* value)
 	g_return_val_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRADE_SIM_SERVICES_TYPE_QUOTES_MANAGER), NULL);
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	return value->data[0].v_pointer;
-#line 1951 "QuotesManager.c"
+#line 1988 "QuotesManager.c"
 }
 
 
@@ -1970,17 +2007,17 @@ trade_sim_services_value_set_quotes_manager (GValue* value,
 		value->data[0].v_pointer = v_object;
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		trade_sim_services_quotes_manager_ref (value->data[0].v_pointer);
-#line 1974 "QuotesManager.c"
+#line 2011 "QuotesManager.c"
 	} else {
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		value->data[0].v_pointer = NULL;
-#line 1978 "QuotesManager.c"
+#line 2015 "QuotesManager.c"
 	}
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	if (old) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		trade_sim_services_quotes_manager_unref (old);
-#line 1984 "QuotesManager.c"
+#line 2021 "QuotesManager.c"
 	}
 }
 
@@ -2002,17 +2039,17 @@ trade_sim_services_value_take_quotes_manager (GValue* value,
 		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		value->data[0].v_pointer = v_object;
-#line 2006 "QuotesManager.c"
+#line 2043 "QuotesManager.c"
 	} else {
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		value->data[0].v_pointer = NULL;
-#line 2010 "QuotesManager.c"
+#line 2047 "QuotesManager.c"
 	}
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	if (old) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		trade_sim_services_quotes_manager_unref (old);
-#line 2016 "QuotesManager.c"
+#line 2053 "QuotesManager.c"
 	}
 }
 
@@ -2026,7 +2063,7 @@ trade_sim_services_quotes_manager_class_init (TradeSimServicesQuotesManagerClass
 	((TradeSimServicesQuotesManagerClass *) klass)->finalize = trade_sim_services_quotes_manager_finalize;
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	g_type_class_add_private (klass, sizeof (TradeSimServicesQuotesManagerPrivate));
-#line 2030 "QuotesManager.c"
+#line 2067 "QuotesManager.c"
 }
 
 
@@ -2037,7 +2074,7 @@ trade_sim_services_quotes_manager_instance_init (TradeSimServicesQuotesManager *
 	self->priv = TRADE_SIM_SERVICES_QUOTES_MANAGER_GET_PRIVATE (self);
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	self->ref_count = 1;
-#line 2041 "QuotesManager.c"
+#line 2078 "QuotesManager.c"
 }
 
 
@@ -2058,18 +2095,20 @@ trade_sim_services_quotes_manager_finalize (TradeSimServicesQuotesManager * obj)
 #line 28 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_g_free0 (self->time_frame);
 #line 30 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	_g_object_unref0 (self->db);
+#line 31 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_g_free0 (self->db_file_location);
-#line 32 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+#line 35 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	_g_array_unref0 (self->quotes);
-#line 36 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->priv->global_open_price = (g_free (self->priv->global_open_price), NULL);
-#line 37 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->priv->global_close_price = (g_free (self->priv->global_close_price), NULL);
-#line 38 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
-	self->priv->global_min_price = (g_free (self->priv->global_min_price), NULL);
 #line 39 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->priv->global_open_price = (g_free (self->priv->global_open_price), NULL);
+#line 40 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->priv->global_close_price = (g_free (self->priv->global_close_price), NULL);
+#line 41 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
+	self->priv->global_min_price = (g_free (self->priv->global_min_price), NULL);
+#line 42 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	self->priv->global_max_price = (g_free (self->priv->global_max_price), NULL);
-#line 2073 "QuotesManager.c"
+#line 2112 "QuotesManager.c"
 }
 
 
@@ -2098,7 +2137,7 @@ trade_sim_services_quotes_manager_ref (gpointer instance)
 	g_atomic_int_inc (&self->ref_count);
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 	return instance;
-#line 2102 "QuotesManager.c"
+#line 2141 "QuotesManager.c"
 }
 
 
@@ -2113,7 +2152,7 @@ trade_sim_services_quotes_manager_unref (gpointer instance)
 		TRADE_SIM_SERVICES_QUOTES_MANAGER_GET_CLASS (self)->finalize (self);
 #line 22 "/home/horacio/Vala/TradeSim/src/Services/QuotesManager.vala"
 		g_type_free_instance ((GTypeInstance *) self);
-#line 2117 "QuotesManager.c"
+#line 2156 "QuotesManager.c"
 	}
 }
 

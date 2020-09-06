@@ -7,13 +7,20 @@
 #include <glib-object.h>
 #include <float.h>
 #include <math.h>
+#include <stdlib.h>
+#include <string.h>
+#include <gio/gio.h>
+#include <glib/gstdio.h>
 
+#define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
+#define _g_free0(var) (var = (g_free (var), NULL))
 
 
 
 gdouble _r (gint red);
 gdouble _g (gint green);
 gdouble _b (gint blue);
+void create_dir_with_parents (const gchar* dir);
 
 
 gdouble
@@ -24,7 +31,7 @@ _r (gint red)
 	result = red / 255.00;
 #line 2 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
 	return result;
-#line 28 "Utilities.c"
+#line 35 "Utilities.c"
 }
 
 
@@ -36,7 +43,7 @@ _g (gint green)
 	result = green / 255.00;
 #line 6 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
 	return result;
-#line 40 "Utilities.c"
+#line 47 "Utilities.c"
 }
 
 
@@ -48,7 +55,51 @@ _b (gint blue)
 	result = blue / 255.00;
 #line 10 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
 	return result;
-#line 52 "Utilities.c"
+#line 59 "Utilities.c"
+}
+
+
+void
+create_dir_with_parents (const gchar* dir)
+{
+	gchar* path = NULL;
+	const gchar* _tmp0_;
+	gchar* _tmp1_;
+	GFile* tmp = NULL;
+	const gchar* _tmp2_;
+	GFile* _tmp3_;
+	GFile* _tmp4_;
+#line 13 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+	g_return_if_fail (dir != NULL);
+#line 14 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+	_tmp0_ = g_get_home_dir ();
+#line 14 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+	_tmp1_ = g_strconcat (_tmp0_, dir, NULL);
+#line 14 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+	path = _tmp1_;
+#line 15 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+	_tmp2_ = path;
+#line 15 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+	_tmp3_ = g_file_new_for_path (_tmp2_);
+#line 15 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+	tmp = _tmp3_;
+#line 16 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+	_tmp4_ = tmp;
+#line 16 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+	if (g_file_query_file_type (_tmp4_, 0, NULL) != G_FILE_TYPE_DIRECTORY) {
+#line 91 "Utilities.c"
+		const gchar* _tmp5_;
+#line 17 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+		_tmp5_ = path;
+#line 17 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+		g_mkdir_with_parents (_tmp5_, 0775);
+#line 97 "Utilities.c"
+	}
+#line 13 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+	_g_object_unref0 (tmp);
+#line 13 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+	_g_free0 (path);
+#line 103 "Utilities.c"
 }
 
 

@@ -10,6 +10,7 @@ executable(
 	dependencies: [
 		dependency('gtk+-3.0')
 		,dependency('glib-2.0')
+		,dependency('sqlite3')
 		,dependency('granite', version: '>= 5.3.0')
 	],
 	install: true

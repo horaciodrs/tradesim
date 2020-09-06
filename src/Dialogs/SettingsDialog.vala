@@ -61,6 +61,10 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
     private Gtk.Widget get_data_source_box () {
 
         // https://raw.githubusercontent.com/horaciodrs/TradeSim/master/data/quotes/EODATA/2020/EURUSD/EODATA_EURUSD_D1_2020_01.csv
+        // FORMATO DE LOS ARCHVOS
+        // Symbol,DateYear,DateMonth,DateDay,DateHours,DateMinutes,Open,High,Low,Close,Volume
+
+        var QM = new TradeSim.Services.QuotesManager(null, null, null, null, false);
 
         var grid = new Gtk.Grid ();
         grid.row_spacing = 3;

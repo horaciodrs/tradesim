@@ -42,6 +42,8 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
     construct {
         // inicializacion de la ventana...
 
+        create_dir_with_parents ("/.local/share/com.github.horaciodrs.tradesim");
+
         headerbar = new TradeSim.Layouts.HeaderBar (this);
         main_layout = new TradeSim.Layouts.Main (this);
 

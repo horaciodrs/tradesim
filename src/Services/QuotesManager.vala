@@ -27,7 +27,10 @@ public class TradeSim.Services.QuotesManager {
     public DateTime end_date;
     public string time_frame;
 
+    public TradeSim.Services.Database db;
     public string db_file_location;
+
+    public bool run_load;
 
     public Array<TradeSim.Services.QuoteItem> quotes;
 
@@ -43,12 +46,15 @@ public class TradeSim.Services.QuotesManager {
 
     /* */
 
-    public QuotesManager (string _ticker, string _time_frame, DateTime _start_date, DateTime _end_date) {
+    public QuotesManager (string _ticker, string _time_frame, DateTime _start_date, DateTime _end_date, bool _run_load = true) {
+
+        db = new TradeSim.Services.Database();
 
         ticker = _ticker;
         time_frame = _time_frame;
         start_date = _start_date;
         end_date = _end_date;
+        run_load = _run_load;
 
         quotes = new Array<TradeSim.Services.QuoteItem> ();
 
@@ -59,8 +65,10 @@ public class TradeSim.Services.QuotesManager {
         global_min_price = { 1.08330, 1.09346, 1.08957, 1.08261, 1.07820, 1.07666, 1.08150, 1.08006, 1.07845, 1.08117, 1.07750, 1.07890, 1.07998, 1.09022, 1.09190, 1.09372, 1.08854, 1.08706, 1.08925, 1.09338, 1.09917, 1.10698, 1.11004, 1.11154, 1.11668, 1.11946, 1.12784, 1.12682, 1.12410, 1.13217, 1.12886, 1.12126, 1.12266, 1.12277, 1.12070, 1.11855, 1.11684, 1.11684, 1.12333, 1.12483, 1.11906, 1.11953, 1.12176, 1.11910, 1.11848, 1.12234, 1.12194, 1.12430, 1.12590, 1.12624, 1.12803, 1.12548, 1.13002, 1.13254, 1.13910, 1.13705, 1.13778, 1.14024, 1.14230 };
         global_close_price = { 1.09520, 1.09794, 1.09054, 1.08376, 1.07956, 1.08324, 1.08384, 1.08070, 1.08474, 1.08186, 1.08046, 1.08197, 1.09150, 1.09234, 1.09790, 1.09506, 1.09024, 1.08972, 1.09822, 1.10091, 1.10773, 1.11053, 1.11345, 1.11692, 1.12332, 1.13364, 1.12915, 1.12942, 1.13384, 1.13751, 1.12980, 1.12554, 1.13228, 1.12632, 1.12436, 1.12049, 1.11776, 1.12617, 1.13088, 1.12507, 1.12178, 1.12184, 1.12424, 1.12331, 1.12512, 1.12394, 1.12479, 1.13097, 1.12742, 1.13298, 1.12852, 1.13002, 1.13433, 1.14001, 1.14120, 1.13826, 1.14282, 1.14474, 1.15268 };
 
-        load ();
-
+        if(run_load){
+            load ();
+        }
+        
     }
 
 

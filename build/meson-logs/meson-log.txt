@@ -1,4 +1,4 @@
-Build started at 2020-09-03T17:45:23.798404
+Build started at 2020-09-06T15:26:36.278454
 Main binary: /usr/bin/python3
 Python system: Linux
 The Meson build system
@@ -14,13 +14,41 @@ Build machine cpu family: x86_64
 Build machine cpu: x86_64
 Dependency gtk+-3.0 found: YES (cached)
 Dependency glib-2.0 found: YES (cached)
-Dependency granite found: YES (cached)
-Program meson/post_install.py found: YES (/usr/bin/env python3 /home/horacio/Vala/TradeSim/meson/post_install.py)
-Build targets in project: 3
-Found ninja-1.8.2 at /usr/bin/ninja
+Found pkg-config: /usr/bin/pkg-config (0.29.1)
+Determining dependency 'sqlite3' with pkg-config executable '/usr/bin/pkg-config'
+Called `/usr/bin/pkg-config --modversion sqlite3` -> 0
+3.22.0
+Called `/usr/bin/pkg-config --cflags sqlite3` -> 0
+
+Called `/usr/bin/pkg-config sqlite3 --libs` -> 0
+-L/usr/lib/x86_64-linux-gnu -lsqlite3
+Called `/usr/bin/pkg-config sqlite3 --libs` -> 0
+-lsqlite3
 Running compile:
-Working directory:  /tmp/tmp9n6zx_m4
-Command line:  cc /tmp/tmp9n6zx_m4/testfile.c -pipe -D_FILE_OFFSET_BITS=64 -c -o /tmp/tmp9n6zx_m4/output.obj -O0 --print-search-dirs 
+Working directory:  /tmp/tmpm4ydto0o
+Command line:  cc /tmp/tmpm4ydto0o/testfile.c -pipe -D_FILE_OFFSET_BITS=64 -o /tmp/tmpm4ydto0o/output.exe -O0 
+
+Code:
+ #include<stdio.h>
+        
+        int main(int argc, char **argv) {
+            printf("%ld\n", (long)(sizeof(void *)));
+            return 0;
+        };
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Program stdout:
+
+8
+
+Program stderr:
+
+
+Running compile:
+Working directory:  /tmp/tmpexei0h9t
+Command line:  cc /tmp/tmpexei0h9t/testfile.c -pipe -D_FILE_OFFSET_BITS=64 -c -o /tmp/tmpexei0h9t/output.obj -O0 --print-search-dirs 
 
 Code:
  
@@ -31,3 +59,8 @@ libraries: =/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../
 
 Compiler stderr:
  
+Dependency sqlite3 found: YES 3.22.0
+Dependency granite found: YES (cached)
+Program meson/post_install.py found: YES (/usr/bin/env python3 /home/horacio/Vala/TradeSim/meson/post_install.py)
+Build targets in project: 3
+Found ninja-1.8.2 at /usr/bin/ninja
