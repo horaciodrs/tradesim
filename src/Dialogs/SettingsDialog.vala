@@ -21,6 +21,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         stack.margin_bottom = 15;
         stack.margin_top = 15;
         stack.add_titled (get_interface_box (), "interface", "Interface");
+        stack.add_titled (get_data_source_box (), "datasource", "Data Source");
         stack.add_titled (get_about_box (), "about", "About");
 
         var stack_switcher = new Gtk.StackSwitcher ();
@@ -53,6 +54,58 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             main_window.change_theme (false, dark_theme_switch.get_state ());
             // main_window.event_bus.change_theme ();
         });
+
+        return grid;
+    }
+
+    private Gtk.Widget get_data_source_box () {
+
+        var grid = new Gtk.Grid ();
+        grid.row_spacing = 3;
+        /*grid.column_spacing = 12;*/
+        grid.column_homogeneous = true;
+
+        var scroll = new Gtk.ScrolledWindow(null, null);
+        scroll.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+        
+
+        /******************************* */
+
+        Gtk.ListStore list_store = new Gtk.ListStore(5, typeof(string), typeof(string), typeof(string), typeof(string), typeof(string));
+        Gtk.TreeIter add_iter = Gtk.TreeIter();
+
+        list_store.append(out add_iter);
+        list_store.set(add_iter, 0, "EURUSD", 1, "Forex", 2, "M1", 3, "2011", 4, "Enero");
+
+        list_store.append(out add_iter);
+        list_store.set(add_iter, 0, "EURUSD", 1, "Forex", 2, "M1", 3, "2011", 4, "Febrero");
+
+        Gtk.TreeView tree_view = new Gtk.TreeView();
+
+        tree_view.set_model(list_store);
+
+        Gtk.CellRendererText ticker_cell = new Gtk.CellRendererText();
+        Gtk.CellRendererText market_cell = new Gtk.CellRendererText();
+        Gtk.CellRendererText timeframe_cell = new Gtk.CellRendererText();
+        Gtk.CellRendererText year_cell = new Gtk.CellRendererText();
+        Gtk.CellRendererText month_cell = new Gtk.CellRendererText();
+
+        tree_view.insert_column_with_attributes(-1, "Ticker", ticker_cell, "text", 0);
+        tree_view.insert_column_with_attributes(-1, "Mercado", market_cell, "text", 1);
+        tree_view.insert_column_with_attributes(-1, "Year", timeframe_cell, "text", 2);
+        tree_view.insert_column_with_attributes(-1, "Year", year_cell, "text", 3);
+        tree_view.insert_column_with_attributes(-1, "Month", month_cell, "text", 4);
+
+        scroll.get_style_context ().add_class ("scrolled-window-data");
+
+        /***************************** */
+
+        scroll.add(tree_view);
+        scroll.set_vexpand(true);
+
+
+        grid.attach (new SettingsHeader ("Data Source"), 0, 0);
+        grid.attach (scroll, 0, 1);
 
         return grid;
     }

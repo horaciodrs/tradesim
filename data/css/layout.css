@@ -124,3 +124,9 @@ paned > separator {
     color: alpha (@fg_color, 0.7);
     font-size: 0.85em;
 }
+
+/*horaciodrs*/
+
+.scrolled-window-data{
+    border: 1px solid shade (@bg_color, 0.8);
+}
