@@ -60,48 +60,134 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
     private Gtk.Widget get_data_source_box () {
 
+        // https://raw.githubusercontent.com/horaciodrs/TradeSim/master/data/quotes/EODATA/2020/EURUSD/EODATA_EURUSD_D1_2020_01.csv
+
         var grid = new Gtk.Grid ();
         grid.row_spacing = 3;
         /*grid.column_spacing = 12;*/
         grid.column_homogeneous = true;
 
-        var scroll = new Gtk.ScrolledWindow(null, null);
-        scroll.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-        
+        var scroll = new Gtk.ScrolledWindow (null, null);
+        scroll.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+
 
         /******************************* */
 
-        Gtk.ListStore list_store = new Gtk.ListStore(5, typeof(string), typeof(string), typeof(string), typeof(string), typeof(string));
-        Gtk.TreeIter add_iter = Gtk.TreeIter();
+        Gtk.ListStore list_store = new Gtk.ListStore (8, typeof (string), typeof (string), typeof (string), typeof (int), typeof (string), typeof (string), typeof (bool), typeof (string));
+        Gtk.TreeIter add_iter = Gtk.TreeIter ();
 
-        list_store.append(out add_iter);
-        list_store.set(add_iter, 0, "EURUSD", 1, "Forex", 2, "M1", 3, "2011", 4, "Enero");
+        list_store.append (out add_iter);
+        list_store.set (add_iter
+                        , 0, "EODATA"
+                        , 1, "Forex"
+                        , 2, "EURUSD"
+                        , 3, 2020
+                        , 4, "January"
+                        , 5, "Diario (D1)"
+                        , 6, true
+                        , 7, "https://raw.githubusercontent.com/horaciodrs/TradeSim/master/data/quotes/EODATA/2020/EURUSD/EODATA_EURUSD_D1_2020_01.csv");
 
-        list_store.append(out add_iter);
-        list_store.set(add_iter, 0, "EURUSD", 1, "Forex", 2, "M1", 3, "2011", 4, "Febrero");
+        list_store.append (out add_iter);
+        list_store.set (add_iter
+                        , 0, "EODATA"
+                        , 1, "Forex"
+                        , 2, "EURUSD"
+                        , 3, 2020
+                        , 4, "February"
+                        , 5, "Diario (D1)"
+                        , 6, false
+                        , 7, "https://raw.githubusercontent.com/horaciodrs/TradeSim/master/data/quotes/EODATA/2020/EURUSD/EODATA_EURUSD_D1_2020_02.csv");
 
-        Gtk.TreeView tree_view = new Gtk.TreeView();
+        list_store.append (out add_iter);
+        list_store.set (add_iter
+                        , 0, "EODATA"
+                        , 1, "Forex"
+                        , 2, "EURUSD"
+                        , 3, 2020
+                        , 4, "March"
+                        , 5, "Diario (D1)"
+                        , 6, true
+                        , 7, "https://raw.githubusercontent.com/horaciodrs/TradeSim/master/data/quotes/EODATA/2020/EURUSD/EODATA_EURUSD_D1_2020_03.csv");
 
-        tree_view.set_model(list_store);
+        Gtk.TreeView tree_view = new Gtk.TreeView ();
 
-        Gtk.CellRendererText ticker_cell = new Gtk.CellRendererText();
-        Gtk.CellRendererText market_cell = new Gtk.CellRendererText();
-        Gtk.CellRendererText timeframe_cell = new Gtk.CellRendererText();
-        Gtk.CellRendererText year_cell = new Gtk.CellRendererText();
-        Gtk.CellRendererText month_cell = new Gtk.CellRendererText();
+        tree_view.set_model (list_store);
 
-        tree_view.insert_column_with_attributes(-1, "Ticker", ticker_cell, "text", 0);
-        tree_view.insert_column_with_attributes(-1, "Mercado", market_cell, "text", 1);
-        tree_view.insert_column_with_attributes(-1, "Year", timeframe_cell, "text", 2);
-        tree_view.insert_column_with_attributes(-1, "Year", year_cell, "text", 3);
-        tree_view.insert_column_with_attributes(-1, "Month", month_cell, "text", 4);
+        Gtk.CellRendererText provider_cell = new Gtk.CellRendererText ();
+        Gtk.CellRendererText ticker_cell = new Gtk.CellRendererText ();
+        Gtk.CellRendererText market_cell = new Gtk.CellRendererText ();
+        Gtk.CellRendererText timeframe_cell = new Gtk.CellRendererText ();
+        Gtk.CellRendererText year_cell = new Gtk.CellRendererText ();
+        Gtk.CellRendererText month_cell = new Gtk.CellRendererText ();
+        Gtk.CellRendererToggle data_toggle = new Gtk.CellRendererToggle ();
+        Gtk.CellRendererText url_cell = new Gtk.CellRendererText ();
+
+        data_toggle.toggled.connect ((toggle, path) => {
+
+            Gtk.TreeIter edited_iter;
+            GLib.Value url;
+
+            list_store.get_iter(out edited_iter, new Gtk.TreePath.from_string(path));
+
+            list_store.get_value(edited_iter, 7, out url);
+
+            //Obtener datos desde el link de url....
+
+            /*obtener archivo */
+
+            File file = File.new_for_uri (url.get_string());
+            //IOStream ios = file.create_readwrite (FileCreateFlags.PRIVATE);
+            
+            //
+            // Read n bytes:
+            //
+            
+            // Open the file for reading:
+            InputStream @is = file.read ();
+            
+            // Output: ``M``
+            uint8 buffer[1];
+            size_t size = @is.read (buffer);
+            stdout.write (buffer, size);
+            
+            // Output: ``y 1. line``
+            DataInputStream dis = new DataInputStream (@is);
+
+            string str = "";
+            
+            str = dis.read_line ();
+
+            while(str != null){
+                print ("%s\n", str);
+                str = dis.read_line ();
+            }
+            
+            
+            /*fin obtener archivo */
+
+            list_store.set(edited_iter, 6, !toggle.active);
+            
+        });
+
+        // renderer_toggle.connect("toggled", self.on_cell_toggled);
+
+        tree_view.insert_column_with_attributes (-1, "Provider", provider_cell, "text", 0);
+        tree_view.insert_column_with_attributes (-1, "Market", market_cell, "text", 1);
+        tree_view.insert_column_with_attributes (-1, "Ticker", ticker_cell, "text", 2);
+        tree_view.insert_column_with_attributes (-1, "Year", year_cell, "text", 3);
+        tree_view.insert_column_with_attributes (-1, "Month", month_cell, "text", 4);
+        tree_view.insert_column_with_attributes (-1, "Timeframe", timeframe_cell, "text", 5);
+        tree_view.insert_column_with_attributes (-1, "Imported", data_toggle, "active", 6);
+        tree_view.insert_column_with_attributes (-1, "Url", url_cell, "text", 7);
+
+        //tree_view.get_column(7).set_visible(false);
 
         scroll.get_style_context ().add_class ("scrolled-window-data");
 
         /***************************** */
 
-        scroll.add(tree_view);
-        scroll.set_vexpand(true);
+        scroll.add (tree_view);
+        scroll.set_vexpand (true);
 
 
         grid.attach (new SettingsHeader ("Data Source"), 0, 0);
@@ -117,7 +203,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         grid.halign = Gtk.Align.CENTER;
 
         var app_icon = new Gtk.Image ();
-         app_icon.gicon = new ThemedIcon ("com.github.horaciodrs.TradeSim");
+        app_icon.gicon = new ThemedIcon ("com.github.horaciodrs.TradeSim");
         app_icon.pixel_size = 64;
         app_icon.margin_top = 12;
 

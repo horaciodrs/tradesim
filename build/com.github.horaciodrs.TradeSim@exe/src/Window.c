@@ -265,14 +265,14 @@ GType trade_sim_dialogs_settings_dialog_get_type (void) G_GNUC_CONST;
 TradeSimDialogsSettingsDialog* trade_sim_dialogs_settings_dialog_new (TradeSimMainWindow* window);
 TradeSimDialogsSettingsDialog* trade_sim_dialogs_settings_dialog_construct (GType object_type,
                                                                             TradeSimMainWindow* window);
-static void __lambda9_ (TradeSimMainWindow* self);
-static void ___lambda9__gtk_dialog_close (GtkDialog* _sender,
-                                   gpointer self);
+static void __lambda10_ (TradeSimMainWindow* self);
+static void ___lambda10__gtk_dialog_close (GtkDialog* _sender,
+                                    gpointer self);
 static void __trade_sim_main_window___lambda4__gtk_button_clicked (GtkButton* _sender,
                                                             gpointer self);
-static gboolean _trade_sim_main_window___lambda10_ (TradeSimMainWindow* self,
+static gboolean _trade_sim_main_window___lambda11_ (TradeSimMainWindow* self,
                                              GdkEventAny* e);
-static gboolean __trade_sim_main_window___lambda10__gtk_widget_delete_event (GtkWidget* _sender,
+static gboolean __trade_sim_main_window___lambda11__gtk_widget_delete_event (GtkWidget* _sender,
                                                                       GdkEventAny* event,
                                                                       gpointer self);
 static void trade_sim_main_window_finalize (GObject * obj);
@@ -441,17 +441,17 @@ trade_sim_main_window_before_destroy (TradeSimMainWindow* self)
 
 
 static void
-__lambda9_ (TradeSimMainWindow* self)
+__lambda10_ (TradeSimMainWindow* self)
 {
 }
 
 
 static void
-___lambda9__gtk_dialog_close (GtkDialog* _sender,
-                              gpointer self)
+___lambda10__gtk_dialog_close (GtkDialog* _sender,
+                               gpointer self)
 {
 #line 76 "/home/horacio/Vala/TradeSim/src/Window.vala"
-	__lambda9_ ((TradeSimMainWindow*) self);
+	__lambda10_ ((TradeSimMainWindow*) self);
 #line 456 "Window.c"
 }
 
@@ -484,7 +484,7 @@ _trade_sim_main_window___lambda4_ (TradeSimMainWindow* self,
 #line 76 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_tmp3_ = settings_dialog;
 #line 76 "/home/horacio/Vala/TradeSim/src/Window.vala"
-	g_signal_connect_object ((GtkDialog*) _tmp3_, "close", (GCallback) ___lambda9__gtk_dialog_close, self, 0);
+	g_signal_connect_object ((GtkDialog*) _tmp3_, "close", (GCallback) ___lambda10__gtk_dialog_close, self, 0);
 #line 72 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	_g_object_unref0 (settings_dialog);
 #line 491 "Window.c"
@@ -502,7 +502,7 @@ __trade_sim_main_window___lambda4__gtk_button_clicked (GtkButton* _sender,
 
 
 static gboolean
-_trade_sim_main_window___lambda10_ (TradeSimMainWindow* self,
+_trade_sim_main_window___lambda11_ (TradeSimMainWindow* self,
                                     GdkEventAny* e)
 {
 	gboolean result = FALSE;
@@ -517,12 +517,12 @@ _trade_sim_main_window___lambda10_ (TradeSimMainWindow* self,
 
 
 static gboolean
-__trade_sim_main_window___lambda10__gtk_widget_delete_event (GtkWidget* _sender,
+__trade_sim_main_window___lambda11__gtk_widget_delete_event (GtkWidget* _sender,
                                                              GdkEventAny* event,
                                                              gpointer self)
 {
 	gboolean result;
-	result = _trade_sim_main_window___lambda10_ ((TradeSimMainWindow*) self, event);
+	result = _trade_sim_main_window___lambda11_ ((TradeSimMainWindow*) self, event);
 #line 81 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	return result;
 #line 529 "Window.c"
@@ -660,7 +660,7 @@ trade_sim_main_window_constructor (GType type,
 #line 72 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	g_signal_connect_object (_tmp21_, "clicked", (GCallback) __trade_sim_main_window___lambda4__gtk_button_clicked, self, 0);
 #line 81 "/home/horacio/Vala/TradeSim/src/Window.vala"
-	g_signal_connect_object ((GtkWidget*) self, "delete-event", (GCallback) __trade_sim_main_window___lambda10__gtk_widget_delete_event, self, 0);
+	g_signal_connect_object ((GtkWidget*) self, "delete-event", (GCallback) __trade_sim_main_window___lambda11__gtk_widget_delete_event, self, 0);
 #line 85 "/home/horacio/Vala/TradeSim/src/Window.vala"
 	gtk_widget_show_all ((GtkWidget*) self);
 #line 42 "/home/horacio/Vala/TradeSim/src/Window.vala"
