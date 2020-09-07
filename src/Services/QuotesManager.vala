@@ -101,6 +101,9 @@ public class TradeSim.Services.QuotesManager {
 
     public TradeSim.Services.QuoteItem get_cuote_item_by_csvline (string _csvline) {
 
+        print("csv line.....\n");
+        print(_csvline + "\n");
+
         string[] data = _csvline.split (",");
         
 
