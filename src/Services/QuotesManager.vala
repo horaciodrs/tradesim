@@ -103,8 +103,6 @@ public class TradeSim.Services.QuotesManager {
 
         string[] data = _csvline.split (",");
 
-        //print("time frame=" + data[ItemCSVColumns.TIME_FRAME_NAME] + "\n");
-
         var return_value = new TradeSim.Services.QuoteItem (data[ItemCSVColumns.TICKER]);
 
 
