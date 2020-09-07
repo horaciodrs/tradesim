@@ -147,14 +147,14 @@ public class TradeSim.Services.Database : GLib.Object {
 
     public void insert_quote(TradeSim.Services.QuoteItem quote_item){
 
-        print("ticker name:" + quote_item.ticker + "\n");
+        print("time_frame_name(len):" + quote_item.time_frame_name.length.to_string() + "\n");
 
         int provider_id = get_db_id_by_name("providers", quote_item.provider_name);
         int market_id = get_db_id_by_name("markets", "Forex");
         int ticker_id = get_db_id_by_name("tickers", quote_item.ticker);
         int time_frame_id = get_db_id_by_name("time_frames", quote_item.time_frame_name);
 
-        print("ticker id:" + ticker_id.to_string() + "\n");
+        print("time_frame_id:" + time_frame_id.to_string() + "\n");
         print("============================================\n");
         
         int date_year = quote_item.date_time.get_year();
