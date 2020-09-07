@@ -19,37 +19,6 @@
  * Authored by: Horacio Daniel Ros <horaciodrs@gmail.com>
  */
 
-
-/*
-   TEMA DE COLORES
-
-   PARA CAMBIAR EL COLOR SEGUN SI SE USA EL TEMA OSCURO O NO...
-   UTILIZO UN ARRAY DONDE GUARDO POR RGB CADA TEMA.
-
-   theme_type {0, 1}   0: Normal, 1: DarkVariant
-
-   canvas_background_theme_red[theme_type]
-   canvas_background_theme_green[theme_type]
-   canvas_background_theme_blue[theme_type]
-
-   canvas_candle_up_bg_theme_red[theme_type]
-   canvas_candle_up_bg_theme_green[theme_type]
-   canvas_candle_up_bg_theme_blue[theme_type]
-
-   canvas_candle_up_brd_theme_red[theme_type]
-   canvas_candle_up_brd_theme_green[theme_type]
-   canvas_candle_up_brd_theme_blue[theme_type]
-
-   canvas_candle_down_bg_theme_red[theme_type]
-   canvas_candle_down_bg_theme_green[theme_type]
-   canvas_candle_down_bg_theme_blue[theme_type]
-
-   canvas_candle_down_brd_theme_red[theme_type]
-   canvas_candle_down_brd_theme_green[theme_type]
-   canvas_candle_down_brd_theme_blue[theme_type]
-
- */
-
 public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public weak TradeSim.MainWindow main_window;
