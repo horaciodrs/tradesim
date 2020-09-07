@@ -108,7 +108,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         scroll_provider = new Gtk.ScrolledWindow (null, null);
         scroll_provider.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
 
-        list_store_provider = new Gtk.ListStore (1, typeof (string));
+        list_store_provider = new Gtk.ListStore (2, typeof (string), typeof (string));
         add_iter_provider = Gtk.TreeIter ();
 
         Array<TradeSim.Objects.Provider> providers = new Array<TradeSim.Objects.Provider>();
@@ -120,6 +120,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             list_store_provider.append (out add_iter_provider);
             list_store_provider.set (add_iter_provider, 0, providers.index (i).name);
+            list_store_provider.set (add_iter_provider, 1, providers.index (i).folder_name);
 
         }
 
@@ -130,6 +131,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         tree_view_provider.set_model (list_store_provider);
 
         Gtk.CellRendererText provider_cell = new Gtk.CellRendererText ();
+        Gtk.CellRendererText provider_folder_cell = new Gtk.CellRendererText ();
 
         tree_view_provider.get_selection().changed.connect ((sel) => {
 
@@ -140,7 +142,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             sel.get_selected (out model, out edited_iter);
 
 
-            model.get_value (edited_iter, 0, out nombre);
+            model.get_value (edited_iter, 1, out nombre);
 
             ds_selected_provider = nombre.get_string();
 
@@ -149,7 +151,10 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         });
 
         tree_view_provider.insert_column_with_attributes (-1, "Provider", provider_cell, "text", 0);
+        tree_view_provider.insert_column_with_attributes (-1, "ProviderFolderName", provider_folder_cell, "text", 1);
 
+        tree_view_provider.get_column (1).set_visible (false); // oculto la columna con la url.
+        
         scroll_provider.add (tree_view_provider);
         scroll_provider.set_vexpand (true);
         scroll_provider.set_hexpand (true);
@@ -342,7 +347,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             url = url + "/" + ds_selected_provider + "_" + ds_selected_ticker + "_" + ds_selected_time_frame + "_" + ds_selected_year + "_";
             url = url + mes + ".csv";
 
-            //print(url + "\n");
+            print(url + "\n");
 
             list_store_quotes.append (out add_iter_quotes);
             list_store_quotes.set (add_iter_quotes
