@@ -21,6 +21,7 @@ gdouble _r (gint red);
 gdouble _g (gint green);
 gdouble _b (gint blue);
 void create_dir_with_parents (const gchar* dir);
+gchar* get_month_name (gint i);
 
 
 gdouble
@@ -31,7 +32,7 @@ _r (gint red)
 	result = red / 255.00;
 #line 2 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
 	return result;
-#line 35 "Utilities.c"
+#line 36 "Utilities.c"
 }
 
 
@@ -43,7 +44,7 @@ _g (gint green)
 	result = green / 255.00;
 #line 6 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
 	return result;
-#line 47 "Utilities.c"
+#line 48 "Utilities.c"
 }
 
 
@@ -55,7 +56,7 @@ _b (gint blue)
 	result = blue / 255.00;
 #line 10 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
 	return result;
-#line 59 "Utilities.c"
+#line 60 "Utilities.c"
 }
 
 
@@ -87,19 +88,177 @@ create_dir_with_parents (const gchar* dir)
 	_tmp4_ = tmp;
 #line 16 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
 	if (g_file_query_file_type (_tmp4_, 0, NULL) != G_FILE_TYPE_DIRECTORY) {
-#line 91 "Utilities.c"
+#line 92 "Utilities.c"
 		const gchar* _tmp5_;
 #line 17 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
 		_tmp5_ = path;
 #line 17 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
 		g_mkdir_with_parents (_tmp5_, 0775);
-#line 97 "Utilities.c"
+#line 98 "Utilities.c"
 	}
 #line 13 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
 	_g_object_unref0 (tmp);
 #line 13 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
 	_g_free0 (path);
-#line 103 "Utilities.c"
+#line 104 "Utilities.c"
+}
+
+
+gchar*
+get_month_name (gint i)
+{
+	gchar* result = NULL;
+#line 23 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+	if (i == 1) {
+#line 114 "Utilities.c"
+		gchar* _tmp0_;
+#line 24 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+		_tmp0_ = g_strdup ("January");
+#line 24 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+		result = _tmp0_;
+#line 24 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+		return result;
+#line 122 "Utilities.c"
+	} else {
+#line 25 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+		if (i == 2) {
+#line 126 "Utilities.c"
+			gchar* _tmp1_;
+#line 26 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+			_tmp1_ = g_strdup ("February");
+#line 26 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+			result = _tmp1_;
+#line 26 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+			return result;
+#line 134 "Utilities.c"
+		} else {
+#line 27 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+			if (i == 3) {
+#line 138 "Utilities.c"
+				gchar* _tmp2_;
+#line 28 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+				_tmp2_ = g_strdup ("March");
+#line 28 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+				result = _tmp2_;
+#line 28 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+				return result;
+#line 146 "Utilities.c"
+			} else {
+#line 29 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+				if (i == 4) {
+#line 150 "Utilities.c"
+					gchar* _tmp3_;
+#line 30 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+					_tmp3_ = g_strdup ("April");
+#line 30 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+					result = _tmp3_;
+#line 30 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+					return result;
+#line 158 "Utilities.c"
+				} else {
+#line 31 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+					if (i == 5) {
+#line 162 "Utilities.c"
+						gchar* _tmp4_;
+#line 32 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+						_tmp4_ = g_strdup ("May");
+#line 32 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+						result = _tmp4_;
+#line 32 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+						return result;
+#line 170 "Utilities.c"
+					} else {
+#line 33 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+						if (i == 6) {
+#line 174 "Utilities.c"
+							gchar* _tmp5_;
+#line 34 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+							_tmp5_ = g_strdup ("June");
+#line 34 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+							result = _tmp5_;
+#line 34 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+							return result;
+#line 182 "Utilities.c"
+						} else {
+#line 35 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+							if (i == 7) {
+#line 186 "Utilities.c"
+								gchar* _tmp6_;
+#line 36 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+								_tmp6_ = g_strdup ("July");
+#line 36 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+								result = _tmp6_;
+#line 36 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+								return result;
+#line 194 "Utilities.c"
+							} else {
+#line 37 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+								if (i == 8) {
+#line 198 "Utilities.c"
+									gchar* _tmp7_;
+#line 38 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+									_tmp7_ = g_strdup ("August");
+#line 38 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+									result = _tmp7_;
+#line 38 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+									return result;
+#line 206 "Utilities.c"
+								} else {
+#line 39 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+									if (i == 9) {
+#line 210 "Utilities.c"
+										gchar* _tmp8_;
+#line 40 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+										_tmp8_ = g_strdup ("September");
+#line 40 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+										result = _tmp8_;
+#line 40 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+										return result;
+#line 218 "Utilities.c"
+									} else {
+#line 41 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+										if (i == 10) {
+#line 222 "Utilities.c"
+											gchar* _tmp9_;
+#line 42 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+											_tmp9_ = g_strdup ("Octover");
+#line 42 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+											result = _tmp9_;
+#line 42 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+											return result;
+#line 230 "Utilities.c"
+										} else {
+#line 43 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+											if (i == 11) {
+#line 234 "Utilities.c"
+												gchar* _tmp10_;
+#line 44 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+												_tmp10_ = g_strdup ("November");
+#line 44 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+												result = _tmp10_;
+#line 44 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+												return result;
+#line 242 "Utilities.c"
+											} else {
+												gchar* _tmp11_;
+#line 46 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+												_tmp11_ = g_strdup ("December");
+#line 46 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+												result = _tmp11_;
+#line 46 "/home/horacio/Vala/TradeSim/src/Utils/Utilities.vala"
+												return result;
+#line 251 "Utilities.c"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 

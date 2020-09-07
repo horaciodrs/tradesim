@@ -92,6 +92,8 @@ public class TradeSim.Services.Database : GLib.Object {
         insert_ticker("EURUSD", id_forex);
         insert_ticker("USDJPY", id_forex);
         insert_ticker("GBPUSD", id_forex);
+        insert_ticker("USDCHF", id_forex);
+        insert_ticker("USDCAD", id_forex);
 
         return rc;
     }
@@ -213,57 +215,6 @@ public class TradeSim.Services.Database : GLib.Object {
         }
     }
 
-    /*public bool music_file_exists (string uri) {
-        bool file_exists = false;
-        Sqlite.Statement stmt;
-
-        int res = db.prepare_v2 ("SELECT COUNT (*) FROM tracks WHERE path = ?", -1, out stmt);
-        assert (res == Sqlite.OK);
-
-        res = stmt.bind_text (1, uri);
-        assert (res == Sqlite.OK);
-
-        if (stmt.step () == Sqlite.ROW) {
-            file_exists = stmt.column_int (0) > 0;
-        }
-
-        return file_exists;
-    }
-
-    public bool music_blacklist_exists (string uri) {
-        bool file_exists = false;
-        Sqlite.Statement stmt;
-
-        int res = db.prepare_v2 ("SELECT COUNT (*) FROM blacklist WHERE path = ?", -1, out stmt);
-        assert (res == Sqlite.OK);
-
-        res = stmt.bind_text (1, uri);
-        assert (res == Sqlite.OK);
-
-        if (stmt.step () == Sqlite.ROW) {
-            file_exists = stmt.column_int (0) > 0;
-        }
-
-        return file_exists;
-    }
-
-    public bool radio_exists (string url) {
-        bool exists = false;
-        Sqlite.Statement stmt;
-
-        int res = db.prepare_v2 ("SELECT COUNT (*) FROM radios WHERE url = ?", -1, out stmt);
-        assert (res == Sqlite.OK);
-
-        res = stmt.bind_text (1, url);
-        assert (res == Sqlite.OK);
-
-        if (stmt.step () == Sqlite.ROW) {
-            exists = stmt.column_int (0) > 0;
-        }
-
-        return exists;
-    }*/
-
     public bool is_database_empty () {
         bool empty = false;
         Sqlite.Statement stmt;
@@ -278,111 +229,44 @@ public class TradeSim.Services.Database : GLib.Object {
         return empty;
     }
 
-    /*
+    public Array<TradeSim.Objects.Provider> get_providers () {
 
-
-    public void insert_quote (TradeSim.Services.QuoteItem quote_item) {
         Sqlite.Statement stmt;
         string sql;
         int res;
 
-        sql = """ INSERT OR IGNORE INTO quotes (provider_id, market_id, ticker_id, time_frame_id, date_year
-                                              , date_month, date_day, date_hour, date_minute , price_open
-                                              , price_close, price_max, price_min) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);  """;
+        sql = """ SELECT id, name, folder_name FROM providers ORDER BY name DESC; """;
 
         res = db.prepare_v2 (sql, -1, out stmt);
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (1, quote_item.provider_id);
-        assert (res == Sqlite.OK);
-        
-        res = stmt.bind_int (2, quote_item.market_id);
-        assert (res == Sqlite.OK);
+        var all = new Array<TradeSim.Objects.Provider> ();
 
-        res = stmt.bind_int (3, quote_item.ticker_id);
-        assert (res == Sqlite.OK);
-
-        res = stmt.bind_int (4, quote_item.time_frame_id);
-        assert (res == Sqlite.OK);
-
-        res = stmt.bind_int (5, quote_item.date_year);
-        assert (res == Sqlite.OK);
-
-        res = stmt.bind_int (6, quote_item.date_month);
-        assert (res == Sqlite.OK);
-
-        res = stmt.bind_int (7, quote_item.date_day);
-        assert (res == Sqlite.OK);
-
-        res = stmt.bind_int (8, quote_item.date_hour);
-        assert (res == Sqlite.OK);
-
-        res = stmt.bind_int (9, quote_item.date_minute);
-        assert (res == Sqlite.OK);
-
-        res = stmt.bind_int (10, quote_item.price_open);
-        assert (res == Sqlite.OK);
-
-        res = stmt.bind_int (11, quote_item.price_close);
-        assert (res == Sqlite.OK);
-
-        res = stmt.bind_int (12, quote_item.price_max);
-        assert (res == Sqlite.OK);
-
-        res = stmt.bind_int (13, quote_item.price_min);
-        assert (res == Sqlite.OK);
-
-
-        if (stmt.step () != Sqlite.DONE) {
-            warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+        while ((res = stmt.step ()) == Sqlite.ROW) {
+            all.append_val (new TradeSim.Objects.Provider (stmt.column_int (0), stmt.column_text (1), stmt.column_text (2)));
         }
 
-        stmt.reset ();
-
+        return all;
     }
-    */
 
-    /*
+    public Array<TradeSim.Objects.Ticker> get_tickers () {
 
-    public Objects.Track? get_track_by_path (string path) {
         Sqlite.Statement stmt;
+        string sql;
         int res;
 
-        string sql = """
-            SELECT tracks.id, tracks.path, tracks.title, tracks.duration, tracks.is_favorite, tracks.track, tracks.date_added, 
-            tracks.play_count, tracks.album_id, albums.title, artists.id, artists.name, tracks.favorite_added, tracks.last_played FROM tracks 
-            INNER JOIN albums ON tracks.album_id = albums.id
-            INNER JOIN artists ON albums.artist_id = artists.id WHERE tracks.path = ?;
-        """;
+        sql = """ SELECT id, name FROM tickers ORDER BY name DESC; """;
 
         res = db.prepare_v2 (sql, -1, out stmt);
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_text (1, path);
-        assert (res == Sqlite.OK);
+        var all = new Array<TradeSim.Objects.Ticker> ();
 
-        var track = new Objects.Track ();
-
-        if (stmt.step () == Sqlite.ROW) {
-            track.id = stmt.column_int (0);
-            track.path = stmt.column_text (1);
-            track.title = stmt.column_text (2);
-            track.duration = stmt.column_int64 (3);
-            track.is_favorite = stmt.column_int (4);
-            track.track = stmt.column_int (5);
-            track.date_added = stmt.column_text (6);
-            track.play_count = stmt.column_int (7);
-            track.album_id = stmt.column_int (8);
-            track.album_title = stmt.column_text (9);
-            track.artist_id = stmt.column_int (10);
-            track.artist_name = stmt.column_text (11);
-            track.favorite_added = stmt.column_text (12);
-            track.last_played = stmt.column_text (13);
+        while ((res = stmt.step ()) == Sqlite.ROW) {
+            all.append_val (new TradeSim.Objects.Ticker (stmt.column_int (0), stmt.column_text (1)));
         }
 
-        return track;
+        return all;
     }
-*/
 
 }

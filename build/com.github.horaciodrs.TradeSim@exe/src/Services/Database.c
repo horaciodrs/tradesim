@@ -30,6 +30,27 @@ static GParamSpec* trade_sim_services_database_properties[TRADE_SIM_SERVICES_DAT
 #define _sqlite3_close0(var) ((var == NULL) ? NULL : (var = (sqlite3_close (var), NULL)))
 #define _g_free0(var) (var = (g_free (var), NULL))
 #define _sqlite3_finalize0(var) ((var == NULL) ? NULL : (var = (sqlite3_finalize (var), NULL)))
+
+#define TRADE_SIM_OBJECTS_TYPE_PROVIDER (trade_sim_objects_provider_get_type ())
+#define TRADE_SIM_OBJECTS_PROVIDER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRADE_SIM_OBJECTS_TYPE_PROVIDER, TradeSimObjectsProvider))
+#define TRADE_SIM_OBJECTS_PROVIDER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRADE_SIM_OBJECTS_TYPE_PROVIDER, TradeSimObjectsProviderClass))
+#define TRADE_SIM_OBJECTS_IS_PROVIDER(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRADE_SIM_OBJECTS_TYPE_PROVIDER))
+#define TRADE_SIM_OBJECTS_IS_PROVIDER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRADE_SIM_OBJECTS_TYPE_PROVIDER))
+#define TRADE_SIM_OBJECTS_PROVIDER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRADE_SIM_OBJECTS_TYPE_PROVIDER, TradeSimObjectsProviderClass))
+
+typedef struct _TradeSimObjectsProvider TradeSimObjectsProvider;
+typedef struct _TradeSimObjectsProviderClass TradeSimObjectsProviderClass;
+#define _g_array_unref0(var) ((var == NULL) ? NULL : (var = (g_array_unref (var), NULL)))
+
+#define TRADE_SIM_OBJECTS_TYPE_TICKER (trade_sim_objects_ticker_get_type ())
+#define TRADE_SIM_OBJECTS_TICKER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRADE_SIM_OBJECTS_TYPE_TICKER, TradeSimObjectsTicker))
+#define TRADE_SIM_OBJECTS_TICKER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRADE_SIM_OBJECTS_TYPE_TICKER, TradeSimObjectsTickerClass))
+#define TRADE_SIM_OBJECTS_IS_TICKER(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRADE_SIM_OBJECTS_TYPE_TICKER))
+#define TRADE_SIM_OBJECTS_IS_TICKER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRADE_SIM_OBJECTS_TYPE_TICKER))
+#define TRADE_SIM_OBJECTS_TICKER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRADE_SIM_OBJECTS_TYPE_TICKER, TradeSimObjectsTickerClass))
+
+typedef struct _TradeSimObjectsTicker TradeSimObjectsTicker;
+typedef struct _TradeSimObjectsTickerClass TradeSimObjectsTickerClass;
 #define _vala_assert(expr, msg) if G_LIKELY (expr) ; else g_assertion_message_expr (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, msg);
 #define _vala_return_if_fail(expr, msg) if G_LIKELY (expr) ; else { g_return_if_fail_warning (G_LOG_DOMAIN, G_STRFUNC, msg); return; }
 #define _vala_return_val_if_fail(expr, msg, val) if G_LIKELY (expr) ; else { g_return_if_fail_warning (G_LOG_DOMAIN, G_STRFUNC, msg); return val; }
@@ -70,6 +91,46 @@ void trade_sim_services_database_insert_ticker (TradeSimServicesDatabase* self,
 gint trade_sim_services_database_get_id_if_market_exists (TradeSimServicesDatabase* self,
                                                           const gchar* _name);
 gboolean trade_sim_services_database_is_database_empty (TradeSimServicesDatabase* self);
+gpointer trade_sim_objects_provider_ref (gpointer instance);
+void trade_sim_objects_provider_unref (gpointer instance);
+GParamSpec* trade_sim_objects_param_spec_provider (const gchar* name,
+                                                   const gchar* nick,
+                                                   const gchar* blurb,
+                                                   GType object_type,
+                                                   GParamFlags flags);
+void trade_sim_objects_value_set_provider (GValue* value,
+                                           gpointer v_object);
+void trade_sim_objects_value_take_provider (GValue* value,
+                                            gpointer v_object);
+gpointer trade_sim_objects_value_get_provider (const GValue* value);
+GType trade_sim_objects_provider_get_type (void) G_GNUC_CONST;
+GArray* trade_sim_services_database_get_providers (TradeSimServicesDatabase* self);
+TradeSimObjectsProvider* trade_sim_objects_provider_new (gint _id,
+                                                         const gchar* _name,
+                                                         const gchar* _folder_name);
+TradeSimObjectsProvider* trade_sim_objects_provider_construct (GType object_type,
+                                                               gint _id,
+                                                               const gchar* _name,
+                                                               const gchar* _folder_name);
+gpointer trade_sim_objects_ticker_ref (gpointer instance);
+void trade_sim_objects_ticker_unref (gpointer instance);
+GParamSpec* trade_sim_objects_param_spec_ticker (const gchar* name,
+                                                 const gchar* nick,
+                                                 const gchar* blurb,
+                                                 GType object_type,
+                                                 GParamFlags flags);
+void trade_sim_objects_value_set_ticker (GValue* value,
+                                         gpointer v_object);
+void trade_sim_objects_value_take_ticker (GValue* value,
+                                          gpointer v_object);
+gpointer trade_sim_objects_value_get_ticker (const GValue* value);
+GType trade_sim_objects_ticker_get_type (void) G_GNUC_CONST;
+GArray* trade_sim_services_database_get_tickers (TradeSimServicesDatabase* self);
+TradeSimObjectsTicker* trade_sim_objects_ticker_new (gint _id,
+                                                     const gchar* _name);
+TradeSimObjectsTicker* trade_sim_objects_ticker_construct (GType object_type,
+                                                           gint _id,
+                                                           const gchar* _name);
 static void trade_sim_services_database_finalize (GObject * obj);
 
 
@@ -101,7 +162,7 @@ trade_sim_services_database_construct (GType object_type,
 	if (!skip_tables) {
 #line 13 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		if (trade_sim_services_database_create_tables (self) != SQLITE_OK) {
-#line 105 "Database.c"
+#line 166 "Database.c"
 			FILE* _tmp2_;
 			gint _tmp3_;
 			sqlite3* _tmp4_;
@@ -118,7 +179,7 @@ trade_sim_services_database_construct (GType object_type,
 			fprintf (_tmp2_, "Error creating db table: %d, %s\n", _tmp3_, _tmp5_);
 #line 15 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			gtk_main_quit ();
-#line 122 "Database.c"
+#line 183 "Database.c"
 		}
 	}
 #line 19 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
@@ -135,7 +196,7 @@ trade_sim_services_database_construct (GType object_type,
 	_tmp9_ = rc;
 #line 21 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	if (_tmp9_ != SQLITE_OK) {
-#line 139 "Database.c"
+#line 200 "Database.c"
 		FILE* _tmp10_;
 		gint _tmp11_;
 		sqlite3* _tmp12_;
@@ -152,11 +213,11 @@ trade_sim_services_database_construct (GType object_type,
 		fprintf (_tmp10_, "Can't open database: %d, %s\n", _tmp11_, _tmp13_);
 #line 23 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		gtk_main_quit ();
-#line 156 "Database.c"
+#line 217 "Database.c"
 	}
 #line 8 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	return self;
-#line 160 "Database.c"
+#line 221 "Database.c"
 }
 
 
@@ -165,7 +226,7 @@ trade_sim_services_database_new (gboolean skip_tables)
 {
 #line 8 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	return trade_sim_services_database_construct (TRADE_SIM_SERVICES_TYPE_DATABASE, skip_tables);
-#line 169 "Database.c"
+#line 230 "Database.c"
 }
 
 
@@ -195,7 +256,7 @@ _sqlite3_exec (sqlite3* self,
 	ec = _tmp1_;
 #line 37 "/usr/share/vala-0.40/vapi/sqlite3.vapi"
 	if ((&_vala_errmsg) != NULL) {
-#line 199 "Database.c"
+#line 260 "Database.c"
 		const gchar* _tmp2_;
 		gchar* _tmp3_;
 #line 38 "/usr/share/vala-0.40/vapi/sqlite3.vapi"
@@ -206,13 +267,13 @@ _sqlite3_exec (sqlite3* self,
 		_g_free0 (_vala_errmsg);
 #line 38 "/usr/share/vala-0.40/vapi/sqlite3.vapi"
 		_vala_errmsg = _tmp3_;
-#line 210 "Database.c"
+#line 271 "Database.c"
 	} else {
 #line 40 "/usr/share/vala-0.40/vapi/sqlite3.vapi"
 		_g_free0 (_vala_errmsg);
 #line 40 "/usr/share/vala-0.40/vapi/sqlite3.vapi"
 		_vala_errmsg = NULL;
-#line 216 "Database.c"
+#line 277 "Database.c"
 	}
 #line 42 "/usr/share/vala-0.40/vapi/sqlite3.vapi"
 	_tmp4_ = sqlite_errmsg;
@@ -224,15 +285,15 @@ _sqlite3_exec (sqlite3* self,
 	if (errmsg) {
 #line 43 "/usr/share/vala-0.40/vapi/sqlite3.vapi"
 		*errmsg = _vala_errmsg;
-#line 228 "Database.c"
+#line 289 "Database.c"
 	} else {
 #line 43 "/usr/share/vala-0.40/vapi/sqlite3.vapi"
 		_g_free0 (_vala_errmsg);
-#line 232 "Database.c"
+#line 293 "Database.c"
 	}
 #line 43 "/usr/share/vala-0.40/vapi/sqlite3.vapi"
 	return result;
-#line 236 "Database.c"
+#line 297 "Database.c"
 }
 
 
@@ -268,7 +329,7 @@ trade_sim_services_database_create_tables (TradeSimServicesDatabase* self)
 	_tmp3_ = rc;
 #line 32 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	if (_tmp3_ != SQLITE_OK) {
-#line 272 "Database.c"
+#line 333 "Database.c"
 		FILE* _tmp4_;
 		gint _tmp5_;
 		sqlite3* _tmp6_;
@@ -285,7 +346,7 @@ trade_sim_services_database_create_tables (TradeSimServicesDatabase* self)
 		fprintf (_tmp4_, "Can't open database: %d, %s\n", _tmp5_, _tmp7_);
 #line 34 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		gtk_main_quit ();
-#line 289 "Database.c"
+#line 350 "Database.c"
 	}
 #line 37 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp8_ = self->priv->db;
@@ -335,11 +396,15 @@ trade_sim_services_database_create_tables (TradeSimServicesDatabase* self)
 	trade_sim_services_database_insert_ticker (self, "USDJPY", id_forex);
 #line 94 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	trade_sim_services_database_insert_ticker (self, "GBPUSD", id_forex);
+#line 95 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	trade_sim_services_database_insert_ticker (self, "USDCHF", id_forex);
 #line 96 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	trade_sim_services_database_insert_ticker (self, "USDCAD", id_forex);
+#line 98 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	result = rc;
-#line 96 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 98 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	return result;
-#line 343 "Database.c"
+#line 408 "Database.c"
 }
 
 
@@ -367,85 +432,85 @@ trade_sim_services_database_insert_provider (TradeSimServicesDatabase* self,
 	gint _tmp13_;
 	sqlite3_stmt* _tmp14_;
 	sqlite3_stmt* _tmp18_;
-#line 99 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 101 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	g_return_if_fail (self != NULL);
-#line 99 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 101 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	g_return_if_fail (_name != NULL);
-#line 99 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 101 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	g_return_if_fail (folder_name != NULL);
-#line 104 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 106 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp0_ = g_strdup (" INSERT OR IGNORE INTO providers (name, folder_name) VALUES (?, ?);  ");
-#line 104 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 106 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_g_free0 (sql);
-#line 104 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 106 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	sql = _tmp0_;
-#line 106 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 108 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp1_ = self->priv->db;
-#line 106 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 108 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp2_ = sql;
-#line 106 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 108 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp4_ = sqlite3_prepare_v2 (_tmp1_, _tmp2_, -1, &_tmp3_, NULL);
-#line 106 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 108 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_sqlite3_finalize0 (stmt);
-#line 106 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 108 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	stmt = _tmp3_;
-#line 106 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 108 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	res = _tmp4_;
-#line 107 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 109 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp5_ = res;
-#line 107 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 109 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_vala_assert (_tmp5_ == SQLITE_OK, "res == Sqlite.OK");
-#line 109 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 111 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp6_ = stmt;
-#line 109 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 111 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp7_ = g_strdup (_name);
-#line 109 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 111 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp8_ = g_free;
-#line 109 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 111 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	res = sqlite3_bind_text (_tmp6_, 1, _tmp7_, -1, _tmp8_);
-#line 110 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 112 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp9_ = res;
-#line 110 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 112 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_vala_assert (_tmp9_ == SQLITE_OK, "res == Sqlite.OK");
-#line 112 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 114 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp10_ = stmt;
-#line 112 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 114 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp11_ = g_strdup (folder_name);
-#line 112 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 114 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp12_ = g_free;
-#line 112 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 114 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	res = sqlite3_bind_text (_tmp10_, 2, _tmp11_, -1, _tmp12_);
-#line 113 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 115 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp13_ = res;
-#line 113 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 115 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_vala_assert (_tmp13_ == SQLITE_OK, "res == Sqlite.OK");
-#line 115 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 117 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp14_ = stmt;
-#line 115 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 117 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	if (sqlite3_step (_tmp14_) != SQLITE_DONE) {
-#line 427 "Database.c"
+#line 492 "Database.c"
 		sqlite3* _tmp15_;
 		sqlite3* _tmp16_;
 		const gchar* _tmp17_;
-#line 116 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 118 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		_tmp15_ = self->priv->db;
-#line 116 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 118 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		_tmp16_ = self->priv->db;
-#line 116 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 118 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		_tmp17_ = sqlite3_errmsg (_tmp16_);
-#line 116 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
-		g_warning ("Database.vala:116: Error: %d: %s", sqlite3_errcode (_tmp15_), _tmp17_);
-#line 439 "Database.c"
+#line 118 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		g_warning ("Database.vala:118: Error: %d: %s", sqlite3_errcode (_tmp15_), _tmp17_);
+#line 504 "Database.c"
 	}
-#line 119 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 121 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp18_ = stmt;
-#line 119 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 121 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	sqlite3_reset (_tmp18_);
-#line 99 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 101 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_g_free0 (sql);
-#line 99 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 101 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_sqlite3_finalize0 (stmt);
-#line 449 "Database.c"
+#line 514 "Database.c"
 }
 
 
@@ -471,79 +536,79 @@ trade_sim_services_database_insert_ticker (TradeSimServicesDatabase* self,
 	gint _tmp11_;
 	sqlite3_stmt* _tmp12_;
 	sqlite3_stmt* _tmp16_;
-#line 123 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 125 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	g_return_if_fail (self != NULL);
-#line 123 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 125 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	g_return_if_fail (_name != NULL);
-#line 128 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 130 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp0_ = g_strdup (" INSERT OR IGNORE INTO tickers (name, market_id) VALUES (?, ?);  ");
-#line 128 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 130 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_g_free0 (sql);
-#line 128 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 130 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	sql = _tmp0_;
-#line 130 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 132 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp1_ = self->priv->db;
-#line 130 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 132 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp2_ = sql;
-#line 130 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 132 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp4_ = sqlite3_prepare_v2 (_tmp1_, _tmp2_, -1, &_tmp3_, NULL);
-#line 130 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 132 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_sqlite3_finalize0 (stmt);
-#line 130 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 132 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	stmt = _tmp3_;
-#line 130 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 132 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	res = _tmp4_;
-#line 131 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 133 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp5_ = res;
-#line 131 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 133 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_vala_assert (_tmp5_ == SQLITE_OK, "res == Sqlite.OK");
-#line 133 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 135 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp6_ = stmt;
-#line 133 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 135 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp7_ = g_strdup (_name);
-#line 133 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 135 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp8_ = g_free;
-#line 133 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 135 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	res = sqlite3_bind_text (_tmp6_, 1, _tmp7_, -1, _tmp8_);
-#line 134 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 136 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp9_ = res;
-#line 134 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 136 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_vala_assert (_tmp9_ == SQLITE_OK, "res == Sqlite.OK");
-#line 136 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 138 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp10_ = stmt;
-#line 136 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 138 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	res = sqlite3_bind_int (_tmp10_, 2, _market_id);
-#line 137 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 139 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp11_ = res;
-#line 137 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 139 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_vala_assert (_tmp11_ == SQLITE_OK, "res == Sqlite.OK");
-#line 139 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 141 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp12_ = stmt;
-#line 139 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 141 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	if (sqlite3_step (_tmp12_) != SQLITE_DONE) {
-#line 525 "Database.c"
+#line 590 "Database.c"
 		sqlite3* _tmp13_;
 		sqlite3* _tmp14_;
 		const gchar* _tmp15_;
-#line 140 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 142 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		_tmp13_ = self->priv->db;
-#line 140 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 142 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		_tmp14_ = self->priv->db;
-#line 140 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 142 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		_tmp15_ = sqlite3_errmsg (_tmp14_);
-#line 140 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
-		g_warning ("Database.vala:140: Error: %d: %s", sqlite3_errcode (_tmp13_), _tmp15_);
-#line 537 "Database.c"
+#line 142 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		g_warning ("Database.vala:142: Error: %d: %s", sqlite3_errcode (_tmp13_), _tmp15_);
+#line 602 "Database.c"
 	}
-#line 143 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 145 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp16_ = stmt;
-#line 143 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 145 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	sqlite3_reset (_tmp16_);
-#line 123 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 125 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_g_free0 (sql);
-#line 123 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 125 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_sqlite3_finalize0 (stmt);
-#line 547 "Database.c"
+#line 612 "Database.c"
 }
 
 
@@ -572,89 +637,89 @@ trade_sim_services_database_insert_market (TradeSimServicesDatabase* self,
 	gint _tmp13_;
 	sqlite3_stmt* _tmp14_;
 	sqlite3_stmt* _tmp18_;
-#line 147 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 149 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	g_return_val_if_fail (self != NULL, 0);
-#line 147 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 149 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	g_return_val_if_fail (_name != NULL, 0);
-#line 147 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 149 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	g_return_val_if_fail (_folder_name != NULL, 0);
-#line 152 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 154 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp0_ = g_strdup (" INSERT OR IGNORE INTO markets (name, folder_name) VALUES (?, ?);  ");
-#line 152 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 154 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_g_free0 (sql);
-#line 152 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 154 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	sql = _tmp0_;
-#line 154 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 156 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp1_ = self->priv->db;
-#line 154 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 156 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp2_ = sql;
-#line 154 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 156 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp4_ = sqlite3_prepare_v2 (_tmp1_, _tmp2_, -1, &_tmp3_, NULL);
-#line 154 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 156 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_sqlite3_finalize0 (stmt);
-#line 154 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 156 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	stmt = _tmp3_;
-#line 154 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 156 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	res = _tmp4_;
-#line 155 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 157 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp5_ = res;
-#line 155 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 157 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_vala_assert (_tmp5_ == SQLITE_OK, "res == Sqlite.OK");
-#line 157 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 159 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp6_ = stmt;
-#line 157 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 159 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp7_ = g_strdup (_name);
-#line 157 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 159 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp8_ = g_free;
-#line 157 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 159 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	res = sqlite3_bind_text (_tmp6_, 1, _tmp7_, -1, _tmp8_);
-#line 158 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 160 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp9_ = res;
-#line 158 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 160 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_vala_assert (_tmp9_ == SQLITE_OK, "res == Sqlite.OK");
-#line 160 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 162 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp10_ = stmt;
-#line 160 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 162 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp11_ = g_strdup (_folder_name);
-#line 160 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 162 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp12_ = g_free;
-#line 160 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 162 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	res = sqlite3_bind_text (_tmp10_, 2, _tmp11_, -1, _tmp12_);
-#line 161 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 163 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp13_ = res;
-#line 161 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 163 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_vala_assert (_tmp13_ == SQLITE_OK, "res == Sqlite.OK");
-#line 163 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 165 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp14_ = stmt;
-#line 163 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 165 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	if (sqlite3_step (_tmp14_) != SQLITE_DONE) {
-#line 632 "Database.c"
+#line 697 "Database.c"
 		sqlite3* _tmp15_;
 		sqlite3* _tmp16_;
 		const gchar* _tmp17_;
-#line 164 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 166 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		_tmp15_ = self->priv->db;
-#line 164 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 166 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		_tmp16_ = self->priv->db;
-#line 164 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 166 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		_tmp17_ = sqlite3_errmsg (_tmp16_);
-#line 164 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
-		g_warning ("Database.vala:164: Error: %d: %s", sqlite3_errcode (_tmp15_), _tmp17_);
-#line 644 "Database.c"
+#line 166 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		g_warning ("Database.vala:166: Error: %d: %s", sqlite3_errcode (_tmp15_), _tmp17_);
+#line 709 "Database.c"
 	}
-#line 167 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 169 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp18_ = stmt;
-#line 167 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 169 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	sqlite3_reset (_tmp18_);
-#line 169 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 171 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	result = trade_sim_services_database_get_id_if_market_exists (self, _name);
-#line 169 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 171 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_g_free0 (sql);
-#line 169 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 171 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_sqlite3_finalize0 (stmt);
-#line 169 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 171 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	return result;
-#line 658 "Database.c"
+#line 723 "Database.c"
 }
 
 
@@ -677,57 +742,57 @@ trade_sim_services_database_get_id_if_market_exists (TradeSimServicesDatabase* s
 	GDestroyNotify _tmp8_;
 	gint _tmp9_;
 	sqlite3_stmt* _tmp10_;
-#line 173 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 175 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	g_return_val_if_fail (self != NULL, 0);
-#line 173 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 175 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	g_return_val_if_fail (_name != NULL, 0);
-#line 178 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 180 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp0_ = g_strdup ("\n" \
 "            SELECT COUNT (*) FROM markets WHERE name = ?;\n" \
 "        ");
-#line 178 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 180 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_g_free0 (sql);
-#line 178 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 180 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	sql = _tmp0_;
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 184 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp1_ = self->priv->db;
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 184 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp2_ = sql;
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 184 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp4_ = sqlite3_prepare_v2 (_tmp1_, _tmp2_, -1, &_tmp3_, NULL);
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 184 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_sqlite3_finalize0 (stmt);
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 184 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	stmt = _tmp3_;
-#line 182 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 184 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	res = _tmp4_;
-#line 183 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 185 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp5_ = res;
-#line 183 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 185 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_vala_assert (_tmp5_ == SQLITE_OK, "res == Sqlite.OK");
-#line 185 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 187 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp6_ = stmt;
-#line 185 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 187 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp7_ = g_strdup (_name);
-#line 185 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 187 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp8_ = g_free;
-#line 185 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 187 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	res = sqlite3_bind_text (_tmp6_, 1, _tmp7_, -1, _tmp8_);
-#line 186 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 188 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp9_ = res;
-#line 186 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 188 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_vala_assert (_tmp9_ == SQLITE_OK, "res == Sqlite.OK");
-#line 188 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 190 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp10_ = stmt;
-#line 188 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 190 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	if (sqlite3_step (_tmp10_) == SQLITE_ROW) {
-#line 723 "Database.c"
+#line 788 "Database.c"
 		sqlite3_stmt* _tmp11_;
-#line 189 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 191 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		_tmp11_ = stmt;
-#line 189 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 191 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		if (sqlite3_column_int (_tmp11_, 0) > 0) {
-#line 729 "Database.c"
+#line 794 "Database.c"
 			sqlite3_stmt* _tmp12_;
 			gchar* _tmp13_;
 			sqlite3* _tmp14_;
@@ -740,112 +805,112 @@ trade_sim_services_database_get_id_if_market_exists (TradeSimServicesDatabase* s
 			GDestroyNotify _tmp21_;
 			gint _tmp22_;
 			sqlite3_stmt* _tmp23_;
-#line 190 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
-			_tmp12_ = stmt;
-#line 190 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
-			sqlite3_reset (_tmp12_);
 #line 192 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+			_tmp12_ = stmt;
+#line 192 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+			sqlite3_reset (_tmp12_);
+#line 194 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			_tmp13_ = g_strdup ("\n" \
 "                    SELECT id FROM markets WHERE name = ?;\n" \
 "                ");
-#line 192 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 194 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			_g_free0 (sql);
-#line 192 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 194 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			sql = _tmp13_;
-#line 196 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 198 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			_tmp14_ = self->priv->db;
-#line 196 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 198 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			_tmp15_ = sql;
-#line 196 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 198 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			_tmp17_ = sqlite3_prepare_v2 (_tmp14_, _tmp15_, -1, &_tmp16_, NULL);
-#line 196 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 198 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			_sqlite3_finalize0 (stmt);
-#line 196 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 198 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			stmt = _tmp16_;
-#line 196 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 198 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			res = _tmp17_;
-#line 197 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 199 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			_tmp18_ = res;
-#line 197 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 199 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			_vala_assert (_tmp18_ == SQLITE_OK, "res == Sqlite.OK");
-#line 199 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 201 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			_tmp19_ = stmt;
-#line 199 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 201 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			_tmp20_ = g_strdup (_name);
-#line 199 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 201 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			_tmp21_ = g_free;
-#line 199 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 201 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			res = sqlite3_bind_text (_tmp19_, 1, _tmp20_, -1, _tmp21_);
-#line 200 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 202 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			_tmp22_ = res;
-#line 200 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 202 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			_vala_assert (_tmp22_ == SQLITE_OK, "res == Sqlite.OK");
-#line 202 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 204 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			_tmp23_ = stmt;
-#line 202 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 204 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			if (sqlite3_step (_tmp23_) == SQLITE_ROW) {
-#line 784 "Database.c"
+#line 849 "Database.c"
 				sqlite3_stmt* _tmp24_;
-#line 203 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 205 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 				_tmp24_ = stmt;
-#line 203 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 205 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 				result = sqlite3_column_int (_tmp24_, 0);
-#line 203 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 205 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 				_g_free0 (sql);
-#line 203 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 205 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 				_sqlite3_finalize0 (stmt);
-#line 203 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 205 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 				return result;
-#line 796 "Database.c"
+#line 861 "Database.c"
 			} else {
 				sqlite3* _tmp25_;
 				sqlite3* _tmp26_;
 				const gchar* _tmp27_;
-#line 205 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 207 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 				_tmp25_ = self->priv->db;
-#line 205 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 207 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 				_tmp26_ = self->priv->db;
-#line 205 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 207 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 				_tmp27_ = sqlite3_errmsg (_tmp26_);
-#line 205 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
-				g_warning ("Database.vala:205: Error: %d: %s", sqlite3_errcode (_tmp25_), _tmp27_);
-#line 206 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 207 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+				g_warning ("Database.vala:207: Error: %d: %s", sqlite3_errcode (_tmp25_), _tmp27_);
+#line 208 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 				result = 0;
-#line 206 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 208 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 				_g_free0 (sql);
-#line 206 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 208 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 				_sqlite3_finalize0 (stmt);
-#line 206 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 208 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 				return result;
-#line 817 "Database.c"
+#line 882 "Database.c"
 			}
 		} else {
-#line 209 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 211 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			result = 0;
-#line 209 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 211 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			_g_free0 (sql);
-#line 209 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 211 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			_sqlite3_finalize0 (stmt);
-#line 209 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 211 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 			return result;
-#line 828 "Database.c"
+#line 893 "Database.c"
 		}
 	} else {
-#line 212 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 214 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		result = 0;
-#line 212 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 214 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		_g_free0 (sql);
-#line 212 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 214 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		_sqlite3_finalize0 (stmt);
-#line 212 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 214 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		return result;
-#line 839 "Database.c"
+#line 904 "Database.c"
 	}
-#line 173 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 175 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_g_free0 (sql);
-#line 173 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 175 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_sqlite3_finalize0 (stmt);
-#line 845 "Database.c"
+#line 910 "Database.c"
 }
 
 
@@ -861,43 +926,231 @@ trade_sim_services_database_is_database_empty (TradeSimServicesDatabase* self)
 	gint _tmp2_;
 	gint _tmp3_;
 	sqlite3_stmt* _tmp4_;
-#line 267 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 218 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	g_return_val_if_fail (self != NULL, FALSE);
-#line 268 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 219 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	empty = FALSE;
-#line 271 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 222 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp0_ = self->priv->db;
-#line 271 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 222 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp2_ = sqlite3_prepare_v2 (_tmp0_, "SELECT COUNT (*) FROM quotes", -1, &_tmp1_, NULL);
-#line 271 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 222 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_sqlite3_finalize0 (stmt);
-#line 271 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 222 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	stmt = _tmp1_;
-#line 271 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 222 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	res = _tmp2_;
-#line 272 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 223 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp3_ = res;
-#line 272 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 223 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_vala_assert (_tmp3_ == SQLITE_OK, "res == Sqlite.OK");
-#line 274 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 225 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_tmp4_ = stmt;
-#line 274 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 225 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	if (sqlite3_step (_tmp4_) == SQLITE_ROW) {
-#line 883 "Database.c"
+#line 948 "Database.c"
 		sqlite3_stmt* _tmp5_;
-#line 275 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 226 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		_tmp5_ = stmt;
-#line 275 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 226 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 		empty = sqlite3_column_int (_tmp5_, 0) <= 0;
-#line 889 "Database.c"
+#line 954 "Database.c"
 	}
-#line 278 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 229 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	result = empty;
-#line 278 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 229 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	_sqlite3_finalize0 (stmt);
-#line 278 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+#line 229 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	return result;
-#line 897 "Database.c"
+#line 962 "Database.c"
+}
+
+
+GArray*
+trade_sim_services_database_get_providers (TradeSimServicesDatabase* self)
+{
+	GArray* result = NULL;
+	sqlite3_stmt* stmt = NULL;
+	gchar* sql = NULL;
+	gint res = 0;
+	gchar* _tmp0_;
+	sqlite3* _tmp1_;
+	const gchar* _tmp2_;
+	sqlite3_stmt* _tmp3_ = NULL;
+	gint _tmp4_;
+	gint _tmp5_;
+	GArray* all = NULL;
+	GArray* _tmp6_;
+#line 232 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	g_return_val_if_fail (self != NULL, NULL);
+#line 238 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_tmp0_ = g_strdup (" SELECT id, name, folder_name FROM providers ORDER BY name DESC; ");
+#line 238 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_g_free0 (sql);
+#line 238 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	sql = _tmp0_;
+#line 240 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_tmp1_ = self->priv->db;
+#line 240 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_tmp2_ = sql;
+#line 240 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_tmp4_ = sqlite3_prepare_v2 (_tmp1_, _tmp2_, -1, &_tmp3_, NULL);
+#line 240 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_sqlite3_finalize0 (stmt);
+#line 240 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	stmt = _tmp3_;
+#line 240 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	res = _tmp4_;
+#line 241 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_tmp5_ = res;
+#line 241 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_vala_assert (_tmp5_ == SQLITE_OK, "res == Sqlite.OK");
+#line 243 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_tmp6_ = g_array_new (TRUE, TRUE, sizeof (TradeSimObjectsProvider*));
+#line 243 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	all = _tmp6_;
+#line 245 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	while (TRUE) {
+#line 1011 "Database.c"
+		sqlite3_stmt* _tmp7_;
+		gint _tmp8_;
+		GArray* _tmp9_;
+		sqlite3_stmt* _tmp10_;
+		sqlite3_stmt* _tmp11_;
+		const gchar* _tmp12_;
+		sqlite3_stmt* _tmp13_;
+		const gchar* _tmp14_;
+		TradeSimObjectsProvider* _tmp15_;
+#line 245 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		_tmp7_ = stmt;
+#line 245 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		res = sqlite3_step (_tmp7_);
+#line 245 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		_tmp8_ = res;
+#line 245 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		if (!(_tmp8_ == SQLITE_ROW)) {
+#line 245 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+			break;
+#line 1031 "Database.c"
+		}
+#line 246 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		_tmp9_ = all;
+#line 246 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		_tmp10_ = stmt;
+#line 246 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		_tmp11_ = stmt;
+#line 246 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		_tmp12_ = (const gchar*) sqlite3_column_text (_tmp11_, 1);
+#line 246 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		_tmp13_ = stmt;
+#line 246 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		_tmp14_ = (const gchar*) sqlite3_column_text (_tmp13_, 2);
+#line 246 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		_tmp15_ = trade_sim_objects_provider_new (sqlite3_column_int (_tmp10_, 0), _tmp12_, _tmp14_);
+#line 246 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		g_array_append_val (_tmp9_, _tmp15_);
+#line 1049 "Database.c"
+	}
+#line 249 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	result = all;
+#line 249 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_g_free0 (sql);
+#line 249 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_sqlite3_finalize0 (stmt);
+#line 249 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	return result;
+#line 1059 "Database.c"
+}
+
+
+GArray*
+trade_sim_services_database_get_tickers (TradeSimServicesDatabase* self)
+{
+	GArray* result = NULL;
+	sqlite3_stmt* stmt = NULL;
+	gchar* sql = NULL;
+	gint res = 0;
+	gchar* _tmp0_;
+	sqlite3* _tmp1_;
+	const gchar* _tmp2_;
+	sqlite3_stmt* _tmp3_ = NULL;
+	gint _tmp4_;
+	gint _tmp5_;
+	GArray* all = NULL;
+	GArray* _tmp6_;
+#line 252 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	g_return_val_if_fail (self != NULL, NULL);
+#line 258 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_tmp0_ = g_strdup (" SELECT id, name FROM tickers ORDER BY name DESC; ");
+#line 258 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_g_free0 (sql);
+#line 258 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	sql = _tmp0_;
+#line 260 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_tmp1_ = self->priv->db;
+#line 260 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_tmp2_ = sql;
+#line 260 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_tmp4_ = sqlite3_prepare_v2 (_tmp1_, _tmp2_, -1, &_tmp3_, NULL);
+#line 260 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_sqlite3_finalize0 (stmt);
+#line 260 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	stmt = _tmp3_;
+#line 260 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	res = _tmp4_;
+#line 261 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_tmp5_ = res;
+#line 261 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_vala_assert (_tmp5_ == SQLITE_OK, "res == Sqlite.OK");
+#line 263 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_tmp6_ = g_array_new (TRUE, TRUE, sizeof (TradeSimObjectsTicker*));
+#line 263 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	all = _tmp6_;
+#line 265 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	while (TRUE) {
+#line 1108 "Database.c"
+		sqlite3_stmt* _tmp7_;
+		gint _tmp8_;
+		GArray* _tmp9_;
+		sqlite3_stmt* _tmp10_;
+		sqlite3_stmt* _tmp11_;
+		const gchar* _tmp12_;
+		TradeSimObjectsTicker* _tmp13_;
+#line 265 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		_tmp7_ = stmt;
+#line 265 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		res = sqlite3_step (_tmp7_);
+#line 265 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		_tmp8_ = res;
+#line 265 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		if (!(_tmp8_ == SQLITE_ROW)) {
+#line 265 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+			break;
+#line 1126 "Database.c"
+		}
+#line 266 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		_tmp9_ = all;
+#line 266 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		_tmp10_ = stmt;
+#line 266 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		_tmp11_ = stmt;
+#line 266 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		_tmp12_ = (const gchar*) sqlite3_column_text (_tmp11_, 1);
+#line 266 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		_tmp13_ = trade_sim_objects_ticker_new (sqlite3_column_int (_tmp10_, 0), _tmp12_);
+#line 266 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+		g_array_append_val (_tmp9_, _tmp13_);
+#line 1140 "Database.c"
+	}
+#line 269 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	result = all;
+#line 269 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_g_free0 (sql);
+#line 269 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	_sqlite3_finalize0 (stmt);
+#line 269 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
+	return result;
+#line 1150 "Database.c"
 }
 
 
@@ -910,7 +1163,7 @@ trade_sim_services_database_class_init (TradeSimServicesDatabaseClass * klass)
 	g_type_class_add_private (klass, sizeof (TradeSimServicesDatabasePrivate));
 #line 1 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	G_OBJECT_CLASS (klass)->finalize = trade_sim_services_database_finalize;
-#line 910 "Database.c"
+#line 1163 "Database.c"
 }
 
 
@@ -919,7 +1172,7 @@ trade_sim_services_database_instance_init (TradeSimServicesDatabase * self)
 {
 #line 1 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	self->priv = TRADE_SIM_SERVICES_DATABASE_GET_PRIVATE (self);
-#line 919 "Database.c"
+#line 1172 "Database.c"
 }
 
 
@@ -935,7 +1188,7 @@ trade_sim_services_database_finalize (GObject * obj)
 	_g_free0 (self->priv->db_path);
 #line 1 "/home/horacio/Vala/TradeSim/src/Services/Database.vala"
 	G_OBJECT_CLASS (trade_sim_services_database_parent_class)->finalize (obj);
-#line 935 "Database.c"
+#line 1188 "Database.c"
 }
 
 

@@ -129,7 +129,9 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         ticker = "EURUSD";
         time_frame = "M1";
 
-        data = new TradeSim.Services.QuotesManager (ticker, time_frame, date_from, date_to);
+        data = new TradeSim.Services.QuotesManager ();
+
+        data.init (ticker, time_frame, date_from, date_to);
 
         min_candles = 100;
         max_candles = 200;
@@ -460,7 +462,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public void draw_candle (Cairo.Context ctext, TradeSim.Services.QuoteItem candle_data) {
 
-        if(candle_data.date_time == null){
+        if (candle_data.date_time == null) {
             return;
         }
 
