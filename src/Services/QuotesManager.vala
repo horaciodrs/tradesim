@@ -45,7 +45,7 @@ public class TradeSim.Services.QuotesManager {
     /* */
 
     public enum ItemCSVColumns {
-        TICKER
+          TICKER
         , DATE_YEAR
         , DATE_MONTH
         , DATE_DAY
@@ -102,34 +102,24 @@ public class TradeSim.Services.QuotesManager {
     public TradeSim.Services.QuoteItem get_cuote_item_by_csvline (string _csvline) {
 
         string[] data = _csvline.split (",");
+        
 
         var return_value = new TradeSim.Services.QuoteItem (data[ItemCSVColumns.TICKER]);
 
 
-        GLib.Value date_year = data[ItemCSVColumns.DATE_YEAR];
-        GLib.Value date_month = data[ItemCSVColumns.DATE_MONTH];
-        GLib.Value date_day = data[ItemCSVColumns.DATE_DAY];
-        GLib.Value date_hours = data[ItemCSVColumns.DATE_HOURS];
-        GLib.Value date_minutes = data[ItemCSVColumns.DATE_MINUTES];
-
-        GLib.Value open_price = data[ItemCSVColumns.OPEN];
-        GLib.Value close_price = data[ItemCSVColumns.CLOSE];
-        GLib.Value min_price = data[ItemCSVColumns.LOW];
-        GLib.Value max_price = data[ItemCSVColumns.HIGH];
-
-        DateTime item_date = new DateTime.local (date_year.get_int ()
-                                                 , date_month.get_int ()
-                                                 , date_day.get_int ()
-                                                 , date_hours.get_int ()
-                                                 , date_minutes.get_int ()
+        DateTime item_date = new DateTime.local (data[ItemCSVColumns.DATE_YEAR].to_int()
+                                                 , data[ItemCSVColumns.DATE_MONTH].to_int()
+                                                 , data[ItemCSVColumns.DATE_DAY].to_int()
+                                                 , data[ItemCSVColumns.DATE_HOURS].to_int()
+                                                 , data[ItemCSVColumns.DATE_MINUTES].to_int()
                                                  , 0);
 
         return_value.set_date_time (item_date);
 
-        return_value.set_open_price (open_price.get_double ());
-        return_value.set_close_price (close_price.get_double ());
-        return_value.set_min_price (min_price.get_double ());
-        return_value.set_max_price (max_price.get_double ());
+        return_value.set_open_price (data[ItemCSVColumns.OPEN].to_double());
+        return_value.set_close_price (data[ItemCSVColumns.CLOSE].to_double());
+        return_value.set_min_price (data[ItemCSVColumns.LOW].to_double());
+        return_value.set_max_price (data[ItemCSVColumns.HIGH].to_double());
         return_value.set_provider_name(data[ItemCSVColumns.PROVIDER_NAME]);
         return_value.set_time_frame_name(data[ItemCSVColumns.TIME_FRAME_NAME]);
 
