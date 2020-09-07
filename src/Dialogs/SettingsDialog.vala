@@ -352,7 +352,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
                                    , 3, int.parse(ds_selected_year)
                                    , 4, get_month_name(i)
                                    , 5, ds_selected_time_frame
-                                   , 6, true
+                                   , 6, qm.db.import_data_exists(ds_selected_provider, "Forex", ds_selected_ticker, ds_selected_time_frame, ds_selected_year.to_int(), i)
                                    , 7, url);
         }
         
@@ -384,10 +384,19 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             Gtk.TreeIter edited_iter;
             GLib.Value url;
+            GLib.Value mes;
 
             list_store_quotes.get_iter (out edited_iter, new Gtk.TreePath.from_string (path));
 
             list_store_quotes.get_value (edited_iter, 7, out url);
+            list_store_quotes.get_value (edited_iter, 4, out mes);
+
+            print("mes:" + get_month_number(mes.get_string()).to_string());
+
+            if(qm.db.import_data_exists(ds_selected_provider, "Forex", ds_selected_ticker, ds_selected_time_frame, ds_selected_year.to_int(), get_month_number(mes.get_string()))){
+                //estoy retornando pero lo tengo que quitar...
+                return;
+            }
 
             // Obtener datos desde el link de url....
 

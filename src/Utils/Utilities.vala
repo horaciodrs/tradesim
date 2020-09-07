@@ -47,3 +47,33 @@ public string get_month_name(int i){
     }
 
 }
+
+public int get_month_number(string month){
+    
+    if(month=="January"){
+        return 1;
+    }else if(month=="February"){
+        return 2;
+    }else if(month=="March"){
+        return 3;
+    }else if(month=="April"){
+        return 4;
+    }else if(month=="May"){
+        return 5;
+    }else if(month=="June"){
+        return 6;
+    }else if(month=="July"){
+        return 7;
+    }else if(month=="August"){
+        return 8;
+    }else if(month=="September"){
+        return 8;
+    }else if(month=="Octover"){
+        return 10;
+    }else if(month=="November"){
+        return 11;
+    }else{
+        return 12;
+    }
+
+}
