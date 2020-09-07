@@ -391,15 +391,8 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             // Obtener datos desde el link de url....
 
-            /*obtener archivo */
-
             File file = File.new_for_uri (url.get_string ());
-            // IOStream ios = file.create_readwrite (FileCreateFlags.PRIVATE);
-
-            //
-            // Read n bytes:
-            //
-
+            
             // Open the file for reading:
             InputStream @is = file.read ();
 
@@ -408,7 +401,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             size_t size = @is.read (buffer);
             stdout.write (buffer, size);
 
-            // Output: ``y 1. line``
+            
             DataInputStream dis = new DataInputStream (@is);
 
             string str = "";
@@ -416,11 +409,17 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             str = dis.read_line ();
 
             while (str != null) {
+
+                //str = str + "," + ds_selected_provider + "," + ds_selected_time_frame;
+
+                qm.insert_cuote_to_db(str);
+
                 print ("%s\n", str);
+                return;
+
                 str = dis.read_line ();
             }
-
-
+            
             /*fin obtener archivo */
 
             list_store_quotes.set (edited_iter, 6, !toggle.active);

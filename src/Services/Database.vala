@@ -95,7 +95,142 @@ public class TradeSim.Services.Database : GLib.Object {
         insert_ticker("USDCHF", id_forex);
         insert_ticker("USDCAD", id_forex);
 
+        insert_time_frames("D1");
+        insert_time_frames("H4");
+        insert_time_frames("H1");
+        insert_time_frames("M30");
+        insert_time_frames("M15");
+        insert_time_frames("M5");
+        insert_time_frames("M1");
+
         return rc;
+    }
+
+    public int get_db_id_by_name (string db_table, string _name) {
+        Sqlite.Statement stmt;
+        string sql;
+        int res;
+
+        sql = "SELECT COUNT (*) FROM " + db_table + " WHERE name = ?;";
+
+        res = db.prepare_v2 (sql, -1, out stmt);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_text (1, _name);
+        assert (res == Sqlite.OK);
+
+        if (stmt.step () == Sqlite.ROW) {
+            if (stmt.column_int (0) > 0) {
+                stmt.reset ();
+
+                sql = "SELECT id FROM " + db_table + " WHERE name = ?;";
+
+                res = db.prepare_v2 (sql, -1, out stmt);
+                assert (res == Sqlite.OK);
+
+                res = stmt.bind_text (1, _name);
+                assert (res == Sqlite.OK);
+
+                if (stmt.step () == Sqlite.ROW) {
+                    return stmt.column_int (0);
+                } else {
+                    warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    public void insert_quote(TradeSim.Services.QuoteItem quote_item){
+
+        int provider_id = get_db_id_by_name("providers", quote_item.provider_name);
+        int market_id = get_db_id_by_name("markets", "Forex");
+        int ticker_id = get_db_id_by_name("tickers", quote_item.ticker);
+        int time_frame_id = get_db_id_by_name("time_frames", quote_item.time_frame_name);
+        
+        int date_year = quote_item.date_time.get_year();
+        int date_month = quote_item.date_time.get_month();
+        int date_day = quote_item.date_time.get_day_of_month();
+        int date_hour = quote_item.date_time.get_hour();
+        int date_minute = quote_item.date_time.get_minute();
+
+        double price_open = quote_item.open_price;
+        double price_close = quote_item.close_price;
+        double price_max = quote_item.max_price;
+        double price_min = quote_item.min_price;
+
+        Sqlite.Statement stmt;
+        string sql;
+        int res;
+
+        sql = """ INSERT OR IGNORE INTO quotes (
+              provider_id
+            , market_id
+            , ticker_id
+            , time_frame_id
+            , date_year
+            , date_month
+            , date_day
+            , date_hour
+            , date_minute
+            , price_open
+            , price_close
+            , price_max
+            , price_min
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);  """;
+
+        res = db.prepare_v2 (sql, -1, out stmt);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (1, provider_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (2, market_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (3, ticker_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (4, time_frame_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (5, date_year);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (6, date_month);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (7, date_day);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (8, date_hour);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (9, date_minute);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_double (10, price_open);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_double (11, price_close);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_double (12, price_max);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_double (13, price_min);
+        assert (res == Sqlite.OK);
+        
+        if (stmt.step () != Sqlite.DONE) {
+            warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+        }
+
+        stmt.reset ();
+
     }
 
     public void insert_provider (string _name, string folder_name) {
@@ -112,6 +247,27 @@ public class TradeSim.Services.Database : GLib.Object {
         assert (res == Sqlite.OK);
 
         res = stmt.bind_text (2, folder_name);
+        assert (res == Sqlite.OK);
+        
+        if (stmt.step () != Sqlite.DONE) {
+            warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+        }
+
+        stmt.reset ();
+
+    }
+
+    public void insert_time_frames (string _name) {
+        Sqlite.Statement stmt;
+        string sql;
+        int res;
+
+        sql = """ INSERT OR IGNORE INTO time_frames (name) VALUES (?);  """;
+
+        res = db.prepare_v2 (sql, -1, out stmt);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_text (1, _name);
         assert (res == Sqlite.OK);
         
         if (stmt.step () != Sqlite.DONE) {

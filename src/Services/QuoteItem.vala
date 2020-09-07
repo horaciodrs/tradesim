@@ -22,7 +22,8 @@
 public class TradeSim.Services.QuoteItem {
 
     public string ticker;
-    public string time_frame;
+    public string time_frame_name;
+    public string provider_name;
 
     public DateTime date_time;
 
@@ -33,6 +34,14 @@ public class TradeSim.Services.QuoteItem {
 
     public QuoteItem (string _ticker) {
         ticker = _ticker;
+    }
+
+    public void set_provider_name(string _name){
+        provider_name = _name;
+    }
+
+    public void set_time_frame_name(string _name){
+        time_frame_name = _name;
     }
 
     public void set_date_time (DateTime _date_time) {

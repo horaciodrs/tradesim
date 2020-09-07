@@ -44,17 +44,33 @@ public class TradeSim.Services.QuotesManager {
 
     /* */
 
+    public enum ItemCSVColumns {
+        TICKER
+        , DATE_YEAR
+        , DATE_MONTH
+        , DATE_DAY
+        , DATE_HOURS
+        , DATE_MINUTES
+        , OPEN
+        , HIGH
+        , LOW
+        , CLOSE
+        , VOLUME
+        , PROVIDER_NAME
+        , TIME_FRAME_NAME
+    }
+
     public QuotesManager () {
 
-        db = new TradeSim.Services.Database();
+        db = new TradeSim.Services.Database ();
 
         quotes = new Array<TradeSim.Services.QuoteItem> ();
-        
+
     }
 
     public void init (string _ticker, string _time_frame, DateTime _start_date, DateTime _end_date) {
 
-        db = new TradeSim.Services.Database();
+        db = new TradeSim.Services.Database ();
 
         ticker = _ticker;
         time_frame = _time_frame;
@@ -70,15 +86,56 @@ public class TradeSim.Services.QuotesManager {
         global_min_price = { 1.08330, 1.09346, 1.08957, 1.08261, 1.07820, 1.07666, 1.08150, 1.08006, 1.07845, 1.08117, 1.07750, 1.07890, 1.07998, 1.09022, 1.09190, 1.09372, 1.08854, 1.08706, 1.08925, 1.09338, 1.09917, 1.10698, 1.11004, 1.11154, 1.11668, 1.11946, 1.12784, 1.12682, 1.12410, 1.13217, 1.12886, 1.12126, 1.12266, 1.12277, 1.12070, 1.11855, 1.11684, 1.11684, 1.12333, 1.12483, 1.11906, 1.11953, 1.12176, 1.11910, 1.11848, 1.12234, 1.12194, 1.12430, 1.12590, 1.12624, 1.12803, 1.12548, 1.13002, 1.13254, 1.13910, 1.13705, 1.13778, 1.14024, 1.14230 };
         global_close_price = { 1.09520, 1.09794, 1.09054, 1.08376, 1.07956, 1.08324, 1.08384, 1.08070, 1.08474, 1.08186, 1.08046, 1.08197, 1.09150, 1.09234, 1.09790, 1.09506, 1.09024, 1.08972, 1.09822, 1.10091, 1.10773, 1.11053, 1.11345, 1.11692, 1.12332, 1.13364, 1.12915, 1.12942, 1.13384, 1.13751, 1.12980, 1.12554, 1.13228, 1.12632, 1.12436, 1.12049, 1.11776, 1.12617, 1.13088, 1.12507, 1.12178, 1.12184, 1.12424, 1.12331, 1.12512, 1.12394, 1.12479, 1.13097, 1.12742, 1.13298, 1.12852, 1.13002, 1.13433, 1.14001, 1.14120, 1.13826, 1.14282, 1.14474, 1.15268 };
 
-        
+
         load ();
-        
+
     }
 
-    public string to_string(){
-        return "Funciono....";
+    public void insert_cuote_to_db (string _csvline) {
+
+        TradeSim.Services.QuoteItem quote_item = get_cuote_item_by_csvline (_csvline);
+
+        db.insert_quote(quote_item);
+
     }
 
+    public TradeSim.Services.QuoteItem get_cuote_item_by_csvline (string _csvline) {
+
+        string[] data = _csvline.split (",");
+
+        var return_value = new TradeSim.Services.QuoteItem (data[ItemCSVColumns.TICKER]);
+
+
+        GLib.Value date_year = data[ItemCSVColumns.DATE_YEAR];
+        GLib.Value date_month = data[ItemCSVColumns.DATE_MONTH];
+        GLib.Value date_day = data[ItemCSVColumns.DATE_DAY];
+        GLib.Value date_hours = data[ItemCSVColumns.DATE_HOURS];
+        GLib.Value date_minutes = data[ItemCSVColumns.DATE_MINUTES];
+
+        GLib.Value open_price = data[ItemCSVColumns.OPEN];
+        GLib.Value close_price = data[ItemCSVColumns.CLOSE];
+        GLib.Value min_price = data[ItemCSVColumns.LOW];
+        GLib.Value max_price = data[ItemCSVColumns.HIGH];
+
+        DateTime item_date = new DateTime.local (date_year.get_int ()
+                                                 , date_month.get_int ()
+                                                 , date_day.get_int ()
+                                                 , date_hours.get_int ()
+                                                 , date_minutes.get_int ()
+                                                 , 0);
+
+        return_value.set_date_time (item_date);
+
+        return_value.set_open_price (open_price.get_double ());
+        return_value.set_close_price (close_price.get_double ());
+        return_value.set_min_price (min_price.get_double ());
+        return_value.set_max_price (max_price.get_double ());
+        return_value.set_provider_name(data[ItemCSVColumns.PROVIDER_NAME]);
+        return_value.set_time_frame_name(data[ItemCSVColumns.TIME_FRAME_NAME]);
+
+        return return_value;
+
+    }
 
     public void change_time_frame () {
 
@@ -128,7 +185,7 @@ public class TradeSim.Services.QuotesManager {
     private void calc_max_min_values () {
 
 
-        if(quotes.length > 0){
+        if (quotes.length > 0) {
             max_price = quotes.index (0).max_price;
             min_price = quotes.index (0).min_price;
         }
@@ -153,8 +210,8 @@ public class TradeSim.Services.QuotesManager {
 
         double local_max = -1;
 
-        //calc_max_min_values ();
-        //return (int) (max_price * 100000);
+        // calc_max_min_values ();
+        // return (int) (max_price * 100000);
 
         if (quotes.length > 0) {
             local_max = quotes.index (0).max_price;
@@ -175,7 +232,7 @@ public class TradeSim.Services.QuotesManager {
             }
         }
 
-        //print ("max:" + local_max.to_string () + "\n");
+        // print ("max:" + local_max.to_string () + "\n");
 
         return (int) (local_max * 100000);
 
@@ -185,8 +242,8 @@ public class TradeSim.Services.QuotesManager {
 
         double local_min = 0;
 
-        //calc_max_min_values ();
-        //return (int) (min_price * 100000);
+        // calc_max_min_values ();
+        // return (int) (min_price * 100000);
 
         if (quotes.length > 0) {
             local_min = quotes.index (0).min_price;
