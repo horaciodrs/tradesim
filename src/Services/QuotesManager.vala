@@ -22,6 +22,7 @@
 public class TradeSim.Services.QuotesManager {
 
     public string ticker; // ticker
+    public string provider_name;
 
     public DateTime start_date;
     public DateTime end_date;
@@ -68,10 +69,11 @@ public class TradeSim.Services.QuotesManager {
 
     }
 
-    public void init (string _ticker, string _time_frame, DateTime _start_date, DateTime _end_date) {
+    public void init (string _provider_name, string _ticker, string _time_frame, DateTime _start_date, DateTime _end_date) {
 
         db = new TradeSim.Services.Database ();
 
+        provider_name = _provider_name;
         ticker = _ticker;
         time_frame = _time_frame;
         start_date = _start_date;

@@ -85,6 +85,7 @@ public class TradeSim.Services.Database : GLib.Object {
                       "date_day       INT     NOT NULL," +
                       "date_hour      INT     NOT NULL," +
                       "date_minute    INT     NOT NULL," +
+                      "date_str       TEXT    NOT NULL," +
 
                       "price_open     REAL    NOT NULL," +
                       "price_close    REAL    NOT NULL," +
@@ -326,6 +327,10 @@ public class TradeSim.Services.Database : GLib.Object {
         int date_hour = quote_item.date_time.get_hour ();
         int date_minute = quote_item.date_time.get_minute ();
 
+        string aux_day = "00" + date_day.to_string();
+        string aux_month = "00" + date_month.to_string();
+        string date_str = date_year.to_string() + "-" + aux_month.substring(aux_month.len()-2, 2) + "-" + aux_day.substring(aux_day.len()-2, 2);
+
         double price_open = quote_item.open_price;
         double price_close = quote_item.close_price;
         double price_max = quote_item.max_price;
@@ -345,11 +350,12 @@ public class TradeSim.Services.Database : GLib.Object {
             , date_day
             , date_hour
             , date_minute
+            , date_str
             , price_open
             , price_close
             , price_max
             , price_min
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);  """;
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);  """;
 
         res = db.prepare_v2 (sql, -1, out stmt);
         assert (res == Sqlite.OK);
@@ -381,16 +387,19 @@ public class TradeSim.Services.Database : GLib.Object {
         res = stmt.bind_int (9, date_minute);
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_double (10, price_open);
+        res = stmt.bind_text (10, date_str);
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_double (11, price_close);
+        res = stmt.bind_double (11, price_open);
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_double (12, price_max);
+        res = stmt.bind_double (12, price_close);
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_double (13, price_min);
+        res = stmt.bind_double (13, price_max);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_double (14, price_min);
         assert (res == Sqlite.OK);
 
         if (stmt.step () != Sqlite.DONE) {
@@ -595,7 +604,9 @@ public class TradeSim.Services.Database : GLib.Object {
         return all;
     }
 
-    public Array<TradeSim.Objects.ProviderTicker> get_providers_tickers () {
+    public Array<TradeSim.Objects.ProviderTicker> get_providers_tickers (string provider_name) {
+
+        int provider_id = get_db_id_by_table_and_field ("providers", "name", provider_name);
 
         Sqlite.Statement stmt;
         string sql;
@@ -605,12 +616,16 @@ public class TradeSim.Services.Database : GLib.Object {
                     FROM imported_data
                     INNER JOIN providers ON imported_data.provider_id = providers.id
                     INNER JOIN tickers ON imported_data.ticker_id = tickers.id
+                    WHERE imported_data.provider_id = ?
                     GROUP BY imported_data.provider_id, imported_data.ticker_id
                     ORDER BY imported_data.provider_id, imported_data.ticker_id;
                     
         """;
 
         res = db.prepare_v2 (sql, -1, out stmt);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (1, provider_id);
         assert (res == Sqlite.OK);
 
         var all = new Array<TradeSim.Objects.ProviderTicker> ();
@@ -620,6 +635,10 @@ public class TradeSim.Services.Database : GLib.Object {
         }
 
         return all;
+    }
+
+    public Array<TradeSim.Services.QuoteItem> get_quotes_to_canvas(string _provider_name, string _ticker_name, string _time_frame, DateTime _date_from, DateTime _date_to){
+        return new Array<TradeSim.Services.QuoteItem> ();
     }
 
 }

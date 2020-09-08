@@ -77,3 +77,34 @@ public int get_month_number(string month){
     }
 
 }
+
+DateTime date_add_int_by_time_frame(DateTime add_date, string time_frame, int qty){
+
+    int add_value = 1;
+
+    if(time_frame == "M1"){
+        add_value = 1;
+        return add_date.add_minutes(add_value*qty);
+    }else if(time_frame == "M5"){
+        add_value = 5;
+        return add_date.add_minutes(add_value*qty);
+    }else if(time_frame == "M15"){
+        add_value = 15;
+        return add_date.add_minutes(add_value*qty);
+    }else if(time_frame == "M30"){
+        add_value = 30;
+        return add_date.add_minutes(add_value*qty);
+    }else if(time_frame == "H1"){
+        add_value = 1;
+        return add_date.add_hours(add_value*qty);
+    }else if(time_frame == "H4"){
+        add_value = 4;
+        return add_date.add_hours(add_value*qty);
+    }else if(time_frame == "D1"){
+        add_value = 24;
+        return add_date.add_hours(add_value*qty);
+    }else{
+        return add_date.add_minutes(qty);
+    }
+    
+}

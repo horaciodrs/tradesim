@@ -79,6 +79,51 @@ typedef enum  {
 #define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
 #define _trade_sim_services_quotes_manager_unref0(var) ((var == NULL) ? NULL : (var = (trade_sim_services_quotes_manager_unref (var), NULL)))
 
+#define TRADE_SIM_OBJECTS_TYPE_PROVIDER (trade_sim_objects_provider_get_type ())
+#define TRADE_SIM_OBJECTS_PROVIDER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRADE_SIM_OBJECTS_TYPE_PROVIDER, TradeSimObjectsProvider))
+#define TRADE_SIM_OBJECTS_PROVIDER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRADE_SIM_OBJECTS_TYPE_PROVIDER, TradeSimObjectsProviderClass))
+#define TRADE_SIM_OBJECTS_IS_PROVIDER(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRADE_SIM_OBJECTS_TYPE_PROVIDER))
+#define TRADE_SIM_OBJECTS_IS_PROVIDER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRADE_SIM_OBJECTS_TYPE_PROVIDER))
+#define TRADE_SIM_OBJECTS_PROVIDER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRADE_SIM_OBJECTS_TYPE_PROVIDER, TradeSimObjectsProviderClass))
+
+typedef struct _TradeSimObjectsProvider TradeSimObjectsProvider;
+typedef struct _TradeSimObjectsProviderClass TradeSimObjectsProviderClass;
+typedef struct _TradeSimServicesQuotesManagerPrivate TradeSimServicesQuotesManagerPrivate;
+
+#define TRADE_SIM_SERVICES_TYPE_DATABASE (trade_sim_services_database_get_type ())
+#define TRADE_SIM_SERVICES_DATABASE(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRADE_SIM_SERVICES_TYPE_DATABASE, TradeSimServicesDatabase))
+#define TRADE_SIM_SERVICES_DATABASE_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRADE_SIM_SERVICES_TYPE_DATABASE, TradeSimServicesDatabaseClass))
+#define TRADE_SIM_SERVICES_IS_DATABASE(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRADE_SIM_SERVICES_TYPE_DATABASE))
+#define TRADE_SIM_SERVICES_IS_DATABASE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRADE_SIM_SERVICES_TYPE_DATABASE))
+#define TRADE_SIM_SERVICES_DATABASE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRADE_SIM_SERVICES_TYPE_DATABASE, TradeSimServicesDatabaseClass))
+
+typedef struct _TradeSimServicesDatabase TradeSimServicesDatabase;
+typedef struct _TradeSimServicesDatabaseClass TradeSimServicesDatabaseClass;
+
+#define TRADE_SIM_SERVICES_TYPE_QUOTE_ITEM (trade_sim_services_quote_item_get_type ())
+#define TRADE_SIM_SERVICES_QUOTE_ITEM(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRADE_SIM_SERVICES_TYPE_QUOTE_ITEM, TradeSimServicesQuoteItem))
+#define TRADE_SIM_SERVICES_QUOTE_ITEM_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRADE_SIM_SERVICES_TYPE_QUOTE_ITEM, TradeSimServicesQuoteItemClass))
+#define TRADE_SIM_SERVICES_IS_QUOTE_ITEM(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRADE_SIM_SERVICES_TYPE_QUOTE_ITEM))
+#define TRADE_SIM_SERVICES_IS_QUOTE_ITEM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRADE_SIM_SERVICES_TYPE_QUOTE_ITEM))
+#define TRADE_SIM_SERVICES_QUOTE_ITEM_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRADE_SIM_SERVICES_TYPE_QUOTE_ITEM, TradeSimServicesQuoteItemClass))
+
+typedef struct _TradeSimServicesQuoteItem TradeSimServicesQuoteItem;
+typedef struct _TradeSimServicesQuoteItemClass TradeSimServicesQuoteItemClass;
+typedef struct _TradeSimObjectsProviderPrivate TradeSimObjectsProviderPrivate;
+
+#define TRADE_SIM_OBJECTS_TYPE_PROVIDER_TICKER (trade_sim_objects_provider_ticker_get_type ())
+#define TRADE_SIM_OBJECTS_PROVIDER_TICKER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRADE_SIM_OBJECTS_TYPE_PROVIDER_TICKER, TradeSimObjectsProviderTicker))
+#define TRADE_SIM_OBJECTS_PROVIDER_TICKER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRADE_SIM_OBJECTS_TYPE_PROVIDER_TICKER, TradeSimObjectsProviderTickerClass))
+#define TRADE_SIM_OBJECTS_IS_PROVIDER_TICKER(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRADE_SIM_OBJECTS_TYPE_PROVIDER_TICKER))
+#define TRADE_SIM_OBJECTS_IS_PROVIDER_TICKER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRADE_SIM_OBJECTS_TYPE_PROVIDER_TICKER))
+#define TRADE_SIM_OBJECTS_PROVIDER_TICKER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRADE_SIM_OBJECTS_TYPE_PROVIDER_TICKER, TradeSimObjectsProviderTickerClass))
+
+typedef struct _TradeSimObjectsProviderTicker TradeSimObjectsProviderTicker;
+typedef struct _TradeSimObjectsProviderTickerClass TradeSimObjectsProviderTickerClass;
+typedef struct _TradeSimObjectsProviderTickerPrivate TradeSimObjectsProviderTickerPrivate;
+#define _g_free0(var) (var = (g_free (var), NULL))
+#define _g_array_unref0(var) ((var == NULL) ? NULL : (var = (g_array_unref (var), NULL)))
+
 struct _TradeSimWidgetsProvidersPanel {
 	GtkGrid parent_instance;
 	TradeSimWidgetsProvidersPanelPrivate * priv;
@@ -96,6 +141,54 @@ struct _TradeSimWidgetsProvidersPanelPrivate {
 	GtkTreeIter add_iter_providers;
 	GtkTreeIter add_iter_ticker;
 	GtkTreeView* tree_view_providers;
+};
+
+struct _TradeSimServicesQuotesManager {
+	GTypeInstance parent_instance;
+	volatile int ref_count;
+	TradeSimServicesQuotesManagerPrivate * priv;
+	gchar* ticker;
+	gchar* provider_name;
+	GDateTime* start_date;
+	GDateTime* end_date;
+	gchar* time_frame;
+	TradeSimServicesDatabase* db;
+	gchar* db_file_location;
+	GArray* quotes;
+};
+
+struct _TradeSimServicesQuotesManagerClass {
+	GTypeClass parent_class;
+	void (*finalize) (TradeSimServicesQuotesManager *self);
+};
+
+struct _TradeSimObjectsProvider {
+	GTypeInstance parent_instance;
+	volatile int ref_count;
+	TradeSimObjectsProviderPrivate * priv;
+	gint id;
+	gchar* name;
+	gchar* folder_name;
+};
+
+struct _TradeSimObjectsProviderClass {
+	GTypeClass parent_class;
+	void (*finalize) (TradeSimObjectsProvider *self);
+};
+
+struct _TradeSimObjectsProviderTicker {
+	GTypeInstance parent_instance;
+	volatile int ref_count;
+	TradeSimObjectsProviderTickerPrivate * priv;
+	gint ticker_id;
+	gchar* ticker_name;
+	gchar* provider_name;
+	gint provider_id;
+};
+
+struct _TradeSimObjectsProviderTickerClass {
+	GTypeClass parent_class;
+	void (*finalize) (TradeSimObjectsProviderTicker *self);
 };
 
 
@@ -122,6 +215,49 @@ TradeSimWidgetsProvidersPanel* trade_sim_widgets_providers_panel_new (TradeSimMa
 TradeSimWidgetsProvidersPanel* trade_sim_widgets_providers_panel_construct (GType object_type,
                                                                             TradeSimMainWindow* window);
 void trade_sim_widgets_providers_panel_configure_providers (TradeSimWidgetsProvidersPanel* self);
+gpointer trade_sim_objects_provider_ref (gpointer instance);
+void trade_sim_objects_provider_unref (gpointer instance);
+GParamSpec* trade_sim_objects_param_spec_provider (const gchar* name,
+                                                   const gchar* nick,
+                                                   const gchar* blurb,
+                                                   GType object_type,
+                                                   GParamFlags flags);
+void trade_sim_objects_value_set_provider (GValue* value,
+                                           gpointer v_object);
+void trade_sim_objects_value_take_provider (GValue* value,
+                                            gpointer v_object);
+gpointer trade_sim_objects_value_get_provider (const GValue* value);
+GType trade_sim_objects_provider_get_type (void) G_GNUC_CONST;
+GType trade_sim_services_database_get_type (void) G_GNUC_CONST;
+gpointer trade_sim_services_quote_item_ref (gpointer instance);
+void trade_sim_services_quote_item_unref (gpointer instance);
+GParamSpec* trade_sim_services_param_spec_quote_item (const gchar* name,
+                                                      const gchar* nick,
+                                                      const gchar* blurb,
+                                                      GType object_type,
+                                                      GParamFlags flags);
+void trade_sim_services_value_set_quote_item (GValue* value,
+                                              gpointer v_object);
+void trade_sim_services_value_take_quote_item (GValue* value,
+                                               gpointer v_object);
+gpointer trade_sim_services_value_get_quote_item (const GValue* value);
+GType trade_sim_services_quote_item_get_type (void) G_GNUC_CONST;
+GArray* trade_sim_services_database_get_providers (TradeSimServicesDatabase* self);
+gpointer trade_sim_objects_provider_ticker_ref (gpointer instance);
+void trade_sim_objects_provider_ticker_unref (gpointer instance);
+GParamSpec* trade_sim_objects_param_spec_provider_ticker (const gchar* name,
+                                                          const gchar* nick,
+                                                          const gchar* blurb,
+                                                          GType object_type,
+                                                          GParamFlags flags);
+void trade_sim_objects_value_set_provider_ticker (GValue* value,
+                                                  gpointer v_object);
+void trade_sim_objects_value_take_provider_ticker (GValue* value,
+                                                   gpointer v_object);
+gpointer trade_sim_objects_value_get_provider_ticker (const GValue* value);
+GType trade_sim_objects_provider_ticker_get_type (void) G_GNUC_CONST;
+GArray* trade_sim_services_database_get_providers_tickers (TradeSimServicesDatabase* self,
+                                                           const gchar* provider_name);
 static GObject * trade_sim_widgets_providers_panel_constructor (GType type,
                                                          guint n_construct_properties,
                                                          GObjectConstructParam * construct_properties);
@@ -157,7 +293,7 @@ trade_sim_widgets_providers_panel_construct (GType object_type,
 	self->main_window = window;
 #line 43 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
 	return self;
-#line 161 "ProvidersPanel.c"
+#line 297 "ProvidersPanel.c"
 }
 
 
@@ -166,7 +302,7 @@ trade_sim_widgets_providers_panel_new (TradeSimMainWindow* window)
 {
 #line 43 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
 	return trade_sim_widgets_providers_panel_construct (TRADE_SIM_WIDGETS_TYPE_PROVIDERS_PANEL, window);
-#line 170 "ProvidersPanel.c"
+#line 306 "ProvidersPanel.c"
 }
 
 
@@ -176,58 +312,39 @@ trade_sim_widgets_providers_panel_configure_providers (TradeSimWidgetsProvidersP
 	GtkScrolledWindow* _tmp0_;
 	GtkScrolledWindow* _tmp1_;
 	GtkTreeStore* _tmp2_;
-	GtkTreeStore* _tmp3_;
-	GtkTreeIter _tmp4_ = {0};
-	GtkTreeStore* _tmp5_;
-	GtkTreeIter _tmp6_;
-	GtkTreeStore* _tmp7_;
-	GtkTreeIter _tmp8_;
-	GtkTreeIter _tmp9_ = {0};
-	GtkTreeStore* _tmp10_;
-	GtkTreeIter _tmp11_;
-	GtkTreeStore* _tmp12_;
-	GtkTreeIter _tmp13_ = {0};
-	GtkTreeStore* _tmp14_;
-	GtkTreeIter _tmp15_;
-	GtkTreeStore* _tmp16_;
-	GtkTreeIter _tmp17_;
-	GtkTreeIter _tmp18_ = {0};
-	GtkTreeStore* _tmp19_;
-	GtkTreeIter _tmp20_;
-	GtkTreeStore* _tmp21_;
-	GtkTreeIter _tmp22_;
-	GtkTreeIter _tmp23_ = {0};
-	GtkTreeStore* _tmp24_;
-	GtkTreeIter _tmp25_;
-	GtkTreeView* _tmp26_;
-	GtkTreeView* _tmp27_;
-	GtkTreeStore* _tmp28_;
+	GArray* db_providers = NULL;
+	TradeSimServicesQuotesManager* _tmp3_;
+	TradeSimServicesDatabase* _tmp4_;
+	GArray* _tmp5_;
+	GtkTreeView* _tmp52_;
+	GtkTreeView* _tmp53_;
+	GtkTreeStore* _tmp54_;
 	GtkCellRendererText* ticker_cell = NULL;
-	GtkCellRendererText* _tmp29_;
+	GtkCellRendererText* _tmp55_;
 	GtkCellRendererText* ticker_price = NULL;
-	GtkCellRendererText* _tmp30_;
+	GtkCellRendererText* _tmp56_;
 	GtkCellRendererText* ticker_spread = NULL;
-	GtkCellRendererText* _tmp31_;
+	GtkCellRendererText* _tmp57_;
 	GtkCellRendererText* ticker_provider_id = NULL;
-	GtkCellRendererText* _tmp32_;
+	GtkCellRendererText* _tmp58_;
 	GtkCellRendererText* ticker_ticker_id = NULL;
-	GtkCellRendererText* _tmp33_;
-	GtkTreeView* _tmp34_;
-	GtkTreeView* _tmp35_;
-	GtkTreeView* _tmp36_;
-	GtkTreeView* _tmp37_;
-	GtkTreeView* _tmp38_;
-	GtkTreeView* _tmp39_;
-	GtkTreeViewColumn* _tmp40_;
-	GtkTreeView* _tmp41_;
-	GtkTreeViewColumn* _tmp42_;
-	GtkTreeView* _tmp43_;
-	GtkTreeViewColumn* _tmp44_;
-	GtkTreeView* _tmp45_;
-	GtkScrolledWindow* _tmp46_;
-	GtkTreeView* _tmp47_;
-	GtkScrolledWindow* _tmp48_;
-	GtkScrolledWindow* _tmp49_;
+	GtkCellRendererText* _tmp59_;
+	GtkTreeView* _tmp60_;
+	GtkTreeView* _tmp61_;
+	GtkTreeView* _tmp62_;
+	GtkTreeView* _tmp63_;
+	GtkTreeView* _tmp64_;
+	GtkTreeView* _tmp65_;
+	GtkTreeViewColumn* _tmp66_;
+	GtkTreeView* _tmp67_;
+	GtkTreeViewColumn* _tmp68_;
+	GtkTreeView* _tmp69_;
+	GtkTreeViewColumn* _tmp70_;
+	GtkTreeView* _tmp71_;
+	GtkScrolledWindow* _tmp72_;
+	GtkTreeView* _tmp73_;
+	GtkScrolledWindow* _tmp74_;
+	GtkScrolledWindow* _tmp75_;
 #line 61 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
 	g_return_if_fail (self != NULL);
 #line 63 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
@@ -252,172 +369,327 @@ trade_sim_widgets_providers_panel_configure_providers (TradeSimWidgetsProvidersP
 	memset (&self->priv->add_iter_providers, 0, sizeof (GtkTreeIter));
 #line 68 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
 	memset (&self->priv->add_iter_ticker, 0, sizeof (GtkTreeIter));
+#line 70 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	_tmp3_ = self->qm;
+#line 70 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	_tmp4_ = _tmp3_->db;
+#line 70 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	_tmp5_ = trade_sim_services_database_get_providers (_tmp4_);
+#line 70 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	db_providers = _tmp5_;
+#line 381 "ProvidersPanel.c"
+	{
+		gint i = 0;
+#line 72 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+		i = 0;
+#line 386 "ProvidersPanel.c"
+		{
+			gboolean _tmp6_ = FALSE;
+#line 72 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+			_tmp6_ = TRUE;
+#line 72 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+			while (TRUE) {
+#line 393 "ProvidersPanel.c"
+				gint _tmp8_;
+				GArray* _tmp9_;
+				guint _tmp10_;
+				GtkTreeStore* _tmp11_;
+				GtkTreeIter _tmp12_ = {0};
+				GtkTreeStore* _tmp13_;
+				GtkTreeIter _tmp14_;
+				GArray* _tmp15_;
+				gint _tmp16_;
+				TradeSimObjectsProvider* _tmp17_;
+				const gchar* _tmp18_;
+				GArray* db_imported_tickers = NULL;
+				TradeSimServicesQuotesManager* _tmp19_;
+				TradeSimServicesDatabase* _tmp20_;
+				GArray* _tmp21_;
+				gint _tmp22_;
+				TradeSimObjectsProvider* _tmp23_;
+				const gchar* _tmp24_;
+				GArray* _tmp25_;
+#line 72 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				if (!_tmp6_) {
+#line 415 "ProvidersPanel.c"
+					gint _tmp7_;
+#line 72 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+					_tmp7_ = i;
+#line 72 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+					i = _tmp7_ + 1;
+#line 421 "ProvidersPanel.c"
+				}
+#line 72 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp6_ = FALSE;
+#line 72 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp8_ = i;
+#line 72 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp9_ = db_providers;
+#line 72 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp10_ = _tmp9_->len;
+#line 72 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				if (!(((guint) _tmp8_) < _tmp10_)) {
+#line 72 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+					break;
+#line 435 "ProvidersPanel.c"
+				}
+#line 73 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp11_ = self->priv->list_store_providers;
+#line 73 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				gtk_tree_store_append (_tmp11_, &_tmp12_, NULL);
+#line 73 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				self->priv->add_iter_providers = _tmp12_;
+#line 74 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp13_ = self->priv->list_store_providers;
+#line 74 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp14_ = self->priv->add_iter_providers;
+#line 74 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp15_ = db_providers;
+#line 74 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp16_ = i;
+#line 74 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp17_ = g_array_index (_tmp15_, TradeSimObjectsProvider*, (guint) _tmp16_);
+#line 74 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp18_ = _tmp17_->name;
+#line 74 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				gtk_tree_store_set (_tmp13_, &_tmp14_, 0, _tmp18_, -1, -1);
+#line 76 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp19_ = self->qm;
+#line 76 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp20_ = _tmp19_->db;
+#line 76 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp21_ = db_providers;
+#line 76 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp22_ = i;
+#line 76 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp23_ = g_array_index (_tmp21_, TradeSimObjectsProvider*, (guint) _tmp22_);
+#line 76 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp24_ = _tmp23_->name;
+#line 76 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_tmp25_ = trade_sim_services_database_get_providers_tickers (_tmp20_, _tmp24_);
+#line 76 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				db_imported_tickers = _tmp25_;
+#line 473 "ProvidersPanel.c"
+				{
+					gint z = 0;
 #line 78 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp3_ = self->priv->list_store_providers;
+					z = 0;
+#line 478 "ProvidersPanel.c"
+					{
+						gboolean _tmp26_ = FALSE;
 #line 78 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_store_append (_tmp3_, &_tmp4_, NULL);
+						_tmp26_ = TRUE;
 #line 78 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	self->priv->add_iter_providers = _tmp4_;
-#line 79 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp5_ = self->priv->list_store_providers;
-#line 79 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp6_ = self->priv->add_iter_providers;
-#line 79 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_store_set (_tmp5_, &_tmp6_, 0, "Trading View", -1, -1);
+						while (TRUE) {
+#line 485 "ProvidersPanel.c"
+							gint _tmp28_;
+							GArray* _tmp29_;
+							guint _tmp30_;
+							GtkTreeStore* _tmp31_;
+							GtkTreeIter _tmp32_;
+							GtkTreeIter _tmp33_ = {0};
+							GtkTreeStore* _tmp34_;
+							GtkTreeIter _tmp35_;
+							GArray* _tmp36_;
+							gint _tmp37_;
+							TradeSimObjectsProviderTicker* _tmp38_;
+							const gchar* _tmp39_;
+							GArray* _tmp40_;
+							gint _tmp41_;
+							TradeSimObjectsProviderTicker* _tmp42_;
+							gint _tmp43_;
+							gchar* _tmp44_;
+							gchar* _tmp45_;
+							GArray* _tmp46_;
+							gint _tmp47_;
+							TradeSimObjectsProviderTicker* _tmp48_;
+							gint _tmp49_;
+							gchar* _tmp50_;
+							gchar* _tmp51_;
+#line 78 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							if (!_tmp26_) {
+#line 512 "ProvidersPanel.c"
+								gint _tmp27_;
+#line 78 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+								_tmp27_ = z;
+#line 78 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+								z = _tmp27_ + 1;
+#line 518 "ProvidersPanel.c"
+							}
+#line 78 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp26_ = FALSE;
+#line 78 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp28_ = z;
+#line 78 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp29_ = db_imported_tickers;
+#line 78 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp30_ = _tmp29_->len;
+#line 78 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							if (!(((guint) _tmp28_) < _tmp30_)) {
+#line 78 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+								break;
+#line 532 "ProvidersPanel.c"
+							}
+#line 80 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp31_ = self->priv->list_store_providers;
+#line 80 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp32_ = self->priv->add_iter_providers;
+#line 80 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							gtk_tree_store_append (_tmp31_, &_tmp33_, &_tmp32_);
+#line 80 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							self->priv->add_iter_ticker = _tmp33_;
 #line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp7_ = self->priv->list_store_providers;
+							_tmp34_ = self->priv->list_store_providers;
 #line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp8_ = self->priv->add_iter_providers;
+							_tmp35_ = self->priv->add_iter_ticker;
 #line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_store_append (_tmp7_, &_tmp9_, &_tmp8_);
+							_tmp36_ = db_imported_tickers;
 #line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	self->priv->add_iter_ticker = _tmp9_;
-#line 82 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp10_ = self->priv->list_store_providers;
-#line 82 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp11_ = self->priv->add_iter_ticker;
-#line 82 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_store_set (_tmp10_, &_tmp11_, 0, "EURUSD", 1, "1.12352", 2, "21", 3, "3", 4, "1", -1, -1);
-#line 84 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp12_ = self->priv->list_store_providers;
-#line 84 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_store_append (_tmp12_, &_tmp13_, NULL);
-#line 84 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	self->priv->add_iter_providers = _tmp13_;
-#line 85 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp14_ = self->priv->list_store_providers;
-#line 85 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp15_ = self->priv->add_iter_providers;
-#line 85 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_store_set (_tmp14_, &_tmp15_, 0, "EODATA", -1, -1);
+							_tmp37_ = z;
+#line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp38_ = g_array_index (_tmp36_, TradeSimObjectsProviderTicker*, (guint) _tmp37_);
+#line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp39_ = _tmp38_->ticker_name;
+#line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp40_ = db_imported_tickers;
+#line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp41_ = z;
+#line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp42_ = g_array_index (_tmp40_, TradeSimObjectsProviderTicker*, (guint) _tmp41_);
+#line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp43_ = _tmp42_->provider_id;
+#line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp44_ = g_strdup_printf ("%i", _tmp43_);
+#line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp45_ = _tmp44_;
+#line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp46_ = db_imported_tickers;
+#line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp47_ = z;
+#line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp48_ = g_array_index (_tmp46_, TradeSimObjectsProviderTicker*, (guint) _tmp47_);
+#line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp49_ = _tmp48_->ticker_id;
+#line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp50_ = g_strdup_printf ("%i", _tmp49_);
+#line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_tmp51_ = _tmp50_;
+#line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							gtk_tree_store_set (_tmp34_, &_tmp35_, 0, _tmp39_, 1, "1.12352", 2, "21", 3, _tmp45_, 4, _tmp51_, -1, -1);
+#line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_g_free0 (_tmp51_);
+#line 81 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+							_g_free0 (_tmp45_);
+#line 584 "ProvidersPanel.c"
+						}
+					}
+				}
+#line 72 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+				_g_array_unref0 (db_imported_tickers);
+#line 590 "ProvidersPanel.c"
+			}
+		}
+	}
 #line 87 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp16_ = self->priv->list_store_providers;
+	_tmp52_ = (GtkTreeView*) gtk_tree_view_new ();
 #line 87 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp17_ = self->priv->add_iter_providers;
+	g_object_ref_sink (_tmp52_);
 #line 87 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_store_append (_tmp16_, &_tmp18_, &_tmp17_);
-#line 87 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	self->priv->add_iter_ticker = _tmp18_;
-#line 88 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp19_ = self->priv->list_store_providers;
-#line 88 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp20_ = self->priv->add_iter_ticker;
-#line 88 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_store_set (_tmp19_, &_tmp20_, 0, "EURUSD", 1, "1.02761", 2, "27", 3, "1", 4, "1", -1, -1);
-#line 90 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp21_ = self->priv->list_store_providers;
-#line 90 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp22_ = self->priv->add_iter_providers;
-#line 90 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_store_append (_tmp21_, &_tmp23_, &_tmp22_);
-#line 90 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	self->priv->add_iter_ticker = _tmp23_;
-#line 91 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp24_ = self->priv->list_store_providers;
-#line 91 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp25_ = self->priv->add_iter_ticker;
-#line 91 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_store_set (_tmp24_, &_tmp25_, 0, "USDJPY", 1, "1.19172", 2, "37", 3, "1", 4, "1", -1, -1);
-#line 93 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp26_ = (GtkTreeView*) gtk_tree_view_new ();
-#line 93 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	g_object_ref_sink (_tmp26_);
-#line 93 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
 	_g_object_unref0 (self->priv->tree_view_providers);
+#line 87 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	self->priv->tree_view_providers = _tmp52_;
+#line 89 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	_tmp53_ = self->priv->tree_view_providers;
+#line 89 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	_tmp54_ = self->priv->list_store_providers;
+#line 89 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	gtk_tree_view_set_model (_tmp53_, (GtkTreeModel*) _tmp54_);
+#line 91 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	_tmp55_ = (GtkCellRendererText*) gtk_cell_renderer_text_new ();
+#line 91 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	g_object_ref_sink (_tmp55_);
+#line 91 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	ticker_cell = _tmp55_;
+#line 92 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	_tmp56_ = (GtkCellRendererText*) gtk_cell_renderer_text_new ();
+#line 92 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	g_object_ref_sink (_tmp56_);
+#line 92 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	ticker_price = _tmp56_;
 #line 93 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	self->priv->tree_view_providers = _tmp26_;
+	_tmp57_ = (GtkCellRendererText*) gtk_cell_renderer_text_new ();
+#line 93 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	g_object_ref_sink (_tmp57_);
+#line 93 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	ticker_spread = _tmp57_;
+#line 94 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	_tmp58_ = (GtkCellRendererText*) gtk_cell_renderer_text_new ();
+#line 94 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	g_object_ref_sink (_tmp58_);
+#line 94 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	ticker_provider_id = _tmp58_;
 #line 95 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp27_ = self->priv->tree_view_providers;
+	_tmp59_ = (GtkCellRendererText*) gtk_cell_renderer_text_new ();
 #line 95 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp28_ = self->priv->list_store_providers;
+	g_object_ref_sink (_tmp59_);
 #line 95 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_view_set_model (_tmp27_, (GtkTreeModel*) _tmp28_);
+	ticker_ticker_id = _tmp59_;
 #line 97 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp29_ = (GtkCellRendererText*) gtk_cell_renderer_text_new ();
+	_tmp60_ = self->priv->tree_view_providers;
 #line 97 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	g_object_ref_sink (_tmp29_);
-#line 97 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	ticker_cell = _tmp29_;
+	gtk_tree_view_insert_column_with_attributes (_tmp60_, -1, "Ticker", (GtkCellRenderer*) ticker_cell, "text", 0, NULL, NULL);
 #line 98 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp30_ = (GtkCellRendererText*) gtk_cell_renderer_text_new ();
+	_tmp61_ = self->priv->tree_view_providers;
 #line 98 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	g_object_ref_sink (_tmp30_);
-#line 98 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	ticker_price = _tmp30_;
+	gtk_tree_view_insert_column_with_attributes (_tmp61_, -1, "Price", (GtkCellRenderer*) ticker_price, "text", 1, NULL, NULL);
 #line 99 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp31_ = (GtkCellRendererText*) gtk_cell_renderer_text_new ();
+	_tmp62_ = self->priv->tree_view_providers;
 #line 99 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	g_object_ref_sink (_tmp31_);
-#line 99 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	ticker_spread = _tmp31_;
+	gtk_tree_view_insert_column_with_attributes (_tmp62_, -1, "Sp", (GtkCellRenderer*) ticker_price, "text", 2, NULL, NULL);
 #line 100 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp32_ = (GtkCellRendererText*) gtk_cell_renderer_text_new ();
+	_tmp63_ = self->priv->tree_view_providers;
 #line 100 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	g_object_ref_sink (_tmp32_);
-#line 100 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	ticker_provider_id = _tmp32_;
+	gtk_tree_view_insert_column_with_attributes (_tmp63_, -1, "ProviderId", (GtkCellRenderer*) ticker_price, "text", 3, NULL, NULL);
 #line 101 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp33_ = (GtkCellRendererText*) gtk_cell_renderer_text_new ();
+	_tmp64_ = self->priv->tree_view_providers;
 #line 101 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	g_object_ref_sink (_tmp33_);
-#line 101 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	ticker_ticker_id = _tmp33_;
+	gtk_tree_view_insert_column_with_attributes (_tmp64_, -1, "TickerId", (GtkCellRenderer*) ticker_price, "text", 4, NULL, NULL);
 #line 103 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp34_ = self->priv->tree_view_providers;
+	_tmp65_ = self->priv->tree_view_providers;
 #line 103 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_view_insert_column_with_attributes (_tmp34_, -1, "Ticker", (GtkCellRenderer*) ticker_cell, "text", 0, NULL, NULL);
-#line 104 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp35_ = self->priv->tree_view_providers;
-#line 104 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_view_insert_column_with_attributes (_tmp35_, -1, "Price", (GtkCellRenderer*) ticker_price, "text", 1, NULL, NULL);
+	_tmp66_ = gtk_tree_view_get_column (_tmp65_, 0);
+#line 103 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	gtk_tree_view_column_set_expand (_tmp66_, TRUE);
 #line 105 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp36_ = self->priv->tree_view_providers;
+	_tmp67_ = self->priv->tree_view_providers;
 #line 105 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_view_insert_column_with_attributes (_tmp36_, -1, "Sp", (GtkCellRenderer*) ticker_price, "text", 2, NULL, NULL);
+	_tmp68_ = gtk_tree_view_get_column (_tmp67_, 3);
+#line 105 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	gtk_tree_view_column_set_visible (_tmp68_, FALSE);
 #line 106 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp37_ = self->priv->tree_view_providers;
+	_tmp69_ = self->priv->tree_view_providers;
 #line 106 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_view_insert_column_with_attributes (_tmp37_, -1, "ProviderId", (GtkCellRenderer*) ticker_price, "text", 3, NULL, NULL);
-#line 107 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp38_ = self->priv->tree_view_providers;
-#line 107 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_view_insert_column_with_attributes (_tmp38_, -1, "TickerId", (GtkCellRenderer*) ticker_price, "text", 4, NULL, NULL);
-#line 109 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp39_ = self->priv->tree_view_providers;
-#line 109 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp40_ = gtk_tree_view_get_column (_tmp39_, 0);
-#line 109 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_view_column_set_expand (_tmp40_, TRUE);
+	_tmp70_ = gtk_tree_view_get_column (_tmp69_, 4);
+#line 106 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	gtk_tree_view_column_set_visible (_tmp70_, FALSE);
+#line 108 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	_tmp71_ = self->priv->tree_view_providers;
+#line 108 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	gtk_tree_view_expand_all (_tmp71_);
+#line 110 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	_tmp72_ = self->priv->scroll_prviders;
+#line 110 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	_tmp73_ = self->priv->tree_view_providers;
+#line 110 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	gtk_container_add ((GtkContainer*) _tmp72_, (GtkWidget*) _tmp73_);
 #line 111 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp41_ = self->priv->tree_view_providers;
+	_tmp74_ = self->priv->scroll_prviders;
 #line 111 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp42_ = gtk_tree_view_get_column (_tmp41_, 3);
-#line 111 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_view_column_set_visible (_tmp42_, FALSE);
+	gtk_widget_set_vexpand ((GtkWidget*) _tmp74_, TRUE);
 #line 112 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp43_ = self->priv->tree_view_providers;
+	_tmp75_ = self->priv->scroll_prviders;
 #line 112 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp44_ = gtk_tree_view_get_column (_tmp43_, 4);
-#line 112 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_view_column_set_visible (_tmp44_, FALSE);
-#line 114 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp45_ = self->priv->tree_view_providers;
-#line 114 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_tree_view_expand_all (_tmp45_);
-#line 116 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp46_ = self->priv->scroll_prviders;
-#line 116 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp47_ = self->priv->tree_view_providers;
-#line 116 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_container_add ((GtkContainer*) _tmp46_, (GtkWidget*) _tmp47_);
-#line 117 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp48_ = self->priv->scroll_prviders;
-#line 117 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_widget_set_vexpand ((GtkWidget*) _tmp48_, TRUE);
-#line 118 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	_tmp49_ = self->priv->scroll_prviders;
-#line 118 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
-	gtk_widget_set_hexpand ((GtkWidget*) _tmp49_, TRUE);
+	gtk_widget_set_hexpand ((GtkWidget*) _tmp75_, TRUE);
 #line 61 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
 	_g_object_unref0 (ticker_ticker_id);
 #line 61 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
@@ -428,7 +700,9 @@ trade_sim_widgets_providers_panel_configure_providers (TradeSimWidgetsProvidersP
 	_g_object_unref0 (ticker_price);
 #line 61 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
 	_g_object_unref0 (ticker_cell);
-#line 432 "ProvidersPanel.c"
+#line 61 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
+	_g_array_unref0 (db_providers);
+#line 706 "ProvidersPanel.c"
 }
 
 
@@ -471,7 +745,7 @@ trade_sim_widgets_providers_panel_constructor (GType type,
 	gtk_grid_attach ((GtkGrid*) self, (GtkWidget*) _tmp2_, 0, 0, 1, 1);
 #line 49 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
 	return obj;
-#line 475 "ProvidersPanel.c"
+#line 749 "ProvidersPanel.c"
 }
 
 
@@ -486,7 +760,7 @@ trade_sim_widgets_providers_panel_class_init (TradeSimWidgetsProvidersPanelClass
 	G_OBJECT_CLASS (klass)->constructor = trade_sim_widgets_providers_panel_constructor;
 #line 22 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
 	G_OBJECT_CLASS (klass)->finalize = trade_sim_widgets_providers_panel_finalize;
-#line 490 "ProvidersPanel.c"
+#line 764 "ProvidersPanel.c"
 }
 
 
@@ -495,7 +769,7 @@ trade_sim_widgets_providers_panel_instance_init (TradeSimWidgetsProvidersPanel *
 {
 #line 22 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
 	self->priv = TRADE_SIM_WIDGETS_PROVIDERS_PANEL_GET_PRIVATE (self);
-#line 499 "ProvidersPanel.c"
+#line 773 "ProvidersPanel.c"
 }
 
 
@@ -515,7 +789,7 @@ trade_sim_widgets_providers_panel_finalize (GObject * obj)
 	_trade_sim_services_quotes_manager_unref0 (self->qm);
 #line 22 "/home/horacio/Vala/TradeSim/src/Widgets/ProvidersPanel.vala"
 	G_OBJECT_CLASS (trade_sim_widgets_providers_panel_parent_class)->finalize (obj);
-#line 519 "ProvidersPanel.c"
+#line 793 "ProvidersPanel.c"
 }
 
 

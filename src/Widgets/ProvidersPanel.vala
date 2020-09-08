@@ -67,28 +67,22 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
         add_iter_providers = Gtk.TreeIter ();
         add_iter_ticker = Gtk.TreeIter ();
 
-        /*Array<TradeSim.Objects.ProviderTicker> datos = qm.db.get_providers_tickers ();
+        Array<TradeSim.Objects.Provider> db_providers = qm.db.get_providers();
 
-        var provider_actual;
-        var provider_anterior;
+        for(int i=0; i<db_providers.length; i++){
+            list_store_providers.append (out add_iter_providers, null);
+            list_store_providers.set (add_iter_providers, 0, db_providers.index(i).name, -1);
 
-        while(provider_actual )*/
-        
+            Array<TradeSim.Objects.ProviderTicker> db_imported_tickers = qm.db.get_providers_tickers(db_providers.index(i).name);
 
-        list_store_providers.append (out add_iter_providers, null);
-        list_store_providers.set (add_iter_providers, 0, "Trading View", -1);
+            for(int z=0; z<db_imported_tickers.length; z++){
 
-        list_store_providers.append (out add_iter_ticker, add_iter_providers);
-        list_store_providers.set (add_iter_ticker, 0, "EURUSD", 1, "1.12352", 2, "21", 3, "3", 4, "1", -1);
+                list_store_providers.append (out add_iter_ticker, add_iter_providers);
+                list_store_providers.set (add_iter_ticker, 0, db_imported_tickers.index(z).ticker_name, 1, "1.12352", 2, "21", 3, db_imported_tickers.index(z).provider_id.to_string(), 4, db_imported_tickers.index(z).ticker_id.to_string(), -1);
 
-        list_store_providers.append (out add_iter_providers, null);
-        list_store_providers.set (add_iter_providers, 0, "EODATA", -1);
+            }
 
-        list_store_providers.append (out add_iter_ticker, add_iter_providers);
-        list_store_providers.set (add_iter_ticker, 0, "EURUSD", 1, "1.02761", 2, "27", 3, "1", 4, "1", -1);
-
-        list_store_providers.append (out add_iter_ticker, add_iter_providers);
-        list_store_providers.set (add_iter_ticker, 0, "USDJPY", 1, "1.19172", 2, "37", 3, "1", 4, "1", -1);
+        }
 
         tree_view_providers = new Gtk.TreeView ();
 

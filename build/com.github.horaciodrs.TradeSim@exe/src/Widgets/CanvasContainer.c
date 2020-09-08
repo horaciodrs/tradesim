@@ -8,6 +8,8 @@
 #include <gtk/gtk.h>
 #include <float.h>
 #include <math.h>
+#include <stdlib.h>
+#include <string.h>
 
 
 #define TRADE_SIM_WIDGETS_TYPE_CANVAS_CONTAINER (trade_sim_widgets_canvas_container_get_type ())
@@ -78,9 +80,15 @@ static void trade_sim_widgets_canvas_container_set_main_window (TradeSimWidgetsC
 static GObject * trade_sim_widgets_canvas_container_constructor (GType type,
                                                           guint n_construct_properties,
                                                           GObjectConstructParam * construct_properties);
-TradeSimWidgetsCanvas* trade_sim_widgets_canvas_new (TradeSimMainWindow* window);
+TradeSimWidgetsCanvas* trade_sim_widgets_canvas_new (TradeSimMainWindow* window,
+                                                     const gchar* _provider_name,
+                                                     const gchar* _ticker,
+                                                     const gchar* _time_frame);
 TradeSimWidgetsCanvas* trade_sim_widgets_canvas_construct (GType object_type,
-                                                           TradeSimMainWindow* window);
+                                                           TradeSimMainWindow* window,
+                                                           const gchar* _provider_name,
+                                                           const gchar* _ticker,
+                                                           const gchar* _time_frame);
 static void trade_sim_widgets_canvas_container_finalize (GObject * obj);
 static void _vala_trade_sim_widgets_canvas_container_get_property (GObject * object,
                                                             guint property_id,
@@ -103,7 +111,7 @@ trade_sim_widgets_canvas_container_construct (GType object_type,
 	self = (TradeSimWidgetsCanvasContainer*) g_object_new (object_type, "main-window", window, "orientation", GTK_ORIENTATION_VERTICAL, "spacing", 0, NULL);
 #line 9 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 	return self;
-#line 107 "CanvasContainer.c"
+#line 115 "CanvasContainer.c"
 }
 
 
@@ -112,7 +120,7 @@ trade_sim_widgets_canvas_container_new (TradeSimMainWindow* window)
 {
 #line 9 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 	return trade_sim_widgets_canvas_container_construct (TRADE_SIM_WIDGETS_TYPE_CANVAS_CONTAINER, window);
-#line 116 "CanvasContainer.c"
+#line 124 "CanvasContainer.c"
 }
 
 
@@ -129,7 +137,7 @@ trade_sim_widgets_canvas_container_get_main_window (TradeSimWidgetsCanvasContain
 	result = _tmp0_;
 #line 3 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 	return result;
-#line 133 "CanvasContainer.c"
+#line 141 "CanvasContainer.c"
 }
 
 
@@ -145,7 +153,7 @@ trade_sim_widgets_canvas_container_set_main_window (TradeSimWidgetsCanvasContain
 		self->priv->_main_window = value;
 #line 3 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 		g_object_notify_by_pspec ((GObject *) self, trade_sim_widgets_canvas_container_properties[TRADE_SIM_WIDGETS_CANVAS_CONTAINER_MAIN_WINDOW_PROPERTY]);
-#line 149 "CanvasContainer.c"
+#line 157 "CanvasContainer.c"
 	}
 }
 
@@ -178,7 +186,7 @@ trade_sim_widgets_canvas_container_constructor (GType type,
 #line 21 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 	_tmp1_ = self->priv->_main_window;
 #line 21 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
-	_tmp2_ = trade_sim_widgets_canvas_new (_tmp1_);
+	_tmp2_ = trade_sim_widgets_canvas_new (_tmp1_, "Tradingview.com", "EURUSD", "M1");
 #line 21 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 	g_object_ref_sink (_tmp2_);
 #line 21 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
@@ -193,7 +201,7 @@ trade_sim_widgets_canvas_container_constructor (GType type,
 	_g_object_unref0 (ajuste);
 #line 17 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 	return obj;
-#line 197 "CanvasContainer.c"
+#line 205 "CanvasContainer.c"
 }
 
 
@@ -214,7 +222,7 @@ trade_sim_widgets_canvas_container_class_init (TradeSimWidgetsCanvasContainerCla
 	G_OBJECT_CLASS (klass)->finalize = trade_sim_widgets_canvas_container_finalize;
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRADE_SIM_WIDGETS_CANVAS_CONTAINER_MAIN_WINDOW_PROPERTY, trade_sim_widgets_canvas_container_properties[TRADE_SIM_WIDGETS_CANVAS_CONTAINER_MAIN_WINDOW_PROPERTY] = g_param_spec_object ("main-window", "main-window", "main-window", TRADE_SIM_TYPE_MAIN_WINDOW, G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
-#line 218 "CanvasContainer.c"
+#line 226 "CanvasContainer.c"
 }
 
 
@@ -223,7 +231,7 @@ trade_sim_widgets_canvas_container_instance_init (TradeSimWidgetsCanvasContainer
 {
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 	self->priv = TRADE_SIM_WIDGETS_CANVAS_CONTAINER_GET_PRIVATE (self);
-#line 227 "CanvasContainer.c"
+#line 235 "CanvasContainer.c"
 }
 
 
@@ -237,7 +245,7 @@ trade_sim_widgets_canvas_container_finalize (GObject * obj)
 	_g_object_unref0 (self->chart_canvas);
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 	G_OBJECT_CLASS (trade_sim_widgets_canvas_container_parent_class)->finalize (obj);
-#line 241 "CanvasContainer.c"
+#line 249 "CanvasContainer.c"
 }
 
 
@@ -271,13 +279,13 @@ _vala_trade_sim_widgets_canvas_container_get_property (GObject * object,
 		g_value_set_object (value, trade_sim_widgets_canvas_container_get_main_window (self));
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 		break;
-#line 275 "CanvasContainer.c"
+#line 283 "CanvasContainer.c"
 		default:
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 		break;
-#line 281 "CanvasContainer.c"
+#line 289 "CanvasContainer.c"
 	}
 }
 
@@ -298,13 +306,13 @@ _vala_trade_sim_widgets_canvas_container_set_property (GObject * object,
 		trade_sim_widgets_canvas_container_set_main_window (self, g_value_get_object (value));
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 		break;
-#line 302 "CanvasContainer.c"
+#line 310 "CanvasContainer.c"
 		default:
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 		break;
-#line 308 "CanvasContainer.c"
+#line 316 "CanvasContainer.c"
 	}
 }
 
