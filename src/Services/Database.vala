@@ -98,6 +98,7 @@ public class TradeSim.Services.Database : GLib.Object {
         insert_provider ("EODATA", "EODATA");
         insert_provider ("HistData.com", "HISTDATA");
         insert_provider ("Tradingview.com", "TVIEW");
+        insert_provider ("TRADESIM", "TRADESIM");
 
         int id_forex = insert_market ("Forex", "");
 
