@@ -119,7 +119,7 @@ public class TradeSim.Services.Database : GLib.Object {
 
     public bool import_data_exists (string provider, string market, string ticker, string time_frame, int year, int month) {
 
-        int provider_id = get_db_id_by_name ("providers", provider);
+        int provider_id = get_db_id_by_table_and_field ("providers", "folder_name", provider);
         int market_id = get_db_id_by_name ("markets", market);
         int ticker_id = get_db_id_by_name ("tickers", ticker);
         int time_frame_id = get_db_id_by_name ("time_frames", time_frame);
@@ -127,7 +127,7 @@ public class TradeSim.Services.Database : GLib.Object {
         bool file_exists = false;
         Sqlite.Statement stmt;
 
-        //int res = db.prepare_v2 ("SELECT COUNT (*) FROM imported_data WHERE provider_id = ? AND market_id = ? AND ticker_id = ? AND time_frame_id = ? AND q_year = ? AND q_month = ?", -1, out stmt);
+        // int res = db.prepare_v2 ("SELECT COUNT (*) FROM imported_data WHERE provider_id = ? AND market_id = ? AND ticker_id = ? AND time_frame_id = ? AND q_year = ? AND q_month = ?", -1, out stmt);
         int res = db.prepare_v2 ("SELECT COUNT (*) FROM imported_data WHERE provider_id = ? AND market_id = ? AND ticker_id = ? AND time_frame_id = ? AND q_year = ? AND q_month = ?", -1, out stmt);
         assert (res == Sqlite.OK);
 
@@ -157,11 +157,18 @@ public class TradeSim.Services.Database : GLib.Object {
     }
 
     public int get_db_id_by_name (string db_table, string _name) {
+
+        return get_db_id_by_table_and_field (db_table, "name", _name);
+
+    }
+
+    public int get_db_id_by_table_and_field (string db_table, string db_field, string _name) {
+
         Sqlite.Statement stmt;
         string sql;
         int res;
 
-        sql = "SELECT COUNT (*) FROM " + db_table + " WHERE name = ?;";
+        sql = "SELECT COUNT (*) FROM " + db_table + " WHERE " + db_field + " = ?;";
 
         res = db.prepare_v2 (sql, -1, out stmt);
         assert (res == Sqlite.OK);
@@ -173,7 +180,7 @@ public class TradeSim.Services.Database : GLib.Object {
             if (stmt.column_int (0) > 0) {
                 stmt.reset ();
 
-                sql = "SELECT id FROM " + db_table + " WHERE name = ?;";
+                sql = "SELECT id FROM " + db_table + " WHERE " + db_field + " = ?;";
 
                 res = db.prepare_v2 (sql, -1, out stmt);
                 assert (res == Sqlite.OK);
@@ -195,7 +202,7 @@ public class TradeSim.Services.Database : GLib.Object {
         }
     }
 
-    public void add_imported_data(int provider_id, int market_id, int ticker_id, int time_frame_id, int year, int month) {
+    public void add_imported_data (int provider_id, int market_id, int ticker_id, int time_frame_id, int year, int month) {
         Sqlite.Statement stmt;
         string sql;
         int res;
@@ -231,12 +238,83 @@ public class TradeSim.Services.Database : GLib.Object {
 
     }
 
+    public void delete_imported_data (string provider_name, string market_name, string ticker_name, string time_frame_name, int year, int month) {
+
+        int provider_id = get_db_id_by_table_and_field ("providers", "folder_name", provider_name);
+        int market_id = get_db_id_by_name ("markets", market_name);
+        int ticker_id = get_db_id_by_name ("tickers", ticker_name);
+        int time_frame_id = get_db_id_by_name ("time_frames", time_frame_name);
+
+        Sqlite.Statement stmt;
+        string sql;
+        int res;
+
+
+        sql = """ DELETE FROM quotes where provider_id = ? AND market_id = ? AND ticker_id = ? AND time_frame_id = ? AND date_year = ? AND date_month = ?;  """;
+
+        res = db.prepare_v2 (sql, -1, out stmt);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (1, provider_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (2, market_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (3, ticker_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (4, time_frame_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (5, year);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (6, month);
+        assert (res == Sqlite.OK);
+
+        if (stmt.step () != Sqlite.DONE) {
+            warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+        }
+
+        stmt.reset ();
+
+        // --------------------------
+
+        sql = """ DELETE FROM imported_data where provider_id = ? AND market_id = ? AND ticker_id = ? AND time_frame_id = ? AND q_year = ? AND q_month = ?;  """;
+
+        res = db.prepare_v2 (sql, -1, out stmt);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (1, provider_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (2, market_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (3, ticker_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (4, time_frame_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (5, year);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (6, month);
+        assert (res == Sqlite.OK);
+
+        if (stmt.step () != Sqlite.DONE) {
+            warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+        }
+
+        stmt.reset ();
+
+    }
 
     public void insert_quote (TradeSim.Services.QuoteItem quote_item) {
 
-        
-
-        int provider_id = get_db_id_by_name ("providers", quote_item.provider_name);
+        int provider_id = get_db_id_by_table_and_field ("providers", "folder_name", quote_item.provider_folder_name);
         int market_id = get_db_id_by_name ("markets", "Forex");
         int ticker_id = get_db_id_by_name ("tickers", quote_item.ticker);
         int time_frame_id = get_db_id_by_name ("time_frames", quote_item.time_frame_name);
@@ -321,7 +399,7 @@ public class TradeSim.Services.Database : GLib.Object {
 
         stmt.reset ();
 
-        add_imported_data(provider_id, market_id, ticker_id, time_frame_id, date_year, date_month);
+        add_imported_data (provider_id, market_id, ticker_id, time_frame_id, date_year, date_month);
 
     }
 
@@ -512,6 +590,33 @@ public class TradeSim.Services.Database : GLib.Object {
 
         while ((res = stmt.step ()) == Sqlite.ROW) {
             all.append_val (new TradeSim.Objects.Ticker (stmt.column_int (0), stmt.column_text (1)));
+        }
+
+        return all;
+    }
+
+    public Array<TradeSim.Objects.ProviderTicker> get_providers_tickers () {
+
+        Sqlite.Statement stmt;
+        string sql;
+        int res;
+
+        sql = """ SELECT imported_data.ticker_id, tickers.name, imported_data.provider_id, providers.folder_name
+                    FROM imported_data
+                    INNER JOIN providers ON imported_data.provider_id = providers.id
+                    INNER JOIN tickers ON imported_data.ticker_id = tickers.id
+                    GROUP BY imported_data.provider_id, imported_data.ticker_id
+                    ORDER BY imported_data.provider_id, imported_data.ticker_id;
+                    
+        """;
+
+        res = db.prepare_v2 (sql, -1, out stmt);
+        assert (res == Sqlite.OK);
+
+        var all = new Array<TradeSim.Objects.ProviderTicker> ();
+
+        while ((res = stmt.step ()) == Sqlite.ROW) {
+            all.append_val (new TradeSim.Objects.ProviderTicker (stmt.column_int (0), stmt.column_text (1), stmt.column_int (2), stmt.column_text (3)));
         }
 
         return all;

@@ -133,7 +133,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         Gtk.CellRendererText provider_cell = new Gtk.CellRendererText ();
         Gtk.CellRendererText provider_folder_cell = new Gtk.CellRendererText ();
 
-        tree_view_provider.get_selection().changed.connect ((sel) => {
+        tree_view_provider.get_selection ().changed.connect ((sel) => {
 
             Gtk.TreeIter edited_iter;
             Gtk.TreeModel model;
@@ -144,9 +144,9 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             model.get_value (edited_iter, 1, out nombre);
 
-            ds_selected_provider = nombre.get_string();
+            ds_selected_provider = nombre.get_string ();
 
-            update_quotes_by_filter();
+            update_quotes_by_filter ();
 
         });
 
@@ -154,7 +154,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         tree_view_provider.insert_column_with_attributes (-1, "ProviderFolderName", provider_folder_cell, "text", 1);
 
         tree_view_provider.get_column (1).set_visible (false); // oculto la columna con la url.
-        
+
         scroll_provider.add (tree_view_provider);
         scroll_provider.set_vexpand (true);
         scroll_provider.set_hexpand (true);
@@ -188,7 +188,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         Gtk.CellRendererText ticker_cell = new Gtk.CellRendererText ();
 
-        tree_view_ticker.get_selection().changed.connect ((sel) => {
+        tree_view_ticker.get_selection ().changed.connect ((sel) => {
 
             Gtk.TreeIter edited_iter;
             Gtk.TreeModel model;
@@ -199,9 +199,9 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             model.get_value (edited_iter, 0, out nombre);
 
-            ds_selected_ticker = nombre.get_string();
+            ds_selected_ticker = nombre.get_string ();
 
-            update_quotes_by_filter();
+            update_quotes_by_filter ();
 
         });
 
@@ -236,7 +236,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         Gtk.CellRendererText year_cell = new Gtk.CellRendererText ();
 
-        tree_view_year.get_selection().changed.connect ((sel) => {
+        tree_view_year.get_selection ().changed.connect ((sel) => {
 
             Gtk.TreeIter edited_iter;
             Gtk.TreeModel model;
@@ -247,9 +247,9 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             model.get_value (edited_iter, 0, out nombre);
 
-            ds_selected_year = nombre.get_string();
+            ds_selected_year = nombre.get_string ();
 
-            update_quotes_by_filter();
+            update_quotes_by_filter ();
 
         });
 
@@ -297,7 +297,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         Gtk.CellRendererText time_frame_cell = new Gtk.CellRendererText ();
 
-        tree_view_time_frame.get_selection().changed.connect ((sel) => {
+        tree_view_time_frame.get_selection ().changed.connect ((sel) => {
 
             Gtk.TreeIter edited_iter;
             Gtk.TreeModel model;
@@ -308,9 +308,9 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             model.get_value (edited_iter, 0, out nombre);
 
-            ds_selected_time_frame = nombre.get_string();
+            ds_selected_time_frame = nombre.get_string ();
 
-            update_quotes_by_filter();
+            update_quotes_by_filter ();
 
         });
 
@@ -327,19 +327,19 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         list_store_quotes.clear ();
 
-        if((ds_selected_provider == "") || (ds_selected_ticker == "") || (ds_selected_time_frame == "") || (ds_selected_year == "")){
+        if ((ds_selected_provider == "") || (ds_selected_ticker == "") || (ds_selected_time_frame == "") || (ds_selected_year == "")) {
             return;
         }
 
-        
-        for(int i=1; i<=12; i++){
+
+        for (int i = 1 ; i <= 12 ; i++) {
 
             string url = "https://raw.githubusercontent.com/horaciodrs/TradeSim/master/data/quotes";
-            string mes = i.to_string();
+            string mes = i.to_string ();
 
             mes = "00" + mes;
 
-            mes = mes.substring(mes.len() - 2, 2);
+            mes = mes.substring (mes.len () - 2, 2);
 
             url = url + "/" + ds_selected_provider;
             url = url + "/" + ds_selected_year;
@@ -347,20 +347,20 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             url = url + "/" + ds_selected_provider + "_" + ds_selected_ticker + "_" + ds_selected_time_frame + "_" + ds_selected_year + "_";
             url = url + mes + ".csv";
 
-            print(url + "\n");
+            // print(url + "\n");
 
             list_store_quotes.append (out add_iter_quotes);
             list_store_quotes.set (add_iter_quotes
                                    , 0, ds_selected_provider
                                    , 1, "Forex"
                                    , 2, ds_selected_ticker
-                                   , 3, int.parse(ds_selected_year)
-                                   , 4, get_month_name(i)
+                                   , 3, int.parse (ds_selected_year)
+                                   , 4, get_month_name (i)
                                    , 5, ds_selected_time_frame
-                                   , 6, qm.db.import_data_exists(ds_selected_provider, "Forex", ds_selected_ticker, ds_selected_time_frame, ds_selected_year.to_int(), i)
+                                   , 6, qm.db.import_data_exists (ds_selected_provider, "Forex", ds_selected_ticker, ds_selected_time_frame, ds_selected_year.to_int (), i)
                                    , 7, url);
         }
-        
+
 
     }
 
@@ -396,26 +396,31 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             list_store_quotes.get_value (edited_iter, 7, out url);
             list_store_quotes.get_value (edited_iter, 4, out mes);
 
-            print("mes:" + get_month_number(mes.get_string()).to_string());
+            // print("mes:" + get_month_number(mes.get_string()).to_string());
 
-            if(qm.db.import_data_exists(ds_selected_provider, "Forex", ds_selected_ticker, ds_selected_time_frame, ds_selected_year.to_int(), get_month_number(mes.get_string()))){
-                //estoy retornando pero lo tengo que quitar...
+            if (qm.db.import_data_exists (ds_selected_provider, "Forex", ds_selected_ticker, ds_selected_time_frame, ds_selected_year.to_int (), get_month_number (mes.get_string ()))) {
+
+                qm.db.delete_imported_data (ds_selected_provider, "Forex", ds_selected_ticker, ds_selected_time_frame, ds_selected_year.to_int (), get_month_number (mes.get_string ()));
+
+                list_store_quotes.set (edited_iter, 6, !toggle.active);
+
                 return;
+
             }
 
             // Obtener datos desde el link de url....
 
             File file = File.new_for_uri (url.get_string ());
-            
+
             // Open the file for reading:
-            InputStream @is = file.read ();
+            InputStream @is = file.read (); // esta linea da error cuando no esta el archivo...
 
             // Output: ``M``
             uint8 buffer[1];
             size_t size = @is.read (buffer);
             stdout.write (buffer, size);
 
-            
+
             DataInputStream dis = new DataInputStream (@is);
 
             string str = "";
@@ -424,13 +429,13 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             while (str != null) {
 
-                qm.insert_cuote_to_db(str);
+                qm.insert_cuote_to_db (str);
 
-                //print ("%s\n", str);
+                // print ("%s\n", str);
 
                 str = dis.read_line ();
             }
-            
+
             /*fin obtener archivo */
 
             list_store_quotes.set (edited_iter, 6, !toggle.active);
@@ -453,7 +458,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         scroll_quotes.set_hexpand (true);
         scroll_quotes.get_style_context ().add_class ("scrolled-window-data");
 
-        //update_quotes_by_filter ();
+        // update_quotes_by_filter ();
 
 
     }

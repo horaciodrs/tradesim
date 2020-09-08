@@ -29,6 +29,8 @@ public class TradeSim.Layouts.Main : Gtk.Box {
     public Gtk.Notebook nb_chart_container;
 
     public TradeSim.Widgets.CanvasContainer canvas_container;
+    public TradeSim.Widgets.ProvidersPanel providers_panel;
+    public TradeSim.Widgets.OperationsPanel operations_panel;
 
     
 
@@ -50,6 +52,9 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
     construct {
 
+        providers_panel = new TradeSim.Widgets.ProvidersPanel(main_window);
+        operations_panel = new TradeSim.Widgets.OperationsPanel(main_window);
+
         canvas_container = new TradeSim.Widgets.CanvasContainer(main_window);
 
         nb_chart_container = new Gtk.Notebook ();
@@ -62,11 +67,11 @@ public class TradeSim.Layouts.Main : Gtk.Box {
         pane_top = new Gtk.Paned (Gtk.Orientation.VERTICAL);
         pane_left = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
 
-        pane_left.pack1 (new Gtk.Label ("Hola"), true, true);
+        pane_left.pack1 (providers_panel, true, true);
         pane_left.pack2 (nb_chart_container, true, true);
 
         pane_top.pack1 (pane_left, true, false);
-        pane_top.pack2 (new Gtk.Label ("Bottom Bar"), true, true);
+        pane_top.pack2 (operations_panel, true, true);
 
         pack_start (pane_top, true, true, 1);
 

@@ -416,6 +416,13 @@ static void __lambda10_ (TradeSimDialogsSettingsDialog* self,
                   const gchar* path);
 static void _vala_GtkTreePath_free (GtkTreePath* self);
 gint get_month_number (const gchar* month);
+void trade_sim_services_database_delete_imported_data (TradeSimServicesDatabase* self,
+                                                       const gchar* provider_name,
+                                                       const gchar* market_name,
+                                                       const gchar* ticker_name,
+                                                       const gchar* time_frame_name,
+                                                       gint year,
+                                                       gint month);
 void trade_sim_services_quotes_manager_insert_cuote_to_db (TradeSimServicesQuotesManager* self,
                                                            const gchar* _csvline);
 static void ___lambda10__gtk_cell_renderer_toggle_toggled (GtkCellRendererToggle* _sender,
@@ -461,7 +468,7 @@ trade_sim_dialogs_settings_dialog_construct (GType object_type,
 	self = (TradeSimDialogsSettingsDialog*) g_object_new (object_type, "main-window", window, "border-width", 6, "deletable", TRUE, "resizable", TRUE, "modal", TRUE, "title", "Preferencias", NULL);
 #line 38 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	return self;
-#line 465 "SettingsDialog.c"
+#line 472 "SettingsDialog.c"
 }
 
 
@@ -470,7 +477,7 @@ trade_sim_dialogs_settings_dialog_new (TradeSimMainWindow* window)
 {
 #line 38 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	return trade_sim_dialogs_settings_dialog_construct (TRADE_SIM_DIALOGS_TYPE_SETTINGS_DIALOG, window);
-#line 474 "SettingsDialog.c"
+#line 481 "SettingsDialog.c"
 }
 
 
@@ -485,7 +492,7 @@ __lambda5_ (TradeSimDialogsSettingsDialog* self)
 	_tmp1_ = self->priv->dark_theme_switch;
 #line 99 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	trade_sim_main_window_change_theme (_tmp0_, FALSE, gtk_switch_get_state (_tmp1_));
-#line 489 "SettingsDialog.c"
+#line 496 "SettingsDialog.c"
 }
 
 
@@ -496,7 +503,7 @@ ___lambda5__g_object_notify (GObject* _sender,
 {
 #line 98 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	__lambda5_ ((TradeSimDialogsSettingsDialog*) self);
-#line 500 "SettingsDialog.c"
+#line 507 "SettingsDialog.c"
 }
 
 
@@ -578,7 +585,7 @@ trade_sim_dialogs_settings_dialog_get_interface_box (TradeSimDialogsSettingsDial
 	result = (GtkWidget*) grid;
 #line 103 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	return result;
-#line 582 "SettingsDialog.c"
+#line 589 "SettingsDialog.c"
 }
 
 
@@ -587,7 +594,7 @@ _g_object_ref0 (gpointer self)
 {
 #line 142 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	return self ? g_object_ref (self) : NULL;
-#line 591 "SettingsDialog.c"
+#line 598 "SettingsDialog.c"
 }
 
 
@@ -639,7 +646,7 @@ __lambda6_ (TradeSimDialogsSettingsDialog* self,
 	G_IS_VALUE (&nombre) ? (g_value_unset (&nombre), NULL) : NULL;
 #line 136 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (model);
-#line 643 "SettingsDialog.c"
+#line 650 "SettingsDialog.c"
 }
 
 
@@ -649,7 +656,7 @@ ___lambda6__gtk_tree_selection_changed (GtkTreeSelection* _sender,
 {
 #line 136 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	__lambda6_ ((TradeSimDialogsSettingsDialog*) self, _sender);
-#line 653 "SettingsDialog.c"
+#line 660 "SettingsDialog.c"
 }
 
 
@@ -720,19 +727,19 @@ trade_sim_dialogs_settings_dialog_configure_provider (TradeSimDialogsSettingsDia
 	_g_array_unref0 (providers);
 #line 116 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	providers = _tmp6_;
-#line 724 "SettingsDialog.c"
+#line 731 "SettingsDialog.c"
 	{
 		gint i = 0;
 #line 119 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		i = 0;
-#line 729 "SettingsDialog.c"
+#line 736 "SettingsDialog.c"
 		{
 			gboolean _tmp7_ = FALSE;
 #line 119 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			_tmp7_ = TRUE;
 #line 119 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			while (TRUE) {
-#line 736 "SettingsDialog.c"
+#line 743 "SettingsDialog.c"
 				gint _tmp9_;
 				GArray* _tmp10_;
 				guint _tmp11_;
@@ -752,13 +759,13 @@ trade_sim_dialogs_settings_dialog_configure_provider (TradeSimDialogsSettingsDia
 				const gchar* _tmp25_;
 #line 119 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				if (!_tmp7_) {
-#line 756 "SettingsDialog.c"
+#line 763 "SettingsDialog.c"
 					gint _tmp8_;
 #line 119 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 					_tmp8_ = i;
 #line 119 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 					i = _tmp8_ + 1;
-#line 762 "SettingsDialog.c"
+#line 769 "SettingsDialog.c"
 				}
 #line 119 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				_tmp7_ = FALSE;
@@ -772,7 +779,7 @@ trade_sim_dialogs_settings_dialog_configure_provider (TradeSimDialogsSettingsDia
 				if (!(((guint) _tmp9_) < _tmp11_)) {
 #line 119 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 					break;
-#line 776 "SettingsDialog.c"
+#line 783 "SettingsDialog.c"
 				}
 #line 121 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				_tmp12_ = self->priv->list_store_provider;
@@ -808,7 +815,7 @@ trade_sim_dialogs_settings_dialog_configure_provider (TradeSimDialogsSettingsDia
 				_tmp25_ = _tmp24_->folder_name;
 #line 123 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				gtk_list_store_set (_tmp20_, &_tmp21_, 1, _tmp25_, -1);
-#line 812 "SettingsDialog.c"
+#line 819 "SettingsDialog.c"
 			}
 		}
 	}
@@ -888,7 +895,7 @@ trade_sim_dialogs_settings_dialog_configure_provider (TradeSimDialogsSettingsDia
 	_g_object_unref0 (provider_cell);
 #line 106 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_array_unref0 (providers);
-#line 892 "SettingsDialog.c"
+#line 899 "SettingsDialog.c"
 }
 
 
@@ -940,7 +947,7 @@ __lambda7_ (TradeSimDialogsSettingsDialog* self,
 	G_IS_VALUE (&nombre) ? (g_value_unset (&nombre), NULL) : NULL;
 #line 191 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (model);
-#line 944 "SettingsDialog.c"
+#line 951 "SettingsDialog.c"
 }
 
 
@@ -950,7 +957,7 @@ ___lambda7__gtk_tree_selection_changed (GtkTreeSelection* _sender,
 {
 #line 191 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	__lambda7_ ((TradeSimDialogsSettingsDialog*) self, _sender);
-#line 954 "SettingsDialog.c"
+#line 961 "SettingsDialog.c"
 }
 
 
@@ -1015,19 +1022,19 @@ trade_sim_dialogs_settings_dialog_configure_ticker (TradeSimDialogsSettingsDialo
 	_g_array_unref0 (tickers);
 #line 175 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	tickers = _tmp6_;
-#line 1019 "SettingsDialog.c"
+#line 1026 "SettingsDialog.c"
 	{
 		gint i = 0;
 #line 178 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		i = 0;
-#line 1024 "SettingsDialog.c"
+#line 1031 "SettingsDialog.c"
 		{
 			gboolean _tmp7_ = FALSE;
 #line 178 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			_tmp7_ = TRUE;
 #line 178 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			while (TRUE) {
-#line 1031 "SettingsDialog.c"
+#line 1038 "SettingsDialog.c"
 				gint _tmp9_;
 				GArray* _tmp10_;
 				guint _tmp11_;
@@ -1041,13 +1048,13 @@ trade_sim_dialogs_settings_dialog_configure_ticker (TradeSimDialogsSettingsDialo
 				const gchar* _tmp19_;
 #line 178 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				if (!_tmp7_) {
-#line 1045 "SettingsDialog.c"
+#line 1052 "SettingsDialog.c"
 					gint _tmp8_;
 #line 178 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 					_tmp8_ = i;
 #line 178 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 					i = _tmp8_ + 1;
-#line 1051 "SettingsDialog.c"
+#line 1058 "SettingsDialog.c"
 				}
 #line 178 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				_tmp7_ = FALSE;
@@ -1061,7 +1068,7 @@ trade_sim_dialogs_settings_dialog_configure_ticker (TradeSimDialogsSettingsDialo
 				if (!(((guint) _tmp9_) < _tmp11_)) {
 #line 178 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 					break;
-#line 1065 "SettingsDialog.c"
+#line 1072 "SettingsDialog.c"
 				}
 #line 180 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				_tmp12_ = self->priv->list_store_ticker;
@@ -1083,7 +1090,7 @@ trade_sim_dialogs_settings_dialog_configure_ticker (TradeSimDialogsSettingsDialo
 				_tmp19_ = _tmp18_->name;
 #line 181 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				gtk_list_store_set (_tmp14_, &_tmp15_, 0, _tmp19_, -1);
-#line 1087 "SettingsDialog.c"
+#line 1094 "SettingsDialog.c"
 			}
 		}
 	}
@@ -1141,7 +1148,7 @@ trade_sim_dialogs_settings_dialog_configure_ticker (TradeSimDialogsSettingsDialo
 	_g_object_unref0 (ticker_cell);
 #line 165 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_array_unref0 (tickers);
-#line 1145 "SettingsDialog.c"
+#line 1152 "SettingsDialog.c"
 }
 
 
@@ -1193,7 +1200,7 @@ __lambda8_ (TradeSimDialogsSettingsDialog* self,
 	G_IS_VALUE (&nombre) ? (g_value_unset (&nombre), NULL) : NULL;
 #line 239 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (model);
-#line 1197 "SettingsDialog.c"
+#line 1204 "SettingsDialog.c"
 }
 
 
@@ -1203,7 +1210,7 @@ ___lambda8__gtk_tree_selection_changed (GtkTreeSelection* _sender,
 {
 #line 239 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	__lambda8_ ((TradeSimDialogsSettingsDialog*) self, _sender);
-#line 1207 "SettingsDialog.c"
+#line 1214 "SettingsDialog.c"
 }
 
 
@@ -1255,7 +1262,7 @@ trade_sim_dialogs_settings_dialog_configure_year (TradeSimDialogsSettingsDialog*
 	self->priv->list_store_year = _tmp2_;
 #line 226 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	memset (&self->priv->add_iter_year, 0, sizeof (GtkTreeIter));
-#line 1259 "SettingsDialog.c"
+#line 1266 "SettingsDialog.c"
 	{
 		gint i = 0;
 		gint _tmp3_;
@@ -1263,14 +1270,14 @@ trade_sim_dialogs_settings_dialog_configure_year (TradeSimDialogsSettingsDialog*
 		_tmp3_ = max_year;
 #line 228 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		i = _tmp3_;
-#line 1267 "SettingsDialog.c"
+#line 1274 "SettingsDialog.c"
 		{
 			gboolean _tmp4_ = FALSE;
 #line 228 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			_tmp4_ = TRUE;
 #line 228 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			while (TRUE) {
-#line 1274 "SettingsDialog.c"
+#line 1281 "SettingsDialog.c"
 				gint _tmp6_;
 				gint _tmp7_;
 				GtkListStore* _tmp8_;
@@ -1282,13 +1289,13 @@ trade_sim_dialogs_settings_dialog_configure_year (TradeSimDialogsSettingsDialog*
 				gchar* _tmp14_;
 #line 228 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				if (!_tmp4_) {
-#line 1286 "SettingsDialog.c"
+#line 1293 "SettingsDialog.c"
 					gint _tmp5_;
 #line 228 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 					_tmp5_ = i;
 #line 228 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 					i = _tmp5_ - 1;
-#line 1292 "SettingsDialog.c"
+#line 1299 "SettingsDialog.c"
 				}
 #line 228 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				_tmp4_ = FALSE;
@@ -1300,7 +1307,7 @@ trade_sim_dialogs_settings_dialog_configure_year (TradeSimDialogsSettingsDialog*
 				if (!(_tmp6_ >= _tmp7_)) {
 #line 228 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 					break;
-#line 1304 "SettingsDialog.c"
+#line 1311 "SettingsDialog.c"
 				}
 #line 229 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				_tmp8_ = self->priv->list_store_year;
@@ -1322,7 +1329,7 @@ trade_sim_dialogs_settings_dialog_configure_year (TradeSimDialogsSettingsDialog*
 				gtk_list_store_set (_tmp10_, &_tmp11_, 0, _tmp14_, -1);
 #line 230 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				_g_free0 (_tmp14_);
-#line 1326 "SettingsDialog.c"
+#line 1333 "SettingsDialog.c"
 			}
 		}
 	}
@@ -1378,7 +1385,7 @@ trade_sim_dialogs_settings_dialog_configure_year (TradeSimDialogsSettingsDialog*
 	gtk_style_context_add_class (_tmp27_, "scrolled-window-data");
 #line 217 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (year_cell);
-#line 1382 "SettingsDialog.c"
+#line 1389 "SettingsDialog.c"
 }
 
 
@@ -1430,7 +1437,7 @@ __lambda9_ (TradeSimDialogsSettingsDialog* self,
 	G_IS_VALUE (&nombre) ? (g_value_unset (&nombre), NULL) : NULL;
 #line 300 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (model);
-#line 1434 "SettingsDialog.c"
+#line 1441 "SettingsDialog.c"
 }
 
 
@@ -1440,7 +1447,7 @@ ___lambda9__gtk_tree_selection_changed (GtkTreeSelection* _sender,
 {
 #line 300 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	__lambda9_ ((TradeSimDialogsSettingsDialog*) self, _sender);
-#line 1444 "SettingsDialog.c"
+#line 1451 "SettingsDialog.c"
 }
 
 
@@ -1650,7 +1657,7 @@ trade_sim_dialogs_settings_dialog_configure_time_frame (TradeSimDialogsSettingsD
 	gtk_style_context_add_class (_tmp43_, "scrolled-window-data");
 #line 265 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (time_frame_cell);
-#line 1654 "SettingsDialog.c"
+#line 1661 "SettingsDialog.c"
 }
 
 
@@ -1674,7 +1681,7 @@ string_strnlen (gchar* str,
 		result = maxlen;
 #line 1394 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		return result;
-#line 1678 "SettingsDialog.c"
+#line 1685 "SettingsDialog.c"
 	} else {
 		gchar* _tmp2_;
 #line 1396 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
@@ -1683,7 +1690,7 @@ string_strnlen (gchar* str,
 		result = (glong) (_tmp2_ - str);
 #line 1396 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		return result;
-#line 1687 "SettingsDialog.c"
+#line 1694 "SettingsDialog.c"
 	}
 }
 
@@ -1704,17 +1711,17 @@ string_substring (const gchar* self,
 	if (offset >= ((glong) 0)) {
 #line 1405 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		_tmp0_ = len >= ((glong) 0);
-#line 1708 "SettingsDialog.c"
+#line 1715 "SettingsDialog.c"
 	} else {
 #line 1405 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		_tmp0_ = FALSE;
-#line 1712 "SettingsDialog.c"
+#line 1719 "SettingsDialog.c"
 	}
 #line 1405 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 	if (_tmp0_) {
 #line 1407 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		string_length = string_strnlen ((gchar*) self, offset + len);
-#line 1718 "SettingsDialog.c"
+#line 1725 "SettingsDialog.c"
 	} else {
 		gint _tmp1_;
 		gint _tmp2_;
@@ -1724,11 +1731,11 @@ string_substring (const gchar* self,
 		_tmp2_ = _tmp1_;
 #line 1409 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		string_length = (glong) _tmp2_;
-#line 1728 "SettingsDialog.c"
+#line 1735 "SettingsDialog.c"
 	}
 #line 1412 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 	if (offset < ((glong) 0)) {
-#line 1732 "SettingsDialog.c"
+#line 1739 "SettingsDialog.c"
 		glong _tmp3_;
 #line 1413 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		_tmp3_ = string_length;
@@ -1736,24 +1743,24 @@ string_substring (const gchar* self,
 		offset = _tmp3_ + offset;
 #line 1414 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		g_return_val_if_fail (offset >= ((glong) 0), NULL);
-#line 1740 "SettingsDialog.c"
+#line 1747 "SettingsDialog.c"
 	} else {
 		glong _tmp4_;
 #line 1416 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		_tmp4_ = string_length;
 #line 1416 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		g_return_val_if_fail (offset <= _tmp4_, NULL);
-#line 1747 "SettingsDialog.c"
+#line 1754 "SettingsDialog.c"
 	}
 #line 1418 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 	if (len < ((glong) 0)) {
-#line 1751 "SettingsDialog.c"
+#line 1758 "SettingsDialog.c"
 		glong _tmp5_;
 #line 1419 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		_tmp5_ = string_length;
 #line 1419 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 		len = _tmp5_ - offset;
-#line 1757 "SettingsDialog.c"
+#line 1764 "SettingsDialog.c"
 	}
 #line 1421 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 	_tmp6_ = string_length;
@@ -1765,7 +1772,7 @@ string_substring (const gchar* self,
 	result = _tmp7_;
 #line 1422 "/usr/share/vala-0.40/vapi/glib-2.0.vapi"
 	return result;
-#line 1769 "SettingsDialog.c"
+#line 1776 "SettingsDialog.c"
 }
 
 
@@ -1789,59 +1796,59 @@ trade_sim_dialogs_settings_dialog_update_quotes_by_filter (TradeSimDialogsSettin
 	if (g_strcmp0 (_tmp4_, "") == 0) {
 #line 330 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_tmp3_ = TRUE;
-#line 1793 "SettingsDialog.c"
+#line 1800 "SettingsDialog.c"
 	} else {
 		const gchar* _tmp5_;
 #line 330 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_tmp5_ = self->priv->ds_selected_ticker;
 #line 330 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_tmp3_ = g_strcmp0 (_tmp5_, "") == 0;
-#line 1800 "SettingsDialog.c"
+#line 1807 "SettingsDialog.c"
 	}
 #line 330 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	if (_tmp3_) {
 #line 330 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_tmp2_ = TRUE;
-#line 1806 "SettingsDialog.c"
+#line 1813 "SettingsDialog.c"
 	} else {
 		const gchar* _tmp6_;
 #line 330 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_tmp6_ = self->priv->ds_selected_time_frame;
 #line 330 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_tmp2_ = g_strcmp0 (_tmp6_, "") == 0;
-#line 1813 "SettingsDialog.c"
+#line 1820 "SettingsDialog.c"
 	}
 #line 330 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	if (_tmp2_) {
 #line 330 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_tmp1_ = TRUE;
-#line 1819 "SettingsDialog.c"
+#line 1826 "SettingsDialog.c"
 	} else {
 		const gchar* _tmp7_;
 #line 330 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_tmp7_ = self->priv->ds_selected_year;
 #line 330 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_tmp1_ = g_strcmp0 (_tmp7_, "") == 0;
-#line 1826 "SettingsDialog.c"
+#line 1833 "SettingsDialog.c"
 	}
 #line 330 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	if (_tmp1_) {
 #line 331 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		return;
-#line 1832 "SettingsDialog.c"
+#line 1839 "SettingsDialog.c"
 	}
 	{
 		gint i = 0;
 #line 335 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		i = 1;
-#line 1838 "SettingsDialog.c"
+#line 1845 "SettingsDialog.c"
 		{
 			gboolean _tmp8_ = FALSE;
 #line 335 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			_tmp8_ = TRUE;
 #line 335 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			while (TRUE) {
-#line 1845 "SettingsDialog.c"
+#line 1852 "SettingsDialog.c"
 				gint _tmp10_;
 				gchar* url = NULL;
 				gchar* _tmp11_;
@@ -1895,37 +1902,34 @@ trade_sim_dialogs_settings_dialog_update_quotes_by_filter (TradeSimDialogsSettin
 				gchar* _tmp58_;
 				gchar* _tmp59_;
 				gchar* _tmp60_;
-				const gchar* _tmp61_;
-				gchar* _tmp62_;
-				gchar* _tmp63_;
-				GtkListStore* _tmp64_;
-				GtkTreeIter _tmp65_ = {0};
-				GtkListStore* _tmp66_;
-				GtkTreeIter _tmp67_;
-				const gchar* _tmp68_;
-				const gchar* _tmp69_;
-				const gchar* _tmp70_;
-				gint _tmp71_;
-				gchar* _tmp72_;
-				gchar* _tmp73_;
+				GtkListStore* _tmp61_;
+				GtkTreeIter _tmp62_ = {0};
+				GtkListStore* _tmp63_;
+				GtkTreeIter _tmp64_;
+				const gchar* _tmp65_;
+				const gchar* _tmp66_;
+				const gchar* _tmp67_;
+				gint _tmp68_;
+				gchar* _tmp69_;
+				gchar* _tmp70_;
+				const gchar* _tmp71_;
+				TradeSimServicesQuotesManager* _tmp72_;
+				TradeSimServicesDatabase* _tmp73_;
 				const gchar* _tmp74_;
-				TradeSimServicesQuotesManager* _tmp75_;
-				TradeSimServicesDatabase* _tmp76_;
+				const gchar* _tmp75_;
+				const gchar* _tmp76_;
 				const gchar* _tmp77_;
-				const gchar* _tmp78_;
+				gint _tmp78_;
 				const gchar* _tmp79_;
-				const gchar* _tmp80_;
-				gint _tmp81_;
-				const gchar* _tmp82_;
 #line 335 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				if (!_tmp8_) {
-#line 1923 "SettingsDialog.c"
+#line 1927 "SettingsDialog.c"
 					gint _tmp9_;
 #line 335 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 					_tmp9_ = i;
 #line 335 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 					i = _tmp9_ + 1;
-#line 1929 "SettingsDialog.c"
+#line 1933 "SettingsDialog.c"
 				}
 #line 335 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				_tmp8_ = FALSE;
@@ -1935,7 +1939,7 @@ trade_sim_dialogs_settings_dialog_update_quotes_by_filter (TradeSimDialogsSettin
 				if (!(_tmp10_ <= 12)) {
 #line 335 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 					break;
-#line 1939 "SettingsDialog.c"
+#line 1943 "SettingsDialog.c"
 				}
 #line 337 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				_tmp11_ = g_strdup ("https://raw.githubusercontent.com/horaciodrs/TradeSim/master/data/quot" \
@@ -2094,65 +2098,55 @@ trade_sim_dialogs_settings_dialog_update_quotes_by_filter (TradeSimDialogsSettin
 				url = _tmp60_;
 #line 348 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				_g_free0 (_tmp59_);
-#line 350 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp61_ = url;
-#line 350 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp62_ = g_strconcat (_tmp61_, "\n", NULL);
-#line 350 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp63_ = _tmp62_;
-#line 350 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				g_print ("%s", _tmp63_);
-#line 350 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_g_free0 (_tmp63_);
 #line 352 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp64_ = self->priv->list_store_quotes;
+				_tmp61_ = self->priv->list_store_quotes;
 #line 352 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				gtk_list_store_append (_tmp64_, &_tmp65_);
+				gtk_list_store_append (_tmp61_, &_tmp62_);
 #line 352 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				self->priv->add_iter_quotes = _tmp65_;
+				self->priv->add_iter_quotes = _tmp62_;
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp66_ = self->priv->list_store_quotes;
+				_tmp63_ = self->priv->list_store_quotes;
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp67_ = self->priv->add_iter_quotes;
+				_tmp64_ = self->priv->add_iter_quotes;
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp68_ = self->priv->ds_selected_provider;
+				_tmp65_ = self->priv->ds_selected_provider;
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp69_ = self->priv->ds_selected_ticker;
+				_tmp66_ = self->priv->ds_selected_ticker;
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp70_ = self->priv->ds_selected_year;
+				_tmp67_ = self->priv->ds_selected_year;
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp71_ = i;
+				_tmp68_ = i;
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp72_ = get_month_name (_tmp71_);
+				_tmp69_ = get_month_name (_tmp68_);
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp73_ = _tmp72_;
+				_tmp70_ = _tmp69_;
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp74_ = self->priv->ds_selected_time_frame;
+				_tmp71_ = self->priv->ds_selected_time_frame;
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp75_ = self->qm;
+				_tmp72_ = self->qm;
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp76_ = _tmp75_->db;
+				_tmp73_ = _tmp72_->db;
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp77_ = self->priv->ds_selected_provider;
+				_tmp74_ = self->priv->ds_selected_provider;
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp78_ = self->priv->ds_selected_ticker;
+				_tmp75_ = self->priv->ds_selected_ticker;
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp79_ = self->priv->ds_selected_time_frame;
+				_tmp76_ = self->priv->ds_selected_time_frame;
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp80_ = self->priv->ds_selected_year;
+				_tmp77_ = self->priv->ds_selected_year;
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp81_ = i;
+				_tmp78_ = i;
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_tmp82_ = url;
+				_tmp79_ = url;
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				gtk_list_store_set (_tmp66_, &_tmp67_, 0, _tmp68_, 1, "Forex", 2, _tmp69_, 3, atoi (_tmp70_), 4, _tmp73_, 5, _tmp74_, 6, trade_sim_services_database_import_data_exists (_tmp76_, _tmp77_, "Forex", _tmp78_, _tmp79_, atoi (_tmp80_), _tmp81_), 7, _tmp82_, -1);
+				gtk_list_store_set (_tmp63_, &_tmp64_, 0, _tmp65_, 1, "Forex", 2, _tmp66_, 3, atoi (_tmp67_), 4, _tmp70_, 5, _tmp71_, 6, trade_sim_services_database_import_data_exists (_tmp73_, _tmp74_, "Forex", _tmp75_, _tmp76_, atoi (_tmp77_), _tmp78_), 7, _tmp79_, -1);
 #line 353 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-				_g_free0 (_tmp73_);
+				_g_free0 (_tmp70_);
 #line 335 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				_g_free0 (mes);
 #line 335 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 				_g_free0 (url);
-#line 2155 "SettingsDialog.c"
+#line 2149 "SettingsDialog.c"
 			}
 		}
 	}
@@ -2164,7 +2158,7 @@ _vala_GtkTreePath_free (GtkTreePath* self)
 {
 #line 394 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_boxed_free (gtk_tree_path_get_type (), self);
-#line 2167 "SettingsDialog.c"
+#line 2161 "SettingsDialog.c"
 }
 
 
@@ -2186,42 +2180,37 @@ __lambda10_ (TradeSimDialogsSettingsDialog* self,
 	GtkListStore* _tmp7_;
 	GtkTreeIter _tmp8_;
 	GValue _tmp9_ = {0};
-	const gchar* _tmp10_;
-	gchar* _tmp11_;
-	gchar* _tmp12_;
-	gchar* _tmp13_;
-	gchar* _tmp14_;
-	TradeSimServicesQuotesManager* _tmp15_;
-	TradeSimServicesDatabase* _tmp16_;
-	const gchar* _tmp17_;
-	const gchar* _tmp18_;
-	const gchar* _tmp19_;
-	const gchar* _tmp20_;
-	const gchar* _tmp21_;
+	TradeSimServicesQuotesManager* _tmp10_;
+	TradeSimServicesDatabase* _tmp11_;
+	const gchar* _tmp12_;
+	const gchar* _tmp13_;
+	const gchar* _tmp14_;
+	const gchar* _tmp15_;
+	const gchar* _tmp16_;
 	GFile* file = NULL;
-	const gchar* _tmp22_;
-	GFile* _tmp23_;
+	const gchar* _tmp28_;
+	GFile* _tmp29_;
 	GInputStream* is = NULL;
-	GFile* _tmp24_;
-	GFileInputStream* _tmp25_;
+	GFile* _tmp30_;
+	GFileInputStream* _tmp31_;
 	guint8 buffer[1] = {0};
 	gsize size = 0UL;
-	GInputStream* _tmp26_;
-	FILE* _tmp27_;
-	gsize _tmp28_;
+	GInputStream* _tmp32_;
+	FILE* _tmp33_;
+	gsize _tmp34_;
 	GDataInputStream* dis = NULL;
-	GInputStream* _tmp29_;
-	GDataInputStream* _tmp30_;
+	GInputStream* _tmp35_;
+	GDataInputStream* _tmp36_;
 	gchar* str = NULL;
-	gchar* _tmp31_;
-	gchar* _tmp32_ = NULL;
-	GDataInputStream* _tmp33_;
-	gchar* _tmp34_;
-	gchar* _tmp35_;
-	GtkListStore* _tmp43_;
-	GtkTreeIter _tmp44_;
-	gboolean _tmp45_;
-	gboolean _tmp46_;
+	gchar* _tmp37_;
+	gchar* _tmp38_ = NULL;
+	GDataInputStream* _tmp39_;
+	gchar* _tmp40_;
+	gchar* _tmp41_;
+	GtkListStore* _tmp49_;
+	GtkTreeIter _tmp50_;
+	gboolean _tmp51_;
+	gboolean _tmp52_;
 	GError* _inner_error0_ = NULL;
 #line 388 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_return_if_fail (toggle != NULL);
@@ -2259,226 +2248,248 @@ __lambda10_ (TradeSimDialogsSettingsDialog* self,
 	G_IS_VALUE (&mes) ? (g_value_unset (&mes), NULL) : NULL;
 #line 397 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	mes = _tmp9_;
-#line 399 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp10_ = g_value_get_string (&mes);
-#line 399 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp11_ = g_strdup_printf ("%i", get_month_number (_tmp10_));
-#line 399 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp12_ = _tmp11_;
-#line 399 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp13_ = g_strconcat ("mes:", _tmp12_, NULL);
-#line 399 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp14_ = _tmp13_;
-#line 399 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_print ("%s", _tmp14_);
-#line 399 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_g_free0 (_tmp14_);
-#line 399 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_g_free0 (_tmp12_);
 #line 401 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp15_ = self->qm;
+	_tmp10_ = self->qm;
 #line 401 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp16_ = _tmp15_->db;
+	_tmp11_ = _tmp10_->db;
 #line 401 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp17_ = self->priv->ds_selected_provider;
+	_tmp12_ = self->priv->ds_selected_provider;
 #line 401 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp18_ = self->priv->ds_selected_ticker;
+	_tmp13_ = self->priv->ds_selected_ticker;
 #line 401 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp19_ = self->priv->ds_selected_time_frame;
+	_tmp14_ = self->priv->ds_selected_time_frame;
 #line 401 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp20_ = self->priv->ds_selected_year;
+	_tmp15_ = self->priv->ds_selected_year;
 #line 401 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp21_ = g_value_get_string (&mes);
+	_tmp16_ = g_value_get_string (&mes);
 #line 401 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	if (trade_sim_services_database_import_data_exists (_tmp16_, _tmp17_, "Forex", _tmp18_, _tmp19_, atoi (_tmp20_), get_month_number (_tmp21_))) {
+	if (trade_sim_services_database_import_data_exists (_tmp11_, _tmp12_, "Forex", _tmp13_, _tmp14_, atoi (_tmp15_), get_month_number (_tmp16_))) {
+#line 2267 "SettingsDialog.c"
+		TradeSimServicesQuotesManager* _tmp17_;
+		TradeSimServicesDatabase* _tmp18_;
+		const gchar* _tmp19_;
+		const gchar* _tmp20_;
+		const gchar* _tmp21_;
+		const gchar* _tmp22_;
+		const gchar* _tmp23_;
+		GtkListStore* _tmp24_;
+		GtkTreeIter _tmp25_;
+		gboolean _tmp26_;
+		gboolean _tmp27_;
 #line 403 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp17_ = self->qm;
+#line 403 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp18_ = _tmp17_->db;
+#line 403 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp19_ = self->priv->ds_selected_provider;
+#line 403 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp20_ = self->priv->ds_selected_ticker;
+#line 403 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp21_ = self->priv->ds_selected_time_frame;
+#line 403 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp22_ = self->priv->ds_selected_year;
+#line 403 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp23_ = g_value_get_string (&mes);
+#line 403 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		trade_sim_services_database_delete_imported_data (_tmp18_, _tmp19_, "Forex", _tmp20_, _tmp21_, atoi (_tmp22_), get_month_number (_tmp23_));
+#line 405 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp24_ = self->priv->list_store_quotes;
+#line 405 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp25_ = edited_iter;
+#line 405 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp26_ = gtk_cell_renderer_toggle_get_active (toggle);
+#line 405 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp27_ = _tmp26_;
+#line 405 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		gtk_list_store_set (_tmp24_, &_tmp25_, 6, !_tmp27_, -1);
+#line 407 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		G_IS_VALUE (&mes) ? (g_value_unset (&mes), NULL) : NULL;
-#line 403 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 407 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		G_IS_VALUE (&url) ? (g_value_unset (&url), NULL) : NULL;
-#line 403 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 407 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		return;
-#line 2300 "SettingsDialog.c"
+#line 2311 "SettingsDialog.c"
 	}
-#line 408 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp22_ = g_value_get_string (&url);
-#line 408 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp23_ = g_file_new_for_uri (_tmp22_);
-#line 408 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	file = _tmp23_;
-#line 411 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp24_ = file;
-#line 411 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp25_ = g_file_read (_tmp24_, NULL, &_inner_error0_);
-#line 411 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	is = (GInputStream*) _tmp25_;
-#line 411 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 413 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp28_ = g_value_get_string (&url);
+#line 413 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp29_ = g_file_new_for_uri (_tmp28_);
+#line 413 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	file = _tmp29_;
+#line 416 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp30_ = file;
+#line 416 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp31_ = g_file_read (_tmp30_, NULL, &_inner_error0_);
+#line 416 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	is = (GInputStream*) _tmp31_;
+#line 416 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	if (G_UNLIKELY (_inner_error0_ != NULL)) {
-#line 411 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 416 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_g_object_unref0 (file);
-#line 411 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 416 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		G_IS_VALUE (&mes) ? (g_value_unset (&mes), NULL) : NULL;
-#line 411 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 416 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		G_IS_VALUE (&url) ? (g_value_unset (&url), NULL) : NULL;
-#line 411 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 416 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error0_->message, g_quark_to_string (_inner_error0_->domain), _inner_error0_->code);
-#line 411 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 416 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		g_clear_error (&_inner_error0_);
-#line 411 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 416 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		return;
-#line 2328 "SettingsDialog.c"
+#line 2339 "SettingsDialog.c"
 	}
-#line 415 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp26_ = is;
-#line 415 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	size = (gsize) g_input_stream_read (_tmp26_, buffer, (gsize) 1, NULL, &_inner_error0_);
-#line 415 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 420 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp32_ = is;
+#line 420 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	size = (gsize) g_input_stream_read (_tmp32_, buffer, (gsize) 1, NULL, &_inner_error0_);
+#line 420 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	if (G_UNLIKELY (_inner_error0_ != NULL)) {
-#line 415 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 420 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_g_object_unref0 (is);
-#line 415 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 420 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_g_object_unref0 (file);
-#line 415 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 420 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		G_IS_VALUE (&mes) ? (g_value_unset (&mes), NULL) : NULL;
-#line 415 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 420 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		G_IS_VALUE (&url) ? (g_value_unset (&url), NULL) : NULL;
-#line 415 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 420 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error0_->message, g_quark_to_string (_inner_error0_->domain), _inner_error0_->code);
-#line 415 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 420 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		g_clear_error (&_inner_error0_);
-#line 415 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 420 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		return;
-#line 2350 "SettingsDialog.c"
+#line 2361 "SettingsDialog.c"
 	}
-#line 416 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp27_ = stdout;
-#line 416 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp28_ = size;
-#line 416 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	fwrite (buffer, _tmp28_, 1, _tmp27_);
-#line 419 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp29_ = is;
-#line 419 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp30_ = g_data_input_stream_new (_tmp29_);
-#line 419 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	dis = _tmp30_;
 #line 421 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp31_ = g_strdup ("");
+	_tmp33_ = stdout;
 #line 421 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	str = _tmp31_;
-#line 423 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp33_ = dis;
-#line 423 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp34_ = g_data_input_stream_read_line (_tmp33_, NULL, NULL, &_inner_error0_);
-#line 423 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp32_ = _tmp34_;
-#line 423 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp34_ = size;
+#line 421 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	fwrite (buffer, _tmp34_, 1, _tmp33_);
+#line 424 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp35_ = is;
+#line 424 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp36_ = g_data_input_stream_new (_tmp35_);
+#line 424 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	dis = _tmp36_;
+#line 426 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp37_ = g_strdup ("");
+#line 426 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	str = _tmp37_;
+#line 428 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp39_ = dis;
+#line 428 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp40_ = g_data_input_stream_read_line (_tmp39_, NULL, NULL, &_inner_error0_);
+#line 428 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp38_ = _tmp40_;
+#line 428 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	if (G_UNLIKELY (_inner_error0_ != NULL)) {
-#line 423 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 428 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_g_free0 (str);
-#line 423 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 428 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_g_object_unref0 (dis);
-#line 423 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 428 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_g_object_unref0 (is);
-#line 423 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 428 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_g_object_unref0 (file);
-#line 423 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 428 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		G_IS_VALUE (&mes) ? (g_value_unset (&mes), NULL) : NULL;
-#line 423 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 428 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		G_IS_VALUE (&url) ? (g_value_unset (&url), NULL) : NULL;
-#line 423 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 428 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error0_->message, g_quark_to_string (_inner_error0_->domain), _inner_error0_->code);
-#line 423 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 428 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		g_clear_error (&_inner_error0_);
-#line 423 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 428 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		return;
-#line 2394 "SettingsDialog.c"
+#line 2405 "SettingsDialog.c"
 	}
-#line 423 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp35_ = _tmp32_;
-#line 423 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp32_ = NULL;
-#line 423 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 428 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp41_ = _tmp38_;
+#line 428 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp38_ = NULL;
+#line 428 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_free0 (str);
-#line 423 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	str = _tmp35_;
-#line 425 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 428 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	str = _tmp41_;
+#line 430 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	while (TRUE) {
-#line 2406 "SettingsDialog.c"
-		const gchar* _tmp36_;
-		TradeSimServicesQuotesManager* _tmp37_;
-		const gchar* _tmp38_;
-		gchar* _tmp39_ = NULL;
-		GDataInputStream* _tmp40_;
-		gchar* _tmp41_;
-		gchar* _tmp42_;
-#line 425 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-		_tmp36_ = str;
-#line 425 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-		if (!(_tmp36_ != NULL)) {
-#line 425 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 2417 "SettingsDialog.c"
+		const gchar* _tmp42_;
+		TradeSimServicesQuotesManager* _tmp43_;
+		const gchar* _tmp44_;
+		gchar* _tmp45_ = NULL;
+		GDataInputStream* _tmp46_;
+		gchar* _tmp47_;
+		gchar* _tmp48_;
+#line 430 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp42_ = str;
+#line 430 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		if (!(_tmp42_ != NULL)) {
+#line 430 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			break;
-#line 2420 "SettingsDialog.c"
+#line 2431 "SettingsDialog.c"
 		}
-#line 427 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-		_tmp37_ = self->qm;
-#line 427 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-		_tmp38_ = str;
-#line 427 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-		trade_sim_services_quotes_manager_insert_cuote_to_db (_tmp37_, _tmp38_);
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-		_tmp40_ = dis;
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-		_tmp41_ = g_data_input_stream_read_line (_tmp40_, NULL, NULL, &_inner_error0_);
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-		_tmp39_ = _tmp41_;
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 432 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp43_ = self->qm;
+#line 432 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp44_ = str;
+#line 432 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		trade_sim_services_quotes_manager_insert_cuote_to_db (_tmp43_, _tmp44_);
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp46_ = dis;
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp47_ = g_data_input_stream_read_line (_tmp46_, NULL, NULL, &_inner_error0_);
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp45_ = _tmp47_;
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		if (G_UNLIKELY (_inner_error0_ != NULL)) {
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-			_g_free0 (_tmp32_);
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+			_g_free0 (_tmp38_);
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			_g_free0 (str);
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			_g_object_unref0 (dis);
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			_g_object_unref0 (is);
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			_g_object_unref0 (file);
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			G_IS_VALUE (&mes) ? (g_value_unset (&mes), NULL) : NULL;
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			G_IS_VALUE (&url) ? (g_value_unset (&url), NULL) : NULL;
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error0_->message, g_quark_to_string (_inner_error0_->domain), _inner_error0_->code);
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			g_clear_error (&_inner_error0_);
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 			return;
-#line 2456 "SettingsDialog.c"
+#line 2467 "SettingsDialog.c"
 		}
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-		_tmp42_ = _tmp39_;
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-		_tmp39_ = NULL;
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp48_ = _tmp45_;
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_tmp45_ = NULL;
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_g_free0 (str);
-#line 431 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-		str = _tmp42_;
-#line 425 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-		_g_free0 (_tmp39_);
-#line 2468 "SettingsDialog.c"
+#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		str = _tmp48_;
+#line 430 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		_g_free0 (_tmp45_);
+#line 2479 "SettingsDialog.c"
 	}
-#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp43_ = self->priv->list_store_quotes;
-#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp44_ = edited_iter;
-#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp45_ = gtk_cell_renderer_toggle_get_active (toggle);
-#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp46_ = _tmp45_;
-#line 436 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_list_store_set (_tmp43_, &_tmp44_, 6, !_tmp46_, -1);
+#line 441 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp49_ = self->priv->list_store_quotes;
+#line 441 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp50_ = edited_iter;
+#line 441 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp51_ = gtk_cell_renderer_toggle_get_active (toggle);
+#line 441 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp52_ = _tmp51_;
+#line 441 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	gtk_list_store_set (_tmp49_, &_tmp50_, 6, !_tmp52_, -1);
 #line 388 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_g_free0 (_tmp32_);
+	_g_free0 (_tmp38_);
 #line 388 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_free0 (str);
 #line 388 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
@@ -2491,7 +2502,7 @@ __lambda10_ (TradeSimDialogsSettingsDialog* self,
 	G_IS_VALUE (&mes) ? (g_value_unset (&mes), NULL) : NULL;
 #line 388 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	G_IS_VALUE (&url) ? (g_value_unset (&url), NULL) : NULL;
-#line 2494 "SettingsDialog.c"
+#line 2505 "SettingsDialog.c"
 }
 
 
@@ -2502,7 +2513,7 @@ ___lambda10__gtk_cell_renderer_toggle_toggled (GtkCellRendererToggle* _sender,
 {
 #line 388 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	__lambda10_ ((TradeSimDialogsSettingsDialog*) self, _sender, path);
-#line 2505 "SettingsDialog.c"
+#line 2516 "SettingsDialog.c"
 }
 
 
@@ -2633,63 +2644,63 @@ trade_sim_dialogs_settings_dialog_configure_quotes (TradeSimDialogsSettingsDialo
 	quotes_url_cell = _tmp13_;
 #line 388 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_signal_connect_object (quotes_data_toggle, "toggled", (GCallback) ___lambda10__gtk_cell_renderer_toggle_toggled, self, 0);
-#line 440 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 445 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp14_ = self->priv->tree_view_quotes;
-#line 440 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 445 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_tree_view_insert_column_with_attributes (_tmp14_, -1, "Provider", (GtkCellRenderer*) quotes_provider_cell, "text", 0, NULL);
-#line 441 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 446 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp15_ = self->priv->tree_view_quotes;
-#line 441 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 446 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_tree_view_insert_column_with_attributes (_tmp15_, -1, "Market", (GtkCellRenderer*) quotes_market_cell, "text", 1, NULL);
-#line 442 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 447 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp16_ = self->priv->tree_view_quotes;
-#line 442 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 447 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_tree_view_insert_column_with_attributes (_tmp16_, -1, "Ticker", (GtkCellRenderer*) quotes_ticker_cell, "text", 2, NULL);
-#line 443 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 448 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp17_ = self->priv->tree_view_quotes;
-#line 443 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 448 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_tree_view_insert_column_with_attributes (_tmp17_, -1, "Year", (GtkCellRenderer*) quotes_year_cell, "text", 3, NULL);
-#line 444 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 449 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp18_ = self->priv->tree_view_quotes;
-#line 444 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 449 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_tree_view_insert_column_with_attributes (_tmp18_, -1, "Month", (GtkCellRenderer*) quotes_month_cell, "text", 4, NULL);
-#line 445 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 450 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp19_ = self->priv->tree_view_quotes;
-#line 445 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 450 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_tree_view_insert_column_with_attributes (_tmp19_, -1, "Timeframe", (GtkCellRenderer*) quotes_timeframe_cell, "text", 5, NULL);
-#line 446 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 451 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp20_ = self->priv->tree_view_quotes;
-#line 446 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 451 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_tree_view_insert_column_with_attributes (_tmp20_, -1, "Imported", (GtkCellRenderer*) quotes_data_toggle, "active", 6, NULL);
-#line 447 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 452 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp21_ = self->priv->tree_view_quotes;
-#line 447 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 452 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_tree_view_insert_column_with_attributes (_tmp21_, -1, "Url", (GtkCellRenderer*) quotes_url_cell, "text", 7, NULL);
-#line 449 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 454 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp22_ = self->priv->tree_view_quotes;
-#line 449 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 454 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp23_ = gtk_tree_view_get_column (_tmp22_, 7);
-#line 449 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 454 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_tree_view_column_set_visible (_tmp23_, FALSE);
-#line 451 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 456 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp24_ = self->priv->scroll_quotes;
-#line 451 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 456 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp25_ = self->priv->tree_view_quotes;
-#line 451 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 456 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_container_add ((GtkContainer*) _tmp24_, (GtkWidget*) _tmp25_);
-#line 452 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 457 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp26_ = self->priv->scroll_quotes;
-#line 452 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 457 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_widget_set_vexpand ((GtkWidget*) _tmp26_, TRUE);
-#line 453 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 458 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp27_ = self->priv->scroll_quotes;
-#line 453 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 458 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_widget_set_hexpand ((GtkWidget*) _tmp27_, TRUE);
-#line 454 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 459 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp28_ = self->priv->scroll_quotes;
-#line 454 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 459 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp29_ = gtk_widget_get_style_context ((GtkWidget*) _tmp28_);
-#line 454 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 459 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_style_context_add_class (_tmp29_, "scrolled-window-data");
 #line 367 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (quotes_url_cell);
@@ -2707,7 +2718,7 @@ trade_sim_dialogs_settings_dialog_configure_quotes (TradeSimDialogsSettingsDialo
 	_g_object_unref0 (quotes_ticker_cell);
 #line 367 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (quotes_provider_cell);
-#line 2710 "SettingsDialog.c"
+#line 2721 "SettingsDialog.c"
 }
 
 
@@ -2724,67 +2735,67 @@ trade_sim_dialogs_settings_dialog_get_data_source_box (TradeSimDialogsSettingsDi
 	GtkScrolledWindow* _tmp5_;
 	GtkScrolledWindow* _tmp6_;
 	GtkScrolledWindow* _tmp7_;
-#line 461 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 466 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 467 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 472 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	trade_sim_dialogs_settings_dialog_configure_provider (self);
-#line 468 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 473 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	trade_sim_dialogs_settings_dialog_configure_ticker (self);
-#line 469 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	trade_sim_dialogs_settings_dialog_configure_time_frame (self);
-#line 470 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	trade_sim_dialogs_settings_dialog_configure_year (self);
-#line 471 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	trade_sim_dialogs_settings_dialog_configure_quotes (self);
-#line 473 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp0_ = (GtkGrid*) gtk_grid_new ();
-#line 473 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_object_ref_sink (_tmp0_);
-#line 473 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	grid = _tmp0_;
 #line 474 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_grid_set_row_spacing (grid, 3);
+	trade_sim_dialogs_settings_dialog_configure_time_frame (self);
 #line 475 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_grid_set_column_spacing (grid, 3);
+	trade_sim_dialogs_settings_dialog_configure_year (self);
 #line 476 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	trade_sim_dialogs_settings_dialog_configure_quotes (self);
+#line 478 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp0_ = (GtkGrid*) gtk_grid_new ();
+#line 478 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	g_object_ref_sink (_tmp0_);
+#line 478 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	grid = _tmp0_;
+#line 479 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	gtk_grid_set_row_spacing (grid, 3);
+#line 480 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	gtk_grid_set_column_spacing (grid, 3);
+#line 481 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_grid_set_column_homogeneous (grid, TRUE);
-#line 477 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 482 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_widget_set_hexpand ((GtkWidget*) grid, TRUE);
-#line 479 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 484 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp1_ = trade_sim_dialogs_settings_dialog_settings_header_new ("Data Source");
-#line 479 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 484 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_object_ref_sink (_tmp1_);
-#line 479 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 484 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp2_ = _tmp1_;
-#line 479 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 484 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_grid_attach (grid, (GtkWidget*) _tmp2_, 0, 0, 1, 1);
-#line 479 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 484 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (_tmp2_);
-#line 480 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 485 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp3_ = self->priv->scroll_provider;
-#line 480 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 485 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_grid_attach (grid, (GtkWidget*) _tmp3_, 0, 1, 1, 2);
-#line 481 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 486 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp4_ = self->priv->scroll_ticker;
-#line 481 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 486 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_grid_attach (grid, (GtkWidget*) _tmp4_, 1, 1, 1, 2);
-#line 482 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 487 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp5_ = self->priv->scroll_year;
-#line 482 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 487 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_grid_attach (grid, (GtkWidget*) _tmp5_, 2, 1, 1, 2);
-#line 483 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 488 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp6_ = self->priv->scroll_time_frame;
-#line 483 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 488 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_grid_attach (grid, (GtkWidget*) _tmp6_, 3, 1, 1, 2);
-#line 484 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 489 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp7_ = self->priv->scroll_quotes;
-#line 484 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 489 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_grid_attach (grid, (GtkWidget*) _tmp7_, 0, 3, 4, 3);
-#line 486 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 491 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	result = (GtkWidget*) grid;
-#line 486 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 491 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	return result;
-#line 2787 "SettingsDialog.c"
+#line 2798 "SettingsDialog.c"
 }
 
 
@@ -2793,11 +2804,11 @@ __lambda11_ (TradeSimDialogsSettingsDialog* self)
 {
 	GError* _inner_error0_ = NULL;
 	{
-#line 545 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 550 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		g_app_info_launch_default_for_uri ("https://github.com/horaciodrs/tradesim#-support", NULL, &_inner_error0_);
-#line 545 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 550 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		if (G_UNLIKELY (_inner_error0_ != NULL)) {
-#line 2800 "SettingsDialog.c"
+#line 2811 "SettingsDialog.c"
 			goto __catch0_g_error;
 		}
 	}
@@ -2807,30 +2818,30 @@ __lambda11_ (TradeSimDialogsSettingsDialog* self)
 		GError* e = NULL;
 		GError* _tmp0_;
 		const gchar* _tmp1_;
-#line 544 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 549 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		e = _inner_error0_;
-#line 544 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 549 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_inner_error0_ = NULL;
-#line 547 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 552 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_tmp0_ = e;
-#line 547 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 552 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_tmp1_ = _tmp0_->message;
-#line 547 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-		g_warning ("SettingsDialog.vala:547: %s", _tmp1_);
-#line 544 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 552 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		g_warning ("SettingsDialog.vala:552: %s", _tmp1_);
+#line 549 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_g_error_free0 (e);
-#line 2822 "SettingsDialog.c"
+#line 2833 "SettingsDialog.c"
 	}
 	__finally0:
-#line 544 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 549 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	if (G_UNLIKELY (_inner_error0_ != NULL)) {
-#line 544 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 549 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error0_->message, g_quark_to_string (_inner_error0_->domain), _inner_error0_->code);
-#line 544 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 549 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		g_clear_error (&_inner_error0_);
-#line 544 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 549 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		return;
-#line 2833 "SettingsDialog.c"
+#line 2844 "SettingsDialog.c"
 	}
 }
 
@@ -2839,9 +2850,9 @@ static void
 ___lambda11__gtk_button_clicked (GtkButton* _sender,
                                  gpointer self)
 {
-#line 543 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 548 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	__lambda11_ ((TradeSimDialogsSettingsDialog*) self);
-#line 2844 "SettingsDialog.c"
+#line 2855 "SettingsDialog.c"
 }
 
 
@@ -2850,11 +2861,11 @@ __lambda12_ (TradeSimDialogsSettingsDialog* self)
 {
 	GError* _inner_error0_ = NULL;
 	{
-#line 554 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 559 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		g_app_info_launch_default_for_uri ("https://github.com/horaciodrs/tradesim/issues", NULL, &_inner_error0_);
-#line 554 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 559 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		if (G_UNLIKELY (_inner_error0_ != NULL)) {
-#line 2857 "SettingsDialog.c"
+#line 2868 "SettingsDialog.c"
 			goto __catch1_g_error;
 		}
 	}
@@ -2864,30 +2875,30 @@ __lambda12_ (TradeSimDialogsSettingsDialog* self)
 		GError* e = NULL;
 		GError* _tmp0_;
 		const gchar* _tmp1_;
-#line 553 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 558 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		e = _inner_error0_;
-#line 553 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 558 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_inner_error0_ = NULL;
-#line 556 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 561 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_tmp0_ = e;
-#line 556 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 561 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_tmp1_ = _tmp0_->message;
-#line 556 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-		g_warning ("SettingsDialog.vala:556: %s", _tmp1_);
-#line 553 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 561 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		g_warning ("SettingsDialog.vala:561: %s", _tmp1_);
+#line 558 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_g_error_free0 (e);
-#line 2879 "SettingsDialog.c"
+#line 2890 "SettingsDialog.c"
 	}
 	__finally1:
-#line 553 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 558 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	if (G_UNLIKELY (_inner_error0_ != NULL)) {
-#line 553 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 558 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error0_->message, g_quark_to_string (_inner_error0_->domain), _inner_error0_->code);
-#line 553 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 558 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		g_clear_error (&_inner_error0_);
-#line 553 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 558 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		return;
-#line 2890 "SettingsDialog.c"
+#line 2901 "SettingsDialog.c"
 	}
 }
 
@@ -2896,9 +2907,9 @@ static void
 ___lambda12__gtk_button_clicked (GtkButton* _sender,
                                  gpointer self)
 {
-#line 552 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 557 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	__lambda12_ ((TradeSimDialogsSettingsDialog*) self);
-#line 2901 "SettingsDialog.c"
+#line 2912 "SettingsDialog.c"
 }
 
 
@@ -2907,11 +2918,11 @@ __lambda13_ (TradeSimDialogsSettingsDialog* self)
 {
 	GError* _inner_error0_ = NULL;
 	{
-#line 563 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 568 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		g_app_info_launch_default_for_uri ("https://github.com/horaciodrs/tradesim/issues", NULL, &_inner_error0_);
-#line 563 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 568 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		if (G_UNLIKELY (_inner_error0_ != NULL)) {
-#line 2914 "SettingsDialog.c"
+#line 2925 "SettingsDialog.c"
 			goto __catch2_g_error;
 		}
 	}
@@ -2921,30 +2932,30 @@ __lambda13_ (TradeSimDialogsSettingsDialog* self)
 		GError* e = NULL;
 		GError* _tmp0_;
 		const gchar* _tmp1_;
-#line 562 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 567 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		e = _inner_error0_;
-#line 562 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 567 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_inner_error0_ = NULL;
-#line 565 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 570 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_tmp0_ = e;
-#line 565 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 570 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_tmp1_ = _tmp0_->message;
-#line 565 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-		g_warning ("SettingsDialog.vala:565: %s", _tmp1_);
-#line 562 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 570 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+		g_warning ("SettingsDialog.vala:570: %s", _tmp1_);
+#line 567 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		_g_error_free0 (e);
-#line 2936 "SettingsDialog.c"
+#line 2947 "SettingsDialog.c"
 	}
 	__finally2:
-#line 562 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 567 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	if (G_UNLIKELY (_inner_error0_ != NULL)) {
-#line 562 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 567 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error0_->message, g_quark_to_string (_inner_error0_->domain), _inner_error0_->code);
-#line 562 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 567 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		g_clear_error (&_inner_error0_);
-#line 562 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 567 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		return;
-#line 2947 "SettingsDialog.c"
+#line 2958 "SettingsDialog.c"
 	}
 }
 
@@ -2953,9 +2964,9 @@ static void
 ___lambda13__gtk_button_clicked (GtkButton* _sender,
                                  gpointer self)
 {
-#line 561 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 566 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	__lambda13_ ((TradeSimDialogsSettingsDialog*) self);
-#line 2958 "SettingsDialog.c"
+#line 2969 "SettingsDialog.c"
 }
 
 
@@ -2994,197 +3005,197 @@ trade_sim_dialogs_settings_dialog_get_about_box (TradeSimDialogsSettingsDialog* 
 	GtkButton* _tmp17_;
 	GtkButton* bug_button = NULL;
 	GtkButton* _tmp18_;
-#line 489 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 494 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 490 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 495 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp0_ = (GtkGrid*) gtk_grid_new ();
-#line 490 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 495 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_object_ref_sink (_tmp0_);
-#line 490 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 495 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	grid = _tmp0_;
-#line 491 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 496 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_grid_set_row_spacing (grid, 6);
-#line 492 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_grid_set_column_spacing (grid, 12);
-#line 493 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_widget_set_halign ((GtkWidget*) grid, GTK_ALIGN_CENTER);
-#line 495 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp1_ = (GtkImage*) gtk_image_new ();
-#line 495 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_object_ref_sink (_tmp1_);
-#line 495 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	app_icon = _tmp1_;
-#line 496 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp2_ = (GThemedIcon*) g_themed_icon_new ("com.github.horaciodrs.TradeSim");
-#line 496 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp3_ = _tmp2_;
-#line 496 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_object_set (app_icon, "gicon", (GIcon*) _tmp3_, NULL);
-#line 496 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_g_object_unref0 (_tmp3_);
 #line 497 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_image_set_pixel_size (app_icon, 64);
+	gtk_grid_set_column_spacing (grid, 12);
 #line 498 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_widget_set_margin_top ((GtkWidget*) app_icon, 12);
+	gtk_widget_set_halign ((GtkWidget*) grid, GTK_ALIGN_CENTER);
 #line 500 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp4_ = (GtkLabel*) gtk_label_new ("TradeSim");
+	_tmp1_ = (GtkImage*) gtk_image_new ();
 #line 500 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_object_ref_sink (_tmp4_);
+	g_object_ref_sink (_tmp1_);
 #line 500 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	app_name = _tmp4_;
+	app_icon = _tmp1_;
 #line 501 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp5_ = gtk_widget_get_style_context ((GtkWidget*) app_name);
+	_tmp2_ = (GThemedIcon*) g_themed_icon_new ("com.github.horaciodrs.TradeSim");
 #line 501 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_style_context_add_class (_tmp5_, "h2");
+	_tmp3_ = _tmp2_;
+#line 501 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	g_object_set (app_icon, "gicon", (GIcon*) _tmp3_, NULL);
+#line 501 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_g_object_unref0 (_tmp3_);
 #line 502 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	gtk_image_set_pixel_size (app_icon, 64);
+#line 503 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	gtk_widget_set_margin_top ((GtkWidget*) app_icon, 12);
+#line 505 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp4_ = (GtkLabel*) gtk_label_new ("TradeSim");
+#line 505 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	g_object_ref_sink (_tmp4_);
+#line 505 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	app_name = _tmp4_;
+#line 506 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp5_ = gtk_widget_get_style_context ((GtkWidget*) app_name);
+#line 506 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	gtk_style_context_add_class (_tmp5_, "h2");
+#line 507 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_widget_set_margin_top ((GtkWidget*) app_name, 6);
-#line 504 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp6_ = (GtkLabel*) gtk_label_new ("The Linux Trading Simulator");
-#line 504 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_object_ref_sink (_tmp6_);
-#line 504 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	app_description = _tmp6_;
-#line 505 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp7_ = gtk_widget_get_style_context ((GtkWidget*) app_description);
-#line 505 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_style_context_add_class (_tmp7_, "h3");
-#line 507 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp8_ = (GtkLabel*) gtk_label_new ("v0 - alpha");
-#line 507 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_object_ref_sink (_tmp8_);
-#line 507 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	app_version = _tmp8_;
-#line 508 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp9_ = gtk_widget_get_style_context ((GtkWidget*) app_version);
-#line 508 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_style_context_add_class (_tmp9_, "dim-label");
 #line 509 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp6_ = (GtkLabel*) gtk_label_new ("The Linux Trading Simulator");
+#line 509 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	g_object_ref_sink (_tmp6_);
+#line 509 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	app_description = _tmp6_;
+#line 510 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp7_ = gtk_widget_get_style_context ((GtkWidget*) app_description);
+#line 510 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	gtk_style_context_add_class (_tmp7_, "h3");
+#line 512 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp8_ = (GtkLabel*) gtk_label_new ("v0 - alpha");
+#line 512 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	g_object_ref_sink (_tmp8_);
+#line 512 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	app_version = _tmp8_;
+#line 513 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp9_ = gtk_widget_get_style_context ((GtkWidget*) app_version);
+#line 513 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	gtk_style_context_add_class (_tmp9_, "dim-label");
+#line 514 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_label_set_selectable (app_version, TRUE);
-#line 511 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 516 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp10_ = (GtkLabel*) gtk_label_new ("Remember!\n" \
 " TradeSim it's under development and it's on alpha state. Only install" \
 " for testing.");
-#line 511 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_object_ref_sink (_tmp10_);
-#line 511 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	disclaimer = _tmp10_;
-#line 513 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_label_set_justify (disclaimer, GTK_JUSTIFY_CENTER);
-#line 514 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp11_ = gtk_widget_get_style_context ((GtkWidget*) disclaimer);
-#line 514 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_style_context_add_class (_tmp11_, "warning-message");
-#line 515 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_label_set_max_width_chars (disclaimer, 60);
 #line 516 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	g_object_ref_sink (_tmp10_);
+#line 516 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	disclaimer = _tmp10_;
+#line 518 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	gtk_label_set_justify (disclaimer, GTK_JUSTIFY_CENTER);
+#line 519 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp11_ = gtk_widget_get_style_context ((GtkWidget*) disclaimer);
+#line 519 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	gtk_style_context_add_class (_tmp11_, "warning-message");
+#line 520 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	gtk_label_set_max_width_chars (disclaimer, 60);
+#line 521 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_object_set (disclaimer, "wrap", TRUE, NULL);
-#line 517 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 522 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_widget_set_margin_bottom ((GtkWidget*) disclaimer, 12);
-#line 517 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 522 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_widget_set_margin_top ((GtkWidget*) disclaimer, 12);
-#line 519 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 524 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp12_ = (GtkLabel*) gtk_label_new ("Thanks to our awesome supporters!");
-#line 519 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 524 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_object_ref_sink (_tmp12_);
-#line 519 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 524 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	patreons_label = _tmp12_;
-#line 520 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 525 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp13_ = gtk_widget_get_style_context ((GtkWidget*) patreons_label);
-#line 520 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 525 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_style_context_add_class (_tmp13_, "h4");
-#line 522 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp14_ = (GtkLinkButton*) gtk_link_button_new_with_label ("https://github.com/horaciodrs/tradesim/SUPPORTERS.md", "View the list of supporters");
-#line 522 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_object_ref_sink (_tmp14_);
-#line 522 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	patreons_url = _tmp14_;
-#line 526 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_widget_set_halign ((GtkWidget*) patreons_url, GTK_ALIGN_CENTER);
 #line 527 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_widget_set_margin_bottom ((GtkWidget*) patreons_url, 12);
-#line 529 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_grid_attach (grid, (GtkWidget*) app_icon, 0, 0, 1, 1);
-#line 530 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_grid_attach (grid, (GtkWidget*) app_name, 0, 1, 1, 1);
+	_tmp14_ = (GtkLinkButton*) gtk_link_button_new_with_label ("https://github.com/horaciodrs/tradesim/SUPPORTERS.md", "View the list of supporters");
+#line 527 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	g_object_ref_sink (_tmp14_);
+#line 527 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	patreons_url = _tmp14_;
 #line 531 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_grid_attach (grid, (GtkWidget*) app_description, 0, 2, 1, 1);
+	gtk_widget_set_halign ((GtkWidget*) patreons_url, GTK_ALIGN_CENTER);
 #line 532 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_grid_attach (grid, (GtkWidget*) app_version, 0, 3, 1, 1);
-#line 533 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_grid_attach (grid, (GtkWidget*) disclaimer, 0, 4, 1, 1);
+	gtk_widget_set_margin_bottom ((GtkWidget*) patreons_url, 12);
 #line 534 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_grid_attach (grid, (GtkWidget*) patreons_label, 0, 5, 1, 1);
+	gtk_grid_attach (grid, (GtkWidget*) app_icon, 0, 0, 1, 1);
 #line 535 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_grid_attach (grid, (GtkWidget*) patreons_url, 0, 6, 1, 1);
+	gtk_grid_attach (grid, (GtkWidget*) app_name, 0, 1, 1, 1);
+#line 536 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	gtk_grid_attach (grid, (GtkWidget*) app_description, 0, 2, 1, 1);
+#line 537 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	gtk_grid_attach (grid, (GtkWidget*) app_version, 0, 3, 1, 1);
 #line 538 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp15_ = (GtkButtonBox*) gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
-#line 538 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_object_ref_sink (_tmp15_);
-#line 538 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	button_grid = _tmp15_;
+	gtk_grid_attach (grid, (GtkWidget*) disclaimer, 0, 4, 1, 1);
 #line 539 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_widget_set_halign ((GtkWidget*) button_grid, GTK_ALIGN_CENTER);
+	gtk_grid_attach (grid, (GtkWidget*) patreons_label, 0, 5, 1, 1);
 #line 540 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	gtk_box_set_spacing ((GtkBox*) button_grid, 6);
-#line 542 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	_tmp16_ = (GtkButton*) gtk_button_new_with_label ("Make a Donation");
-#line 542 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_object_ref_sink (_tmp16_);
-#line 542 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	donate_button = _tmp16_;
+	gtk_grid_attach (grid, (GtkWidget*) patreons_url, 0, 6, 1, 1);
 #line 543 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp15_ = (GtkButtonBox*) gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
+#line 543 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	g_object_ref_sink (_tmp15_);
+#line 543 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	button_grid = _tmp15_;
+#line 544 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	gtk_widget_set_halign ((GtkWidget*) button_grid, GTK_ALIGN_CENTER);
+#line 545 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	gtk_box_set_spacing ((GtkBox*) button_grid, 6);
+#line 547 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	_tmp16_ = (GtkButton*) gtk_button_new_with_label ("Make a Donation");
+#line 547 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	g_object_ref_sink (_tmp16_);
+#line 547 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+	donate_button = _tmp16_;
+#line 548 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_signal_connect_object (donate_button, "clicked", (GCallback) ___lambda11__gtk_button_clicked, self, 0);
-#line 551 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 556 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp17_ = (GtkButton*) gtk_button_new_with_label ("Suggest Translations");
-#line 551 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 556 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_object_ref_sink (_tmp17_);
-#line 551 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 556 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	translate_button = _tmp17_;
-#line 552 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 557 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_signal_connect_object (translate_button, "clicked", (GCallback) ___lambda12__gtk_button_clicked, self, 0);
-#line 560 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 565 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp18_ = (GtkButton*) gtk_button_new_with_label ("Report a Problem");
-#line 560 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 565 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_object_ref_sink (_tmp18_);
-#line 560 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 565 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	bug_button = _tmp18_;
-#line 561 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 566 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_signal_connect_object (bug_button, "clicked", (GCallback) ___lambda13__gtk_button_clicked, self, 0);
-#line 569 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 574 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_container_add ((GtkContainer*) button_grid, (GtkWidget*) donate_button);
-#line 570 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 575 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_container_add ((GtkContainer*) button_grid, (GtkWidget*) translate_button);
-#line 571 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 576 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_container_add ((GtkContainer*) button_grid, (GtkWidget*) bug_button);
-#line 573 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 578 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_grid_attach (grid, (GtkWidget*) button_grid, 0, 7, 1, 1);
-#line 575 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 580 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	result = (GtkWidget*) grid;
-#line 575 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 580 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (bug_button);
-#line 575 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 580 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (translate_button);
-#line 575 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 580 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (donate_button);
-#line 575 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 580 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (button_grid);
-#line 575 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 580 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (patreons_url);
-#line 575 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 580 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (patreons_label);
-#line 575 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 580 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (disclaimer);
-#line 575 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 580 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (app_version);
-#line 575 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 580 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (app_description);
-#line 575 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 580 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (app_name);
-#line 575 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 580 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_g_object_unref0 (app_icon);
-#line 575 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 580 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	return result;
-#line 3185 "SettingsDialog.c"
+#line 3196 "SettingsDialog.c"
 }
 
 
@@ -3201,7 +3212,7 @@ trade_sim_dialogs_settings_dialog_get_main_window (TradeSimDialogsSettingsDialog
 	result = _tmp0_;
 #line 2 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	return result;
-#line 3202 "SettingsDialog.c"
+#line 3213 "SettingsDialog.c"
 }
 
 
@@ -3217,7 +3228,7 @@ trade_sim_dialogs_settings_dialog_set_main_window (TradeSimDialogsSettingsDialog
 		self->priv->_main_window = value;
 #line 2 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		g_object_notify_by_pspec ((GObject *) self, trade_sim_dialogs_settings_dialog_properties[TRADE_SIM_DIALOGS_SETTINGS_DIALOG_MAIN_WINDOW_PROPERTY]);
-#line 3218 "SettingsDialog.c"
+#line 3229 "SettingsDialog.c"
 	}
 }
 
@@ -3418,7 +3429,7 @@ trade_sim_dialogs_settings_dialog_constructor (GType type,
 	_g_object_unref0 (stack_switcher);
 #line 49 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	return obj;
-#line 3419 "SettingsDialog.c"
+#line 3430 "SettingsDialog.c"
 }
 
 
@@ -3428,39 +3439,39 @@ trade_sim_dialogs_settings_dialog_settings_header_construct (GType object_type,
 {
 	TradeSimDialogsSettingsDialogSettingsHeader * self = NULL;
 	GtkStyleContext* _tmp0_;
-#line 579 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 584 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_return_val_if_fail (text != NULL, NULL);
-#line 579 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 584 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	self = (TradeSimDialogsSettingsDialogSettingsHeader*) g_object_new (object_type, NULL);
-#line 580 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 585 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_label_set_label ((GtkLabel*) self, text);
-#line 581 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 586 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp0_ = gtk_widget_get_style_context ((GtkWidget*) self);
-#line 581 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 586 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_style_context_add_class (_tmp0_, "h4");
-#line 582 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 587 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_widget_set_halign ((GtkWidget*) self, GTK_ALIGN_START);
-#line 579 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 584 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	return self;
-#line 3443 "SettingsDialog.c"
+#line 3454 "SettingsDialog.c"
 }
 
 
 static TradeSimDialogsSettingsDialogSettingsHeader*
 trade_sim_dialogs_settings_dialog_settings_header_new (const gchar* text)
 {
-#line 579 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 584 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	return trade_sim_dialogs_settings_dialog_settings_header_construct (TRADE_SIM_DIALOGS_SETTINGS_DIALOG_TYPE_SETTINGS_HEADER, text);
-#line 3452 "SettingsDialog.c"
+#line 3463 "SettingsDialog.c"
 }
 
 
 static void
 trade_sim_dialogs_settings_dialog_settings_header_class_init (TradeSimDialogsSettingsDialogSettingsHeaderClass * klass)
 {
-#line 578 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 583 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	trade_sim_dialogs_settings_dialog_settings_header_parent_class = g_type_class_peek_parent (klass);
-#line 3461 "SettingsDialog.c"
+#line 3472 "SettingsDialog.c"
 }
 
 
@@ -3489,35 +3500,35 @@ trade_sim_dialogs_settings_dialog_settings_label_construct (GType object_type,
                                                             const gchar* text)
 {
 	TradeSimDialogsSettingsDialogSettingsLabel * self = NULL;
-#line 588 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 593 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_return_val_if_fail (text != NULL, NULL);
-#line 588 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 593 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	self = (TradeSimDialogsSettingsDialogSettingsLabel*) g_object_new (object_type, NULL);
-#line 589 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 594 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_label_set_label ((GtkLabel*) self, text);
-#line 590 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 595 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_widget_set_halign ((GtkWidget*) self, GTK_ALIGN_END);
-#line 588 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 593 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	return self;
-#line 3500 "SettingsDialog.c"
+#line 3511 "SettingsDialog.c"
 }
 
 
 static TradeSimDialogsSettingsDialogSettingsLabel*
 trade_sim_dialogs_settings_dialog_settings_label_new (const gchar* text)
 {
-#line 588 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 593 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	return trade_sim_dialogs_settings_dialog_settings_label_construct (TRADE_SIM_DIALOGS_SETTINGS_DIALOG_TYPE_SETTINGS_LABEL, text);
-#line 3509 "SettingsDialog.c"
+#line 3520 "SettingsDialog.c"
 }
 
 
 static void
 trade_sim_dialogs_settings_dialog_settings_label_class_init (TradeSimDialogsSettingsDialogSettingsLabelClass * klass)
 {
-#line 587 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 592 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	trade_sim_dialogs_settings_dialog_settings_label_parent_class = g_type_class_peek_parent (klass);
-#line 3518 "SettingsDialog.c"
+#line 3529 "SettingsDialog.c"
 }
 
 
@@ -3546,33 +3557,33 @@ trade_sim_dialogs_settings_dialog_settings_switch_construct (GType object_type,
                                                              const gchar* setting)
 {
 	TradeSimDialogsSettingsDialogSettingsSwitch * self = NULL;
-#line 596 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 601 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_return_val_if_fail (setting != NULL, NULL);
-#line 596 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 601 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	self = (TradeSimDialogsSettingsDialogSettingsSwitch*) g_object_new (object_type, NULL);
-#line 597 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 602 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_widget_set_halign ((GtkWidget*) self, GTK_ALIGN_START);
-#line 596 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 601 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	return self;
-#line 3555 "SettingsDialog.c"
+#line 3566 "SettingsDialog.c"
 }
 
 
 static TradeSimDialogsSettingsDialogSettingsSwitch*
 trade_sim_dialogs_settings_dialog_settings_switch_new (const gchar* setting)
 {
-#line 596 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 601 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	return trade_sim_dialogs_settings_dialog_settings_switch_construct (TRADE_SIM_DIALOGS_SETTINGS_DIALOG_TYPE_SETTINGS_SWITCH, setting);
-#line 3564 "SettingsDialog.c"
+#line 3575 "SettingsDialog.c"
 }
 
 
 static void
 trade_sim_dialogs_settings_dialog_settings_switch_class_init (TradeSimDialogsSettingsDialogSettingsSwitchClass * klass)
 {
-#line 595 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
+#line 600 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	trade_sim_dialogs_settings_dialog_settings_switch_parent_class = g_type_class_peek_parent (klass);
-#line 3573 "SettingsDialog.c"
+#line 3584 "SettingsDialog.c"
 }
 
 
@@ -3613,7 +3624,7 @@ trade_sim_dialogs_settings_dialog_class_init (TradeSimDialogsSettingsDialogClass
 	G_OBJECT_CLASS (klass)->finalize = trade_sim_dialogs_settings_dialog_finalize;
 #line 1 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRADE_SIM_DIALOGS_SETTINGS_DIALOG_MAIN_WINDOW_PROPERTY, trade_sim_dialogs_settings_dialog_properties[TRADE_SIM_DIALOGS_SETTINGS_DIALOG_MAIN_WINDOW_PROPERTY] = g_param_spec_object ("main-window", "main-window", "main-window", TRADE_SIM_TYPE_MAIN_WINDOW, G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
-#line 3614 "SettingsDialog.c"
+#line 3625 "SettingsDialog.c"
 }
 
 
@@ -3622,7 +3633,7 @@ trade_sim_dialogs_settings_dialog_instance_init (TradeSimDialogsSettingsDialog *
 {
 #line 1 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	self->priv = TRADE_SIM_DIALOGS_SETTINGS_DIALOG_GET_PRIVATE (self);
-#line 3623 "SettingsDialog.c"
+#line 3634 "SettingsDialog.c"
 }
 
 
@@ -3678,7 +3689,7 @@ trade_sim_dialogs_settings_dialog_finalize (GObject * obj)
 	_trade_sim_services_quotes_manager_unref0 (self->qm);
 #line 1 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	G_OBJECT_CLASS (trade_sim_dialogs_settings_dialog_parent_class)->finalize (obj);
-#line 3679 "SettingsDialog.c"
+#line 3690 "SettingsDialog.c"
 }
 
 
@@ -3712,13 +3723,13 @@ _vala_trade_sim_dialogs_settings_dialog_get_property (GObject * object,
 		g_value_set_object (value, trade_sim_dialogs_settings_dialog_get_main_window (self));
 #line 1 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		break;
-#line 3713 "SettingsDialog.c"
+#line 3724 "SettingsDialog.c"
 		default:
 #line 1 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 1 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		break;
-#line 3719 "SettingsDialog.c"
+#line 3730 "SettingsDialog.c"
 	}
 }
 
@@ -3739,13 +3750,13 @@ _vala_trade_sim_dialogs_settings_dialog_set_property (GObject * object,
 		trade_sim_dialogs_settings_dialog_set_main_window (self, g_value_get_object (value));
 #line 1 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		break;
-#line 3740 "SettingsDialog.c"
+#line 3751 "SettingsDialog.c"
 		default:
 #line 1 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 1 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 		break;
-#line 3746 "SettingsDialog.c"
+#line 3757 "SettingsDialog.c"
 	}
 }
 

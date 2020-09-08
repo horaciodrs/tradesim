@@ -24,6 +24,7 @@ public class TradeSim.Services.QuoteItem {
     public string ticker;
     public string time_frame_name;
     public string provider_name;
+    public string provider_folder_name;
 
     public DateTime date_time;
 
@@ -38,6 +39,10 @@ public class TradeSim.Services.QuoteItem {
 
     public void set_provider_name(string _name){
         provider_name = _name;
+    }
+
+    public void set_provider_folder_name(string _name){
+        provider_folder_name = _name;
     }
 
     public void set_time_frame_name(string _name){
