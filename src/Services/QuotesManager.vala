@@ -143,14 +143,11 @@ public class TradeSim.Services.QuotesManager {
 
     public void load () {
 
-        DateTime actual_date = start_date;
+        quotes = db.get_quotes_to_canvas(provider_name, ticker, time_frame, start_date, end_date);
+
+        /*DateTime actual_date = start_date;
 
         for (int i = 0 ; i < global_close_price.length ; i++) {
-
-            /*
-               Se cargan los datos para esa fecha.
-               Si no hay datos se toman los de la fecha mas proxima anterior.
-             */
 
 
             var new_quote = new TradeSim.Services.QuoteItem (ticker);
@@ -164,11 +161,9 @@ public class TradeSim.Services.QuotesManager {
 
             quotes.append_val (new_quote);
 
-            // ATENCION: SOLO TIME_FRAME M1 => IMPLEMENTAR EL RESTO.
-
             actual_date = actual_date.add_minutes (1);
 
-        }
+        }*/
 
         calc_max_min_values ();
 

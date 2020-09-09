@@ -186,7 +186,7 @@ trade_sim_widgets_canvas_container_constructor (GType type,
 #line 21 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 	_tmp1_ = self->priv->_main_window;
 #line 21 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
-	_tmp2_ = trade_sim_widgets_canvas_new (_tmp1_, "Tradingview.com", "EURUSD", "M1");
+	_tmp2_ = trade_sim_widgets_canvas_new (_tmp1_, "TRADESIM", "EURUSD", "H1");
 #line 21 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"
 	g_object_ref_sink (_tmp2_);
 #line 21 "/home/horacio/Vala/TradeSim/src/Widgets/CanvasContainer.vala"

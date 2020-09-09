@@ -98,7 +98,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         candles_cola_size = 0.8;
 
-        date_from = new DateTime.local (2011, 2, 21, 10, 0, 0); // date_to se calcula de acuerdo al nivel de zoom.
+        date_from = new DateTime.local (2019, 1, 1, 0, 0, 0); // date_to se calcula de acuerdo al nivel de zoom.
 
         change_zoom_level (1.000);
 

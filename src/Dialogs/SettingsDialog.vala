@@ -347,7 +347,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             url = url + "/" + ds_selected_provider + "_" + ds_selected_ticker + "_" + ds_selected_time_frame + "_" + ds_selected_year + "_";
             url = url + mes + ".csv";
 
-            // print(url + "\n");
+            //print(url + "\n");
 
             list_store_quotes.append (out add_iter_quotes);
             list_store_quotes.set (add_iter_quotes

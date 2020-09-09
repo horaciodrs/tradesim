@@ -18,7 +18,7 @@ public class TradeSim.Widgets.CanvasContainer : Gtk.Box {
 
         var ajuste = new Gtk.Adjustment(0, 0, 100, 1, 1, 50);
 
-        chart_canvas = new TradeSim.Widgets.Canvas (main_window, "Tradingview.com", "EURUSD", "M1");
+        chart_canvas = new TradeSim.Widgets.Canvas (main_window, "TRADESIM", "EURUSD", "H1");
 
         //hscollbar = new Gtk.Scrollbar (Gtk.Orientation.HORIZONTAL, ajuste);
 

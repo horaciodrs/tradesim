@@ -507,7 +507,7 @@ trade_sim_widgets_canvas_init (TradeSimWidgetsCanvas* self)
 #line 99 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	self->priv->candles_cola_size = 0.8;
 #line 101 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
-	_tmp0_ = g_date_time_new_local (2011, 2, 21, 10, 0, (gdouble) 0);
+	_tmp0_ = g_date_time_new_local (2019, 1, 1, 0, 0, (gdouble) 0);
 #line 101 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
 	_g_date_time_unref0 (self->priv->date_from);
 #line 101 "/home/horacio/Vala/TradeSim/src/Widgets/Canvas.vala"
