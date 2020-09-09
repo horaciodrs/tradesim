@@ -24,13 +24,15 @@ public class TradeSim.Objects.ProviderTicker {
     public int ticker_id;
     public string ticker_name;
     public string provider_name;
+    public string provider_folder_name;
     public int provider_id;
 
-    public ProviderTicker (int _ticker_id, string _ticker_name, int _provider_id, string _provider_name) {
+    public ProviderTicker (int _ticker_id, string _ticker_name, int _provider_id, string _provider_folder_name, string _provider_name) {
         ticker_id = _ticker_id;
         ticker_name = _ticker_name;
         provider_id = _provider_id;
         provider_name = _provider_name;
+        provider_folder_name = _provider_folder_name;
     }
 
 }

@@ -333,11 +333,11 @@ static GType trade_sim_dialogs_settings_dialog_settings_switch_get_type (void) G
 TradeSimMainWindow* trade_sim_dialogs_settings_dialog_get_main_window (TradeSimDialogsSettingsDialog* self);
 GType trade_sim_layouts_header_bar_get_type (void) G_GNUC_CONST;
 GType trade_sim_layouts_main_get_type (void) G_GNUC_CONST;
-static void __lambda5_ (TradeSimDialogsSettingsDialog* self);
+static void __lambda8_ (TradeSimDialogsSettingsDialog* self);
 void trade_sim_main_window_change_theme (TradeSimMainWindow* self,
                                          gboolean load_from_settings,
                                          gboolean value);
-static void ___lambda5__g_object_notify (GObject* _sender,
+static void ___lambda8__g_object_notify (GObject* _sender,
                                   GParamSpec* pspec,
                                   gpointer self);
 static void trade_sim_dialogs_settings_dialog_configure_provider (TradeSimDialogsSettingsDialog* self);
@@ -369,10 +369,10 @@ void trade_sim_services_value_take_quote_item (GValue* value,
 gpointer trade_sim_services_value_get_quote_item (const GValue* value);
 GType trade_sim_services_quote_item_get_type (void) G_GNUC_CONST;
 GArray* trade_sim_services_database_get_providers (TradeSimServicesDatabase* self);
-static void __lambda6_ (TradeSimDialogsSettingsDialog* self,
+static void __lambda9_ (TradeSimDialogsSettingsDialog* self,
                  GtkTreeSelection* sel);
 static void trade_sim_dialogs_settings_dialog_update_quotes_by_filter (TradeSimDialogsSettingsDialog* self);
-static void ___lambda6__gtk_tree_selection_changed (GtkTreeSelection* _sender,
+static void ___lambda9__gtk_tree_selection_changed (GtkTreeSelection* _sender,
                                              gpointer self);
 static void trade_sim_dialogs_settings_dialog_configure_ticker (TradeSimDialogsSettingsDialog* self);
 gpointer trade_sim_objects_ticker_ref (gpointer instance);
@@ -389,20 +389,20 @@ void trade_sim_objects_value_take_ticker (GValue* value,
 gpointer trade_sim_objects_value_get_ticker (const GValue* value);
 GType trade_sim_objects_ticker_get_type (void) G_GNUC_CONST;
 GArray* trade_sim_services_database_get_tickers (TradeSimServicesDatabase* self);
-static void __lambda7_ (TradeSimDialogsSettingsDialog* self,
-                 GtkTreeSelection* sel);
-static void ___lambda7__gtk_tree_selection_changed (GtkTreeSelection* _sender,
-                                             gpointer self);
+static void __lambda10_ (TradeSimDialogsSettingsDialog* self,
+                  GtkTreeSelection* sel);
+static void ___lambda10__gtk_tree_selection_changed (GtkTreeSelection* _sender,
+                                              gpointer self);
 static void trade_sim_dialogs_settings_dialog_configure_year (TradeSimDialogsSettingsDialog* self);
-static void __lambda8_ (TradeSimDialogsSettingsDialog* self,
-                 GtkTreeSelection* sel);
-static void ___lambda8__gtk_tree_selection_changed (GtkTreeSelection* _sender,
-                                             gpointer self);
+static void __lambda11_ (TradeSimDialogsSettingsDialog* self,
+                  GtkTreeSelection* sel);
+static void ___lambda11__gtk_tree_selection_changed (GtkTreeSelection* _sender,
+                                              gpointer self);
 static void trade_sim_dialogs_settings_dialog_configure_time_frame (TradeSimDialogsSettingsDialog* self);
-static void __lambda9_ (TradeSimDialogsSettingsDialog* self,
-                 GtkTreeSelection* sel);
-static void ___lambda9__gtk_tree_selection_changed (GtkTreeSelection* _sender,
-                                             gpointer self);
+static void __lambda12_ (TradeSimDialogsSettingsDialog* self,
+                  GtkTreeSelection* sel);
+static void ___lambda12__gtk_tree_selection_changed (GtkTreeSelection* _sender,
+                                              gpointer self);
 gchar* get_month_name (gint i);
 gboolean trade_sim_services_database_import_data_exists (TradeSimServicesDatabase* self,
                                                          const gchar* provider,
@@ -412,7 +412,7 @@ gboolean trade_sim_services_database_import_data_exists (TradeSimServicesDatabas
                                                          gint year,
                                                          gint month);
 static void trade_sim_dialogs_settings_dialog_configure_quotes (TradeSimDialogsSettingsDialog* self);
-static void __lambda10_ (TradeSimDialogsSettingsDialog* self,
+static void __lambda13_ (TradeSimDialogsSettingsDialog* self,
                   GtkCellRendererToggle* toggle,
                   const gchar* path);
 static void _vala_GtkTreePath_free (GtkTreePath* self);
@@ -426,19 +426,19 @@ void trade_sim_services_database_delete_imported_data (TradeSimServicesDatabase*
                                                        gint month);
 void trade_sim_services_quotes_manager_insert_cuote_to_db (TradeSimServicesQuotesManager* self,
                                                            const gchar* _csvline);
-static void ___lambda10__gtk_cell_renderer_toggle_toggled (GtkCellRendererToggle* _sender,
+static void ___lambda13__gtk_cell_renderer_toggle_toggled (GtkCellRendererToggle* _sender,
                                                     const gchar* path,
                                                     gpointer self);
 static GtkWidget* trade_sim_dialogs_settings_dialog_get_data_source_box (TradeSimDialogsSettingsDialog* self);
 static GtkWidget* trade_sim_dialogs_settings_dialog_get_about_box (TradeSimDialogsSettingsDialog* self);
-static void __lambda11_ (TradeSimDialogsSettingsDialog* self);
-static void ___lambda11__gtk_button_clicked (GtkButton* _sender,
+static void __lambda14_ (TradeSimDialogsSettingsDialog* self);
+static void ___lambda14__gtk_button_clicked (GtkButton* _sender,
                                       gpointer self);
-static void __lambda12_ (TradeSimDialogsSettingsDialog* self);
-static void ___lambda12__gtk_button_clicked (GtkButton* _sender,
+static void __lambda15_ (TradeSimDialogsSettingsDialog* self);
+static void ___lambda15__gtk_button_clicked (GtkButton* _sender,
                                       gpointer self);
-static void __lambda13_ (TradeSimDialogsSettingsDialog* self);
-static void ___lambda13__gtk_button_clicked (GtkButton* _sender,
+static void __lambda16_ (TradeSimDialogsSettingsDialog* self);
+static void ___lambda16__gtk_button_clicked (GtkButton* _sender,
                                       gpointer self);
 static void trade_sim_dialogs_settings_dialog_set_main_window (TradeSimDialogsSettingsDialog* self,
                                                         TradeSimMainWindow* value);
@@ -483,7 +483,7 @@ trade_sim_dialogs_settings_dialog_new (TradeSimMainWindow* window)
 
 
 static void
-__lambda5_ (TradeSimDialogsSettingsDialog* self)
+__lambda8_ (TradeSimDialogsSettingsDialog* self)
 {
 	TradeSimMainWindow* _tmp0_;
 	GtkSwitch* _tmp1_;
@@ -498,12 +498,12 @@ __lambda5_ (TradeSimDialogsSettingsDialog* self)
 
 
 static void
-___lambda5__g_object_notify (GObject* _sender,
+___lambda8__g_object_notify (GObject* _sender,
                              GParamSpec* pspec,
                              gpointer self)
 {
 #line 98 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	__lambda5_ ((TradeSimDialogsSettingsDialog*) self);
+	__lambda8_ ((TradeSimDialogsSettingsDialog*) self);
 #line 508 "SettingsDialog.c"
 }
 
@@ -581,7 +581,7 @@ trade_sim_dialogs_settings_dialog_get_interface_box (TradeSimDialogsSettingsDial
 #line 98 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp10_ = self->priv->dark_theme_switch;
 #line 98 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_signal_connect_object ((GObject*) _tmp10_, "notify::active", (GCallback) ___lambda5__g_object_notify, self, 0);
+	g_signal_connect_object ((GObject*) _tmp10_, "notify::active", (GCallback) ___lambda8__g_object_notify, self, 0);
 #line 103 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	result = (GtkWidget*) grid;
 #line 103 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
@@ -600,7 +600,7 @@ _g_object_ref0 (gpointer self)
 
 
 static void
-__lambda6_ (TradeSimDialogsSettingsDialog* self,
+__lambda9_ (TradeSimDialogsSettingsDialog* self,
             GtkTreeSelection* sel)
 {
 	GtkTreeIter edited_iter = {0};
@@ -652,11 +652,11 @@ __lambda6_ (TradeSimDialogsSettingsDialog* self,
 
 
 static void
-___lambda6__gtk_tree_selection_changed (GtkTreeSelection* _sender,
+___lambda9__gtk_tree_selection_changed (GtkTreeSelection* _sender,
                                         gpointer self)
 {
 #line 136 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	__lambda6_ ((TradeSimDialogsSettingsDialog*) self, _sender);
+	__lambda9_ ((TradeSimDialogsSettingsDialog*) self, _sender);
 #line 661 "SettingsDialog.c"
 }
 
@@ -855,7 +855,7 @@ trade_sim_dialogs_settings_dialog_configure_provider (TradeSimDialogsSettingsDia
 #line 136 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp33_ = gtk_tree_view_get_selection (_tmp32_);
 #line 136 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_signal_connect_object (_tmp33_, "changed", (GCallback) ___lambda6__gtk_tree_selection_changed, self, 0);
+	g_signal_connect_object (_tmp33_, "changed", (GCallback) ___lambda9__gtk_tree_selection_changed, self, 0);
 #line 153 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp34_ = self->priv->tree_view_provider;
 #line 153 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
@@ -901,8 +901,8 @@ trade_sim_dialogs_settings_dialog_configure_provider (TradeSimDialogsSettingsDia
 
 
 static void
-__lambda7_ (TradeSimDialogsSettingsDialog* self,
-            GtkTreeSelection* sel)
+__lambda10_ (TradeSimDialogsSettingsDialog* self,
+             GtkTreeSelection* sel)
 {
 	GtkTreeIter edited_iter = {0};
 	GtkTreeModel* model = NULL;
@@ -953,11 +953,11 @@ __lambda7_ (TradeSimDialogsSettingsDialog* self,
 
 
 static void
-___lambda7__gtk_tree_selection_changed (GtkTreeSelection* _sender,
-                                        gpointer self)
+___lambda10__gtk_tree_selection_changed (GtkTreeSelection* _sender,
+                                         gpointer self)
 {
 #line 191 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	__lambda7_ ((TradeSimDialogsSettingsDialog*) self, _sender);
+	__lambda10_ ((TradeSimDialogsSettingsDialog*) self, _sender);
 #line 962 "SettingsDialog.c"
 }
 
@@ -1120,7 +1120,7 @@ trade_sim_dialogs_settings_dialog_configure_ticker (TradeSimDialogsSettingsDialo
 #line 191 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp25_ = gtk_tree_view_get_selection (_tmp24_);
 #line 191 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_signal_connect_object (_tmp25_, "changed", (GCallback) ___lambda7__gtk_tree_selection_changed, self, 0);
+	g_signal_connect_object (_tmp25_, "changed", (GCallback) ___lambda10__gtk_tree_selection_changed, self, 0);
 #line 208 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp26_ = self->priv->tree_view_ticker;
 #line 208 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
@@ -1154,8 +1154,8 @@ trade_sim_dialogs_settings_dialog_configure_ticker (TradeSimDialogsSettingsDialo
 
 
 static void
-__lambda8_ (TradeSimDialogsSettingsDialog* self,
-            GtkTreeSelection* sel)
+__lambda11_ (TradeSimDialogsSettingsDialog* self,
+             GtkTreeSelection* sel)
 {
 	GtkTreeIter edited_iter = {0};
 	GtkTreeModel* model = NULL;
@@ -1206,11 +1206,11 @@ __lambda8_ (TradeSimDialogsSettingsDialog* self,
 
 
 static void
-___lambda8__gtk_tree_selection_changed (GtkTreeSelection* _sender,
-                                        gpointer self)
+___lambda11__gtk_tree_selection_changed (GtkTreeSelection* _sender,
+                                         gpointer self)
 {
 #line 239 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	__lambda8_ ((TradeSimDialogsSettingsDialog*) self, _sender);
+	__lambda11_ ((TradeSimDialogsSettingsDialog*) self, _sender);
 #line 1215 "SettingsDialog.c"
 }
 
@@ -1359,7 +1359,7 @@ trade_sim_dialogs_settings_dialog_configure_year (TradeSimDialogsSettingsDialog*
 #line 239 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp20_ = gtk_tree_view_get_selection (_tmp19_);
 #line 239 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_signal_connect_object (_tmp20_, "changed", (GCallback) ___lambda8__gtk_tree_selection_changed, self, 0);
+	g_signal_connect_object (_tmp20_, "changed", (GCallback) ___lambda11__gtk_tree_selection_changed, self, 0);
 #line 256 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp21_ = self->priv->tree_view_year;
 #line 256 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
@@ -1391,8 +1391,8 @@ trade_sim_dialogs_settings_dialog_configure_year (TradeSimDialogsSettingsDialog*
 
 
 static void
-__lambda9_ (TradeSimDialogsSettingsDialog* self,
-            GtkTreeSelection* sel)
+__lambda12_ (TradeSimDialogsSettingsDialog* self,
+             GtkTreeSelection* sel)
 {
 	GtkTreeIter edited_iter = {0};
 	GtkTreeModel* model = NULL;
@@ -1443,11 +1443,11 @@ __lambda9_ (TradeSimDialogsSettingsDialog* self,
 
 
 static void
-___lambda9__gtk_tree_selection_changed (GtkTreeSelection* _sender,
-                                        gpointer self)
+___lambda12__gtk_tree_selection_changed (GtkTreeSelection* _sender,
+                                         gpointer self)
 {
 #line 300 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	__lambda9_ ((TradeSimDialogsSettingsDialog*) self, _sender);
+	__lambda12_ ((TradeSimDialogsSettingsDialog*) self, _sender);
 #line 1452 "SettingsDialog.c"
 }
 
@@ -1631,7 +1631,7 @@ trade_sim_dialogs_settings_dialog_configure_time_frame (TradeSimDialogsSettingsD
 #line 300 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp36_ = gtk_tree_view_get_selection (_tmp35_);
 #line 300 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_signal_connect_object (_tmp36_, "changed", (GCallback) ___lambda9__gtk_tree_selection_changed, self, 0);
+	g_signal_connect_object (_tmp36_, "changed", (GCallback) ___lambda12__gtk_tree_selection_changed, self, 0);
 #line 317 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp37_ = self->priv->tree_view_time_frame;
 #line 317 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
@@ -2164,7 +2164,7 @@ _vala_GtkTreePath_free (GtkTreePath* self)
 
 
 static void
-__lambda10_ (TradeSimDialogsSettingsDialog* self,
+__lambda13_ (TradeSimDialogsSettingsDialog* self,
              GtkCellRendererToggle* toggle,
              const gchar* path)
 {
@@ -2508,12 +2508,12 @@ __lambda10_ (TradeSimDialogsSettingsDialog* self,
 
 
 static void
-___lambda10__gtk_cell_renderer_toggle_toggled (GtkCellRendererToggle* _sender,
+___lambda13__gtk_cell_renderer_toggle_toggled (GtkCellRendererToggle* _sender,
                                                const gchar* path,
                                                gpointer self)
 {
 #line 388 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	__lambda10_ ((TradeSimDialogsSettingsDialog*) self, _sender, path);
+	__lambda13_ ((TradeSimDialogsSettingsDialog*) self, _sender, path);
 #line 2517 "SettingsDialog.c"
 }
 
@@ -2644,7 +2644,7 @@ trade_sim_dialogs_settings_dialog_configure_quotes (TradeSimDialogsSettingsDialo
 #line 386 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	quotes_url_cell = _tmp13_;
 #line 388 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_signal_connect_object (quotes_data_toggle, "toggled", (GCallback) ___lambda10__gtk_cell_renderer_toggle_toggled, self, 0);
+	g_signal_connect_object (quotes_data_toggle, "toggled", (GCallback) ___lambda13__gtk_cell_renderer_toggle_toggled, self, 0);
 #line 445 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp14_ = self->priv->tree_view_quotes;
 #line 445 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
@@ -2801,7 +2801,7 @@ trade_sim_dialogs_settings_dialog_get_data_source_box (TradeSimDialogsSettingsDi
 
 
 static void
-__lambda11_ (TradeSimDialogsSettingsDialog* self)
+__lambda14_ (TradeSimDialogsSettingsDialog* self)
 {
 	GError* _inner_error0_ = NULL;
 	{
@@ -2848,17 +2848,17 @@ __lambda11_ (TradeSimDialogsSettingsDialog* self)
 
 
 static void
-___lambda11__gtk_button_clicked (GtkButton* _sender,
+___lambda14__gtk_button_clicked (GtkButton* _sender,
                                  gpointer self)
 {
 #line 548 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	__lambda11_ ((TradeSimDialogsSettingsDialog*) self);
+	__lambda14_ ((TradeSimDialogsSettingsDialog*) self);
 #line 2856 "SettingsDialog.c"
 }
 
 
 static void
-__lambda12_ (TradeSimDialogsSettingsDialog* self)
+__lambda15_ (TradeSimDialogsSettingsDialog* self)
 {
 	GError* _inner_error0_ = NULL;
 	{
@@ -2905,17 +2905,17 @@ __lambda12_ (TradeSimDialogsSettingsDialog* self)
 
 
 static void
-___lambda12__gtk_button_clicked (GtkButton* _sender,
+___lambda15__gtk_button_clicked (GtkButton* _sender,
                                  gpointer self)
 {
 #line 557 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	__lambda12_ ((TradeSimDialogsSettingsDialog*) self);
+	__lambda15_ ((TradeSimDialogsSettingsDialog*) self);
 #line 2913 "SettingsDialog.c"
 }
 
 
 static void
-__lambda13_ (TradeSimDialogsSettingsDialog* self)
+__lambda16_ (TradeSimDialogsSettingsDialog* self)
 {
 	GError* _inner_error0_ = NULL;
 	{
@@ -2962,11 +2962,11 @@ __lambda13_ (TradeSimDialogsSettingsDialog* self)
 
 
 static void
-___lambda13__gtk_button_clicked (GtkButton* _sender,
+___lambda16__gtk_button_clicked (GtkButton* _sender,
                                  gpointer self)
 {
 #line 566 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	__lambda13_ ((TradeSimDialogsSettingsDialog*) self);
+	__lambda16_ ((TradeSimDialogsSettingsDialog*) self);
 #line 2970 "SettingsDialog.c"
 }
 
@@ -3145,7 +3145,7 @@ trade_sim_dialogs_settings_dialog_get_about_box (TradeSimDialogsSettingsDialog* 
 #line 547 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	donate_button = _tmp16_;
 #line 548 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_signal_connect_object (donate_button, "clicked", (GCallback) ___lambda11__gtk_button_clicked, self, 0);
+	g_signal_connect_object (donate_button, "clicked", (GCallback) ___lambda14__gtk_button_clicked, self, 0);
 #line 556 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp17_ = (GtkButton*) gtk_button_new_with_label ("Suggest Translations");
 #line 556 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
@@ -3153,7 +3153,7 @@ trade_sim_dialogs_settings_dialog_get_about_box (TradeSimDialogsSettingsDialog* 
 #line 556 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	translate_button = _tmp17_;
 #line 557 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_signal_connect_object (translate_button, "clicked", (GCallback) ___lambda12__gtk_button_clicked, self, 0);
+	g_signal_connect_object (translate_button, "clicked", (GCallback) ___lambda15__gtk_button_clicked, self, 0);
 #line 565 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	_tmp18_ = (GtkButton*) gtk_button_new_with_label ("Report a Problem");
 #line 565 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
@@ -3161,7 +3161,7 @@ trade_sim_dialogs_settings_dialog_get_about_box (TradeSimDialogsSettingsDialog* 
 #line 565 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	bug_button = _tmp18_;
 #line 566 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
-	g_signal_connect_object (bug_button, "clicked", (GCallback) ___lambda13__gtk_button_clicked, self, 0);
+	g_signal_connect_object (bug_button, "clicked", (GCallback) ___lambda16__gtk_button_clicked, self, 0);
 #line 574 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"
 	gtk_container_add ((GtkContainer*) button_grid, (GtkWidget*) donate_button);
 #line 575 "/home/horacio/Vala/TradeSim/src/Dialogs/SettingsDialog.vala"

@@ -47,6 +47,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     private int vertical_scale;
     private int scale_step;
     private int scale_label_step;
+    private DateTime date_inicial;
     private DateTime date_from;
     private DateTime date_to;
     private string provider_name;
@@ -98,11 +99,13 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         candles_cola_size = 0.8;
 
-        date_from = new DateTime.local (2019, 1, 1, 0, 0, 0); // date_to se calcula de acuerdo al nivel de zoom.
+        
+        data = new TradeSim.Services.QuotesManager ();
+
+        date_from = data.db.get_min_date(provider_name, ticker, time_frame);
+        date_inicial = date_from;
 
         change_zoom_level (1.000);
-
-        data = new TradeSim.Services.QuotesManager ();
 
         data.init (provider_name, ticker, time_frame, date_from, date_to);
 
@@ -362,7 +365,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
                se encuentra para determinar que cantidad de velas hay que deplazar la fecha desde.
              */
 
-            DateTime fecha_inicial = new DateTime.local (2011, 2, 21, 10, 0, 0); // es la fecha minima que tiene el data source.
+            //DateTime fecha_inicial = new DateTime.local (2011, 2, 21, 10, 0, 0); // es la fecha minima que tiene el data source.
+            DateTime fecha_inicial = date_inicial;
 
             int pixeles_por_recorrer = (_width - vertical_scale_width) - _horizontal_scroll_width;
             int pixeles_recorridos = _horizontal_scroll_x;
@@ -374,6 +378,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             /*print("porcentaje:" + porcentaje.to_string() + "\n");
                print("velas entre fechas:" + velas_entre_fechas.to_string() + "\n");
                print("velas step:" + velas_step.to_string() + "\n");*/
+
+            //print("Fecha desde: " + date_from.to_string() + " Fecha hasta: " + date_to.to_string() + "\n");
 
             
             date_from = date_add_int_by_time_frame(fecha_inicial, time_frame, velas_step); //date_from = fecha_inicial.add_minutes (velas_step);

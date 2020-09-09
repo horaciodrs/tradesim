@@ -21,6 +21,7 @@ sources = files(
     'Widgets/CanvasContainer.vala',
     'Widgets/Canvas.vala',
 
+    'Dialogs/NewChartDialog.vala',
     'Dialogs/SettingsDialog.vala',
     
     'Window.vala',

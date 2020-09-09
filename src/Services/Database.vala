@@ -585,6 +585,30 @@ public class TradeSim.Services.Database : GLib.Object {
         return all;
     }
 
+    public Array<TradeSim.Objects.Provider> get_providers_with_data () {
+
+        Sqlite.Statement stmt;
+        string sql;
+        int res;
+
+        sql = """ 
+            SELECT providers.id, providers.name, providers.folder_name
+              FROM imported_data
+              INNER JOIN providers ON imported_data.provider_id = providers.id
+              ORDER BY name DESC; """;
+
+        res = db.prepare_v2 (sql, -1, out stmt);
+        assert (res == Sqlite.OK);
+
+        var all = new Array<TradeSim.Objects.Provider> ();
+
+        while ((res = stmt.step ()) == Sqlite.ROW) {
+            all.append_val (new TradeSim.Objects.Provider (stmt.column_int (0), stmt.column_text (1), stmt.column_text (2)));
+        }
+
+        return all;
+    }
+
     public Array<TradeSim.Objects.Ticker> get_tickers () {
 
         Sqlite.Statement stmt;
@@ -613,7 +637,7 @@ public class TradeSim.Services.Database : GLib.Object {
         string sql;
         int res;
 
-        sql = """ SELECT imported_data.ticker_id, tickers.name, imported_data.provider_id, providers.folder_name
+        sql = """ SELECT imported_data.ticker_id, tickers.name, imported_data.provider_id, providers.folder_name, providers.name
                     FROM imported_data
                     INNER JOIN providers ON imported_data.provider_id = providers.id
                     INNER JOIN tickers ON imported_data.ticker_id = tickers.id
@@ -632,7 +656,7 @@ public class TradeSim.Services.Database : GLib.Object {
         var all = new Array<TradeSim.Objects.ProviderTicker> ();
 
         while ((res = stmt.step ()) == Sqlite.ROW) {
-            all.append_val (new TradeSim.Objects.ProviderTicker (stmt.column_int (0), stmt.column_text (1), stmt.column_int (2), stmt.column_text (3)));
+            all.append_val (new TradeSim.Objects.ProviderTicker (stmt.column_int (0), stmt.column_text (1), stmt.column_int (2), stmt.column_text (3), stmt.column_text (4)));
         }
 
         return all;
@@ -733,18 +757,56 @@ public class TradeSim.Services.Database : GLib.Object {
 
     public DateTime get_min_date(string _provider_name, string _ticker_name, string _time_frame){
 
-        DateTime test;
+        int provider_id = get_db_id_by_table_and_field ("providers", "name", _provider_name);
+        int market_id = get_db_id_by_name ("markets", "Forex");
+        int ticker_id = get_db_id_by_name ("tickers", _ticker_name);
+        int time_frame_id = get_db_id_by_name ("time_frames", _time_frame);
 
-        """SELECT quotes.date_year, quotes.date_month, quotes.date_day, quotes.date_hour, quotes.date_minute
-         FROM quotes
+        DateTime return_value = new DateTime.local(2010,1,1,1,1,0);
+
+        Sqlite.Statement stmt;
+        string sql;
+        int res;
+
+        sql = """SELECT quotes.date_year, quotes.date_month, quotes.date_day, quotes.date_hour, quotes.date_minute
+             FROM quotes
+            WHERE provider_id = ?
+              AND market_id = ?
+              AND ticker_id = ?
+              AND time_frame_id = ?
         ORDER BY DATE(quotes.date_str) ASC, id ASC
         LIMIT 1;
-        """
+        """;
 
-        return test;
+        res = db.prepare_v2 (sql, -1, out stmt);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (1, provider_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (2, market_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (3, ticker_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (4, time_frame_id);
+        assert (res == Sqlite.OK);
+
+        if ((res = stmt.step ()) == Sqlite.ROW) {
+
+            var date_year = stmt.column_int (0);
+            var date_month = stmt.column_int (1);
+            var date_day = stmt.column_int (2);
+            var date_hour = stmt.column_int (3);
+            var date_minute = stmt.column_int (4);
+
+            return_value = new DateTime.local(date_year, date_month, date_day, date_hour, date_minute, 0);
+       
+        }
+
+        return return_value;
 
     }
-
-    
 
 }

@@ -50,6 +50,7 @@ struct _TradeSimObjectsProviderTicker {
 	gint ticker_id;
 	gchar* ticker_name;
 	gchar* provider_name;
+	gchar* provider_folder_name;
 	gint provider_id;
 };
 
@@ -81,11 +82,13 @@ GType trade_sim_objects_provider_ticker_get_type (void) G_GNUC_CONST;
 TradeSimObjectsProviderTicker* trade_sim_objects_provider_ticker_new (gint _ticker_id,
                                                                       const gchar* _ticker_name,
                                                                       gint _provider_id,
+                                                                      const gchar* _provider_folder_name,
                                                                       const gchar* _provider_name);
 TradeSimObjectsProviderTicker* trade_sim_objects_provider_ticker_construct (GType object_type,
                                                                             gint _ticker_id,
                                                                             const gchar* _ticker_name,
                                                                             gint _provider_id,
+                                                                            const gchar* _provider_folder_name,
                                                                             const gchar* _provider_name);
 static void trade_sim_objects_provider_ticker_finalize (TradeSimObjectsProviderTicker * obj);
 
@@ -95,36 +98,46 @@ trade_sim_objects_provider_ticker_construct (GType object_type,
                                              gint _ticker_id,
                                              const gchar* _ticker_name,
                                              gint _provider_id,
+                                             const gchar* _provider_folder_name,
                                              const gchar* _provider_name)
 {
 	TradeSimObjectsProviderTicker* self = NULL;
 	gchar* _tmp0_;
 	gchar* _tmp1_;
-#line 29 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
-	g_return_val_if_fail (_ticker_name != NULL, NULL);
-#line 29 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
-	g_return_val_if_fail (_provider_name != NULL, NULL);
-#line 29 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
-	self = (TradeSimObjectsProviderTicker*) g_type_create_instance (object_type);
+	gchar* _tmp2_;
 #line 30 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
+	g_return_val_if_fail (_ticker_name != NULL, NULL);
+#line 30 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
+	g_return_val_if_fail (_provider_folder_name != NULL, NULL);
+#line 30 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
+	g_return_val_if_fail (_provider_name != NULL, NULL);
+#line 30 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
+	self = (TradeSimObjectsProviderTicker*) g_type_create_instance (object_type);
+#line 31 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	self->ticker_id = _ticker_id;
-#line 31 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
-	_tmp0_ = g_strdup (_ticker_name);
-#line 31 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
-	_g_free0 (self->ticker_name);
-#line 31 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
-	self->ticker_name = _tmp0_;
 #line 32 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
+	_tmp0_ = g_strdup (_ticker_name);
+#line 32 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
+	_g_free0 (self->ticker_name);
+#line 32 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
+	self->ticker_name = _tmp0_;
+#line 33 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	self->provider_id = _provider_id;
-#line 33 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
+#line 34 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	_tmp1_ = g_strdup (_provider_name);
-#line 33 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
+#line 34 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	_g_free0 (self->provider_name);
-#line 33 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
+#line 34 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	self->provider_name = _tmp1_;
-#line 29 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
+#line 35 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
+	_tmp2_ = g_strdup (_provider_folder_name);
+#line 35 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
+	_g_free0 (self->provider_folder_name);
+#line 35 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
+	self->provider_folder_name = _tmp2_;
+#line 30 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	return self;
-#line 128 "ProviderTicker.c"
+#line 141 "ProviderTicker.c"
 }
 
 
@@ -132,11 +145,12 @@ TradeSimObjectsProviderTicker*
 trade_sim_objects_provider_ticker_new (gint _ticker_id,
                                        const gchar* _ticker_name,
                                        gint _provider_id,
+                                       const gchar* _provider_folder_name,
                                        const gchar* _provider_name)
 {
-#line 29 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
-	return trade_sim_objects_provider_ticker_construct (TRADE_SIM_OBJECTS_TYPE_PROVIDER_TICKER, _ticker_id, _ticker_name, _provider_id, _provider_name);
-#line 140 "ProviderTicker.c"
+#line 30 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
+	return trade_sim_objects_provider_ticker_construct (TRADE_SIM_OBJECTS_TYPE_PROVIDER_TICKER, _ticker_id, _ticker_name, _provider_id, _provider_folder_name, _provider_name);
+#line 154 "ProviderTicker.c"
 }
 
 
@@ -145,7 +159,7 @@ trade_sim_objects_value_provider_ticker_init (GValue* value)
 {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	value->data[0].v_pointer = NULL;
-#line 149 "ProviderTicker.c"
+#line 163 "ProviderTicker.c"
 }
 
 
@@ -156,7 +170,7 @@ trade_sim_objects_value_provider_ticker_free_value (GValue* value)
 	if (value->data[0].v_pointer) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 		trade_sim_objects_provider_ticker_unref (value->data[0].v_pointer);
-#line 160 "ProviderTicker.c"
+#line 174 "ProviderTicker.c"
 	}
 }
 
@@ -169,11 +183,11 @@ trade_sim_objects_value_provider_ticker_copy_value (const GValue* src_value,
 	if (src_value->data[0].v_pointer) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 		dest_value->data[0].v_pointer = trade_sim_objects_provider_ticker_ref (src_value->data[0].v_pointer);
-#line 173 "ProviderTicker.c"
+#line 187 "ProviderTicker.c"
 	} else {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 		dest_value->data[0].v_pointer = NULL;
-#line 177 "ProviderTicker.c"
+#line 191 "ProviderTicker.c"
 	}
 }
 
@@ -183,7 +197,7 @@ trade_sim_objects_value_provider_ticker_peek_pointer (const GValue* value)
 {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	return value->data[0].v_pointer;
-#line 187 "ProviderTicker.c"
+#line 201 "ProviderTicker.c"
 }
 
 
@@ -195,30 +209,30 @@ trade_sim_objects_value_provider_ticker_collect_value (GValue* value,
 {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	if (collect_values[0].v_pointer) {
-#line 199 "ProviderTicker.c"
+#line 213 "ProviderTicker.c"
 		TradeSimObjectsProviderTicker * object;
 		object = collect_values[0].v_pointer;
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 		if (object->parent_instance.g_class == NULL) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 			return g_strconcat ("invalid unclassed object pointer for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
-#line 206 "ProviderTicker.c"
+#line 220 "ProviderTicker.c"
 		} else if (!g_value_type_compatible (G_TYPE_FROM_INSTANCE (object), G_VALUE_TYPE (value))) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 			return g_strconcat ("invalid object type `", g_type_name (G_TYPE_FROM_INSTANCE (object)), "' for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
-#line 210 "ProviderTicker.c"
+#line 224 "ProviderTicker.c"
 		}
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 		value->data[0].v_pointer = trade_sim_objects_provider_ticker_ref (object);
-#line 214 "ProviderTicker.c"
+#line 228 "ProviderTicker.c"
 	} else {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 		value->data[0].v_pointer = NULL;
-#line 218 "ProviderTicker.c"
+#line 232 "ProviderTicker.c"
 	}
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	return NULL;
-#line 222 "ProviderTicker.c"
+#line 236 "ProviderTicker.c"
 }
 
 
@@ -234,25 +248,25 @@ trade_sim_objects_value_provider_ticker_lcopy_value (const GValue* value,
 	if (!object_p) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 		return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
-#line 238 "ProviderTicker.c"
+#line 252 "ProviderTicker.c"
 	}
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	if (!value->data[0].v_pointer) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 		*object_p = NULL;
-#line 244 "ProviderTicker.c"
+#line 258 "ProviderTicker.c"
 	} else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 		*object_p = value->data[0].v_pointer;
-#line 248 "ProviderTicker.c"
+#line 262 "ProviderTicker.c"
 	} else {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 		*object_p = trade_sim_objects_provider_ticker_ref (value->data[0].v_pointer);
-#line 252 "ProviderTicker.c"
+#line 266 "ProviderTicker.c"
 	}
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	return NULL;
-#line 256 "ProviderTicker.c"
+#line 270 "ProviderTicker.c"
 }
 
 
@@ -272,7 +286,7 @@ trade_sim_objects_param_spec_provider_ticker (const gchar* name,
 	G_PARAM_SPEC (spec)->value_type = object_type;
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	return G_PARAM_SPEC (spec);
-#line 276 "ProviderTicker.c"
+#line 290 "ProviderTicker.c"
 }
 
 
@@ -283,7 +297,7 @@ trade_sim_objects_value_get_provider_ticker (const GValue* value)
 	g_return_val_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRADE_SIM_OBJECTS_TYPE_PROVIDER_TICKER), NULL);
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	return value->data[0].v_pointer;
-#line 287 "ProviderTicker.c"
+#line 301 "ProviderTicker.c"
 }
 
 
@@ -306,17 +320,17 @@ trade_sim_objects_value_set_provider_ticker (GValue* value,
 		value->data[0].v_pointer = v_object;
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 		trade_sim_objects_provider_ticker_ref (value->data[0].v_pointer);
-#line 310 "ProviderTicker.c"
+#line 324 "ProviderTicker.c"
 	} else {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 		value->data[0].v_pointer = NULL;
-#line 314 "ProviderTicker.c"
+#line 328 "ProviderTicker.c"
 	}
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	if (old) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 		trade_sim_objects_provider_ticker_unref (old);
-#line 320 "ProviderTicker.c"
+#line 334 "ProviderTicker.c"
 	}
 }
 
@@ -338,17 +352,17 @@ trade_sim_objects_value_take_provider_ticker (GValue* value,
 		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 		value->data[0].v_pointer = v_object;
-#line 342 "ProviderTicker.c"
+#line 356 "ProviderTicker.c"
 	} else {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 		value->data[0].v_pointer = NULL;
-#line 346 "ProviderTicker.c"
+#line 360 "ProviderTicker.c"
 	}
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	if (old) {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 		trade_sim_objects_provider_ticker_unref (old);
-#line 352 "ProviderTicker.c"
+#line 366 "ProviderTicker.c"
 	}
 }
 
@@ -360,7 +374,7 @@ trade_sim_objects_provider_ticker_class_init (TradeSimObjectsProviderTickerClass
 	trade_sim_objects_provider_ticker_parent_class = g_type_class_peek_parent (klass);
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	((TradeSimObjectsProviderTickerClass *) klass)->finalize = trade_sim_objects_provider_ticker_finalize;
-#line 364 "ProviderTicker.c"
+#line 378 "ProviderTicker.c"
 }
 
 
@@ -369,7 +383,7 @@ trade_sim_objects_provider_ticker_instance_init (TradeSimObjectsProviderTicker *
 {
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	self->ref_count = 1;
-#line 373 "ProviderTicker.c"
+#line 387 "ProviderTicker.c"
 }
 
 
@@ -385,7 +399,9 @@ trade_sim_objects_provider_ticker_finalize (TradeSimObjectsProviderTicker * obj)
 	_g_free0 (self->ticker_name);
 #line 26 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	_g_free0 (self->provider_name);
-#line 389 "ProviderTicker.c"
+#line 27 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
+	_g_free0 (self->provider_folder_name);
+#line 405 "ProviderTicker.c"
 }
 
 
@@ -414,7 +430,7 @@ trade_sim_objects_provider_ticker_ref (gpointer instance)
 	g_atomic_int_inc (&self->ref_count);
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 	return instance;
-#line 418 "ProviderTicker.c"
+#line 434 "ProviderTicker.c"
 }
 
 
@@ -429,7 +445,7 @@ trade_sim_objects_provider_ticker_unref (gpointer instance)
 		TRADE_SIM_OBJECTS_PROVIDER_TICKER_GET_CLASS (self)->finalize (self);
 #line 22 "/home/horacio/Vala/TradeSim/src/Objects/ProviderTicker.vala"
 		g_type_free_instance ((GTypeInstance *) self);
-#line 433 "ProviderTicker.c"
+#line 449 "ProviderTicker.c"
 	}
 }
 
