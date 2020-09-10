@@ -54,6 +54,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     private string time_frame;
     private string ticker;
 
+    private bool end_simulation;
+
     private double candles_cola_size;
 
     public bool show_cross_lines;
@@ -69,6 +71,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         ticker = _ticker;
         time_frame = _time_frame;
         provider_name = _provider_name;
+        end_simulation = true;
 
         add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK | Gdk.EventMask.POINTER_MOTION_MASK | Gdk.EventMask.LEAVE_NOTIFY_MASK);
 
@@ -121,6 +124,46 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         vertical_scale_calculation ();
         horizontal_scale_calculation ();
+    }
+
+    public void simulate(){
+
+        
+        if(end_simulation){
+
+            end_simulation = false;
+
+            Timeout.add(1000, play, GLib.Priority.HIGH);
+
+        }else{
+
+            end_simulation = true;
+
+        }
+
+
+    }
+
+    public bool play(){
+
+        //carga una vela y avanza una vela.
+
+        if(!end_simulation){
+
+            print("llama_nextquote();" + "\n");
+
+            data.load_next_quote();
+
+            print("avanzando..." + "\n");
+
+            return true;
+            
+        }
+
+        print("finalizando..." + "\n");
+
+        return false;
+
     }
 
     private void update_extreme_prices () {

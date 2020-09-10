@@ -278,21 +278,26 @@ trade_sim_widgets_zoom_button_zoom_reset (TradeSimWidgetsZoomButton* self)
 	GtkButton* _tmp0_;
 	GtkButton* _tmp1_;
 	GtkButton* _tmp2_;
+	TradeSimMainWindow* _tmp3_;
 #line 95 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 	g_return_if_fail (self != NULL);
-#line 96 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
+#line 97 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 	_tmp0_ = self->zoom_in_button;
-#line 96 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
+#line 97 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 	gtk_widget_set_sensitive ((GtkWidget*) _tmp0_, TRUE);
-#line 97 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
+#line 98 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 	_tmp1_ = self->zoom_out_button;
-#line 97 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
+#line 98 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 	gtk_widget_set_sensitive ((GtkWidget*) _tmp1_, TRUE);
-#line 98 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
+#line 99 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 	_tmp2_ = self->zoom_default_button;
-#line 98 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
+#line 99 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 	gtk_button_set_label (_tmp2_, "100%");
-#line 296 "ZoomButton.c"
+#line 101 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
+	_tmp3_ = self->priv->_main_window;
+#line 101 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
+	trade_sim_main_window_change_zoom_level (_tmp3_, 1.000);
+#line 301 "ZoomButton.c"
 }
 
 
@@ -309,7 +314,7 @@ trade_sim_widgets_zoom_button_get_main_window (TradeSimWidgetsZoomButton* self)
 	result = _tmp0_;
 #line 2 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 	return result;
-#line 313 "ZoomButton.c"
+#line 318 "ZoomButton.c"
 }
 
 
@@ -325,7 +330,7 @@ trade_sim_widgets_zoom_button_set_main_window (TradeSimWidgetsZoomButton* self,
 		self->priv->_main_window = value;
 #line 2 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 		g_object_notify_by_pspec ((GObject *) self, trade_sim_widgets_zoom_button_properties[TRADE_SIM_WIDGETS_ZOOM_BUTTON_MAIN_WINDOW_PROPERTY]);
-#line 329 "ZoomButton.c"
+#line 334 "ZoomButton.c"
 	}
 }
 
@@ -336,7 +341,7 @@ _trade_sim_widgets_zoom_button_zoom_out_gtk_button_clicked (GtkButton* _sender,
 {
 #line 25 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 	trade_sim_widgets_zoom_button_zoom_out ((TradeSimWidgetsZoomButton*) self);
-#line 340 "ZoomButton.c"
+#line 345 "ZoomButton.c"
 }
 
 
@@ -346,7 +351,7 @@ _trade_sim_widgets_zoom_button_zoom_reset_gtk_button_clicked (GtkButton* _sender
 {
 #line 33 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 	trade_sim_widgets_zoom_button_zoom_reset ((TradeSimWidgetsZoomButton*) self);
-#line 350 "ZoomButton.c"
+#line 355 "ZoomButton.c"
 }
 
 
@@ -356,7 +361,7 @@ _trade_sim_widgets_zoom_button_zoom_in_gtk_button_clicked (GtkButton* _sender,
 {
 #line 38 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 	trade_sim_widgets_zoom_button_zoom_in ((TradeSimWidgetsZoomButton*) self);
-#line 360 "ZoomButton.c"
+#line 365 "ZoomButton.c"
 }
 
 
@@ -617,7 +622,7 @@ trade_sim_widgets_zoom_button_constructor (GType type,
 	gtk_grid_attach ((GtkGrid*) self, (GtkWidget*) _tmp45_, 0, 1, 3, 1);
 #line 16 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 	return obj;
-#line 621 "ZoomButton.c"
+#line 626 "ZoomButton.c"
 }
 
 
@@ -638,7 +643,7 @@ trade_sim_widgets_zoom_button_class_init (TradeSimWidgetsZoomButtonClass * klass
 	G_OBJECT_CLASS (klass)->finalize = trade_sim_widgets_zoom_button_finalize;
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRADE_SIM_WIDGETS_ZOOM_BUTTON_MAIN_WINDOW_PROPERTY, trade_sim_widgets_zoom_button_properties[TRADE_SIM_WIDGETS_ZOOM_BUTTON_MAIN_WINDOW_PROPERTY] = g_param_spec_object ("main-window", "main-window", "main-window", TRADE_SIM_TYPE_MAIN_WINDOW, G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
-#line 642 "ZoomButton.c"
+#line 647 "ZoomButton.c"
 }
 
 
@@ -647,7 +652,7 @@ trade_sim_widgets_zoom_button_instance_init (TradeSimWidgetsZoomButton * self)
 {
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 	self->priv = TRADE_SIM_WIDGETS_ZOOM_BUTTON_GET_PRIVATE (self);
-#line 651 "ZoomButton.c"
+#line 656 "ZoomButton.c"
 }
 
 
@@ -667,7 +672,7 @@ trade_sim_widgets_zoom_button_finalize (GObject * obj)
 	_g_object_unref0 (self->zoom_in_button);
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 	G_OBJECT_CLASS (trade_sim_widgets_zoom_button_parent_class)->finalize (obj);
-#line 671 "ZoomButton.c"
+#line 676 "ZoomButton.c"
 }
 
 
@@ -701,13 +706,13 @@ _vala_trade_sim_widgets_zoom_button_get_property (GObject * object,
 		g_value_set_object (value, trade_sim_widgets_zoom_button_get_main_window (self));
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 		break;
-#line 705 "ZoomButton.c"
+#line 710 "ZoomButton.c"
 		default:
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 		break;
-#line 711 "ZoomButton.c"
+#line 716 "ZoomButton.c"
 	}
 }
 
@@ -728,13 +733,13 @@ _vala_trade_sim_widgets_zoom_button_set_property (GObject * object,
 		trade_sim_widgets_zoom_button_set_main_window (self, g_value_get_object (value));
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 		break;
-#line 732 "ZoomButton.c"
+#line 737 "ZoomButton.c"
 		default:
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 1 "/home/horacio/Vala/TradeSim/src/Widgets/ZoomButton.vala"
 		break;
-#line 738 "ZoomButton.c"
+#line 743 "ZoomButton.c"
 	}
 }
 

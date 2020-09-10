@@ -169,6 +169,24 @@ public class TradeSim.Services.QuotesManager {
 
     }
 
+    public void load_next_quote(){
+
+        DateTime last_date;
+
+        if(quotes.length > 0){
+
+            last_date = quotes.index(quotes.length - 1).date_time;
+
+            TradeSim.Services.QuoteItem next_quote = db.get_next_quotes(provider_name, ticker, time_frame, last_date);
+
+            if(next_quote != null){
+                quotes.append_val(next_quote);
+            }
+
+        }
+
+    }
+
     private void calc_max_min_values () {
 
 

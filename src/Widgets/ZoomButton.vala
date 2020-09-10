@@ -93,11 +93,13 @@ public class TradeSim.Widgets.ZoomButton : Gtk.Grid {
     }
 
     public void zoom_reset () {
+
         zoom_in_button.sensitive = true;
         zoom_out_button.sensitive = true;
         zoom_default_button.label = "100%";
 
-        // mainWindow.event_bus.request_zoom ("reset");
+        main_window.change_zoom_level(1.000);
+
     }
 
 }

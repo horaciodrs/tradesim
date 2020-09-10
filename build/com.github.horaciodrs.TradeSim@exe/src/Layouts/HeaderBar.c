@@ -28,6 +28,7 @@
 #include <gtk/gtk.h>
 #include <stdlib.h>
 #include <string.h>
+#include <gio/gio.h>
 
 
 #define TRADE_SIM_LAYOUTS_TYPE_HEADER_BAR (trade_sim_layouts_header_bar_get_type ())
@@ -87,6 +88,70 @@ enum  {
 };
 static GParamSpec* trade_sim_layouts_header_bar_properties[TRADE_SIM_LAYOUTS_HEADER_BAR_NUM_PROPERTIES];
 #define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
+typedef struct _TradeSimWidgetsHeaderBarButtonPrivate TradeSimWidgetsHeaderBarButtonPrivate;
+
+#define TRADE_SIM_WIDGETS_TYPE_BUTTON_IMAGE (trade_sim_widgets_button_image_get_type ())
+#define TRADE_SIM_WIDGETS_BUTTON_IMAGE(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRADE_SIM_WIDGETS_TYPE_BUTTON_IMAGE, TradeSimWidgetsButtonImage))
+#define TRADE_SIM_WIDGETS_BUTTON_IMAGE_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRADE_SIM_WIDGETS_TYPE_BUTTON_IMAGE, TradeSimWidgetsButtonImageClass))
+#define TRADE_SIM_WIDGETS_IS_BUTTON_IMAGE(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRADE_SIM_WIDGETS_TYPE_BUTTON_IMAGE))
+#define TRADE_SIM_WIDGETS_IS_BUTTON_IMAGE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRADE_SIM_WIDGETS_TYPE_BUTTON_IMAGE))
+#define TRADE_SIM_WIDGETS_BUTTON_IMAGE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRADE_SIM_WIDGETS_TYPE_BUTTON_IMAGE, TradeSimWidgetsButtonImageClass))
+
+typedef struct _TradeSimWidgetsButtonImage TradeSimWidgetsButtonImage;
+typedef struct _TradeSimWidgetsButtonImageClass TradeSimWidgetsButtonImageClass;
+typedef struct _TradeSimMainWindowPrivate TradeSimMainWindowPrivate;
+
+#define TRADE_SIM_LAYOUTS_TYPE_MAIN (trade_sim_layouts_main_get_type ())
+#define TRADE_SIM_LAYOUTS_MAIN(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRADE_SIM_LAYOUTS_TYPE_MAIN, TradeSimLayoutsMain))
+#define TRADE_SIM_LAYOUTS_MAIN_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRADE_SIM_LAYOUTS_TYPE_MAIN, TradeSimLayoutsMainClass))
+#define TRADE_SIM_LAYOUTS_IS_MAIN(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRADE_SIM_LAYOUTS_TYPE_MAIN))
+#define TRADE_SIM_LAYOUTS_IS_MAIN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRADE_SIM_LAYOUTS_TYPE_MAIN))
+#define TRADE_SIM_LAYOUTS_MAIN_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRADE_SIM_LAYOUTS_TYPE_MAIN, TradeSimLayoutsMainClass))
+
+typedef struct _TradeSimLayoutsMain TradeSimLayoutsMain;
+typedef struct _TradeSimLayoutsMainClass TradeSimLayoutsMainClass;
+typedef struct _TradeSimLayoutsMainPrivate TradeSimLayoutsMainPrivate;
+
+#define TRADE_SIM_WIDGETS_TYPE_CANVAS_CONTAINER (trade_sim_widgets_canvas_container_get_type ())
+#define TRADE_SIM_WIDGETS_CANVAS_CONTAINER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRADE_SIM_WIDGETS_TYPE_CANVAS_CONTAINER, TradeSimWidgetsCanvasContainer))
+#define TRADE_SIM_WIDGETS_CANVAS_CONTAINER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRADE_SIM_WIDGETS_TYPE_CANVAS_CONTAINER, TradeSimWidgetsCanvasContainerClass))
+#define TRADE_SIM_WIDGETS_IS_CANVAS_CONTAINER(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRADE_SIM_WIDGETS_TYPE_CANVAS_CONTAINER))
+#define TRADE_SIM_WIDGETS_IS_CANVAS_CONTAINER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRADE_SIM_WIDGETS_TYPE_CANVAS_CONTAINER))
+#define TRADE_SIM_WIDGETS_CANVAS_CONTAINER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRADE_SIM_WIDGETS_TYPE_CANVAS_CONTAINER, TradeSimWidgetsCanvasContainerClass))
+
+typedef struct _TradeSimWidgetsCanvasContainer TradeSimWidgetsCanvasContainer;
+typedef struct _TradeSimWidgetsCanvasContainerClass TradeSimWidgetsCanvasContainerClass;
+
+#define TRADE_SIM_WIDGETS_TYPE_PROVIDERS_PANEL (trade_sim_widgets_providers_panel_get_type ())
+#define TRADE_SIM_WIDGETS_PROVIDERS_PANEL(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRADE_SIM_WIDGETS_TYPE_PROVIDERS_PANEL, TradeSimWidgetsProvidersPanel))
+#define TRADE_SIM_WIDGETS_PROVIDERS_PANEL_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRADE_SIM_WIDGETS_TYPE_PROVIDERS_PANEL, TradeSimWidgetsProvidersPanelClass))
+#define TRADE_SIM_WIDGETS_IS_PROVIDERS_PANEL(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRADE_SIM_WIDGETS_TYPE_PROVIDERS_PANEL))
+#define TRADE_SIM_WIDGETS_IS_PROVIDERS_PANEL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRADE_SIM_WIDGETS_TYPE_PROVIDERS_PANEL))
+#define TRADE_SIM_WIDGETS_PROVIDERS_PANEL_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRADE_SIM_WIDGETS_TYPE_PROVIDERS_PANEL, TradeSimWidgetsProvidersPanelClass))
+
+typedef struct _TradeSimWidgetsProvidersPanel TradeSimWidgetsProvidersPanel;
+typedef struct _TradeSimWidgetsProvidersPanelClass TradeSimWidgetsProvidersPanelClass;
+
+#define TRADE_SIM_WIDGETS_TYPE_OPERATIONS_PANEL (trade_sim_widgets_operations_panel_get_type ())
+#define TRADE_SIM_WIDGETS_OPERATIONS_PANEL(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRADE_SIM_WIDGETS_TYPE_OPERATIONS_PANEL, TradeSimWidgetsOperationsPanel))
+#define TRADE_SIM_WIDGETS_OPERATIONS_PANEL_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRADE_SIM_WIDGETS_TYPE_OPERATIONS_PANEL, TradeSimWidgetsOperationsPanelClass))
+#define TRADE_SIM_WIDGETS_IS_OPERATIONS_PANEL(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRADE_SIM_WIDGETS_TYPE_OPERATIONS_PANEL))
+#define TRADE_SIM_WIDGETS_IS_OPERATIONS_PANEL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRADE_SIM_WIDGETS_TYPE_OPERATIONS_PANEL))
+#define TRADE_SIM_WIDGETS_OPERATIONS_PANEL_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRADE_SIM_WIDGETS_TYPE_OPERATIONS_PANEL, TradeSimWidgetsOperationsPanelClass))
+
+typedef struct _TradeSimWidgetsOperationsPanel TradeSimWidgetsOperationsPanel;
+typedef struct _TradeSimWidgetsOperationsPanelClass TradeSimWidgetsOperationsPanelClass;
+typedef struct _TradeSimWidgetsCanvasContainerPrivate TradeSimWidgetsCanvasContainerPrivate;
+
+#define TRADE_SIM_WIDGETS_TYPE_CANVAS (trade_sim_widgets_canvas_get_type ())
+#define TRADE_SIM_WIDGETS_CANVAS(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRADE_SIM_WIDGETS_TYPE_CANVAS, TradeSimWidgetsCanvas))
+#define TRADE_SIM_WIDGETS_CANVAS_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRADE_SIM_WIDGETS_TYPE_CANVAS, TradeSimWidgetsCanvasClass))
+#define TRADE_SIM_WIDGETS_IS_CANVAS(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRADE_SIM_WIDGETS_TYPE_CANVAS))
+#define TRADE_SIM_WIDGETS_IS_CANVAS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRADE_SIM_WIDGETS_TYPE_CANVAS))
+#define TRADE_SIM_WIDGETS_CANVAS_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRADE_SIM_WIDGETS_TYPE_CANVAS, TradeSimWidgetsCanvasClass))
+
+typedef struct _TradeSimWidgetsCanvas TradeSimWidgetsCanvas;
+typedef struct _TradeSimWidgetsCanvasClass TradeSimWidgetsCanvasClass;
 
 struct _TradeSimLayoutsHeaderBar {
 	GtkHeaderBar parent_instance;
@@ -111,6 +176,55 @@ struct _TradeSimLayoutsHeaderBarClass {
 
 struct _TradeSimLayoutsHeaderBarPrivate {
 	TradeSimMainWindow* _main_window;
+};
+
+struct _TradeSimWidgetsHeaderBarButton {
+	GtkGrid parent_instance;
+	TradeSimWidgetsHeaderBarButtonPrivate * priv;
+	TradeSimMainWindow* mainWindow;
+	GtkButton* button;
+	TradeSimWidgetsButtonImage* image;
+};
+
+struct _TradeSimWidgetsHeaderBarButtonClass {
+	GtkGridClass parent_class;
+};
+
+struct _TradeSimMainWindow {
+	GtkApplicationWindow parent_instance;
+	TradeSimMainWindowPrivate * priv;
+	TradeSimLayoutsHeaderBar* headerbar;
+	TradeSimLayoutsMain* main_layout;
+	GSettings* settings;
+};
+
+struct _TradeSimMainWindowClass {
+	GtkApplicationWindowClass parent_class;
+};
+
+struct _TradeSimLayoutsMain {
+	GtkBox parent_instance;
+	TradeSimLayoutsMainPrivate * priv;
+	GtkPaned* pane_top;
+	GtkPaned* pane_left;
+	GtkNotebook* nb_chart_container;
+	TradeSimWidgetsCanvasContainer* canvas_container;
+	TradeSimWidgetsProvidersPanel* providers_panel;
+	TradeSimWidgetsOperationsPanel* operations_panel;
+};
+
+struct _TradeSimLayoutsMainClass {
+	GtkBoxClass parent_class;
+};
+
+struct _TradeSimWidgetsCanvasContainer {
+	GtkBox parent_instance;
+	TradeSimWidgetsCanvasContainerPrivate * priv;
+	TradeSimWidgetsCanvas* chart_canvas;
+};
+
+struct _TradeSimWidgetsCanvasContainerClass {
+	GtkBoxClass parent_class;
 };
 
 
@@ -148,6 +262,16 @@ TradeSimWidgetsZoomButton* trade_sim_widgets_zoom_button_construct (GType object
 TradeSimWidgetsTimeButton* trade_sim_widgets_time_button_new (TradeSimMainWindow* window);
 TradeSimWidgetsTimeButton* trade_sim_widgets_time_button_construct (GType object_type,
                                                                     TradeSimMainWindow* window);
+GType trade_sim_widgets_button_image_get_type (void) G_GNUC_CONST;
+static void _trade_sim_layouts_header_bar___lambda19_ (TradeSimLayoutsHeaderBar* self);
+GType trade_sim_layouts_main_get_type (void) G_GNUC_CONST;
+GType trade_sim_widgets_canvas_container_get_type (void) G_GNUC_CONST;
+GType trade_sim_widgets_providers_panel_get_type (void) G_GNUC_CONST;
+GType trade_sim_widgets_operations_panel_get_type (void) G_GNUC_CONST;
+GType trade_sim_widgets_canvas_get_type (void) G_GNUC_CONST;
+void trade_sim_widgets_canvas_simulate (TradeSimWidgetsCanvas* self);
+static void __trade_sim_layouts_header_bar___lambda19__gtk_button_clicked (GtkButton* _sender,
+                                                                    gpointer self);
 static void trade_sim_layouts_header_bar_finalize (GObject * obj);
 static void _vala_trade_sim_layouts_header_bar_get_property (GObject * object,
                                                       guint property_id,
@@ -176,7 +300,7 @@ trade_sim_layouts_header_bar_construct (GType object_type,
 	self = (TradeSimLayoutsHeaderBar*) g_object_new (object_type, "main-window", window, NULL);
 #line 43 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	return self;
-#line 180 "HeaderBar.c"
+#line 304 "HeaderBar.c"
 }
 
 
@@ -185,7 +309,7 @@ trade_sim_layouts_header_bar_new (TradeSimMainWindow* window)
 {
 #line 43 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	return trade_sim_layouts_header_bar_construct (TRADE_SIM_LAYOUTS_TYPE_HEADER_BAR, window);
-#line 189 "HeaderBar.c"
+#line 313 "HeaderBar.c"
 }
 
 
@@ -202,7 +326,7 @@ trade_sim_layouts_header_bar_get_main_window (TradeSimLayoutsHeaderBar* self)
 	result = _tmp0_;
 #line 24 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	return result;
-#line 206 "HeaderBar.c"
+#line 330 "HeaderBar.c"
 }
 
 
@@ -218,8 +342,39 @@ trade_sim_layouts_header_bar_set_main_window (TradeSimLayoutsHeaderBar* self,
 		self->priv->_main_window = value;
 #line 24 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 		g_object_notify_by_pspec ((GObject *) self, trade_sim_layouts_header_bar_properties[TRADE_SIM_LAYOUTS_HEADER_BAR_MAIN_WINDOW_PROPERTY]);
-#line 222 "HeaderBar.c"
+#line 346 "HeaderBar.c"
 	}
+}
+
+
+static void
+_trade_sim_layouts_header_bar___lambda19_ (TradeSimLayoutsHeaderBar* self)
+{
+	TradeSimMainWindow* _tmp0_;
+	TradeSimLayoutsMain* _tmp1_;
+	TradeSimWidgetsCanvasContainer* _tmp2_;
+	TradeSimWidgetsCanvas* _tmp3_;
+#line 74 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp0_ = self->priv->_main_window;
+#line 74 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp1_ = _tmp0_->main_layout;
+#line 74 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp2_ = _tmp1_->canvas_container;
+#line 74 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp3_ = _tmp2_->chart_canvas;
+#line 74 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	trade_sim_widgets_canvas_simulate (_tmp3_);
+#line 368 "HeaderBar.c"
+}
+
+
+static void
+__trade_sim_layouts_header_bar___lambda19__gtk_button_clicked (GtkButton* _sender,
+                                                               gpointer self)
+{
+#line 72 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_trade_sim_layouts_header_bar___lambda19_ ((TradeSimLayoutsHeaderBar*) self);
+#line 378 "HeaderBar.c"
 }
 
 
@@ -296,29 +451,31 @@ trade_sim_layouts_header_bar_constructor (GType type,
 	TradeSimMainWindow* _tmp52_;
 	TradeSimWidgetsTimeButton* _tmp53_;
 	TradeSimWidgetsHeaderBarButton* _tmp54_;
-	TradeSimWidgetsHeaderBarButton* _tmp55_;
-	GtkSeparator* _tmp56_;
-	GtkSeparator* _tmp57_;
-	TradeSimWidgetsZoomButton* _tmp58_;
-	TradeSimWidgetsTimeButton* _tmp59_;
-	GtkSeparator* _tmp60_;
-	GtkSeparator* _tmp61_;
-	TradeSimWidgetsHeaderBarButton* _tmp62_;
-	TradeSimWidgetsHeaderBarButton* _tmp63_;
+	GtkButton* _tmp55_;
+	TradeSimWidgetsHeaderBarButton* _tmp56_;
+	TradeSimWidgetsHeaderBarButton* _tmp57_;
+	GtkSeparator* _tmp58_;
+	GtkSeparator* _tmp59_;
+	TradeSimWidgetsZoomButton* _tmp60_;
+	TradeSimWidgetsTimeButton* _tmp61_;
+	GtkSeparator* _tmp62_;
+	GtkSeparator* _tmp63_;
 	TradeSimWidgetsHeaderBarButton* _tmp64_;
-	GtkSeparator* _tmp65_;
-	GtkSeparator* _tmp66_;
-	TradeSimWidgetsHeaderBarButton* _tmp67_;
-	TradeSimWidgetsHeaderBarButton* _tmp68_;
-	GtkSeparator* _tmp69_;
-	GtkSeparator* _tmp70_;
-	TradeSimWidgetsHeaderBarButton* _tmp71_;
+	TradeSimWidgetsHeaderBarButton* _tmp65_;
+	TradeSimWidgetsHeaderBarButton* _tmp66_;
+	GtkSeparator* _tmp67_;
+	GtkSeparator* _tmp68_;
+	TradeSimWidgetsHeaderBarButton* _tmp69_;
+	TradeSimWidgetsHeaderBarButton* _tmp70_;
+	GtkSeparator* _tmp71_;
 	GtkSeparator* _tmp72_;
-	GtkSeparator* _tmp73_;
-	TradeSimWidgetsHeaderBarButton* _tmp74_;
-	TradeSimWidgetsHeaderBarButton* _tmp75_;
-	GtkSeparator* _tmp76_;
-	GtkSeparator* _tmp77_;
+	TradeSimWidgetsHeaderBarButton* _tmp73_;
+	GtkSeparator* _tmp74_;
+	GtkSeparator* _tmp75_;
+	TradeSimWidgetsHeaderBarButton* _tmp76_;
+	TradeSimWidgetsHeaderBarButton* _tmp77_;
+	GtkSeparator* _tmp78_;
+	GtkSeparator* _tmp79_;
 #line 49 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	parent_class = G_OBJECT_CLASS (trade_sim_layouts_header_bar_parent_class);
 #line 49 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
@@ -571,117 +728,123 @@ trade_sim_layouts_header_bar_constructor (GType type,
 	_g_object_unref0 (self->time_button);
 #line 69 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	self->time_button = _tmp53_;
-#line 71 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp54_ = self->open;
-#line 71 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	gtk_header_bar_pack_start ((GtkHeaderBar*) self, (GtkWidget*) _tmp54_);
 #line 72 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp55_ = self->save;
+	_tmp54_ = self->play;
 #line 72 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	gtk_header_bar_pack_start ((GtkHeaderBar*) self, (GtkWidget*) _tmp55_);
-#line 74 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp56_ = (GtkSeparator*) gtk_separator_new (GTK_ORIENTATION_VERTICAL);
-#line 74 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	g_object_ref_sink (_tmp56_);
-#line 74 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp57_ = _tmp56_;
-#line 74 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp55_ = _tmp54_->button;
+#line 72 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	g_signal_connect_object (_tmp55_, "clicked", (GCallback) __trade_sim_layouts_header_bar___lambda19__gtk_button_clicked, self, 0);
+#line 79 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp56_ = self->open;
+#line 79 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	gtk_header_bar_pack_start ((GtkHeaderBar*) self, (GtkWidget*) _tmp56_);
+#line 80 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp57_ = self->save;
+#line 80 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	gtk_header_bar_pack_start ((GtkHeaderBar*) self, (GtkWidget*) _tmp57_);
-#line 74 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_g_object_unref0 (_tmp57_);
-#line 76 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp58_ = self->zoom;
-#line 76 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	gtk_header_bar_pack_start ((GtkHeaderBar*) self, (GtkWidget*) _tmp58_);
-#line 77 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp59_ = self->time_button;
-#line 77 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+#line 82 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp58_ = (GtkSeparator*) gtk_separator_new (GTK_ORIENTATION_VERTICAL);
+#line 82 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	g_object_ref_sink (_tmp58_);
+#line 82 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp59_ = _tmp58_;
+#line 82 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	gtk_header_bar_pack_start ((GtkHeaderBar*) self, (GtkWidget*) _tmp59_);
-#line 79 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp60_ = (GtkSeparator*) gtk_separator_new (GTK_ORIENTATION_VERTICAL);
-#line 79 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	g_object_ref_sink (_tmp60_);
-#line 79 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp61_ = _tmp60_;
-#line 79 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+#line 82 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_g_object_unref0 (_tmp59_);
+#line 84 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp60_ = self->zoom;
+#line 84 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	gtk_header_bar_pack_start ((GtkHeaderBar*) self, (GtkWidget*) _tmp60_);
+#line 85 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp61_ = self->time_button;
+#line 85 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	gtk_header_bar_pack_start ((GtkHeaderBar*) self, (GtkWidget*) _tmp61_);
-#line 79 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_g_object_unref0 (_tmp61_);
-#line 81 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp62_ = self->backward;
-#line 81 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	gtk_header_bar_pack_start ((GtkHeaderBar*) self, (GtkWidget*) _tmp62_);
-#line 82 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp63_ = self->play;
-#line 82 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+#line 87 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp62_ = (GtkSeparator*) gtk_separator_new (GTK_ORIENTATION_VERTICAL);
+#line 87 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	g_object_ref_sink (_tmp62_);
+#line 87 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp63_ = _tmp62_;
+#line 87 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	gtk_header_bar_pack_start ((GtkHeaderBar*) self, (GtkWidget*) _tmp63_);
-#line 83 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp64_ = self->forward;
-#line 83 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+#line 87 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_g_object_unref0 (_tmp63_);
+#line 89 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp64_ = self->backward;
+#line 89 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	gtk_header_bar_pack_start ((GtkHeaderBar*) self, (GtkWidget*) _tmp64_);
-#line 85 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp65_ = (GtkSeparator*) gtk_separator_new (GTK_ORIENTATION_VERTICAL);
-#line 85 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	g_object_ref_sink (_tmp65_);
-#line 85 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp66_ = _tmp65_;
-#line 85 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+#line 90 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp65_ = self->play;
+#line 90 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	gtk_header_bar_pack_start ((GtkHeaderBar*) self, (GtkWidget*) _tmp65_);
+#line 91 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp66_ = self->forward;
+#line 91 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	gtk_header_bar_pack_start ((GtkHeaderBar*) self, (GtkWidget*) _tmp66_);
-#line 85 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_g_object_unref0 (_tmp66_);
-#line 87 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp67_ = self->preferencias;
-#line 87 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	gtk_header_bar_pack_end ((GtkHeaderBar*) self, (GtkWidget*) _tmp67_);
-#line 88 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp68_ = self->reporte;
-#line 88 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	gtk_header_bar_pack_end ((GtkHeaderBar*) self, (GtkWidget*) _tmp68_);
-#line 89 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp69_ = (GtkSeparator*) gtk_separator_new (GTK_ORIENTATION_VERTICAL);
-#line 89 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	g_object_ref_sink (_tmp69_);
-#line 89 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp70_ = _tmp69_;
-#line 89 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+#line 93 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp67_ = (GtkSeparator*) gtk_separator_new (GTK_ORIENTATION_VERTICAL);
+#line 93 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	g_object_ref_sink (_tmp67_);
+#line 93 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp68_ = _tmp67_;
+#line 93 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	gtk_header_bar_pack_start ((GtkHeaderBar*) self, (GtkWidget*) _tmp68_);
+#line 93 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_g_object_unref0 (_tmp68_);
+#line 95 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp69_ = self->preferencias;
+#line 95 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	gtk_header_bar_pack_end ((GtkHeaderBar*) self, (GtkWidget*) _tmp69_);
+#line 96 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp70_ = self->reporte;
+#line 96 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	gtk_header_bar_pack_end ((GtkHeaderBar*) self, (GtkWidget*) _tmp70_);
-#line 89 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_g_object_unref0 (_tmp70_);
-#line 90 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp71_ = self->insert;
-#line 90 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	gtk_header_bar_pack_end ((GtkHeaderBar*) self, (GtkWidget*) _tmp71_);
-#line 91 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp72_ = (GtkSeparator*) gtk_separator_new (GTK_ORIENTATION_VERTICAL);
-#line 91 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	g_object_ref_sink (_tmp72_);
-#line 91 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp73_ = _tmp72_;
-#line 91 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+#line 97 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp71_ = (GtkSeparator*) gtk_separator_new (GTK_ORIENTATION_VERTICAL);
+#line 97 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	g_object_ref_sink (_tmp71_);
+#line 97 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp72_ = _tmp71_;
+#line 97 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	gtk_header_bar_pack_end ((GtkHeaderBar*) self, (GtkWidget*) _tmp72_);
+#line 97 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_g_object_unref0 (_tmp72_);
+#line 98 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp73_ = self->insert;
+#line 98 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	gtk_header_bar_pack_end ((GtkHeaderBar*) self, (GtkWidget*) _tmp73_);
-#line 91 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_g_object_unref0 (_tmp73_);
-#line 92 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp74_ = self->sell;
-#line 92 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	gtk_header_bar_pack_end ((GtkHeaderBar*) self, (GtkWidget*) _tmp74_);
-#line 93 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp75_ = self->buy;
-#line 93 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+#line 99 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp74_ = (GtkSeparator*) gtk_separator_new (GTK_ORIENTATION_VERTICAL);
+#line 99 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	g_object_ref_sink (_tmp74_);
+#line 99 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp75_ = _tmp74_;
+#line 99 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	gtk_header_bar_pack_end ((GtkHeaderBar*) self, (GtkWidget*) _tmp75_);
-#line 94 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp76_ = (GtkSeparator*) gtk_separator_new (GTK_ORIENTATION_VERTICAL);
-#line 94 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	g_object_ref_sink (_tmp76_);
-#line 94 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_tmp77_ = _tmp76_;
-#line 94 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+#line 99 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_g_object_unref0 (_tmp75_);
+#line 100 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp76_ = self->sell;
+#line 100 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	gtk_header_bar_pack_end ((GtkHeaderBar*) self, (GtkWidget*) _tmp76_);
+#line 101 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp77_ = self->buy;
+#line 101 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	gtk_header_bar_pack_end ((GtkHeaderBar*) self, (GtkWidget*) _tmp77_);
-#line 94 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
-	_g_object_unref0 (_tmp77_);
+#line 102 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp78_ = (GtkSeparator*) gtk_separator_new (GTK_ORIENTATION_VERTICAL);
+#line 102 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	g_object_ref_sink (_tmp78_);
+#line 102 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_tmp79_ = _tmp78_;
+#line 102 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	gtk_header_bar_pack_end ((GtkHeaderBar*) self, (GtkWidget*) _tmp79_);
+#line 102 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
+	_g_object_unref0 (_tmp79_);
 #line 49 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	return obj;
-#line 685 "HeaderBar.c"
+#line 848 "HeaderBar.c"
 }
 
 
@@ -702,7 +865,7 @@ trade_sim_layouts_header_bar_class_init (TradeSimLayoutsHeaderBarClass * klass)
 	G_OBJECT_CLASS (klass)->finalize = trade_sim_layouts_header_bar_finalize;
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRADE_SIM_LAYOUTS_HEADER_BAR_MAIN_WINDOW_PROPERTY, trade_sim_layouts_header_bar_properties[TRADE_SIM_LAYOUTS_HEADER_BAR_MAIN_WINDOW_PROPERTY] = g_param_spec_object ("main-window", "main-window", "main-window", TRADE_SIM_TYPE_MAIN_WINDOW, G_PARAM_STATIC_STRINGS | G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
-#line 706 "HeaderBar.c"
+#line 869 "HeaderBar.c"
 }
 
 
@@ -711,7 +874,7 @@ trade_sim_layouts_header_bar_instance_init (TradeSimLayoutsHeaderBar * self)
 {
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	self->priv = TRADE_SIM_LAYOUTS_HEADER_BAR_GET_PRIVATE (self);
-#line 715 "HeaderBar.c"
+#line 878 "HeaderBar.c"
 }
 
 
@@ -747,7 +910,7 @@ trade_sim_layouts_header_bar_finalize (GObject * obj)
 	_g_object_unref0 (self->time_button);
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 	G_OBJECT_CLASS (trade_sim_layouts_header_bar_parent_class)->finalize (obj);
-#line 751 "HeaderBar.c"
+#line 914 "HeaderBar.c"
 }
 
 
@@ -781,13 +944,13 @@ _vala_trade_sim_layouts_header_bar_get_property (GObject * object,
 		g_value_set_object (value, trade_sim_layouts_header_bar_get_main_window (self));
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 		break;
-#line 785 "HeaderBar.c"
+#line 948 "HeaderBar.c"
 		default:
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 		break;
-#line 791 "HeaderBar.c"
+#line 954 "HeaderBar.c"
 	}
 }
 
@@ -808,13 +971,13 @@ _vala_trade_sim_layouts_header_bar_set_property (GObject * object,
 		trade_sim_layouts_header_bar_set_main_window (self, g_value_get_object (value));
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 		break;
-#line 812 "HeaderBar.c"
+#line 975 "HeaderBar.c"
 		default:
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 22 "/home/horacio/Vala/TradeSim/src/Layouts/HeaderBar.vala"
 		break;
-#line 818 "HeaderBar.c"
+#line 981 "HeaderBar.c"
 	}
 }
 
