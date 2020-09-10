@@ -83,11 +83,11 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         button_release_event.connect (this.on_mouse_up);
 
-        init();
+        init ();
 
     }
 
-    private void init(){
+    private void init () {
 
         set_size_request (640, 480);
         show_cross_lines = false;
@@ -102,10 +102,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         candles_cola_size = 0.8;
 
-        
+
         data = new TradeSim.Services.QuotesManager ();
 
-        date_from = data.db.get_min_date(provider_name, ticker, time_frame);
+        date_from = data.db.get_min_date (provider_name, ticker, time_frame);
         date_inicial = date_from;
 
         change_zoom_level (1.000);
@@ -126,16 +126,16 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         horizontal_scale_calculation ();
     }
 
-    public void simulate(){
+    public void simulate () {
 
-        
-        if(end_simulation){
+
+        if (end_simulation) {
 
             end_simulation = false;
 
-            Timeout.add(1000, play, GLib.Priority.HIGH);
+            Timeout.add (1000, play, GLib.Priority.HIGH);
 
-        }else{
+        } else {
 
             end_simulation = true;
 
@@ -144,23 +144,23 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
-    public bool play(){
+    public bool play () {
 
-        //carga una vela y avanza una vela.
+        // carga una vela y avanza una vela.
 
-        if(!end_simulation){
+        if (!end_simulation) {
 
-            print("llama_nextquote();" + "\n");
+            data.load_next_quote ();
 
-            data.load_next_quote();
+            date_from = date_add_int_by_time_frame (date_from, time_frame, 1); // date_from = fecha_inicial.add_minutes (velas_step);
 
-            print("avanzando..." + "\n");
+            change_zoom_level (zoom_factor);
+
+            _horizontal_scroll_x = _width - vertical_scale_width - _horizontal_scroll_width;
 
             return true;
-            
-        }
 
-        print("finalizando..." + "\n");
+        }
 
         return false;
 
@@ -203,7 +203,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             total_candles_size = 10;
         }
 
-        date_to = date_add_int_by_time_frame(date_from, time_frame, total_candles_size); //date_to = date_from.add_minutes (total_candles_size);
+        date_to = date_add_int_by_time_frame (date_from, time_frame, total_candles_size); // date_to = date_from.add_minutes (total_candles_size);
 
         if (data != null) {
             update_extreme_prices ();
@@ -223,8 +223,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         if (test_value != 0) {
 
             candles = (int) pos_x / (test_value);
-            
-            candle_date_time = date_add_int_by_time_frame(candle_date_time, time_frame, candles); //candle_date_time = candle_date_time.add_minutes (candles);
+
+            candle_date_time = date_add_int_by_time_frame (candle_date_time, time_frame, candles); // candle_date_time = candle_date_time.add_minutes (candles);
 
         }
 
@@ -246,8 +246,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         if (test_value != 0) {
 
             candles = (int) pos_x / (test_value);
-            
-            candle_date_time = date_add_int_by_time_frame(candle_date_time, time_frame, candles); //candle_date_time = candle_date_time.add_minutes (candles);
+
+            candle_date_time = date_add_int_by_time_frame (candle_date_time, time_frame, candles); // candle_date_time = candle_date_time.add_minutes (candles);
 
             return_value = candle_date_time.to_string ();
 
@@ -283,7 +283,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         while (!exit) {
 
-            aux_date = date_add_int_by_time_frame(aux_date, time_frame, 1); //aux_date = aux_date.add_minutes (1);
+            aux_date = date_add_int_by_time_frame (aux_date, time_frame, 1); // aux_date = aux_date.add_minutes (1);
 
             if (aux_date.compare (d2) > 0) {
                 exit = true;
@@ -403,12 +403,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
                 _horizontal_scroll_x = _width - vertical_scale_width - _horizontal_scroll_width;
             }
 
-            /*
-               Si el scroll tiene para recorrer x cantidad de pixeles hay que ver en que porcentaje de esos pixeles
-               se encuentra para determinar que cantidad de velas hay que deplazar la fecha desde.
-             */
-
-            //DateTime fecha_inicial = new DateTime.local (2011, 2, 21, 10, 0, 0); // es la fecha minima que tiene el data source.
             DateTime fecha_inicial = date_inicial;
 
             int pixeles_por_recorrer = (_width - vertical_scale_width) - _horizontal_scroll_width;
@@ -418,14 +412,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
             var velas_step = (int) (velas_entre_fechas * porcentaje);
 
-            /*print("porcentaje:" + porcentaje.to_string() + "\n");
-               print("velas entre fechas:" + velas_entre_fechas.to_string() + "\n");
-               print("velas step:" + velas_step.to_string() + "\n");*/
-
-            //print("Fecha desde: " + date_from.to_string() + " Fecha hasta: " + date_to.to_string() + "\n");
-
-            
-            date_from = date_add_int_by_time_frame(fecha_inicial, time_frame, velas_step); //date_from = fecha_inicial.add_minutes (velas_step);
+            date_from = date_add_int_by_time_frame (fecha_inicial, time_frame, velas_step); // date_from = fecha_inicial.add_minutes (velas_step);
 
             change_zoom_level (zoom_factor);
 
@@ -797,7 +784,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
             draw_candle (ctext, data.get_quote_by_time (cursor_date));
 
-            cursor_date = date_add_int_by_time_frame(cursor_date, time_frame, 1); //cursor_date = cursor_date.add_minutes (1);
+            cursor_date = date_add_int_by_time_frame (cursor_date, time_frame, 1); // cursor_date = cursor_date.add_minutes (1);
 
         }
 

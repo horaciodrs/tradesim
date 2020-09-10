@@ -143,11 +143,11 @@ public class TradeSim.Services.QuotesManager {
 
     public void load () {
 
-        quotes = db.get_quotes_to_canvas(provider_name, ticker, time_frame, start_date, end_date);
+        quotes = db.get_quotes_to_canvas (provider_name, ticker, time_frame, start_date, end_date);
 
         /*DateTime actual_date = start_date;
 
-        for (int i = 0 ; i < global_close_price.length ; i++) {
+           for (int i = 0 ; i < global_close_price.length ; i++) {
 
 
             var new_quote = new TradeSim.Services.QuoteItem (ticker);
@@ -163,24 +163,24 @@ public class TradeSim.Services.QuotesManager {
 
             actual_date = actual_date.add_minutes (1);
 
-        }*/
+           }*/
 
         calc_max_min_values ();
 
     }
 
-    public void load_next_quote(){
+    public void load_next_quote () {
 
         DateTime last_date;
 
-        if(quotes.length > 0){
+        if (quotes.length > 0) {
 
-            last_date = quotes.index(quotes.length - 1).date_time;
+            last_date = quotes.index (quotes.length - 1).date_time;
 
-            TradeSim.Services.QuoteItem next_quote = db.get_next_quotes(provider_name, ticker, time_frame, last_date);
+            TradeSim.Services.QuoteItem next_quote = db.get_next_quotes (provider_name, ticker, time_frame, last_date);
 
-            if(next_quote != null){
-                quotes.append_val(next_quote);
+            if (next_quote != null) {
+                quotes.append_val (next_quote);
             }
 
         }

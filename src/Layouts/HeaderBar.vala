@@ -68,10 +68,10 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
         time_button = new TradeSim.Widgets.TimeButton (main_window);
 
-        
-        play.button.clicked.connect (() =>{
 
-            main_window.main_layout.canvas_container.chart_canvas.simulate();
+        play.button.clicked.connect (() => {
+
+            main_window.main_layout.canvas_container.chart_canvas.simulate ();
 
         });
 

@@ -328,9 +328,9 @@ public class TradeSim.Services.Database : GLib.Object {
         int date_hour = quote_item.date_time.get_hour ();
         int date_minute = quote_item.date_time.get_minute ();
 
-        string aux_day = "00" + date_day.to_string();
-        string aux_month = "00" + date_month.to_string();
-        string date_str = date_year.to_string() + "-" + aux_month.substring(aux_month.len()-2, 2) + "-" + aux_day.substring(aux_day.len()-2, 2);
+        string aux_day = "00" + date_day.to_string ();
+        string aux_month = "00" + date_month.to_string ();
+        string date_str = date_year.to_string () + "-" + aux_month.substring (aux_month.len () - 2, 2) + "-" + aux_day.substring (aux_day.len () - 2, 2);
 
         double price_open = quote_item.open_price;
         double price_close = quote_item.close_price;
@@ -662,7 +662,7 @@ public class TradeSim.Services.Database : GLib.Object {
         return all;
     }
 
-    public Array<TradeSim.Services.QuoteItem> get_quotes_to_canvas(string _provider_name, string _ticker_name, string _time_frame, DateTime _date_from, DateTime _date_to){
+    public Array<TradeSim.Services.QuoteItem> get_quotes_to_canvas (string _provider_name, string _ticker_name, string _time_frame, DateTime _date_from, DateTime _date_to) {
 
         int provider_id = get_db_id_by_table_and_field ("providers", "name", _provider_name);
         int market_id = get_db_id_by_name ("markets", "Forex");
@@ -702,10 +702,10 @@ public class TradeSim.Services.Database : GLib.Object {
         res = db.prepare_v2 (sql, -1, out stmt);
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_text (1, _date_from.format("%F"));
+        res = stmt.bind_text (1, _date_from.format ("%F"));
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_text (2, _date_to.format("%F"));
+        res = stmt.bind_text (2, _date_to.format ("%F"));
         assert (res == Sqlite.OK);
 
         res = stmt.bind_int (3, provider_id);
@@ -737,11 +737,11 @@ public class TradeSim.Services.Database : GLib.Object {
             var item_max = stmt.column_double (12);
             var item_folder_name = stmt.column_text (14);
 
-            DateTime item_date = new DateTime.local(date_year, date_month, date_day, date_hour, date_minute, 0);
+            DateTime item_date = new DateTime.local (date_year, date_month, date_day, date_hour, date_minute, 0);
 
-            quote_item.set_provider_name(_provider_name);
-            quote_item.set_provider_folder_name(item_folder_name);
-            quote_item.set_time_frame_name(_time_frame);
+            quote_item.set_provider_name (_provider_name);
+            quote_item.set_provider_folder_name (item_folder_name);
+            quote_item.set_time_frame_name (_time_frame);
             quote_item.set_date_time (item_date);
             quote_item.set_open_price (item_open);
             quote_item.set_close_price (item_close);
@@ -755,14 +755,14 @@ public class TradeSim.Services.Database : GLib.Object {
         return all;
     }
 
-    public DateTime get_min_date(string _provider_name, string _ticker_name, string _time_frame){
+    public DateTime get_min_date (string _provider_name, string _ticker_name, string _time_frame) {
 
         int provider_id = get_db_id_by_table_and_field ("providers", "name", _provider_name);
         int market_id = get_db_id_by_name ("markets", "Forex");
         int ticker_id = get_db_id_by_name ("tickers", _ticker_name);
         int time_frame_id = get_db_id_by_name ("time_frames", _time_frame);
 
-        DateTime return_value = new DateTime.local(2010,1,1,1,1,0);
+        DateTime return_value = new DateTime.local (2010, 1, 1, 1, 1, 0);
 
         Sqlite.Statement stmt;
         string sql;
@@ -801,8 +801,8 @@ public class TradeSim.Services.Database : GLib.Object {
             var date_hour = stmt.column_int (3);
             var date_minute = stmt.column_int (4);
 
-            return_value = new DateTime.local(date_year, date_month, date_day, date_hour, date_minute, 0);
-       
+            return_value = new DateTime.local (date_year, date_month, date_day, date_hour, date_minute, 0);
+
         }
 
         return return_value;
@@ -811,14 +811,14 @@ public class TradeSim.Services.Database : GLib.Object {
 
     /************************************************** */
 
-    public TradeSim.Services.QuoteItem get_next_quotes(string _provider_name, string _ticker_name, string _time_frame, DateTime _date){
+    public TradeSim.Services.QuoteItem get_next_quotes (string _provider_name, string _ticker_name, string _time_frame, DateTime _date) {
 
         int provider_id = get_db_id_by_table_and_field ("providers", "name", _provider_name);
         int market_id = get_db_id_by_name ("markets", "Forex");
         int ticker_id = get_db_id_by_name ("tickers", _ticker_name);
         int time_frame_id = get_db_id_by_name ("time_frames", _time_frame);
 
-        DateTime target_date = date_add_int_by_time_frame(_date, _time_frame, 1);
+        DateTime target_date = date_add_int_by_time_frame (_date, _time_frame, 1);
 
         Sqlite.Statement stmt;
         string sql;
@@ -857,19 +857,19 @@ public class TradeSim.Services.Database : GLib.Object {
         res = db.prepare_v2 (sql, -1, out stmt);
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (1, target_date.get_year());
+        res = stmt.bind_int (1, target_date.get_year ());
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (2, target_date.get_month());
+        res = stmt.bind_int (2, target_date.get_month ());
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (3, target_date.get_day_of_month());
+        res = stmt.bind_int (3, target_date.get_day_of_month ());
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (4, target_date.get_hour());
+        res = stmt.bind_int (4, target_date.get_hour ());
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (5, target_date.get_minute());
+        res = stmt.bind_int (5, target_date.get_minute ());
         assert (res == Sqlite.OK);
 
         res = stmt.bind_int (6, provider_id);
@@ -899,11 +899,11 @@ public class TradeSim.Services.Database : GLib.Object {
             var item_max = stmt.column_double (12);
             var item_folder_name = stmt.column_text (14);
 
-            DateTime item_date = new DateTime.local(date_year, date_month, date_day, date_hour, date_minute, 0);
+            DateTime item_date = new DateTime.local (date_year, date_month, date_day, date_hour, date_minute, 0);
 
-            quote_item.set_provider_name(_provider_name);
-            quote_item.set_provider_folder_name(item_folder_name);
-            quote_item.set_time_frame_name(_time_frame);
+            quote_item.set_provider_name (_provider_name);
+            quote_item.set_provider_folder_name (item_folder_name);
+            quote_item.set_time_frame_name (_time_frame);
             quote_item.set_date_time (item_date);
             quote_item.set_open_price (item_open);
             quote_item.set_close_price (item_close);
