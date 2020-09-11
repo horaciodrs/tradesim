@@ -82,12 +82,12 @@ public class TradeSim.Layouts.Main : Gtk.Box {
     public void add_canvas (string provider_name, string ticker_name, string time_frame) {
 
 
-        var new_chart_dialog = new TradeSim.Dialogs.NewChartDialog (main_window);
+        var new_chart_dialog = new TradeSim.Dialogs.NewChartDialog (main_window, provider_name, ticker_name);
 
         new_chart_dialog.show_all ();
         new_chart_dialog.present ();
 
-        new_chart_dialog.acept_button.clicked.connect (() => {
+        /*new_chart_dialog.acept_button.clicked.connect (() => {
 
             canvas_container = new TradeSim.Widgets.CanvasContainer (main_window, provider_name, ticker_name, new_chart_dialog.time_frame.get_text ());
 
@@ -98,7 +98,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
             nb_chart_container.show_all ();
 
 
-        });
+        });*/
 
 
     }

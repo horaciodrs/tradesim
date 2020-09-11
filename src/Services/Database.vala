@@ -609,6 +609,37 @@ public class TradeSim.Services.Database : GLib.Object {
         return all;
     }
 
+    public Array<string> get_time_frames_with_data (string provider_name) {
+
+        int provider_id = get_db_id_by_table_and_field ("providers", "name", provider_name);
+
+        Sqlite.Statement stmt;
+        string sql;
+        int res;
+
+        sql = """ 
+            SELECT time_frames.id, time_frames.name
+              FROM imported_data
+              INNER JOIN providers ON imported_data.provider_id = providers.id
+              INNER JOIN time_frames ON imported_data.time_frame_id = time_frames.id
+             WHERE imported_data.provider_id = ?
+              ORDER BY time_frames.name DESC; """;
+
+        res = db.prepare_v2 (sql, -1, out stmt);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (1, provider_id);
+        assert (res == Sqlite.OK);
+
+        var all = new Array<string> ();
+
+        while ((res = stmt.step ()) == Sqlite.ROW) {
+            all.append_val (stmt.column_text (1));
+        }
+
+        return all;
+    }
+
     public Array<TradeSim.Objects.Ticker> get_tickers () {
 
         Sqlite.Statement stmt;
