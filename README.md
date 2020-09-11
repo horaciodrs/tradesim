@@ -16,6 +16,15 @@ Test your strategies on the Linux Trading Simulator, Create reports, learn, try 
 ## Screenshot:
 ![GitHub Logo](/data/screenshots/Main.png)
 
+Empty window...
+![GitHub Logo](/data/screenshots/20200910-1.png)
+
+Data source window...
+![GitHub Logo](/data/screenshots/20200910-2.png)
+
+New simulation dialog... 
+![GitHub Logo](/data/screenshots/20200910-3.png)
+
 ## Installation:
 Remember **TradeSim it's under development and it's on alpha state**. Only install for testing.
 
