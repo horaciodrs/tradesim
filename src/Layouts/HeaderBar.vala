@@ -23,6 +23,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
     public weak TradeSim.MainWindow main_window { get; construct; }
 
+    public TradeSim.Widgets.HeaderBarButton new_button;
     public TradeSim.Widgets.HeaderBarButton open;
     public TradeSim.Widgets.HeaderBarButton save;
 
@@ -52,6 +53,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         title = "TradeSim";
         subtitle = "Simulación sin nombre";
 
+        new_button = new TradeSim.Widgets.HeaderBarButton (main_window, "document-new", "Nuevo", { "<Ctrl>p" });
         open = new TradeSim.Widgets.HeaderBarButton (main_window, "document-open", "Abrir", { "<Ctrl>p" });
         save = new TradeSim.Widgets.HeaderBarButton (main_window, "document-save", "Guardar", { "<Ctrl>p" });
 
@@ -71,11 +73,26 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
         play.button.clicked.connect (() => {
 
-            main_window.main_layout.canvas_container.chart_canvas.simulate ();
+            if(play.label_btn.get_text() == "Iniciar"){
+                play.change_icon("media-playback-pause");
+                play.label_btn.set_text("Detener");
+            }else{
+                play.change_icon("media-playback-start");
+                play.label_btn.set_text("Iniciar");
+            }
+
+            main_window.main_layout.current_canvas.simulate ();
+
+        });
+
+        new_button.button.clicked.connect (() => {
+
+            main_window.main_layout.add_canvas("", "", "");
 
         });
 
 
+        pack_start (new_button);
         pack_start (open);
         pack_start (save);
 

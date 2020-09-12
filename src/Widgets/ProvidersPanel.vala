@@ -101,12 +101,14 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
             Gtk.TreeIter edited_iter;
             Gtk.TreeModel model;
             GLib.Value nombre;
+            GLib.Value ticker_nombre;
 
             sel.get_selected (out model, out edited_iter);
 
             model.get_value (edited_iter, 5, out nombre);
+            model.get_value (edited_iter, 0, out ticker_nombre);
 
-            main_window.main_layout.add_canvas(nombre.get_string(), "EURUSD", "H1");
+            main_window.main_layout.add_canvas(nombre.get_string(), ticker_nombre.get_string(), "H1");
 
         });
 

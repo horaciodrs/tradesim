@@ -8,6 +8,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
     private Gtk.Label label_name;
     private Gtk.Label label_provider;
+    private Gtk.Label label_ticker;
     private Gtk.Label label_time_frame;
     private Gtk.Label label_amount;
 
@@ -15,6 +16,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
     private Gtk.Entry txt_amount;
 
     private Gtk.ComboBox cbo_provider;
+    private Gtk.ComboBox cbo_ticker;
     private Gtk.ComboBox cbo_time_frame;
 
     private string aux_provider_name;
@@ -96,6 +98,10 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         build_cbo_provider ();
         label_provider.halign = Gtk.Align.END;
 
+        label_ticker = new Gtk.Label ("Ticker:");
+        build_cbo_ticker ();
+        label_ticker.halign = Gtk.Align.END;
+
         label_time_frame = new Gtk.Label ("Timeframe:");
         build_cbo_time_frame ();
         label_time_frame.halign = Gtk.Align.END;
@@ -107,11 +113,14 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         form_grid.attach (label_provider, 0, 1, 1, 1);
         form_grid.attach (cbo_provider, 1, 1, 1, 1);
 
-        form_grid.attach (label_time_frame, 0, 2, 1, 1);
-        form_grid.attach (cbo_time_frame, 1, 2, 1, 1);
+        form_grid.attach (label_ticker, 0, 2, 1, 1);
+        form_grid.attach (cbo_ticker, 1, 2, 1, 1);
 
-        form_grid.attach (label_amount, 0, 3, 1, 1);
-        form_grid.attach (txt_amount, 1, 3, 1, 1);
+        form_grid.attach (label_time_frame, 0, 3, 1, 1);
+        form_grid.attach (cbo_time_frame, 1, 3, 1, 1);
+
+        form_grid.attach (label_amount, 0, 4, 1, 1);
+        form_grid.attach (txt_amount, 1, 4, 1, 1);
 
 
         body.add (form_grid);
@@ -170,7 +179,82 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
         aux_provider_name = selected_provider.get_string ();
 
+        reload_cbo_ticker ();
         reload_cbo_time_frame ();
+
+    }
+
+    private void build_cbo_ticker () {
+
+        var list_store_ticker = new Gtk.ListStore (1, typeof (string));
+
+        if (aux_provider_name != "") {
+
+            Array<string> tickers = db.get_tickers_with_data (aux_provider_name);
+
+            for (int i = 0 ; i < tickers.length ; i++) {
+                Gtk.TreeIter iter;
+                list_store_ticker.append (out iter);
+                list_store_ticker.set (iter, 0, tickers.index (i));
+            }
+
+        }
+
+        cbo_ticker = new Gtk.ComboBox.with_model (list_store_ticker);
+        var cell = new Gtk.CellRendererText ();
+        cbo_ticker.pack_start (cell, false);
+
+        cbo_ticker.set_attributes (cell, "text", 0);
+        cbo_ticker_select_by_text(aux_ticker_name);
+        cbo_ticker.changed.connect (cbo_ticker_changed);
+        
+        //cbo_ticker.set_active(-1);
+
+    }
+
+    public void cbo_ticker_changed () {
+
+        var modelo = cbo_ticker.get_model ();
+        Gtk.TreeIter selected_item;
+        GLib.Value selected_ticker;
+
+        cbo_ticker.get_active_iter (out selected_item);
+        modelo.get_value (selected_item, 0, out selected_ticker);
+
+        aux_ticker_name = selected_ticker.get_string ();
+
+    }
+
+    public void reload_cbo_ticker () {
+
+        var list_store_ticker = new Gtk.ListStore (1, typeof (string));
+
+        if (aux_provider_name != "") {
+
+            Array<string> tickers = db.get_tickers_with_data (aux_provider_name);
+
+            for (int i = 0 ; i < tickers.length ; i++) {
+                Gtk.TreeIter iter;
+                list_store_ticker.append (out iter);
+                list_store_ticker.set (iter, 0, tickers.index (i));
+            }
+
+        }
+
+        cbo_ticker.set_model (list_store_ticker);
+        cbo_ticker.set_active (-1);
+
+    }
+
+    public void cbo_ticker_select_by_text (string txt) {
+
+        Array<string> tickers = db.get_tickers_with_data (aux_provider_name);
+
+        for (int i = 0 ; i < tickers.length ; i++) {
+            if(tickers.index(i) == txt){
+                cbo_ticker.set_active (i);
+            }
+        }
 
     }
 
@@ -257,13 +341,10 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
             var objetivo = dialogo.main_window.main_layout;
 
-            objetivo.canvas_container = new TradeSim.Widgets.CanvasContainer (dialogo.main_window, aux_provider_name, aux_ticker_name, aux_time_frame_name);
+            print("provider:" + aux_provider_name + " ticker:" + aux_ticker_name + " time_frame: " + aux_time_frame_name);
+            //el error es porque en el dialogo nuevo. Falta el combo de Ticker.
 
-            objetivo.nb_chart_container.insert_page (objetivo.canvas_container, new Gtk.Label (aux_provider_name + " - " + aux_ticker_name + ", " + aux_time_frame_name), 0);
-
-            source.close ();
-
-            objetivo.nb_chart_container.show_all ();
+            objetivo.new_chart(aux_provider_name, aux_ticker_name, aux_time_frame_name);
 
             destroy ();
 

@@ -32,19 +32,11 @@ public class TradeSim.Layouts.Main : Gtk.Box {
     public TradeSim.Widgets.ProvidersPanel providers_panel;
     public TradeSim.Widgets.OperationsPanel operations_panel;
 
-
-
-    /*
-        Goo.Canvas VS Gtk.DrawingArea (INVESTIGAR)
-
-        Goo.Canvas
-        public void render (Context cr, CanvasBounds? bounds, double scale)
-
-        Cairo.Context
-     */
+    public TradeSim.Widgets.Canvas current_canvas;
 
 
     public Main (TradeSim.MainWindow window) {
+
         Object (
             main_window: window
             );
@@ -87,19 +79,18 @@ public class TradeSim.Layouts.Main : Gtk.Box {
         new_chart_dialog.show_all ();
         new_chart_dialog.present ();
 
-        /*new_chart_dialog.acept_button.clicked.connect (() => {
 
-            canvas_container = new TradeSim.Widgets.CanvasContainer (main_window, provider_name, ticker_name, new_chart_dialog.time_frame.get_text ());
+    }
 
-            nb_chart_container.insert_page (canvas_container, new Gtk.Label (ticker_name + ", " + time_frame), 0);
+    public void new_chart(string provider_name, string ticker_name, string time_frame_name){
 
-            new_chart_dialog.close ();
+        canvas_container = new TradeSim.Widgets.CanvasContainer (main_window, provider_name, ticker_name, time_frame_name);
 
-            nb_chart_container.show_all ();
+        nb_chart_container.insert_page (canvas_container, new Gtk.Label (provider_name + " - " + ticker_name + ", " + time_frame_name), 0);
 
+        nb_chart_container.show_all ();
 
-        });*/
-
+        current_canvas = canvas_container.chart_canvas;
 
     }
 

@@ -23,7 +23,7 @@ public class TradeSim.Widgets.HeaderBarButton : Gtk.Grid {
 
     public weak TradeSim.MainWindow mainWindow;
     public Gtk.Button button;
-    private Gtk.Label label_btn;
+    public Gtk.Label label_btn;
     public TradeSim.Widgets.ButtonImage image;
 
     public HeaderBarButton (TradeSim.MainWindow window, string icon_name, string name, string[] ? accels = null) {
@@ -46,4 +46,19 @@ public class TradeSim.Widgets.HeaderBarButton : Gtk.Grid {
         attach (label_btn, 0, 1, 1, 1);
 
     }
+
+    public void change_icon (string icon_name) {
+
+        foreach (var item in button.get_children ()) {
+
+            if (item.get_type () == typeof (ButtonImage)) {
+
+                ((ButtonImage) item).change_icon (icon_name);
+
+                return;
+            }
+        }
+
+    }
+
 }

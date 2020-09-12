@@ -54,7 +54,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     private string time_frame;
     private string ticker;
 
-    private bool end_simulation;
+    public bool end_simulation;
 
     private double candles_cola_size;
 
