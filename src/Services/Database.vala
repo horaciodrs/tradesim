@@ -653,6 +653,7 @@ public class TradeSim.Services.Database : GLib.Object {
               INNER JOIN providers ON imported_data.provider_id = providers.id
               INNER JOIN tickers ON imported_data.ticker_id = tickers.id
              WHERE imported_data.provider_id = ?
+              GROUP BY tickers.name
               ORDER BY tickers.name DESC; """;
 
         res = db.prepare_v2 (sql, -1, out stmt);
