@@ -30,6 +30,7 @@ Remember **TradeSim it's under development and it's on alpha state**. Only insta
 
 Run the following commands into the terminal:
 
+- **mkdir build**
 - **cd build**
 - **meson build --prefix=/usr**
 - **sudo ninja install**
