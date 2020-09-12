@@ -442,7 +442,9 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             // Obtener datos desde el link de url....
 
-            File file = File.new_for_uri (url.get_string ());
+            import_data_from_internet(url.get_string ());
+
+            /*File file = File.new_for_uri (url.get_string ());
 
             // Open the file for reading:
             InputStream @is = file.read (); // esta linea da error cuando no esta el archivo...
@@ -467,7 +469,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
                 str = dis.read_line ();
             }
-
+            */
             /*fin obtener archivo */
 
             list_store_quotes.set (edited_iter, 6, !toggle.active);
@@ -492,6 +494,36 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         // update_quotes_by_filter ();
 
+
+    }
+
+    private async void import_data_from_internet(string url){
+
+        File file = File.new_for_uri (url);
+
+        // Open the file for reading:
+        InputStream @is = file.read (); // esta linea da error cuando no esta el archivo...
+
+        // Output: ``M``
+        uint8 buffer[1];
+        size_t size = @is.read (buffer);
+        stdout.write (buffer, size);
+
+
+        DataInputStream dis = new DataInputStream (@is);
+
+        string str = "";
+
+        str = dis.read_line ();
+
+        while (str != null) {
+
+            qm.insert_cuote_to_db (str);
+
+            // print ("%s\n", str);
+
+            str = dis.read_line ();
+        }
 
     }
 
