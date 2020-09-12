@@ -592,6 +592,7 @@ public class TradeSim.Services.Database : GLib.Object {
             SELECT providers.id, providers.name, providers.folder_name
               FROM imported_data
               INNER JOIN providers ON imported_data.provider_id = providers.id
+              GROUP BY name
               ORDER BY name DESC; """;
 
         res = db.prepare_v2 (sql, -1, out stmt);
@@ -620,6 +621,7 @@ public class TradeSim.Services.Database : GLib.Object {
               INNER JOIN providers ON imported_data.provider_id = providers.id
               INNER JOIN time_frames ON imported_data.time_frame_id = time_frames.id
              WHERE imported_data.provider_id = ?
+              GROUP BY time_frames.name
               ORDER BY time_frames.name DESC; """;
 
         res = db.prepare_v2 (sql, -1, out stmt);
