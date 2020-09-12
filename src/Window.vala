@@ -33,6 +33,12 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
     public GLib.Settings settings;
 
+    public enum SettingsActions {
+          APARENCE
+        , DATA_SOURCE
+        , ABOUT_US
+    }
+
     public MainWindow (TradeSim.Application trade_sim_app) {
         Object (
             application: trade_sim_app
@@ -71,20 +77,22 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
         /* ****************************** */
         /* CLICK: Boton de Preferencias   */
         /* ****************************** */
-        headerbar.preferencias.button.clicked.connect (e => {
-            var settings_dialog = new TradeSim.Dialogs.SettingsDialog (this);
-            settings_dialog.show_all ();
-            settings_dialog.present ();
-            settings_dialog.close.connect (() => {
-                // event_bus.set_focus_on_canvas ();
-            });
-        });
+        
 
         delete_event.connect (e => {
             return before_destroy ();
         });
 
         show_all ();
+    }
+
+    public void open_dialog_preferences(int show_item = SettingsActions.APARENCE){
+        var settings_dialog = new TradeSim.Dialogs.SettingsDialog (this, show_item);
+        settings_dialog.show_all ();
+        settings_dialog.present ();
+        settings_dialog.close.connect (() => {
+            // event_bus.set_focus_on_canvas ();
+        });
     }
 
     public void change_zoom_level(double factor){

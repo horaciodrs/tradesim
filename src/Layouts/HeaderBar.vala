@@ -85,6 +85,10 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
         });
 
+        preferencias.button.clicked.connect (e => {
+            main_window.open_dialog_preferences();
+        });
+
         new_button.button.clicked.connect (() => {
 
             main_window.main_layout.add_canvas("", "", "");

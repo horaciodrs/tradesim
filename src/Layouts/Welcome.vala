@@ -20,14 +20,21 @@
  */
 
 public class TradeSim.Layouts.Welcome : Granite.Widgets.Welcome {
+
     public weak TradeSim.MainWindow main_window { get; construct; }
+
+    public enum WelcomeActions {
+        CREATE_DOCUMENT
+        , OPEN_DOCUMENT
+        , FOLDER_DOWNLOAD
+    }
 
     public Welcome (TradeSim.MainWindow _main_window) {
         Object (
             main_window: _main_window,
             title: "Welcome to TradeSim",
             subtitle: "Test your strategies on the Linux Trading Simulator."
-        );
+            );
     }
 
     construct {
@@ -39,16 +46,16 @@ public class TradeSim.Layouts.Welcome : Granite.Widgets.Welcome {
         append ("document-open", "Open a previous saved simulation", "Open a previous saved simulation");
         append ("folder-download", "Import Datasources", "Import quotes from internet");
 
-        activated.connect ( index => {
+        activated.connect (index => {
             switch (index) {
-                case 0:
-                    print("opcion 1");
+            case WelcomeActions.CREATE_DOCUMENT:
+                main_window.main_layout.add_canvas("", "", "");
                 break;
-                case 1:
-                    print("opcion 2");
+            case WelcomeActions.OPEN_DOCUMENT:
+                print ("open saved document");
                 break;
-                case 2:
-                    print("opcion 3");
+            case WelcomeActions.FOLDER_DOWNLOAD:
+                main_window.open_dialog_preferences(main_window.SettingsActions.DATA_SOURCE);
                 break;
             }
         });

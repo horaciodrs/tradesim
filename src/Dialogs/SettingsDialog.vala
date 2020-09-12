@@ -35,7 +35,15 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
     public TradeSim.Services.QuotesManager qm;
 
-    public SettingsDialog (TradeSim.MainWindow window) {
+    public Gtk.StackSwitcher stack_switcher;
+    public Gtk.Grid grid_aparence;
+    public Gtk.Grid grid_data_source;
+    public Gtk.Grid grid_about_us;
+
+    int item_focus;
+
+    public SettingsDialog (TradeSim.MainWindow window, int _item_focus) {
+
         Object (
             main_window: window,
             border_width: 6,
@@ -44,9 +52,8 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             modal: true,
             title: "Preferencias"
             );
-    }
 
-    construct {
+        item_focus = _item_focus;
 
         qm = new TradeSim.Services.QuotesManager ();
 
@@ -55,18 +62,22 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         ds_selected_year = "";
         ds_selected_time_frame = "";
 
+        grid_aparence = get_interface_box ();
+        grid_data_source = get_data_source_box ();
+        grid_about_us = get_about_box ();
+
         transient_for = main_window;
         stack = new Gtk.Stack ();
         stack.margin = 6;
         stack.margin_bottom = 15;
         stack.margin_top = 15;
-        stack.add_titled (get_interface_box (), "interface", "Interface");
-        stack.add_titled (get_data_source_box (), "datasource", "Data Source");
-        stack.add_titled (get_about_box (), "about", "About");
+        stack.add_titled (grid_aparence, "interface", "Interface");
+        stack.add_titled (grid_data_source, "datasource", "Data Source");
+        stack.add_titled (grid_about_us, "about", "About");
         stack.set_hexpand (true);
         stack.halign = Gtk.Align.FILL;
 
-        var stack_switcher = new Gtk.StackSwitcher ();
+        stack_switcher = new Gtk.StackSwitcher ();
         stack_switcher.set_stack (stack);
         stack_switcher.halign = Gtk.Align.CENTER;
 
@@ -79,9 +90,30 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         get_content_area ().add (grid);
 
+        stack_focus ();
+        
     }
 
-    private Gtk.Widget get_interface_box () {
+    public void stack_focus () {
+
+        switch (item_focus) {
+        case main_window.SettingsActions.APARENCE:
+            grid_aparence.set_visible(true);
+            stack.set_visible_child(grid_aparence);
+            break;
+        case main_window.SettingsActions.DATA_SOURCE:
+            grid_data_source.set_visible(true);
+            stack.set_visible_child(grid_data_source);
+            break;
+        case main_window.SettingsActions.ABOUT_US:
+            grid_about_us.set_visible(true);
+            stack.set_visible_child(grid_about_us);
+            break;
+        }
+
+    }
+
+    private Gtk.Grid get_interface_box () {
         var grid = new Gtk.Grid ();
         grid.row_spacing = 6;
         grid.column_spacing = 12;
@@ -347,7 +379,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             url = url + "/" + ds_selected_provider + "_" + ds_selected_ticker + "_" + ds_selected_time_frame + "_" + ds_selected_year + "_";
             url = url + mes + ".csv";
 
-            //print(url + "\n");
+            // print(url + "\n");
 
             list_store_quotes.append (out add_iter_quotes);
             list_store_quotes.set (add_iter_quotes
@@ -463,7 +495,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
     }
 
-    private Gtk.Widget get_data_source_box () {
+    private Gtk.Grid get_data_source_box () {
 
         // https://raw.githubusercontent.com/horaciodrs/TradeSim/master/data/quotes/EODATA/2020/EURUSD/EODATA_EURUSD_D1_2020_01.csv
         // FORMATO DE LOS ARCHVOS
@@ -491,7 +523,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         return grid;
     }
 
-    private Gtk.Widget get_about_box () {
+    private Gtk.Grid get_about_box () {
         var grid = new Gtk.Grid ();
         grid.row_spacing = 6;
         grid.column_spacing = 12;
