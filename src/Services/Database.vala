@@ -94,19 +94,16 @@ public class TradeSim.Services.Database : GLib.Object {
         debug ("Table tickers created");
 
         rc = db.exec ("PRAGMA foreign_keys = ON;");
-
-        insert_provider ("EODATA", "EODATA");
-        insert_provider ("HistData.com", "HISTDATA");
-        insert_provider ("Tradingview.com", "TVIEW");
+        
         insert_provider ("TRADESIM", "TRADESIM");
 
         int id_forex = insert_market ("Forex", "");
 
         insert_ticker ("EURUSD", id_forex);
-        insert_ticker ("USDJPY", id_forex);
+        //insert_ticker ("USDJPY", id_forex);
         insert_ticker ("GBPUSD", id_forex);
-        insert_ticker ("USDCHF", id_forex);
-        insert_ticker ("USDCAD", id_forex);
+        //insert_ticker ("USDCHF", id_forex);
+        //insert_ticker ("USDCAD", id_forex);
 
         insert_time_frames ("D1");
         insert_time_frames ("H4");
