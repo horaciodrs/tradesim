@@ -23,6 +23,8 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
     public weak TradeSim.MainWindow main_window { get; construct; }
 
+    public TradeSim.Layouts.Welcome welcome_widget;
+
     public Gtk.Paned pane_top;
     public Gtk.Paned pane_left;
 
@@ -48,6 +50,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
         providers_panel = new TradeSim.Widgets.ProvidersPanel (main_window);
         operations_panel = new TradeSim.Widgets.OperationsPanel (main_window);
+        welcome_widget = new TradeSim.Layouts.Welcome(main_window);
 
         // canvas_container = new TradeSim.Widgets.CanvasContainer(main_window);
 
@@ -55,8 +58,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
         nb_chart_container.set_show_border (false);
 
-        /*nb_chart_container.append_page (canvas_container, new Gtk.Label ("EURUSD, M5"));
-           nb_chart_container.append_page (new Gtk.Label ("Contenido del grafico USDJPY"), new Gtk.Label ("USDJPY, M5"));*/
+        nb_chart_container.append_page (welcome_widget, new Gtk.Label ("Welcome to TradeSim"));
 
         pane_top = new Gtk.Paned (Gtk.Orientation.VERTICAL);
         pane_left = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
