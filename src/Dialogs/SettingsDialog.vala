@@ -97,23 +97,23 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         get_content_area ().add (grid);
 
         stack_focus ();
-        
+
     }
 
     public void stack_focus () {
 
         switch (item_focus) {
-        case main_window.SettingsActions.APARENCE:
-            grid_aparence.set_visible(true);
-            stack.set_visible_child(grid_aparence);
+        case TradeSim.MainWindow.SettingsActions.APARENCE:
+            grid_aparence.set_visible (true);
+            stack.set_visible_child (grid_aparence);
             break;
-        case main_window.SettingsActions.DATA_SOURCE:
-            grid_data_source.set_visible(true);
-            stack.set_visible_child(grid_data_source);
+        case TradeSim.MainWindow.SettingsActions.DATA_SOURCE:
+            grid_data_source.set_visible (true);
+            stack.set_visible_child (grid_data_source);
             break;
-        case main_window.SettingsActions.ABOUT_US:
-            grid_about_us.set_visible(true);
-            stack.set_visible_child(grid_about_us);
+        case TradeSim.MainWindow.SettingsActions.ABOUT_US:
+            grid_about_us.set_visible (true);
+            stack.set_visible_child (grid_about_us);
             break;
         }
 
@@ -184,7 +184,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             ds_selected_provider = nombre.get_string ();
 
-            start_update_quotes_by_filter();
+            start_update_quotes_by_filter ();
 
         });
 
@@ -239,7 +239,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             ds_selected_ticker = nombre.get_string ();
 
-            start_update_quotes_by_filter();
+            start_update_quotes_by_filter ();
 
         });
 
@@ -287,7 +287,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             ds_selected_year = nombre.get_string ();
 
-            start_update_quotes_by_filter();
+            start_update_quotes_by_filter ();
 
         });
 
@@ -348,7 +348,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             ds_selected_time_frame = nombre.get_string ();
 
-            start_update_quotes_by_filter();
+            start_update_quotes_by_filter ();
 
         });
 
@@ -361,43 +361,43 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
     }
 
-    private void start_update_quotes_by_filter(){
+    private void start_update_quotes_by_filter () {
 
-        spiner_data_source.set_visible(true);
-        spiner_data_source.start();
-        label_waiting.set_text("Waiting for data...");
+        spiner_data_source.set_visible (true);
+        spiner_data_source.start ();
+        label_waiting.set_text ("Waiting for data...");
 
-        var loop = new MainLoop();
+        var loop = new MainLoop ();
 
-        update_quotes_by_filter.begin((obj, res) => {
+        update_quotes_by_filter.begin ((obj, res) => {
 
-            update_quotes_by_filter.end(res);
-            label_waiting.set_text("Done! - Has been found " + data_files_found.to_string() + " data files");
-            label_waiting.get_style_context().add_class("label-status");
-            spiner_data_source.stop();
-            loop.quit();
-            
+            update_quotes_by_filter.end (res);
+            label_waiting.set_text ("Done! - Has been found " + data_files_found.to_string () + " data files");
+            label_waiting.get_style_context ().add_class ("label-status");
+            spiner_data_source.stop ();
+            loop.quit ();
+
         });
 
-        loop.run();
+        loop.run ();
 
     }
 
-    private async bool check_file_exists(string url){
+    private async bool check_file_exists (string url) {
 
-        File file =File.new_for_uri (url);
+        File file = File.new_for_uri (url);
 
         try {
 
-            yield file.read_async();
+            yield file.read_async ();
 
         } catch (Error e) {
             return false;
         }
 
-    
+
         return true;
-    
+
     }
 
     private async void update_quotes_by_filter () {
@@ -425,20 +425,20 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             url = url + "/" + ds_selected_provider + "_" + ds_selected_ticker + "_" + ds_selected_time_frame + "_" + ds_selected_year + "_";
             url = url + mes + ".csv";
 
-            bool existe_file = yield check_file_exists(url);
+            bool existe_file = yield check_file_exists (url);
 
             if (existe_file) {
-                            
+
                 list_store_quotes.append (out add_iter_quotes);
                 list_store_quotes.set (add_iter_quotes
-                                    , 0, ds_selected_provider
-                                    , 1, "Forex"
-                                    , 2, ds_selected_ticker
-                                    , 3, int.parse (ds_selected_year)
-                                    , 4, get_month_name (i)
-                                    , 5, ds_selected_time_frame
-                                    , 6, qm.db.import_data_exists (ds_selected_provider, "Forex", ds_selected_ticker, ds_selected_time_frame, ds_selected_year.to_int (), i)
-                                    , 7, url);
+                                       , 0, ds_selected_provider
+                                       , 1, "Forex"
+                                       , 2, ds_selected_ticker
+                                       , 3, int.parse (ds_selected_year)
+                                       , 4, get_month_name (i)
+                                       , 5, ds_selected_time_frame
+                                       , 6, qm.db.import_data_exists (ds_selected_provider, "Forex", ds_selected_ticker, ds_selected_time_frame, int.parse (ds_selected_year), i)
+                                       , 7, url);
 
                 data_files_found++;
 
@@ -480,11 +480,9 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             list_store_quotes.get_value (edited_iter, 7, out url);
             list_store_quotes.get_value (edited_iter, 4, out mes);
 
-            // print("mes:" + get_month_number(mes.get_string()).to_string());
+            if (qm.db.import_data_exists (ds_selected_provider, "Forex", ds_selected_ticker, ds_selected_time_frame, int.parse (ds_selected_year), get_month_number (mes.get_string ()))) {
 
-            if (qm.db.import_data_exists (ds_selected_provider, "Forex", ds_selected_ticker, ds_selected_time_frame, ds_selected_year.to_int (), get_month_number (mes.get_string ()))) {
-
-                qm.db.delete_imported_data (ds_selected_provider, "Forex", ds_selected_ticker, ds_selected_time_frame, ds_selected_year.to_int (), get_month_number (mes.get_string ()));
+                qm.db.delete_imported_data (ds_selected_provider, "Forex", ds_selected_ticker, ds_selected_time_frame, int.parse (ds_selected_year), get_month_number (mes.get_string ()));
 
                 list_store_quotes.set (edited_iter, 6, !toggle.active);
 
@@ -492,37 +490,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             }
 
-            // Obtener datos desde el link de url....
-
-            import_data_from_internet(url.get_string ());
-
-            /*File file = File.new_for_uri (url.get_string ());
-
-            // Open the file for reading:
-            InputStream @is = file.read (); // esta linea da error cuando no esta el archivo...
-
-            // Output: ``M``
-            uint8 buffer[1];
-            size_t size = @is.read (buffer);
-            stdout.write (buffer, size);
-
-
-            DataInputStream dis = new DataInputStream (@is);
-
-            string str = "";
-
-            str = dis.read_line ();
-
-            while (str != null) {
-
-                qm.insert_cuote_to_db (str);
-
-                // print ("%s\n", str);
-
-                str = dis.read_line ();
-            }
-            */
-            /*fin obtener archivo */
+            import_data_from_internet (url.get_string ());
 
             list_store_quotes.set (edited_iter, 6, !toggle.active);
 
@@ -549,11 +517,11 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
     }
 
-    private async void import_data_from_internet(string url){
+    private void import_data_from_internet (string url) {
 
         File file = File.new_for_uri (url);
 
-        try{
+        try {
 
             InputStream @is = file.read ();
 
@@ -575,7 +543,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
                 str = dis.read_line ();
             }
 
-        }catch (Error e) {
+        } catch (Error e) {
             error ("%s", e.message);
         }
 
@@ -599,8 +567,8 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         grid.column_homogeneous = true;
         grid.set_hexpand (true);
 
-        spiner_data_source = new Gtk.Spinner();
-        label_waiting = new Gtk.Label("");
+        spiner_data_source = new Gtk.Spinner ();
+        label_waiting = new Gtk.Label ("");
 
         spiner_data_source.halign = Gtk.Align.END;
         label_waiting.halign = Gtk.Align.START;
@@ -613,7 +581,6 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         grid.attach (scroll_quotes, 0, 3, 4, 3);
         grid.attach (spiner_data_source, 0, 7);
         grid.attach (label_waiting, 1, 7, 3);
-        
 
         return grid;
     }

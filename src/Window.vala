@@ -20,12 +20,6 @@
  */
 
 
-/*
-
-   javascript:return true;
-
- */
-
 public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
     public TradeSim.Layouts.HeaderBar headerbar;
@@ -56,12 +50,19 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
         set_titlebar (headerbar);
 
         var css_provider = new Gtk.CssProvider ();
-        css_provider.load_from_path ("/usr/share/com.github.horaciodrs.TradeSim/stylesheet.css");
 
-        Gtk.StyleContext.add_provider_for_screen (
-            Gdk.Screen.get_default (), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        try{
+
+            css_provider.load_from_path ("/usr/share/com.github.horaciodrs.TradeSim/stylesheet.css");
+
+            Gtk.StyleContext.add_provider_for_screen (
+                Gdk.Screen.get_default (), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
             );
 
+        }catch(Error e){
+            warning("fail to load css styles for main window.");
+        }
+        
         add (main_layout);
 
         settings = new GLib.Settings ("com.github.horaciodrs.tradesim");

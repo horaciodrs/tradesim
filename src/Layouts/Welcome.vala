@@ -55,7 +55,7 @@ public class TradeSim.Layouts.Welcome : Granite.Widgets.Welcome {
                 print ("open saved document");
                 break;
             case WelcomeActions.FOLDER_DOWNLOAD:
-                main_window.open_dialog_preferences(main_window.SettingsActions.DATA_SOURCE);
+                main_window.open_dialog_preferences(TradeSim.MainWindow.SettingsActions.DATA_SOURCE);
                 break;
             }
         });

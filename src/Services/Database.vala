@@ -327,7 +327,7 @@ public class TradeSim.Services.Database : GLib.Object {
 
         string aux_day = "00" + date_day.to_string ();
         string aux_month = "00" + date_month.to_string ();
-        string date_str = date_year.to_string () + "-" + aux_month.substring (aux_month.len () - 2, 2) + "-" + aux_day.substring (aux_day.len () - 2, 2);
+        string date_str = date_year.to_string () + "-" + aux_month.substring (aux_month.length - 2, 2) + "-" + aux_day.substring (aux_day.length - 2, 2);
 
         double price_open = quote_item.open_price;
         double price_close = quote_item.close_price;
