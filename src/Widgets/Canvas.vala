@@ -62,6 +62,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public bool show_horizontal_scale_label;
     public bool show_vertical_scale_label;
 
+    public bool change_velocity;
+    public int simulation_vel;
+    public int simulation_velocity_ratio;
+
     public TradeSim.Services.QuotesManager data;
 
     public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame) {
@@ -71,7 +75,11 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         ticker = _ticker;
         time_frame = _time_frame;
         provider_name = _provider_name;
+
         end_simulation = true;
+        simulation_vel = 1000;
+        change_velocity = false;
+        simulation_velocity_ratio = 1;
 
         add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK | Gdk.EventMask.POINTER_MOTION_MASK | Gdk.EventMask.LEAVE_NOTIFY_MASK);
 
@@ -126,18 +134,79 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         horizontal_scale_calculation ();
     }
 
+    public string simulate_fast () {
+
+        string return_value = "Stop";
+        int new_velocity = simulation_vel;
+
+        if (simulation_vel == 1000) {
+            simulation_vel = 750;
+            simulation_velocity_ratio = 2;
+        } else if (simulation_vel == 750) {
+            simulation_vel = 500;
+            simulation_velocity_ratio = 3;
+        } else if (simulation_vel == 500) {
+            simulation_vel = 250;
+            simulation_velocity_ratio = 4;
+        } else {
+            simulation_vel = 250;
+            simulation_velocity_ratio = 4;
+        }
+
+        change_velocity = true;
+
+        if (simulation_velocity_ratio != 1) {
+            return_value = simulation_velocity_ratio.to_string () + "x";
+        }
+
+        return return_value;
+
+    }
+
+    public string simulate_slow () {
+
+        string return_value = "Stop";
+
+        if (simulation_vel == 250) {
+            simulation_vel = 500;
+            simulation_velocity_ratio = 3;
+        } else if (simulation_vel == 500) {
+            simulation_vel = 750;
+            simulation_velocity_ratio = 2;
+        } else if (simulation_vel == 750) {
+            simulation_vel = 1000;
+            simulation_velocity_ratio = 1;
+        } else {
+            simulation_vel = 1000;
+            simulation_velocity_ratio = 1;
+        }
+
+        if (simulation_velocity_ratio != 1) {
+            return_value = simulation_velocity_ratio.to_string () + "x";
+        }
+
+        change_velocity = true;
+
+        return return_value;
+
+    }
+
     public void simulate () {
+
+        change_velocity = false;
 
 
         if (end_simulation) {
 
             end_simulation = false;
 
-            Timeout.add (1000, play, GLib.Priority.HIGH);
+            Timeout.add (simulation_vel, play, GLib.Priority.HIGH);
 
         } else {
 
             end_simulation = true;
+            simulation_vel = 1000;
+            simulation_velocity_ratio = 1;
 
         }
 
@@ -157,6 +226,11 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             change_zoom_level (zoom_factor);
 
             _horizontal_scroll_x = _width - vertical_scale_width - _horizontal_scroll_width;
+
+            if (change_velocity) {
+                Timeout.add (simulation_vel, play, GLib.Priority.HIGH);
+                return false; // retorna falso para que frene.... pero tiene que volver a tirar el timeout
+            }
 
             return true;
 

@@ -151,7 +151,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         cbo_provider.pack_start (cell, false);
 
         cbo_provider.set_attributes (cell, "text", 0);
-        cbo_provider_select_by_text(aux_provider_name);
+        cbo_provider_select_by_text (aux_provider_name);
         cbo_provider.changed.connect (cbo_provider_changed);
 
     }
@@ -161,7 +161,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         Array<TradeSim.Objects.Provider> providers = db.get_providers_with_data ();
 
         for (int i = 0 ; i < providers.length ; i++) {
-            if(providers.index(i).name == txt){
+            if (providers.index (i).name == txt) {
                 cbo_provider.set_active (i);
             }
         }
@@ -205,10 +205,10 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         cbo_ticker.pack_start (cell, false);
 
         cbo_ticker.set_attributes (cell, "text", 0);
-        cbo_ticker_select_by_text(aux_ticker_name);
+        cbo_ticker_select_by_text (aux_ticker_name);
         cbo_ticker.changed.connect (cbo_ticker_changed);
-        
-        //cbo_ticker.set_active(-1);
+
+        // cbo_ticker.set_active(-1);
 
     }
 
@@ -251,7 +251,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         Array<string> tickers = db.get_tickers_with_data (aux_provider_name);
 
         for (int i = 0 ; i < tickers.length ; i++) {
-            if(tickers.index(i) == txt){
+            if (tickers.index (i) == txt) {
                 cbo_ticker.set_active (i);
             }
         }
@@ -282,7 +282,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
         cbo_time_frame.changed.connect (cbo_time_frame_changed);
 
-        cbo_time_frame.set_active(-1);
+        cbo_time_frame.set_active (-1);
 
     }
 
@@ -325,7 +325,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         Array<string> time_frames = db.get_time_frames_with_data (aux_provider_name);
 
         for (int i = 0 ; i < time_frames.length ; i++) {
-            if(time_frames.index(i) == txt){
+            if (time_frames.index (i) == txt) {
                 cbo_time_frame.set_active (i);
             }
         }
@@ -341,10 +341,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
             var objetivo = dialogo.main_window.main_layout;
 
-            print("provider:" + aux_provider_name + " ticker:" + aux_ticker_name + " time_frame: " + aux_time_frame_name);
-            //el error es porque en el dialogo nuevo. Falta el combo de Ticker.
-
-            objetivo.new_chart(aux_provider_name, aux_ticker_name, aux_time_frame_name);
+            objetivo.new_chart (aux_provider_name, aux_ticker_name, aux_time_frame_name);
 
             destroy ();
 

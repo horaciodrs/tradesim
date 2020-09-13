@@ -60,7 +60,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         zoom = new TradeSim.Widgets.ZoomButton (main_window);
 
         backward = new TradeSim.Widgets.HeaderBarButton (main_window, "media-seek-backward-symbolic", "", { "<Ctrl>p" });
-        play = new TradeSim.Widgets.HeaderBarButton (main_window, "media-playback-start", "Iniciar", { "<Ctrl>p" });
+        play = new TradeSim.Widgets.HeaderBarButton (main_window, "media-playback-start", "Play", { "<Ctrl>p" });
         forward = new TradeSim.Widgets.HeaderBarButton (main_window, "media-seek-forward-symbolic", "", { "<Ctrl>p" });
         buy = new TradeSim.Widgets.HeaderBarButton (main_window, "go-up", "Comprar", { "<Ctrl>p" });
         sell = new TradeSim.Widgets.HeaderBarButton (main_window, "go-down", "Vender", { "<Ctrl>p" });
@@ -73,25 +73,41 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
         play.button.clicked.connect (() => {
 
-            if(play.label_btn.get_text() == "Iniciar"){
-                play.change_icon("media-playback-pause");
-                play.label_btn.set_text("Detener");
-            }else{
-                play.change_icon("media-playback-start");
-                play.label_btn.set_text("Iniciar");
+            if (play.label_btn.get_text () == "Play") {
+                play.change_icon ("media-playback-pause");
+                play.label_btn.set_text ("Stop");
+            } else {
+                play.change_icon ("media-playback-start");
+                play.label_btn.set_text ("Play");
             }
 
             main_window.main_layout.current_canvas.simulate ();
 
         });
 
+        forward.button.clicked.connect (() => {
+
+            string new_label = main_window.main_layout.current_canvas.simulate_fast ();
+
+            play.label_btn.set_text (new_label);
+
+        });
+
+        backward.button.clicked.connect (() => {
+
+            string new_label = main_window.main_layout.current_canvas.simulate_slow ();
+
+            play.label_btn.set_text (new_label);
+
+        });
+
         preferencias.button.clicked.connect (e => {
-            main_window.open_dialog_preferences();
+            main_window.open_dialog_preferences ();
         });
 
         new_button.button.clicked.connect (() => {
 
-            main_window.main_layout.add_canvas("", "", "");
+            main_window.main_layout.add_canvas ("", "", "");
 
         });
 
