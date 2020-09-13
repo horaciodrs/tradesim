@@ -332,7 +332,49 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
     }
 
+    private string validate_data () {
+
+        if (txt_name.get_text ().length < 1) {
+            return "Please enter the simulation name";
+        }
+
+        if (aux_provider_name.length < 1) {
+            return "Please enter the provider";
+        }
+
+        if (aux_ticker_name.length < 1) {
+            return "Please enter the ticker";
+        }
+
+        if (aux_time_frame_name.length < 1) {
+            return "Please enter the timeframe";
+        }
+
+        if (txt_amount.get_text ().length < 1) {
+            return "Please enter the initial balance";
+        } else if (double.parse (txt_amount.get_text ()) == 0) {
+            return "Please enter a valid initial balance";
+        }
+
+        return "";
+    }
+
     private void on_response (Gtk.Dialog source, int response_id) {
+
+        if (response_id == Action.OK) {
+
+            string msg = validate_data ();
+
+            if (msg.length > 0) {
+
+                var dialog = new Gtk.MessageDialog (this, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK_CANCEL, msg);
+                dialog.run ();
+                dialog.destroy ();
+                return;
+
+            }
+
+        }
 
         switch (response_id) {
         case Action.OK:
@@ -341,7 +383,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
             var objetivo = dialogo.main_window.main_layout;
 
-            objetivo.new_chart (aux_provider_name, aux_ticker_name, aux_time_frame_name);
+            objetivo.new_chart (aux_provider_name, aux_ticker_name, aux_time_frame_name, txt_name.get_text (), double.parse (txt_amount.get_text ()));
 
             destroy ();
 

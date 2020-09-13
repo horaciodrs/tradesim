@@ -66,9 +66,12 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public int simulation_vel;
     public int simulation_velocity_ratio;
 
+    public string simulation_name;
+    public double simulation_initial_balance;
+
     public TradeSim.Services.QuotesManager data;
 
-    public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame) {
+    public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame, string _simulation_name="Unnamed Simulation", double _simulation_initial_balance = 500.000) {
 
         main_window = window;
 
@@ -80,6 +83,9 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         simulation_vel = 1000;
         change_velocity = false;
         simulation_velocity_ratio = 1;
+
+        simulation_name = _simulation_name;
+        simulation_initial_balance = _simulation_initial_balance;
 
         add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK | Gdk.EventMask.POINTER_MOTION_MASK | Gdk.EventMask.LEAVE_NOTIFY_MASK);
 
@@ -137,7 +143,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public string simulate_fast () {
 
         string return_value = "Stop";
-        int new_velocity = simulation_vel;
 
         if (simulation_vel == 1000) {
             simulation_vel = 750;
@@ -287,8 +292,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     private DateTime get_date_time_fecha_by_pos_x (int pos_x) {
 
-
-        // int candles = get_candle_count_betwen_dates (date_from, date_time);
         DateTime candle_date_time = date_from;
         int candles = 1;
         int candle_spacing = 5;
@@ -310,24 +313,9 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         string return_value = "";
 
+        return_value = get_date_time_fecha_by_pos_x(pos_x).to_string ();
 
-        // int candles = get_candle_count_betwen_dates (date_from, date_time);
-        DateTime candle_date_time = date_from;
-        int candles = 1;
-        int candle_spacing = 5;
-        int test_value = candle_spacing + candle_width;
-
-        if (test_value != 0) {
-
-            candles = (int) pos_x / (test_value);
-
-            candle_date_time = date_add_int_by_time_frame (candle_date_time, time_frame, candles); // candle_date_time = candle_date_time.add_minutes (candles);
-
-            return_value = candle_date_time.to_string ();
-
-            return_value = return_value.substring (0, 16) + "hs";
-
-        }
+        return_value = return_value.substring (0, 16) + "hs";
 
         return return_value;
 
