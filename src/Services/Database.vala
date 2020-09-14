@@ -312,102 +312,109 @@ public class TradeSim.Services.Database : GLib.Object {
     }
 
     public void insert_quote (TradeSim.Services.QuoteItem quote_item) {
+        new Thread<void*> ("insert_quote", () => {
+    
+            // Without usleep it crashes on smb:// protocol
+            int provider_id = get_db_id_by_table_and_field ("providers", "folder_name", quote_item.provider_folder_name);
+            int market_id = get_db_id_by_name ("markets", "Forex");
+            int ticker_id = get_db_id_by_name ("tickers", quote_item.ticker);
+            int time_frame_id = get_db_id_by_name ("time_frames", quote_item.time_frame_name);
 
-        int provider_id = get_db_id_by_table_and_field ("providers", "folder_name", quote_item.provider_folder_name);
-        int market_id = get_db_id_by_name ("markets", "Forex");
-        int ticker_id = get_db_id_by_name ("tickers", quote_item.ticker);
-        int time_frame_id = get_db_id_by_name ("time_frames", quote_item.time_frame_name);
 
+            int date_year = quote_item.date_time.get_year ();
+            int date_month = quote_item.date_time.get_month ();
+            int date_day = quote_item.date_time.get_day_of_month ();
+            int date_hour = quote_item.date_time.get_hour ();
+            int date_minute = quote_item.date_time.get_minute ();
 
-        int date_year = quote_item.date_time.get_year ();
-        int date_month = quote_item.date_time.get_month ();
-        int date_day = quote_item.date_time.get_day_of_month ();
-        int date_hour = quote_item.date_time.get_hour ();
-        int date_minute = quote_item.date_time.get_minute ();
+            string aux_day = "00" + date_day.to_string ();
+            string aux_month = "00" + date_month.to_string ();
+            string date_str = date_year.to_string () + "-" + aux_month.substring (aux_month.length - 2, 2) + "-" + aux_day.substring (aux_day.length - 2, 2);
 
-        string aux_day = "00" + date_day.to_string ();
-        string aux_month = "00" + date_month.to_string ();
-        string date_str = date_year.to_string () + "-" + aux_month.substring (aux_month.length - 2, 2) + "-" + aux_day.substring (aux_day.length - 2, 2);
+            double price_open = quote_item.open_price;
+            double price_close = quote_item.close_price;
+            double price_max = quote_item.max_price;
+            double price_min = quote_item.min_price;
 
-        double price_open = quote_item.open_price;
-        double price_close = quote_item.close_price;
-        double price_max = quote_item.max_price;
-        double price_min = quote_item.min_price;
+            Sqlite.Statement stmt;
+            string sql;
+            int res;
 
-        Sqlite.Statement stmt;
-        string sql;
-        int res;
+            sql = """ INSERT OR IGNORE INTO quotes (
+                    provider_id
+                , market_id
+                , ticker_id
+                , time_frame_id
+                , date_year
+                , date_month
+                , date_day
+                , date_hour
+                , date_minute
+                , date_str
+                , price_open
+                , price_close
+                , price_max
+                , price_min
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);  """;
 
-        sql = """ INSERT OR IGNORE INTO quotes (
-              provider_id
-            , market_id
-            , ticker_id
-            , time_frame_id
-            , date_year
-            , date_month
-            , date_day
-            , date_hour
-            , date_minute
-            , date_str
-            , price_open
-            , price_close
-            , price_max
-            , price_min
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);  """;
+            res = db.prepare_v2 (sql, -1, out stmt);
+            assert (res == Sqlite.OK);
 
-        res = db.prepare_v2 (sql, -1, out stmt);
-        assert (res == Sqlite.OK);
+            res = stmt.bind_int (1, provider_id);
+            assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (1, provider_id);
-        assert (res == Sqlite.OK);
+            res = stmt.bind_int (2, market_id);
+            assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (2, market_id);
-        assert (res == Sqlite.OK);
+            res = stmt.bind_int (3, ticker_id);
+            assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (3, ticker_id);
-        assert (res == Sqlite.OK);
+            res = stmt.bind_int (4, time_frame_id);
+            assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (4, time_frame_id);
-        assert (res == Sqlite.OK);
+            res = stmt.bind_int (5, date_year);
+            assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (5, date_year);
-        assert (res == Sqlite.OK);
+            res = stmt.bind_int (6, date_month);
+            assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (6, date_month);
-        assert (res == Sqlite.OK);
+            res = stmt.bind_int (7, date_day);
+            assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (7, date_day);
-        assert (res == Sqlite.OK);
+            res = stmt.bind_int (8, date_hour);
+            assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (8, date_hour);
-        assert (res == Sqlite.OK);
+            res = stmt.bind_int (9, date_minute);
+            assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (9, date_minute);
-        assert (res == Sqlite.OK);
+            res = stmt.bind_text (10, date_str);
+            assert (res == Sqlite.OK);
 
-        res = stmt.bind_text (10, date_str);
-        assert (res == Sqlite.OK);
+            res = stmt.bind_double (11, price_open);
+            assert (res == Sqlite.OK);
 
-        res = stmt.bind_double (11, price_open);
-        assert (res == Sqlite.OK);
+            res = stmt.bind_double (12, price_close);
+            assert (res == Sqlite.OK);
 
-        res = stmt.bind_double (12, price_close);
-        assert (res == Sqlite.OK);
+            res = stmt.bind_double (13, price_max);
+            assert (res == Sqlite.OK);
 
-        res = stmt.bind_double (13, price_max);
-        assert (res == Sqlite.OK);
+            res = stmt.bind_double (14, price_min);
+            assert (res == Sqlite.OK);
 
-        res = stmt.bind_double (14, price_min);
-        assert (res == Sqlite.OK);
+            if (stmt.step () != Sqlite.DONE) {
+                warning ("Error: %d: %s", db.errcode (), db.errmsg ());
+            }
 
-        if (stmt.step () != Sqlite.DONE) {
-            warning ("Error: %d: %s", db.errcode (), db.errmsg ());
-        }
+            stmt.reset ();
 
-        stmt.reset ();
+            add_imported_data (provider_id, market_id, ticker_id, time_frame_id, date_year, date_month);
 
-        add_imported_data (provider_id, market_id, ticker_id, time_frame_id, date_year, date_month);
+            //Thread.usleep (1000000);
 
+            return null;
+    
+        });
     }
 
     public void insert_provider (string _name, string folder_name) {

@@ -490,8 +490,24 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             }
 
-            import_data_from_internet (url.get_string ());
+            spiner_data_source.set_visible (true);
+            spiner_data_source.start ();
+            label_waiting.set_text ("Importing data...");
 
+            var loop = new MainLoop ();
+
+            import_data_from_internet.begin (url.get_string (), (obj, res) => {
+
+                import_data_from_internet.end (res);
+                label_waiting.set_text ("Done!");
+                label_waiting.get_style_context ().add_class ("label-status");
+                spiner_data_source.stop ();
+                loop.quit ();
+    
+            });
+    
+            loop.run ();
+            
             list_store_quotes.set (edited_iter, 6, !toggle.active);
 
         });
@@ -517,30 +533,38 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
     }
 
-    private void import_data_from_internet (string url) {
+    private async void import_data_from_internet (string url) {
+
+        //TODO: Tengo que conocer la cantidad de lineas que tiene el archivo.   
+        //TODO: para poder conocer el momento en el que se terminan de ejecutar 
+        //TODO: todos los hilos que se encargan de subir las cotizaciones en    
+        //TODO: la base de datos. De esta forma puedo saber cuando se termino   
+        //TODO: de importar el archivo y puedo manejar este evento.             
+        //TODO: En la clase QuotesManager agregue una propiedad para registrar  
+        //TODO: la cantidad todas de lineas a importar y la cantidad que se     
+        //TODO: han importado hasta el momento.                                 
 
         File file = File.new_for_uri (url);
 
         try {
 
-            InputStream @is = file.read ();
+            InputStream @is = yield file.read_async ();
 
             uint8 buffer[1];
             size_t size = @is.read (buffer);
             stdout.write (buffer, size);
 
-
             DataInputStream dis = new DataInputStream (@is);
 
             string str = "";
 
-            str = dis.read_line ();
+            str = yield dis.read_line_async ();
 
             while (str != null) {
 
-                qm.insert_cuote_to_db (str);
+                qm.insert_cuote_to_db (str); //Esto es un Thread, queda procesando en segundo plano.
 
-                str = dis.read_line ();
+                str = yield dis.read_line_async ();
             }
 
         } catch (Error e) {

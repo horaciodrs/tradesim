@@ -43,6 +43,10 @@ public class TradeSim.Services.QuotesManager {
     private double max_price { get; set; }
     private double min_price { get; set; }
 
+    public bool import_is_working;
+    public int import_total_lines;
+    public int imported_lines;
+
     /* */
 
     public enum ItemCSVColumns {
