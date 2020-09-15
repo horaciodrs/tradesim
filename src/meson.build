@@ -1,6 +1,7 @@
 sources = files(
     'Utils/Utilities.vala',
 
+    'Objects/OperationItem.vala',
     'Objects/ProviderTicker.vala',
     'Objects/Provider.vala',
     'Objects/Ticker.vala',
@@ -8,6 +9,7 @@ sources = files(
     'Services/Database.vala',
     'Services/QuoteItem.vala',
     'Services/QuotesManager.vala',
+    'Services/OperationsManager.vala',
 
     'Layouts/Welcome.vala',
     'Layouts/HeaderBar.vala',

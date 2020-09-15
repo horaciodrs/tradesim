@@ -19,22 +19,14 @@
  * Authored by: Horacio Daniel Ros <horaciodrs@gmail.com>
  */
 
-public class TradeSim.Objects.OperationItem{
+public class TradeSim.Services.OperationsManager{
 
-    private int Id {get; set;}
-    private string ProviderName {get; set;}
-    private string TickerName {get; set;}
-    private DateTime Date {get; set;}
-    private string State {get; set;}
-    private string Observations {get; set;}
-    private double Volume {get; set;}
-    private double Price {get; set;}
-    private double Tp {get; set;}
-    private double Sl {get; set;}
-    private double Profit {get; set;}
+    public Array<TradeSim.Objects.OperationItem> operations;
+    
+    public OperationsManager(){
 
-    public OperationItem(int _id, string _provideR_name, string _TickerName){
-        Id = _id;
+        operations = new Array<TradeSim.Objects.OperationItem> ();
+
     }
 
 }
