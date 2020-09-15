@@ -1,4 +1,25 @@
-public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
+/*
+ * Copyright (c) 2020-2020 horaciodrs (https://github.com/horaciodrs/TradeSim)
+ *
+ * This file is part of TradeSim.
+ *
+ * TradeSim is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * TradeSim is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with Akira. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Authored by: Horacio Daniel Ros <horaciodrs@gmail.com>
+ */
+
+ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
     public weak TradeSim.MainWindow main_window { get; construct; }
     private Gtk.Stack stack;
     private Gtk.Switch dark_theme_switch;
@@ -40,11 +61,12 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
     public Gtk.Grid grid_data_source;
     public Gtk.Grid grid_about_us;
 
+    public Gtk.ProgressBar progress_import;
     public Gtk.Spinner spiner_data_source;
     public Gtk.Label label_waiting;
     public int data_files_found;
+    public bool working;
 
-    public Gtk.ProgressBar progress_import;
 
     int item_focus;
 
@@ -365,6 +387,10 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
     private void start_update_quotes_by_filter () {
 
+        if (working) {
+            return;
+        }
+
         spiner_data_source.set_visible (true);
         spiner_data_source.start ();
         label_waiting.set_text ("Waiting for data...");
@@ -372,12 +398,25 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         var loop = new MainLoop ();
 
+        working = true;
+        tree_view_provider.set_sensitive(false);
+        tree_view_ticker.set_sensitive(false);
+        tree_view_time_frame.set_sensitive(false);
+        tree_view_year.set_sensitive(false);
+        tree_view_quotes.set_sensitive(false);
+
         update_quotes_by_filter.begin ((obj, res) => {
 
             update_quotes_by_filter.end (res);
             label_waiting.set_text ("Done! - Has been found " + data_files_found.to_string () + " data files");
             label_waiting.get_style_context ().add_class ("label-status");
             spiner_data_source.stop ();
+            working = false;
+            tree_view_provider.set_sensitive(true);
+            tree_view_ticker.set_sensitive(true);
+            tree_view_time_frame.set_sensitive(true);
+            tree_view_year.set_sensitive(true);
+            tree_view_quotes.set_sensitive(true);
             loop.quit ();
 
         });
@@ -581,15 +620,15 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         }
 
         double completado = 1.00 * qm.db.imported_lines / qm.db.import_total_lines;
-        
+
         progress_import.set_fraction (completado);
-        label_waiting.set_text("Imported " + qm.db.imported_lines.to_string() + " of " + qm.db.import_total_lines.to_string() + " quotes.");
+        label_waiting.set_text ("Imported " + qm.db.imported_lines.to_string () + " of " + qm.db.import_total_lines.to_string () + " quotes.");
 
         if (qm.db.imported_lines == qm.db.import_total_lines) {
-            label_waiting.set_text("Import Completed!");
-            //grid_data_source.remove_row(7);
-            //grid_data_source.remove_row(8);
-            qm.db.end_import_quotes();
+            label_waiting.set_text ("Import Completed!");
+            // grid_data_source.remove_row(7);
+            // grid_data_source.remove_row(8);
+            qm.db.end_import_quotes ();
             return false;
         }
 
@@ -659,8 +698,12 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         grid.column_homogeneous = true;
         grid.set_hexpand (true);
 
+        var grid_waiting = new Gtk.Grid();
         spiner_data_source = new Gtk.Spinner ();
         label_waiting = new Gtk.Label ("");
+        grid_waiting.attach(spiner_data_source, 0,0);
+        grid_waiting.attach(label_waiting, 1,0);
+        grid_waiting.halign = Gtk.Align.CENTER;
 
         progress_import = new Gtk.ProgressBar ();
 
@@ -673,8 +716,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         grid.attach (scroll_year, 2, 1, 1, 2);
         grid.attach (scroll_time_frame, 3, 1, 1, 2);
         grid.attach (scroll_quotes, 0, 3, 4, 3);
-        grid.attach (spiner_data_source, 0, 7);
-        grid.attach (label_waiting, 1, 7, 3);
+        grid.attach (grid_waiting, 0, 7, 4);
         grid.attach (progress_import, 0, 8, 4);
 
         return grid;
