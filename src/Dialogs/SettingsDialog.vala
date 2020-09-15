@@ -81,6 +81,10 @@
             title: "Preferencias"
             );
 
+        delete_event.connect ((e) => {
+            return before_destroy ();
+        });
+
         item_focus = _item_focus;
 
         data_files_found = 0;
@@ -122,6 +126,11 @@
 
         stack_focus ();
 
+
+    }
+
+    public bool before_destroy(){
+        return working;
     }
 
     public void stack_focus () {
@@ -626,9 +635,13 @@
 
         if (qm.db.imported_lines == qm.db.import_total_lines) {
             label_waiting.set_text ("Import Completed!");
-            // grid_data_source.remove_row(7);
-            // grid_data_source.remove_row(8);
+            tree_view_provider.set_sensitive(true);
+            tree_view_ticker.set_sensitive(true);
+            tree_view_time_frame.set_sensitive(true);
+            tree_view_year.set_sensitive(true);
+            tree_view_quotes.set_sensitive(true);
             qm.db.end_import_quotes ();
+            working = false;
             return false;
         }
 
@@ -646,6 +659,14 @@
         // TODO: En la clase QuotesManager agregue una propiedad para registrar
         // TODO: la cantidad todas de lineas a importar y la cantidad que se
         // TODO: han importado hasta el momento.
+
+        working = true;
+
+        tree_view_provider.set_sensitive(false);
+        tree_view_ticker.set_sensitive(false);
+        tree_view_time_frame.set_sensitive(false);
+        tree_view_year.set_sensitive(false);
+        tree_view_quotes.set_sensitive(false);
 
         qm.db.start_import_quotes (yield get_file_lines (url));
         Timeout.add (100, check_import_state, GLib.Priority.HIGH);
