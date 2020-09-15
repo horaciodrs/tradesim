@@ -87,6 +87,15 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
         show_all ();
     }
 
+    public void open_dialog_operations(){
+        
+        var operations_dialog = new TradeSim.Dialogs.NewOperationDialog(this);
+
+        operations_dialog.show_all();
+        operations_dialog.present();
+
+    }
+
     public void open_dialog_preferences(int show_item = SettingsActions.APARENCE){
         var settings_dialog = new TradeSim.Dialogs.SettingsDialog (this, show_item);
         settings_dialog.show_all ();
