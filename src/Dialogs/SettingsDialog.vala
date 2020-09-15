@@ -44,6 +44,8 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
     public Gtk.Label label_waiting;
     public int data_files_found;
 
+    public Gtk.ProgressBar progress_import;
+
     int item_focus;
 
     public SettingsDialog (TradeSim.MainWindow window, int _item_focus) {
@@ -366,6 +368,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         spiner_data_source.set_visible (true);
         spiner_data_source.start ();
         label_waiting.set_text ("Waiting for data...");
+        progress_import.set_fraction (0.00);
 
         var loop = new MainLoop ();
 
@@ -397,6 +400,41 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
 
         return true;
+
+    }
+
+    private async int get_file_lines (string url) {
+
+        File file = File.new_for_uri (url);
+        int return_value = 0;
+
+        try {
+
+            InputStream @is = yield file.read_async ();
+
+            uint8 buffer[1];
+            size_t size = @is.read (buffer);
+            stdout.write (buffer, size);
+
+            DataInputStream dis = new DataInputStream (@is);
+
+            string str = "";
+
+            str = yield dis.read_line_async ();
+
+            while (str != null) {
+
+                return_value++;
+
+                str = yield dis.read_line_async ();
+
+            }
+
+        } catch (Error e) {
+            return 0;
+        }
+
+        return return_value;
 
     }
 
@@ -503,11 +541,11 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
                 label_waiting.get_style_context ().add_class ("label-status");
                 spiner_data_source.stop ();
                 loop.quit ();
-    
+
             });
-    
+
             loop.run ();
-            
+
             list_store_quotes.set (edited_iter, 6, !toggle.active);
 
         });
@@ -533,16 +571,45 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
     }
 
+    private bool check_import_state () {
+
+        // Esta función es llamada con Timer y se ejecuta hasta que la
+        // importación de los datos es completada.
+
+        if (qm.db.import_total_lines == 0) {
+            return true;
+        }
+
+        double completado = 1.00 * qm.db.imported_lines / qm.db.import_total_lines;
+        
+        progress_import.set_fraction (completado);
+        label_waiting.set_text("Imported " + qm.db.imported_lines.to_string() + " of " + qm.db.import_total_lines.to_string() + " quotes.");
+
+        if (qm.db.imported_lines == qm.db.import_total_lines) {
+            label_waiting.set_text("Import Completed!");
+            //grid_data_source.remove_row(7);
+            //grid_data_source.remove_row(8);
+            qm.db.end_import_quotes();
+            return false;
+        }
+
+        return true;
+
+    }
+
     private async void import_data_from_internet (string url) {
 
-        //TODO: Tengo que conocer la cantidad de lineas que tiene el archivo.   
-        //TODO: para poder conocer el momento en el que se terminan de ejecutar 
-        //TODO: todos los hilos que se encargan de subir las cotizaciones en    
-        //TODO: la base de datos. De esta forma puedo saber cuando se termino   
-        //TODO: de importar el archivo y puedo manejar este evento.             
-        //TODO: En la clase QuotesManager agregue una propiedad para registrar  
-        //TODO: la cantidad todas de lineas a importar y la cantidad que se     
-        //TODO: han importado hasta el momento.                                 
+        // TODO: Tengo que conocer la cantidad de lineas que tiene el archivo.
+        // TODO: para poder conocer el momento en el que se terminan de ejecutar
+        // TODO: todos los hilos que se encargan de subir las cotizaciones en
+        // TODO: la base de datos. De esta forma puedo saber cuando se termino
+        // TODO: de importar el archivo y puedo manejar este evento.
+        // TODO: En la clase QuotesManager agregue una propiedad para registrar
+        // TODO: la cantidad todas de lineas a importar y la cantidad que se
+        // TODO: han importado hasta el momento.
+
+        qm.db.start_import_quotes (yield get_file_lines (url));
+        Timeout.add (100, check_import_state, GLib.Priority.HIGH);
 
         File file = File.new_for_uri (url);
 
@@ -562,9 +629,10 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             while (str != null) {
 
-                qm.insert_cuote_to_db (str); //Esto es un Thread, queda procesando en segundo plano.
+                qm.insert_cuote_to_db (str); // Esto es un Thread, queda procesando en segundo plano.
 
                 str = yield dis.read_line_async ();
+
             }
 
         } catch (Error e) {
@@ -594,6 +662,8 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         spiner_data_source = new Gtk.Spinner ();
         label_waiting = new Gtk.Label ("");
 
+        progress_import = new Gtk.ProgressBar ();
+
         spiner_data_source.halign = Gtk.Align.END;
         label_waiting.halign = Gtk.Align.START;
 
@@ -605,6 +675,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         grid.attach (scroll_quotes, 0, 3, 4, 3);
         grid.attach (spiner_data_source, 0, 7);
         grid.attach (label_waiting, 1, 7, 3);
+        grid.attach (progress_import, 0, 8, 4);
 
         return grid;
     }

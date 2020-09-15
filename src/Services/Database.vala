@@ -3,6 +3,10 @@ public class TradeSim.Services.Database : GLib.Object {
     private Sqlite.Database db;
     private string db_path;
 
+    public bool import_is_working;
+    public int import_total_lines;
+    public int imported_lines;
+
     /*DEPENDENCIA: sudo apt install libsqlite3-dev  */
 
     public Database (bool skip_tables = false) {
@@ -22,6 +26,20 @@ public class TradeSim.Services.Database : GLib.Object {
             stderr.printf ("Can't open database: %d, %s\n", rc, db.errmsg ());
             Gtk.main_quit ();
         }
+    }
+
+    public void start_import_quotes(int quotes){
+
+        import_total_lines = quotes;
+        imported_lines = 0;
+        import_is_working = true;
+
+    }
+
+    public void end_import_quotes(){
+
+        import_is_working = false;
+
     }
 
     private int create_tables () {
@@ -411,6 +429,8 @@ public class TradeSim.Services.Database : GLib.Object {
             add_imported_data (provider_id, market_id, ticker_id, time_frame_id, date_year, date_month);
 
             //Thread.usleep (1000000);
+
+            imported_lines++;
 
             return null;
     
