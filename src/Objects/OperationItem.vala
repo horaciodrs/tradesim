@@ -21,20 +21,34 @@
 
 public class TradeSim.Objects.OperationItem{
 
-    private int Id {get; set;}
-    private string ProviderName {get; set;}
-    private string TickerName {get; set;}
-    private DateTime Date {get; set;}
-    private string State {get; set;}
-    private string Observations {get; set;}
-    private double Volume {get; set;}
-    private double Price {get; set;}
-    private double Tp {get; set;}
-    private double Sl {get; set;}
-    private double Profit {get; set;}
+    public int id {get; set;}
+    public string provider_name {get; set;}
+    public string ticker_name {get; set;}
+    public DateTime operation_date {get; set;}
+    public string state {get; set;}
+    public string observations {get; set;}
+    public double volume {get; set;}
+    public double price {get; set;}
+    public double tp {get; set;}
+    public double sl {get; set;}
+    public double profit {get; set;}
 
-    public OperationItem(int _id, string _provideR_name, string _TickerName){
-        Id = _id;
+    public OperationItem(int _id, string _provider_name, string _ticker_name
+                        , DateTime _date, string _state, string _observations
+                        , double _volume, double _price, double _tp, double _sl
+                        , double _profit){
+        id = _id;
+        provider_name = _provider_name;
+        ticker_name = _ticker_name;
+        operation_date = _date;
+        state = _state;
+        observations = _observations;
+        volume = _volume;
+        price = _price;
+        tp = _tp;
+        sl = _sl;
+        profit = _profit;
+
     }
 
 }

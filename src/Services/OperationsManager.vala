@@ -22,10 +22,50 @@
 public class TradeSim.Services.OperationsManager{
 
     public Array<TradeSim.Objects.OperationItem> operations;
+
+    public double DefaultLote;
     
     public OperationsManager(){
 
         operations = new Array<TradeSim.Objects.OperationItem> ();
+
+
+    }
+
+    public double get_operation_profit_by_id(int _id, double _price){
+
+        TradeSim.Objects.OperationItem _operation = null;
+
+        for(int i=0; i<operations.length; i++){
+            if(operations.index(i).id == _id){
+                _operation = operations.index(i);
+            }
+        }
+
+        if(_operation != null){
+            return get_operation_profit_by_price(_operation, _price);
+        }
+
+        return -1.00;
+
+    }
+
+    public double get_operation_profit_by_price(TradeSim.Objects.OperationItem _operation, double _price){
+
+        double return_value = 0.00;
+
+        double original = _operation.volume * _operation.price;
+        double actual = _operation.volume * _price;
+
+        return_value = actual - original;
+
+        return return_value;
+
+    }
+
+    public void add_operation(TradeSim.Objects.OperationItem _operation){
+
+        operations.append_val(_operation);
 
     }
 
