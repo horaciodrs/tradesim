@@ -27,6 +27,8 @@ public class TradeSim.Services.OperationsManager{
     
     public OperationsManager(){
 
+        DefaultLote = 100000.00;
+
         operations = new Array<TradeSim.Objects.OperationItem> ();
 
 
@@ -54,8 +56,8 @@ public class TradeSim.Services.OperationsManager{
 
         double return_value = 0.00;
 
-        double original = _operation.volume * _operation.price;
-        double actual = _operation.volume * _price;
+        double original = _operation.volume * DefaultLote * _operation.price;
+        double actual = _operation.volume * DefaultLote * _price;
 
         return_value = actual - original;
 

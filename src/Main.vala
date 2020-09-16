@@ -24,6 +24,9 @@
         meson build --prefix=/usr
         ninja
 
+        vscode theme: noctis high contrast
+        vsfont theme: AcPlus IBM VGA 8x16-2x
+
  */
 
 public static int main (string[] args) {
