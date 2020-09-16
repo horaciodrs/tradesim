@@ -88,15 +88,23 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
         var header_grid = new Gtk.Grid ();
         header_title = new Gtk.Label ("TRADESIM - EURUSD, H1");
         header_title.get_style_context ().add_class ("dialog-title");
+        header_title.halign = Gtk.Align.START;
         header_grid.margin_start = 30;
         header_grid.margin_top = 0;
         header_grid.margin_end = 30;
-        header_grid.margin_bottom = 10;
-        header_grid.attach (header_title, 0, 3, 2);
+        header_grid.margin_bottom = 0;
+
+        var label_simulation = new Gtk.Label("Unnamed Simulation");
+        label_simulation.halign = Gtk.Align.START;
+
+        var label_simulation_data = new Gtk.Label("Code: 1, Date: 21 Jan 2011 at 10:04am.");
+        label_simulation.halign = Gtk.Align.START;
+
+        header_grid.attach (header_title, 0, 0);
+        header_grid.attach (label_simulation, 0, 1);
+        header_grid.attach (label_simulation_data, 0, 2);
 
         body.add (header_grid);
-
-
 
         label_id = new Gtk.Label ("Code:");
         label_id.halign = Gtk.Align.END;
@@ -185,7 +193,10 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
         // ----
 
         var form_grid = new Gtk.Grid ();
-        form_grid.margin = 30;
+        form_grid.margin_start = 30;
+        form_grid.margin_end = 30;
+        form_grid.margin_bottom = 30;
+        form_grid.margin_top = 15;
         form_grid.row_spacing = 12;
         form_grid.column_spacing = 20;
 
@@ -206,8 +217,7 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
         entry_sl_amount.set_value (75.23);
         entry_sl_price.set_value (1.05012);
 
-        update_tp_by_price();
-        update_sl_by_price();
+        configure_events();
 
         body.add (form_grid);
 
@@ -223,6 +233,63 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
 
         add_action_widget (acept_button, Action.OK);
         add_action_widget (cancel_button, Action.CANCEL);
+
+    }
+
+    private void configure_events(){
+
+        update_tp_by_pips();
+        update_sl_by_pips();
+
+        spin_price.value_changed.connect(()=>{
+            update_tp_by_pips();
+            update_sl_by_pips();
+        });
+
+        spin_volume.value_changed.connect(()=>{
+            update_tp_by_pips();
+            update_sl_by_pips();
+        });
+
+        entry_tp.value_changed.connect(update_tp_by_pips);
+        entry_tp_amount.value_changed.connect(update_tp_by_amount);
+        entry_tp_price.value_changed.connect(update_tp_by_price);
+
+        entry_sl.value_changed.connect(update_sl_by_pips);
+        entry_sl_amount.value_changed.connect(update_sl_by_amount);
+        entry_sl_price.value_changed.connect(update_sl_by_price);
+
+    }
+
+    private void update_tp_by_amount(){
+
+        double price = spin_price.get_value();
+        double volume = spin_volume.get_value();
+        double operation_value = volume * default_lote;
+        //double calc_costo = operation_value * price;
+        double calc_amount = entry_tp_amount.get_value();
+        double price_tp = calc_amount/operation_value + price;
+        double calc_pips = (price_tp - price)*100000;
+        
+
+        entry_tp_price.set_value(price_tp);
+        entry_tp.set_value(calc_pips);
+
+    }
+
+    private void update_tp_by_pips(){
+
+        double price = spin_price.get_value();
+        double volume = spin_volume.get_value();
+        double operation_value = volume * default_lote;
+        double calc_costo = operation_value * price;
+        double calc_pips = entry_tp.get_value();
+        double price_tp = price + calc_pips/100000;
+        double calc_profit = operation_value * price_tp;
+        double calc_amount = calc_profit - calc_costo; //usd
+
+        entry_tp_price.set_value(price_tp);
+        entry_tp_amount.set_value(calc_amount);
 
     }
 
@@ -255,6 +322,38 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
 
         entry_sl.set_value(calc_pips);
         entry_sl_amount.set_value(calc_amount);
+
+    }
+
+    private void update_sl_by_pips(){
+
+        double price = spin_price.get_value();
+        double volume = spin_volume.get_value();
+        double operation_value = volume * default_lote;
+        double calc_costo = operation_value * price;
+        double calc_pips = entry_sl.get_value();
+        double price_sl = price - calc_pips/100000;
+        double calc_profit = operation_value * price_sl;
+        double calc_amount = calc_costo - calc_profit; //usd
+
+        entry_sl_price.set_value(price_sl);
+        entry_sl_amount.set_value(calc_amount);
+
+    }
+
+    private void update_sl_by_amount(){
+
+        double price = spin_price.get_value();
+        double volume = spin_volume.get_value();
+        double operation_value = volume * default_lote;
+        //double calc_costo = operation_value * price;
+        double calc_amount = entry_sl_amount.get_value();
+        double price_sl = price - calc_amount/operation_value;
+        double calc_pips = (price - price_sl)*100000;
+        
+
+        entry_sl_price.set_value(price_sl);
+        entry_sl.set_value(calc_pips);
 
     }
 
