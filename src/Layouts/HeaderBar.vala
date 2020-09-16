@@ -112,11 +112,12 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         });
 
         buy.button.clicked.connect(e => {
-
-            main_window.open_dialog_operations();
-
+            main_window.open_dialog_operations(TradeSim.MainWindow.OperationsType.BUY);
         });
 
+        sell.button.clicked.connect(e => {
+            main_window.open_dialog_operations(TradeSim.MainWindow.OperationsType.SELL);
+        });
 
         pack_start (new_button);
         pack_start (open);
