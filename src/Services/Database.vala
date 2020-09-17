@@ -19,7 +19,7 @@
  * Authored by: Horacio Daniel Ros <horaciodrs@gmail.com>
  */
 
- public class TradeSim.Services.Database : GLib.Object {
+public class TradeSim.Services.Database : GLib.Object {
 
     private Sqlite.Database db;
     private string db_path;
@@ -49,7 +49,7 @@
         }
     }
 
-    public void start_import_quotes(int quotes){
+    public void start_import_quotes (int quotes) {
 
         import_total_lines = quotes;
         imported_lines = 0;
@@ -57,7 +57,7 @@
 
     }
 
-    public void end_import_quotes(){
+    public void end_import_quotes () {
 
         import_is_working = false;
 
@@ -133,16 +133,16 @@
         debug ("Table tickers created");
 
         rc = db.exec ("PRAGMA foreign_keys = ON;");
-        
+
         insert_provider ("TRADESIM", "TRADESIM");
 
         int id_forex = insert_market ("Forex", "");
 
         insert_ticker ("EURUSD", id_forex);
-        //insert_ticker ("USDJPY", id_forex);
+        // insert_ticker ("USDJPY", id_forex);
         insert_ticker ("GBPUSD", id_forex);
-        //insert_ticker ("USDCHF", id_forex);
-        //insert_ticker ("USDCAD", id_forex);
+        // insert_ticker ("USDCHF", id_forex);
+        // insert_ticker ("USDCAD", id_forex);
 
         insert_time_frames ("D1");
         insert_time_frames ("H4");
@@ -351,8 +351,8 @@
     }
 
     public void insert_quote (TradeSim.Services.QuoteItem quote_item) {
-        new Thread<void*> ("insert_quote", () => {
-    
+        new Thread<void *> ("insert_quote", () => {
+
             // Without usleep it crashes on smb:// protocol
             int provider_id = get_db_id_by_table_and_field ("providers", "folder_name", quote_item.provider_folder_name);
             int market_id = get_db_id_by_name ("markets", "Forex");
@@ -368,7 +368,12 @@
 
             string aux_day = "00" + date_day.to_string ();
             string aux_month = "00" + date_month.to_string ();
+            string aux_hour = "00" + date_hour.to_string ();
+            string aux_minute = "00" + date_minute.to_string ();
             string date_str = date_year.to_string () + "-" + aux_month.substring (aux_month.length - 2, 2) + "-" + aux_day.substring (aux_day.length - 2, 2);
+
+            date_str = date_str + " " + aux_hour.substring (aux_hour.length - 2, 2);
+            date_str = date_str + ":" + aux_minute.substring (aux_minute.length - 2, 2);
 
             double price_open = quote_item.open_price;
             double price_close = quote_item.close_price;
@@ -449,12 +454,12 @@
 
             add_imported_data (provider_id, market_id, ticker_id, time_frame_id, date_year, date_month);
 
-            //Thread.usleep (1000000);
+            // Thread.usleep (1000000);
 
             imported_lines++;
 
             return null;
-    
+
         });
     }
 
@@ -801,21 +806,22 @@
                         ,providers.folder_name
                     FROM quotes
                    INNER JOIN providers ON quotes.provider_id = providers.id
-                   WHERE DATE(quotes.date_str) >= DATE(?)
-                     AND DATE(quotes.date_str) <= DATE(?)
+                   WHERE DATETIME(quotes.date_str) >= DATETIME(?)
+                     AND DATETIME(quotes.date_str) < DATETIME(?)
                      AND provider_id = ?
                      AND market_id = ?
                      AND ticker_id = ?
                      AND time_frame_id = ?
+                    ORDER BY DATETIME(quotes.date_str) ASC
         """;
 
         res = db.prepare_v2 (sql, -1, out stmt);
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_text (1, _date_from.format ("%F"));
+        res = stmt.bind_text (1, get_datetime_to_db (_date_from));
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_text (2, _date_to.format ("%F"));
+        res = stmt.bind_text (2, get_datetime_to_db (_date_to));
         assert (res == Sqlite.OK);
 
         res = stmt.bind_int (3, provider_id);
@@ -1011,6 +1017,13 @@
 
             DateTime item_date = new DateTime.local (date_year, date_month, date_day, date_hour, date_minute, 0);
 
+            //print(">>>>La fecha de la quote es:" + item_date.to_string() + "\n");
+            //print("DATE YEAAAAAAAAAAAAAAAAAAAAAAARRRRRRRRRRRRRR:" + target_date.get_year().to_string() +"\n\n\n\n");
+            //print("DATE MONTHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH:" + target_date.get_month().to_string() +"\n\n\n\n");
+            //print("DATE DAYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY:" + target_date.get_day_of_month().to_string() +"\n\n\n\n");
+            //print("DATE HOURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR:" + target_date.get_hour().to_string() +"\n\n\n\n");
+            //print("DATE MINUTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE:" + target_date.get_minute().to_string() +"\n\n\n\n");
+
             quote_item.set_provider_name (_provider_name);
             quote_item.set_provider_folder_name (item_folder_name);
             quote_item.set_time_frame_name (_time_frame);
@@ -1022,7 +1035,9 @@
 
             return quote_item;
 
-        }
+        }//else{
+            //print("no hay quote.........................");
+        //}
 
         return null;
     }

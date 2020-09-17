@@ -36,7 +36,28 @@ public string get_fecha (DateTime fecha) {
 
     minuto = minuto.substring (minuto.length - 2, 2);
 
-    return  mes + " " + dia + ",  " + anio + " at " + hora + ":" + minuto + "hs.";
+    return mes + " " + dia + ",  " + anio + " at " + hora + ":" + minuto + "hs.";
+}
+
+public string get_datetime_to_db (DateTime fecha) {
+
+    string dia = "00" + fecha.get_day_of_month ().to_string ();
+    string mes = "00" + fecha.get_month ().to_string ();
+    string anio = fecha.get_year ().to_string ();
+    string hora = "00" + fecha.get_hour ().to_string ();
+    string minuto = "00" + fecha.get_minute ().to_string ();
+
+    string return_value = "";
+
+    dia = dia.substring (dia.length - 2, 2);
+    mes = mes.substring (mes.length - 2, 2);
+    hora = hora.substring (hora.length - 2, 2);
+    minuto = minuto.substring (minuto.length - 2, 2);
+
+    return_value = return_value + anio + "-" + mes + "-" + dia + " " + hora + ":" + minuto;
+
+    return return_value;
+
 }
 
 public string get_month_name (int i) {

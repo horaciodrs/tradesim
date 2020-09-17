@@ -177,6 +177,8 @@ public class TradeSim.Services.QuotesManager {
 
             last_date = quotes.index (quotes.length - 1).date_time;
 
+            //print("<<<<<<<<<<<<<<<<<<<<<<<LAST DATE:" + last_date.to_string() + ">>>>>>>>>>>>>>>>>>\n\n\n\n");
+
             TradeSim.Services.QuoteItem next_quote = db.get_next_quotes (provider_name, ticker, time_frame, last_date);
 
             if (next_quote != null) {

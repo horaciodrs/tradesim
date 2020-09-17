@@ -103,6 +103,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
+    private void print_fechas(){
+        print("from:" + date_from.to_string() + " to:" + date_to.to_string() + "\n");
+    }
+
     private void init () {
 
         set_size_request (640, 480);
@@ -232,6 +236,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             date_from = date_add_int_by_time_frame (date_from, time_frame, 1); // date_from = fecha_inicial.add_minutes (velas_step);
 
             change_zoom_level (zoom_factor);
+
+            //print("date_from:" + date_from.to_string() + " date_to:" + date_to.to_string() + "\n");
 
             _horizontal_scroll_x = _width - vertical_scale_width - _horizontal_scroll_width;
 
@@ -537,6 +543,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public void draw_candle (Cairo.Context ctext, TradeSim.Services.QuoteItem candle_data) {
 
         if (candle_data.date_time == null) {
+            //print("saliendo...\n");
             return;
         }
 
@@ -722,6 +729,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         double scrollbar_size_factor = displayed_size * 1.00 / display_size; // por ejemplo si es 0.5 la barra tiene la mitad de available_width;
         double aux = (_width - vertical_scale_width - 1.00) * scrollbar_size_factor;
 
+        //print("displayed:" + displayed_size.to_string() + "display:" + display_size.to_string() + "\n");
+
         _horizontal_scroll_width = int.parse (aux.to_string ());
 
         if (_horizontal_scroll_width < _width - vertical_scale_width - 1.00) {
@@ -849,6 +858,11 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         while (cursor_date.compare (date_to) < 0) {
 
+            //print("get quote:" + cursor_date.to_string() + "\n");
+            var test = data.get_quote_by_time (cursor_date);
+
+            //print("la cuote tiene fecha:" + test.date_time.to_string() + "\n");
+
             draw_candle (ctext, data.get_quote_by_time (cursor_date));
 
             cursor_date = date_add_int_by_time_frame (cursor_date, time_frame, 1); // cursor_date = cursor_date.add_minutes (1);
@@ -883,6 +897,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         cr.restore ();
         cr.save ();
+
+        //print_fechas();
 
         return true;
 
