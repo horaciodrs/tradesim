@@ -48,11 +48,12 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     private int scale_step;
     private int scale_label_step;
     private DateTime date_inicial;
-    private DateTime date_from;
-    private DateTime date_to;
-    private string provider_name;
-    private string time_frame;
-    private string ticker;
+    public DateTime date_from;
+    public DateTime date_to;
+    public DateTime last_candle_date;
+    public string provider_name;
+    public string time_frame;
+    public string ticker;
 
     public bool end_simulation;
 
@@ -70,6 +71,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public double simulation_initial_balance;
 
     public TradeSim.Services.QuotesManager data;
+    public TradeSim.Services.OperationsManager operations_manager;
 
     public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame, string _simulation_name="Unnamed Simulation", double _simulation_initial_balance = 500.000) {
 
@@ -116,6 +118,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         candles_cola_size = 0.8;
 
+        operations_manager = new TradeSim.Services.OperationsManager();
 
         data = new TradeSim.Services.QuotesManager ();
 
@@ -536,6 +539,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         if (candle_data.date_time == null) {
             return;
         }
+
+        last_candle_date = candle_data.date_time;
 
         int posy = get_pos_y_by_price (candle_data.open_price);
         int posy2 = get_pos_y_by_price (candle_data.close_price);

@@ -25,12 +25,6 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
 
     private Gtk.Label header_title;
 
-    private Gtk.Label label_id;
-    private Gtk.Label label_id_value;
-
-    private Gtk.Label label_date;
-    private Gtk.Label label_date_value;
-
     private Gtk.Label label_volume;
     private Gtk.SpinButton spin_volume;
 
@@ -53,6 +47,11 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
     public double default_lote;
     private int operation_type;
 
+    public int op_id;
+    public string op_provider_name;
+    public string op_ticker_name;
+    public DateTime op_datetime;
+
     enum Action {
         OK,
         CANCEL
@@ -72,6 +71,13 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
         default_lote = 100000.00;
         operation_type = otype;
 
+        var canvas = main_window.main_layout.current_canvas;
+
+        op_id = canvas.operations_manager.get_code_for_new_operation();;
+        op_provider_name = canvas.provider_name;
+        op_ticker_name = canvas.ticker;
+        op_datetime = canvas.last_candle_date;
+
         init ();
 
     }
@@ -79,17 +85,27 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
     public void init () {
 
         build_content ();
+        
+        response.connect (on_response);
 
     }
 
     public void build_content () {
 
         int spin_width = 165;
+        string provider_name = op_provider_name;
+        string ticker_name = op_ticker_name;
+        string time_frame = main_window.main_layout.current_canvas.time_frame;
+        string titulo = provider_name + " - " + ticker_name + ", " + time_frame;
+        string simulation_name = main_window.main_layout.current_canvas.simulation_name;
+        string operation_code = op_id.to_string();
+        string operation_date = get_fecha(main_window.main_layout.current_canvas.last_candle_date);
+        string operation_data = "Code: " + operation_code + ", Date: " + operation_date;
 
         var body = get_content_area ();
 
         var header_grid = new Gtk.Grid ();
-        header_title = new Gtk.Label ("TRADESIM - EURUSD, H1");
+        header_title = new Gtk.Label (titulo);
         header_title.get_style_context ().add_class ("dialog-title");
         header_title.halign = Gtk.Align.START;
         header_grid.margin_start = 30;
@@ -97,10 +113,10 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
         header_grid.margin_end = 30;
         header_grid.margin_bottom = 0;
 
-        var label_simulation = new Gtk.Label("Unnamed Simulation");
+        var label_simulation = new Gtk.Label(simulation_name);
         label_simulation.halign = Gtk.Align.START;
 
-        var label_simulation_data = new Gtk.Label("Code: 1, Date: 21 Jan 2011 at 10:04am.");
+        var label_simulation_data = new Gtk.Label(operation_data);
         label_simulation.halign = Gtk.Align.START;
 
         header_grid.attach (header_title, 0, 0);
@@ -108,16 +124,6 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
         header_grid.attach (label_simulation_data, 0, 2);
 
         body.add (header_grid);
-
-        label_id = new Gtk.Label ("Code:");
-        label_id.halign = Gtk.Align.END;
-        label_id_value = new Gtk.Label ("1");
-        label_id_value.halign = Gtk.Align.START;
-
-        label_date = new Gtk.Label ("Date:");
-        label_date.halign = Gtk.Align.END;
-        label_date_value = new Gtk.Label ("21 Jan 2011 at 10:04am.");
-        label_date_value.halign = Gtk.Align.START;
 
         var grid_price = new Gtk.Grid ();
         label_price = new Gtk.Label ("Price:");
@@ -223,10 +229,10 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
 
         acept_button = new Gtk.Button.with_label ("Buy");
 
-        if(operation_type == TradeSim.MainWindow.OperationsType.BUY){
+        if(operation_type == TradeSim.Objects.OperationItem.Type.BUY){
             acept_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
             acept_button.set_label("Buy");
-        }else if(operation_type == TradeSim.MainWindow.OperationsType.SELL){
+        }else if(operation_type == TradeSim.Objects.OperationItem.Type.SELL){
             acept_button.get_style_context ().add_class (Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION);
             acept_button.set_label("Sell");
         }
@@ -240,7 +246,7 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
 
     private void configure_events(){
 
-        if(operation_type == TradeSim.MainWindow.OperationsType.BUY){
+        if(operation_type == TradeSim.Objects.OperationItem.Type.BUY){
 
             buy_update_tp_by_pips();
             buy_update_sl_by_pips();
@@ -263,7 +269,7 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
             entry_sl_amount.value_changed.connect(buy_update_sl_by_amount);
             entry_sl_price.value_changed.connect(buy_update_sl_by_price);
             
-        }else if(operation_type == TradeSim.MainWindow.OperationsType.SELL){
+        }else if(operation_type == TradeSim.Objects.OperationItem.Type.SELL){
 
             sell_update_tp_by_pips();
             sell_update_sl_by_pips();
@@ -429,8 +435,6 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
 
     }
 
-    //----------------------
-
     private void sell_update_tp_by_price(){
 
         double price = spin_price.get_value();
@@ -475,6 +479,35 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
         entry_tp_price.set_value(price_tp);
         entry_tp.set_value(calc_pips);
 
+    }
+
+    private void on_response (Gtk.Dialog source, int response_id) {
+
+        if (response_id == Action.OK) {
+
+            TradeSim.Dialogs.NewOperationDialog dialogo = ((TradeSim.Dialogs.NewOperationDialog)source);
+
+            var objetivo = dialogo.main_window.main_layout;
+
+            objetivo.add_operation(op_id
+                                , op_provider_name
+                                , op_ticker_name
+                                , op_datetime
+                                , TradeSim.Objects.OperationItem.State.OPEN
+                                , ""
+                                , spin_volume.get_value()
+                                , spin_price.get_value()
+                                ,  entry_tp_price.get_value()
+                                , entry_sl_price.get_value()
+                                , operation_type);
+
+            destroy ();
+
+        }else if(response_id == Action.CANCEL){
+            destroy ();
+        }
+
+        destroy ();
     }
 
 }

@@ -25,7 +25,8 @@ public class TradeSim.Objects.OperationItem{
     public string provider_name {get; set;}
     public string ticker_name {get; set;}
     public DateTime operation_date {get; set;}
-    public string state {get; set;}
+    public int state {get; set;}
+    public int type_op {get; set;}
     public string observations {get; set;}
     public double volume {get; set;}
     public double price {get; set;}
@@ -33,10 +34,20 @@ public class TradeSim.Objects.OperationItem{
     public double sl {get; set;}
     public double profit {get; set;}
 
+    public enum State{
+          OPEN
+        , CLOSED
+    }
+
+    public enum Type{
+        BUY
+      , SELL
+    }
+
     public OperationItem(int _id, string _provider_name, string _ticker_name
-                        , DateTime _date, string _state, string _observations
+                        , DateTime _date, int _state, string _observations
                         , double _volume, double _price, double _tp, double _sl
-                        , double _profit){
+                        , int _type){
         id = _id;
         provider_name = _provider_name;
         ticker_name = _ticker_name;
@@ -47,7 +58,7 @@ public class TradeSim.Objects.OperationItem{
         price = _price;
         tp = _tp;
         sl = _sl;
-        profit = _profit;
+        type_op = _type;
 
     }
 

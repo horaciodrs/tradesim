@@ -30,19 +30,19 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
 
     public TradeSim.Services.QuotesManager qm;
 
-    public enum OperationColumns{
-         ID
-        ,PROVIDER
-        ,TICKER
-        ,DATE
-        ,STATE
-        ,OBSERVATIONS
-        ,VOLUME
-        ,BUY_PRICE
-        ,TP_PRICE
-        ,SL_PRICE
-        ,PROFIT
-        ,N_COLUMNS
+    public enum OperationColumns {
+        ID
+        , PROVIDER
+        , TICKER
+        , DATE
+        , STATE
+        , OBSERVATIONS
+        , VOLUME
+        , BUY_PRICE
+        , TP_PRICE
+        , SL_PRICE
+        , PROFIT
+        , N_COLUMNS
     }
 
     public OperationsPanel (TradeSim.MainWindow window) {
@@ -69,33 +69,18 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         scroll_prviders.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
 
         list_store_operations = new Gtk.TreeStore (OperationColumns.N_COLUMNS
-                                                 , typeof (string)
-                                                 , typeof (string)
-                                                 , typeof (string)
-                                                 , typeof (string)
-                                                 , typeof (string)
-                                                 , typeof (string)
-                                                 , typeof (string)
-                                                 , typeof (string)
-                                                 , typeof (string)
-                                                 , typeof (string)
-                                                 , typeof (string));
+                                                   , typeof (string)
+                                                   , typeof (string)
+                                                   , typeof (string)
+                                                   , typeof (string)
+                                                   , typeof (string)
+                                                   , typeof (string)
+                                                   , typeof (string)
+                                                   , typeof (string)
+                                                   , typeof (string)
+                                                   , typeof (string)
+                                                   , typeof (string));
         add_iter_operations = Gtk.TreeIter ();
-
-        
-        list_store_operations.append (out add_iter_operations, null);
-        list_store_operations.set (add_iter_operations
-                                 , OperationColumns.ID, "1"
-                                 , OperationColumns.PROVIDER, "EODATA"
-                                 , OperationColumns.TICKER, "EURUSD"
-                                 , OperationColumns.DATE, "2020/01/01"
-                                 , OperationColumns.STATE , "Open"
-                                 , OperationColumns.OBSERVATIONS , "Obs..."
-                                 , OperationColumns.VOLUME, "0.1"
-                                 , OperationColumns.BUY_PRICE, "1.12352"
-                                 , OperationColumns.TP_PRICE, "1.32352"
-                                 , OperationColumns.SL_PRICE, "1.02352"
-                                 , OperationColumns.PROFIT, "$53.05", -1);
 
         tree_view_operations = new Gtk.TreeView ();
 
@@ -127,11 +112,42 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         tree_view_operations.insert_column_with_attributes (-1, "Stop Loss", stop_cell, "text", OperationColumns.SL_PRICE, null);
         tree_view_operations.insert_column_with_attributes (-1, "Proffit/Loss", profit_cell, "text", OperationColumns.PROFIT, null);
 
-        tree_view_operations.get_column(OperationColumns.OBSERVATIONS).set_expand(true);
+        tree_view_operations.get_column (OperationColumns.OBSERVATIONS).set_expand (true);
 
         scroll_prviders.add (tree_view_operations);
         scroll_prviders.set_vexpand (true);
         scroll_prviders.set_hexpand (true);
+
+    }
+
+    public void update_operations () {
+
+        list_store_operations.clear ();
+
+        var canvas = main_window.main_layout.current_canvas;
+        var ops = canvas.operations_manager.operations;
+
+        if (canvas != null) {
+
+            for (int i = 0 ; i < ops.length ; i++) {
+
+                //print("d. ops.length:" + ops.length.to_string() + "\n");
+                list_store_operations.append (out add_iter_operations, null);
+                list_store_operations.set (add_iter_operations
+                    , OperationColumns.ID, ops.index(i).id.to_string()
+                    , OperationColumns.PROVIDER, ops.index(i).provider_name
+                    , OperationColumns.TICKER, ops.index(i).ticker_name
+                    , OperationColumns.DATE, get_fecha(ops.index(i).operation_date)
+                    , OperationColumns.STATE, "Open"
+                    , OperationColumns.OBSERVATIONS, "Obs..."
+                    , OperationColumns.VOLUME, get_money(ops.index(i).volume)
+                    , OperationColumns.BUY_PRICE, get_money(ops.index(i).price)
+                    , OperationColumns.TP_PRICE, get_money(ops.index(i).tp)
+                    , OperationColumns.SL_PRICE, get_money(ops.index(i).sl)
+                    , OperationColumns.PROFIT, "-1", -1);
+            }
+
+        }
 
     }
 

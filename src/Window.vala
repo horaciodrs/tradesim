@@ -33,11 +33,6 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
         , ABOUT_US
     }
 
-    public enum OperationsType {
-          BUY
-        , SELL
-    }
-
     public MainWindow (TradeSim.Application trade_sim_app) {
         Object (
             application: trade_sim_app
@@ -93,12 +88,16 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
     }
 
     public void open_dialog_operations(int otype){
+
+        if(main_layout.current_canvas != null){
+
+            var operations_dialog = new TradeSim.Dialogs.NewOperationDialog(this, otype);
+
+            operations_dialog.show_all();
+            operations_dialog.present();
+
+        }
         
-        var operations_dialog = new TradeSim.Dialogs.NewOperationDialog(this, otype);
-
-        operations_dialog.show_all();
-        operations_dialog.present();
-
     }
 
     public void open_dialog_preferences(int show_item = SettingsActions.APARENCE){

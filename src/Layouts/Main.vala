@@ -116,4 +116,29 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
     }
 
+    public void add_operation(int _id, string _provider_name, string _ticker_name
+                            , DateTime _date_time, int _state, string _obs
+                            , double _volume, double _price, double _tp_price
+                            , double _sl_price, int _operation_type){
+
+        var new_operation = new TradeSim.Objects.OperationItem(
+            _id
+          , _provider_name
+          , _ticker_name
+          , _date_time
+          , _state
+          , _obs
+          , _volume
+          , _price
+          , _tp_price
+          , _sl_price
+          , _operation_type);
+
+        
+        current_canvas.operations_manager.add_operation(new_operation);
+
+        operations_panel.update_operations();
+
+    }
+
 }

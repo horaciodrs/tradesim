@@ -34,6 +34,10 @@ public class TradeSim.Services.OperationsManager{
 
     }
 
+    public int get_code_for_new_operation(){
+        return (int) (operations.length) + 1;
+    }
+
     public double get_operation_profit_by_id(int _id, double _price){
 
         TradeSim.Objects.OperationItem _operation = null;
