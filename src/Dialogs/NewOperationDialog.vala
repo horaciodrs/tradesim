@@ -214,7 +214,9 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
 
         // Initial values.
 
-        spin_price.set_value (1.09125);
+        var price = main_window.main_layout.current_canvas.last_candle_price;
+
+        spin_price.set_value (price);
         spin_volume.set_value (0.25);
         entry_tp.set_value (80);
         entry_tp_amount.set_value (285.50);

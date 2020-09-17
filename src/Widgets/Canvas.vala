@@ -51,6 +51,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public DateTime date_from;
     public DateTime date_to;
     public DateTime last_candle_date;
+    public double last_candle_price;
     public string provider_name;
     public string time_frame;
     public string ticker;
@@ -104,7 +105,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     }
 
     private void print_fechas(){
-        print("from:" + date_from.to_string() + " to:" + date_to.to_string() + "\n");
+        print("from:" + date_from.to_string() + " to:" + date_to.to_string() + "candles:" + get_candle_count_betwen_dates(date_from, date_to).to_string()  + "\n");
     }
 
     private void init () {
@@ -241,6 +242,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
             _horizontal_scroll_x = _width - vertical_scale_width - _horizontal_scroll_width;
 
+            main_window.main_layout.operations_panel.update_operations_profit();
+
             if (change_velocity) {
                 Timeout.add (simulation_vel, play, GLib.Priority.HIGH);
                 return false; // retorna falso para que frene.... pero tiene que volver a tirar el timeout
@@ -272,23 +275,23 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         zoom_factor = factor;
 
         if (factor == 1.000) {
-            total_candles_size = 45;
-        } else if (factor == 0.750) {
             total_candles_size = 65;
+        } else if (factor == 0.750) {
+            total_candles_size = 85;
         } else if (factor == 0.500) {
-            total_candles_size = 90;
-        } else if (factor == 0.250) {
             total_candles_size = 120;
+        } else if (factor == 0.250) {
+            total_candles_size = 140;
         } else if (factor == 0.125) {
-            total_candles_size = 150;
+            total_candles_size = 160;
         } else if (factor == 1.125) {
-            total_candles_size = 35;
+            total_candles_size = 45;
         } else if (factor == 1.250) {
-            total_candles_size = 25;
+            total_candles_size = 35;
         } else if (factor == 1.500) {
-            total_candles_size = 15;
+            total_candles_size = 25;
         } else if (factor == 1.750) {
-            total_candles_size = 10;
+            total_candles_size = 15;
         }
 
         date_to = date_add_int_by_time_frame (date_from, time_frame, total_candles_size); // date_to = date_from.add_minutes (total_candles_size);
@@ -548,6 +551,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         }
 
         last_candle_date = candle_data.date_time;
+        last_candle_price = candle_data.close_price;
 
         int posy = get_pos_y_by_price (candle_data.open_price);
         int posy2 = get_pos_y_by_price (candle_data.close_price);

@@ -120,6 +120,48 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
 
     }
 
+    public void update_operations_profit () {
+
+        var canvas = main_window.main_layout.current_canvas;
+        var ops = canvas.operations_manager;
+        bool seguir;
+
+        if(ops.operations.length <= 0){
+            return;
+        }
+
+        Gtk.TreeIter row;
+        GLib.Value cell_value;
+        GLib.Value cell_code;
+
+        seguir = list_store_operations.get_iter_first (out row);
+
+        list_store_operations.get_value (row, OperationColumns.ID, out cell_code);
+        list_store_operations.get_value (row, OperationColumns.PROFIT, out cell_value);
+    
+
+        while (seguir) {
+
+            var op_id = int.parse(cell_code.get_string());
+            var price = canvas.last_candle_price;
+            var profit = ops.get_operation_profit_by_id(op_id, price);
+
+            cell_value.set_string (get_money(profit)); //obtener_profit_por 
+
+            list_store_operations.set_value (row, OperationColumns.PROFIT, cell_value);
+
+            seguir = list_store_operations.iter_next (ref row);
+            if (seguir) {
+                list_store_operations.get_value (row, OperationColumns.ID, out cell_code);
+            }
+
+        }
+
+        tree_view_operations.set_model (list_store_operations);
+    
+
+    }
+
     public void update_operations () {
 
         list_store_operations.clear ();
@@ -131,23 +173,25 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
 
             for (int i = 0 ; i < ops.length ; i++) {
 
-                //print("d. ops.length:" + ops.length.to_string() + "\n");
+                // print("d. ops.length:" + ops.length.to_string() + "\n");
                 list_store_operations.append (out add_iter_operations, null);
                 list_store_operations.set (add_iter_operations
-                    , OperationColumns.ID, ops.index(i).id.to_string()
-                    , OperationColumns.PROVIDER, ops.index(i).provider_name
-                    , OperationColumns.TICKER, ops.index(i).ticker_name
-                    , OperationColumns.DATE, get_fecha(ops.index(i).operation_date)
-                    , OperationColumns.STATE, "Open"
-                    , OperationColumns.OBSERVATIONS, "Obs..."
-                    , OperationColumns.VOLUME, get_money(ops.index(i).volume)
-                    , OperationColumns.BUY_PRICE, get_money(ops.index(i).price)
-                    , OperationColumns.TP_PRICE, get_money(ops.index(i).tp)
-                    , OperationColumns.SL_PRICE, get_money(ops.index(i).sl)
-                    , OperationColumns.PROFIT, "-1", -1);
+                                           , OperationColumns.ID, ops.index (i).id.to_string ()
+                                           , OperationColumns.PROVIDER, ops.index (i).provider_name
+                                           , OperationColumns.TICKER, ops.index (i).ticker_name
+                                           , OperationColumns.DATE, get_fecha (ops.index (i).operation_date)
+                                           , OperationColumns.STATE, "Open"
+                                           , OperationColumns.OBSERVATIONS, "Obs..."
+                                           , OperationColumns.VOLUME, get_money (ops.index (i).volume)
+                                           , OperationColumns.BUY_PRICE, get_money (ops.index (i).price)
+                                           , OperationColumns.TP_PRICE, get_money (ops.index (i).tp)
+                                           , OperationColumns.SL_PRICE, get_money (ops.index (i).sl)
+                                           , OperationColumns.PROFIT, "-1", -1);
             }
 
         }
+
+        update_operations_profit ();
 
     }
 
