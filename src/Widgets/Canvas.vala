@@ -862,11 +862,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         while (cursor_date.compare (date_to) < 0) {
 
-            //print("get quote:" + cursor_date.to_string() + "\n");
-            var test = data.get_quote_by_time (cursor_date);
-
-            //print("la cuote tiene fecha:" + test.date_time.to_string() + "\n");
-
             draw_candle (ctext, data.get_quote_by_time (cursor_date));
 
             cursor_date = date_add_int_by_time_frame (cursor_date, time_frame, 1); // cursor_date = cursor_date.add_minutes (1);
