@@ -35,6 +35,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         , PROVIDER
         , TICKER
         , DATE
+        , TYPE
         , STATE
         , OBSERVATIONS
         , VOLUME
@@ -42,6 +43,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         , TP_PRICE
         , SL_PRICE
         , PROFIT
+        , BTN_CLOSE
         , N_COLUMNS
     }
 
@@ -79,6 +81,8 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
                                                    , typeof (string)
                                                    , typeof (string)
                                                    , typeof (string)
+                                                   , typeof (string)
+                                                   , typeof (string)
                                                    , typeof (string));
         add_iter_operations = Gtk.TreeIter ();
 
@@ -92,16 +96,25 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         Gtk.CellRendererText state_cell = new Gtk.CellRendererText ();
         Gtk.CellRendererText observations_cell = new Gtk.CellRendererText ();
         Gtk.CellRendererText date_cell = new Gtk.CellRendererText ();
+        Gtk.CellRendererText type_cell = new Gtk.CellRendererText ();
         Gtk.CellRendererText volume_cell = new Gtk.CellRendererText ();
         Gtk.CellRendererText buy_cell = new Gtk.CellRendererText ();
         Gtk.CellRendererText tp_cell = new Gtk.CellRendererText ();
         Gtk.CellRendererText stop_cell = new Gtk.CellRendererText ();
         Gtk.CellRendererText profit_cell = new Gtk.CellRendererText ();
+        Gtk.CellRendererPixbuf close_cell = new Gtk.CellRendererPixbuf ();
+
+        volume_cell.xalign = 1;
+        buy_cell.xalign = 1;
+        tp_cell.xalign = 1;
+        stop_cell.xalign = 1;
+        profit_cell.xalign = 1;
 
         tree_view_operations.insert_column_with_attributes (-1, "Code", id_cell, "text", OperationColumns.ID, null);
         tree_view_operations.insert_column_with_attributes (-1, "Provider", provider_cell, "text", OperationColumns.PROVIDER, null);
         tree_view_operations.insert_column_with_attributes (-1, "Ticker", ticker_cell, "text", OperationColumns.TICKER, null);
         tree_view_operations.insert_column_with_attributes (-1, "Date Time", date_cell, "text", OperationColumns.DATE, null);
+        tree_view_operations.insert_column_with_attributes (-1, "Type", type_cell, "text", OperationColumns.TYPE, null);
 
         tree_view_operations.insert_column_with_attributes (-1, "State", state_cell, "text", OperationColumns.STATE, null);
         tree_view_operations.insert_column_with_attributes (-1, "Observations", observations_cell, "text", OperationColumns.OBSERVATIONS, null);
@@ -111,6 +124,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         tree_view_operations.insert_column_with_attributes (-1, "Take Proffit", tp_cell, "text", OperationColumns.TP_PRICE, null);
         tree_view_operations.insert_column_with_attributes (-1, "Stop Loss", stop_cell, "text", OperationColumns.SL_PRICE, null);
         tree_view_operations.insert_column_with_attributes (-1, "Proffit/Loss", profit_cell, "text", OperationColumns.PROFIT, null);
+        tree_view_operations.insert_column_with_attributes (-1, " ", close_cell, "icon_name", OperationColumns.BTN_CLOSE, null);
 
         tree_view_operations.get_column (OperationColumns.OBSERVATIONS).set_expand (true);
 
@@ -126,7 +140,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         var ops = canvas.operations_manager;
         bool seguir;
 
-        if(ops.operations.length <= 0){
+        if (ops.operations.length <= 0) {
             return;
         }
 
@@ -138,15 +152,15 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
 
         list_store_operations.get_value (row, OperationColumns.ID, out cell_code);
         list_store_operations.get_value (row, OperationColumns.PROFIT, out cell_value);
-    
+
 
         while (seguir) {
 
-            var op_id = int.parse(cell_code.get_string());
+            var op_id = int.parse (cell_code.get_string ());
             var price = canvas.last_candle_price;
-            var profit = ops.get_operation_profit_by_id(op_id, price);
+            var profit = ops.get_operation_profit_by_id (op_id, price);
 
-            cell_value.set_string (get_money(profit)); //obtener_profit_por 
+            cell_value.set_string (get_money (profit)); // obtener_profit_por
 
             list_store_operations.set_value (row, OperationColumns.PROFIT, cell_value);
 
@@ -158,7 +172,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         }
 
         tree_view_operations.set_model (list_store_operations);
-    
+
 
     }
 
@@ -180,19 +194,33 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
                                            , OperationColumns.PROVIDER, ops.index (i).provider_name
                                            , OperationColumns.TICKER, ops.index (i).ticker_name
                                            , OperationColumns.DATE, get_fecha (ops.index (i).operation_date)
+                                           , OperationColumns.TYPE, get_operation_type_desc (ops.index (i).type_op)
                                            , OperationColumns.STATE, "Open"
                                            , OperationColumns.OBSERVATIONS, "Obs..."
                                            , OperationColumns.VOLUME, get_money (ops.index (i).volume)
                                            , OperationColumns.BUY_PRICE, get_money (ops.index (i).price)
                                            , OperationColumns.TP_PRICE, get_money (ops.index (i).tp)
                                            , OperationColumns.SL_PRICE, get_money (ops.index (i).sl)
-                                           , OperationColumns.PROFIT, "-1", -1);
+                                           , OperationColumns.PROFIT, "-1"
+                                           , OperationColumns.BTN_CLOSE, "window-close"
+                                           , -1);
             }
 
         }
 
         update_operations_profit ();
 
+    }
+
+    public string get_operation_type_desc (int _type_op) {
+
+        if (_type_op == TradeSim.Objects.OperationItem.Type.SELL) {
+            return "Sell";
+        } else if (_type_op == TradeSim.Objects.OperationItem.Type.BUY) {
+            return "Buy";
+        }
+
+        return "Undefined";
     }
 
 }

@@ -65,6 +65,10 @@ public class TradeSim.Services.OperationsManager{
 
         return_value = actual - original;
 
+        if(_operation.type_op == TradeSim.Objects.OperationItem.Type.SELL){
+            return_value = return_value * (-1.00);
+        }
+
         return return_value;
 
     }
