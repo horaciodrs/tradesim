@@ -23,6 +23,11 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public weak TradeSim.MainWindow main_window;
 
+    public enum Direccion{
+          RIGHT
+        , LEFT
+    }
+
     public int _width;
     public int _height;
     public int mouse_x;
@@ -472,7 +477,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             get_window ().set_cursor (new Gdk.Cursor (Gdk.CursorType.CROSS));
         }
 
-        if ((_horizontal_scroll_moving) && (_horizontal_scroll_active) && (mouse_y > (_height - _horizontal_scroll_height))) {
+        if ((_horizontal_scroll_moving) && (_horizontal_scroll_active) ) {
 
             _horizontal_scroll_x = mouse_x - _horizontal_scroll_distancia;
 
@@ -491,7 +496,9 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             int pixeles_por_recorrer = (_width - vertical_scale_width) - _horizontal_scroll_width;
             int pixeles_recorridos = _horizontal_scroll_x;
             var porcentaje = (double) (1.00 * pixeles_recorridos / pixeles_por_recorrer);
-            var velas_entre_fechas = get_candle_count_betwen_dates (date_from, date_to);
+            var velas_entre_fechas = 0;
+
+            velas_entre_fechas = (int) (data.quotes.length) - total_candles_size;
 
             var velas_step = (int) (velas_entre_fechas * porcentaje);
 
@@ -509,7 +516,9 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         _horizontal_scroll_distancia = mouse_x - _horizontal_scroll_x;
 
-        _horizontal_scroll_moving = true;
+        if(mouse_y > (_height - _horizontal_scroll_height)){
+            _horizontal_scroll_moving = true;
+        }
 
         return true;
     }
