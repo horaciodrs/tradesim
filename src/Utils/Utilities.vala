@@ -24,14 +24,21 @@ public string get_money (double amount, int decs = 2) {
 
     string return_value = amount.format (buf, "%f"); // 'e', 'E', 'f', 'F', 'g' and 'G'.
 
-    string[] aux = return_value.split(".");
+    string[] aux = return_value.split (".");
 
-    if(aux[1] != null){
-        return_value = aux[0] + "." + aux[1].substring(0, decs);
-    }else{
+    if (aux[1] != null) {
+        return_value = aux[0];
+        if (return_value.length > 3) {
+            string p1 = return_value.substring (0, return_value.length - 3);
+            string p2 = return_value.substring (return_value.length - 3, 3);
+            return_value = p1 + "," + p2;
+        }
+        return_value = return_value + ".";
+        return_value = return_value + aux[1].substring (0, decs);
+    } else {
         return_value = "0.00";
     }
-    
+
     return return_value;
 }
 
