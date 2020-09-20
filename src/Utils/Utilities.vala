@@ -18,12 +18,21 @@ public void create_dir_with_parents (string dir) {
     }
 }
 
-public string get_money (double amount) {
+public string get_money (double amount, int decs = 2) {
+
     char[] buf = new char[double.DTOSTR_BUF_SIZE];
 
-    // 'e', 'E', 'f', 'F', 'g' and 'G'.
+    string return_value = amount.format (buf, "%f"); // 'e', 'E', 'f', 'F', 'g' and 'G'.
 
-    return amount.format (buf, "%g");
+    string[] aux = return_value.split(".");
+
+    if(aux[1] != null){
+        return_value = aux[0] + "." + aux[1].substring(0, decs);
+    }else{
+        return_value = "0.00";
+    }
+    
+    return return_value;
 }
 
 public string get_fecha (DateTime fecha) {

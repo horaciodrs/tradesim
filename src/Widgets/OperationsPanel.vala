@@ -312,9 +312,9 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
                                            , OperationColumns.STATE, "Open"
                                            , OperationColumns.OBSERVATIONS, "Obs..."
                                            , OperationColumns.VOLUME, get_money (ops.index (i).volume)
-                                           , OperationColumns.BUY_PRICE, get_money (ops.index (i).price)
-                                           , OperationColumns.TP_PRICE, get_money (ops.index (i).tp)
-                                           , OperationColumns.SL_PRICE, get_money (ops.index (i).sl)
+                                           , OperationColumns.BUY_PRICE, get_money (ops.index (i).price, 5)
+                                           , OperationColumns.TP_PRICE, get_money (ops.index (i).tp, 5)
+                                           , OperationColumns.SL_PRICE, get_money (ops.index (i).sl, 5)
                                            , OperationColumns.PROFIT, "-1"
                                            , OperationColumns.BTN_CLOSE, "window-close"
                                            , OperationColumns.FOREGROUND, "black"
