@@ -23,8 +23,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public weak TradeSim.MainWindow main_window;
 
-    public enum Direccion{
-          RIGHT
+    public enum Direccion {
+        RIGHT
         , LEFT
     }
 
@@ -79,10 +79,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public TradeSim.Services.QuotesManager data;
     public TradeSim.Services.OperationsManager operations_manager;
 
-    private int total_candles_size; //Indica la cantidad de velas que puedo dibujar...
+    private int total_candles_size; // Indica la cantidad de velas que puedo dibujar...
     private int drawed_candles;
 
-    public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame, string _simulation_name="Unnamed Simulation", double _simulation_initial_balance = 500.000) {
+    public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame, string _simulation_name = "Unnamed Simulation", double _simulation_initial_balance = 500.000) {
 
         main_window = window;
 
@@ -114,8 +114,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
-    private void print_fechas(){
-        print("from:" + date_from.to_string() + " to:" + date_to.to_string() + "candles:" + get_candle_count_betwen_dates(date_from, date_to).to_string()  + "\n");
+    private void print_fechas () {
+        print ("from:" + date_from.to_string () + " to:" + date_to.to_string () + "candles:" + get_candle_count_betwen_dates (date_from, date_to).to_string () + "\n");
     }
 
     private void init () {
@@ -133,7 +133,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         candles_cola_size = 0.8;
 
-        operations_manager = new TradeSim.Services.OperationsManager();
+        operations_manager = new TradeSim.Services.OperationsManager ();
 
         data = new TradeSim.Services.QuotesManager ();
 
@@ -214,6 +214,16 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
+    public void stop_simulation () {
+        end_simulation = true;
+        simulation_vel = 1000;
+        simulation_velocity_ratio = 1;
+
+        main_window.headerbar.play.change_icon ("media-playback-start");
+        main_window.headerbar.play.label_btn.set_text ("Play");
+
+    }
+
     public void simulate () {
 
         change_velocity = false;
@@ -227,9 +237,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         } else {
 
-            end_simulation = true;
-            simulation_vel = 1000;
-            simulation_velocity_ratio = 1;
+            stop_simulation ();
 
         }
 
@@ -244,19 +252,19 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
             data.load_next_quote ();
 
-            //Solo debe cambiar el date_from cuando ya no queda mas espacio para dibujar...
+            // Solo debe cambiar el date_from cuando ya no queda mas espacio para dibujar...
 
-            if(drawed_candles == total_candles_size){
+            if (drawed_candles == total_candles_size) {
                 date_from = date_add_int_by_time_frame (date_from, time_frame, 1); // date_from = fecha_inicial.add_minutes (velas_step);
-            }            
+            }
 
             change_zoom_level (zoom_factor);
 
-            //print("date_from:" + date_from.to_string() + " date_to:" + date_to.to_string() + "\n");
+            // print("date_from:" + date_from.to_string() + " date_to:" + date_to.to_string() + "\n");
 
             _horizontal_scroll_x = _width - vertical_scale_width - _horizontal_scroll_width;
 
-            main_window.main_layout.operations_panel.update_operations_profit();
+            main_window.main_layout.operations_panel.update_operations_profit ();
 
             if (change_velocity) {
                 Timeout.add (simulation_vel, play, GLib.Priority.HIGH);
@@ -284,7 +292,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public void change_zoom_level (double factor) {
 
-        //int total_candles_size = 1; //ahora es una propiedad de la clase canvas...
+        // int total_candles_size = 1; //ahora es una propiedad de la clase canvas...
 
         zoom_factor = factor;
 
@@ -339,7 +347,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         string return_value = "";
 
-        return_value = get_date_time_fecha_by_pos_x(pos_x).to_string ();
+        return_value = get_date_time_fecha_by_pos_x (pos_x).to_string ();
 
         return_value = return_value.substring (0, 16) + "hs";
 
@@ -477,7 +485,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             get_window ().set_cursor (new Gdk.Cursor (Gdk.CursorType.CROSS));
         }
 
-        if ((_horizontal_scroll_moving) && (_horizontal_scroll_active) ) {
+        if ((_horizontal_scroll_moving) && (_horizontal_scroll_active)) {
 
             _horizontal_scroll_x = mouse_x - _horizontal_scroll_distancia;
 
@@ -516,7 +524,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         _horizontal_scroll_distancia = mouse_x - _horizontal_scroll_x;
 
-        if(mouse_y > (_height - _horizontal_scroll_height)){
+        if (mouse_y > (_height - _horizontal_scroll_height)) {
             _horizontal_scroll_moving = true;
         }
 
@@ -564,7 +572,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public void draw_candle (Cairo.Context ctext, TradeSim.Services.QuoteItem candle_data) {
 
         if (candle_data.date_time == null) {
-            //print("saliendo...\n");
+            // print("saliendo...\n");
             return;
         }
 
@@ -753,7 +761,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         double scrollbar_size_factor = displayed_size * 1.00 / display_size; // por ejemplo si es 0.5 la barra tiene la mitad de available_width;
         double aux = (_width - vertical_scale_width - 1.00) * scrollbar_size_factor;
 
-        //print("displayed:" + displayed_size.to_string() + "display:" + display_size.to_string() + "\n");
+        // print("displayed:" + displayed_size.to_string() + "display:" + display_size.to_string() + "\n");
 
         _horizontal_scroll_width = int.parse (aux.to_string ());
 
@@ -880,7 +888,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         DateTime cursor_date = date_from;
 
-        drawed_candles = 0; //Se incrementa dentro de get_quote_by_time.
+        drawed_candles = 0; // Se incrementa dentro de get_quote_by_time.
 
         while (cursor_date.compare (date_to) < 0) {
 
@@ -919,7 +927,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         cr.restore ();
         cr.save ();
 
-        //print_fechas();
+        // print_fechas();
 
         return true;
 
