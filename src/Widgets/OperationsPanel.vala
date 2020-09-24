@@ -128,6 +128,31 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         Gtk.CellRendererPixbuf close_cell = new Gtk.CellRendererPixbuf ();
         Gtk.CellRendererText color_cell = new Gtk.CellRendererText ();
 
+        //close_cell.
+
+        tree_view_operations.set_activate_on_single_click(true);
+
+        tree_view_operations.row_activated.connect((path, column) =>{
+
+            if(column.get_title() == " "){
+
+                Gtk.TreeIter iter;
+                GLib.Value code;
+                list_store_operations.get_iter(out iter, path);
+                list_store_operations.get_value (iter, TradeSim.Widgets.OperationsPanel.OperationColumns.ID, out code);
+
+                var canvas = main_window.main_layout.current_canvas;
+                var price = canvas.last_candle_price;
+                var ops = canvas.operations_manager;
+
+                ops.close_operation_by_id(int.parse(code.get_string()), price);
+
+                update_operations();
+
+            }
+
+        });
+
         volume_cell.xalign = 1;
         buy_cell.xalign = 1;
         tp_cell.xalign = 1;
@@ -152,7 +177,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         tree_view_operations.insert_column_with_attributes (-1, "Stop Loss", stop_cell, "text", OperationColumns.SL_PRICE, "foreground", OperationColumns.FOREGROUND, null);
         tree_view_operations.insert_column_with_attributes (-1, "Proffit/Loss", profit_cell, "text", OperationColumns.PROFIT, "foreground", OperationColumns.FOREGROUND, null);
         tree_view_operations.insert_column_with_attributes (-1, " ", close_cell, "icon_name", OperationColumns.BTN_CLOSE, null);
-        tree_view_operations.insert_column_with_attributes (-1, " ", color_cell, "text", OperationColumns.FOREGROUND, null);
+        tree_view_operations.insert_column_with_attributes (-1, "", color_cell, "text", OperationColumns.FOREGROUND, null);
 
         tree_view_operations.get_column (OperationColumns.OBSERVATIONS).set_expand (true);
 
@@ -232,6 +257,8 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         GLib.Value cell_icon;
         GLib.Value cell_color;
         GLib.Value cell_type;
+        GLib.Value cell_close;
+        GLib.Value cell_state;
 
         seguir = list_store_operations.get_iter_first (out row);
 
@@ -240,6 +267,8 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         list_store_operations.get_value (row, OperationColumns.PROFIT, out cell_value);
         list_store_operations.get_value (row, OperationColumns.FOREGROUND, out cell_color);
         list_store_operations.get_value (row, OperationColumns.TYPE, out cell_type);
+        list_store_operations.get_value (row, OperationColumns.BTN_CLOSE, out cell_close);
+        list_store_operations.get_value (row, OperationColumns.STATE, out cell_state);
 
         global_profit = 0;
 
@@ -254,31 +283,44 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
             cell_value.set_string (get_money (profit)); // obtener_profit_por
 
             if(profit>0){
-                if(cell_type.get_string() == "Buy"){
+                //if(cell_type.get_string() == "Buy"){
                     cell_color.set_string("green");
                     cell_icon.set_string("view-sort-descending");
-                }else{
-                    cell_color.set_string("red");
-                    cell_icon.set_string("view-sort-ascending");
-                }
+                //}else{
+                  //  cell_color.set_string("red");
+                   // cell_icon.set_string("view-sort-ascending");
+                //}
                 
             }else{
-                if(cell_type.get_string() == "Buy"){
+                //if(cell_type.get_string() == "Buy"){
                     cell_color.set_string("red");
                     cell_icon.set_string("view-sort-ascending");
-                }else{
-                    cell_color.set_string("green");
-                    cell_icon.set_string("view-sort-descending");
-                }
+                //}else{
+                  //  cell_color.set_string("green");
+                   // cell_icon.set_string("view-sort-descending");
+                //}
+            }
+
+            if(cell_state.get_string() == "Closed"){
+                cell_close.set_string("");
+                cell_color.set_string("black");
             }
 
             list_store_operations.set_value (row, OperationColumns.PROFIT, cell_value);
             list_store_operations.set_value (row, OperationColumns.ICON_STATE, cell_icon);
             list_store_operations.set_value (row, OperationColumns.FOREGROUND, cell_color);
+            list_store_operations.set_value (row, OperationColumns.BTN_CLOSE, cell_close);
 
             seguir = list_store_operations.iter_next (ref row);
+
             if (seguir) {
+                list_store_operations.get_value (row, OperationColumns.ICON_STATE, out cell_icon);
                 list_store_operations.get_value (row, OperationColumns.ID, out cell_code);
+                list_store_operations.get_value (row, OperationColumns.PROFIT, out cell_value);
+                list_store_operations.get_value (row, OperationColumns.FOREGROUND, out cell_color);
+                list_store_operations.get_value (row, OperationColumns.TYPE, out cell_type);
+                list_store_operations.get_value (row, OperationColumns.BTN_CLOSE, out cell_close);
+                list_store_operations.get_value (row, OperationColumns.STATE, out cell_state);
             }
 
         }
@@ -309,7 +351,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
                                            , OperationColumns.TICKER, ops.index (i).ticker_name
                                            , OperationColumns.DATE, get_fecha (ops.index (i).operation_date)
                                            , OperationColumns.TYPE, get_operation_type_desc (ops.index (i).type_op)
-                                           , OperationColumns.STATE, "Open"
+                                           , OperationColumns.STATE, get_operation_state_desc (ops.index (i).state)
                                            , OperationColumns.OBSERVATIONS, "Obs..."
                                            , OperationColumns.VOLUME, get_money (ops.index (i).volume)
                                            , OperationColumns.BUY_PRICE, get_money (ops.index (i).price, 5)
@@ -333,6 +375,17 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
             return "Sell";
         } else if (_type_op == TradeSim.Objects.OperationItem.Type.BUY) {
             return "Buy";
+        }
+
+        return "Undefined";
+    }
+
+    public string get_operation_state_desc (int _type_op) {
+
+        if (_type_op == TradeSim.Objects.OperationItem.State.OPEN) {
+            return "Open";
+        } else if (_type_op == TradeSim.Objects.OperationItem.State.CLOSED) {
+            return "Closed";
         }
 
         return "Undefined";

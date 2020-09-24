@@ -28,8 +28,12 @@ public string get_money (double amount, int decs = 2) {
 
     if (aux[1] != null) {
         return_value = aux[0];
-        if (return_value.length > 3) {
+        if ((return_value.length >= 4) && (amount > 0)) {
             string p1 = return_value.substring (0, return_value.length - 3);
+            string p2 = return_value.substring (return_value.length - 3, 3);
+            return_value = p1 + "," + p2;
+        }else if ((return_value.length >= 5) && (amount < 0)) {
+            string p1 = return_value.substring (0, 2);
             string p2 = return_value.substring (return_value.length - 3, 3);
             return_value = p1 + "," + p2;
         }

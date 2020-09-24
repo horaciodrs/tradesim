@@ -38,7 +38,7 @@ public class TradeSim.Services.OperationsManager{
         return (int) (operations.length) + 1;
     }
 
-    public double get_operation_profit_by_id(int _id, double _price){
+    public TradeSim.Objects.OperationItem get_operation_by_id(int _id){
 
         TradeSim.Objects.OperationItem _operation = null;
 
@@ -47,6 +47,20 @@ public class TradeSim.Services.OperationsManager{
                 _operation = operations.index(i);
             }
         }
+
+        return _operation;
+
+    }
+
+    public double get_operation_profit_by_id(int _id, double _price){
+
+        TradeSim.Objects.OperationItem _operation = get_operation_by_id(_id);
+
+        /*for(int i=0; i<operations.length; i++){
+            if(operations.index(i).id == _id){
+                _operation = operations.index(i);
+            }
+        }*/
 
         if(_operation != null){
             return get_operation_profit_by_price(_operation, _price);
@@ -59,6 +73,10 @@ public class TradeSim.Services.OperationsManager{
     public double get_operation_profit_by_price(TradeSim.Objects.OperationItem _operation, double _price){
 
         double return_value = 0.00;
+
+        if(_operation.state == TradeSim.Objects.OperationItem.State.CLOSED){
+            return _operation.profit;
+        }
 
         double original = _operation.volume * DefaultLote * _operation.price;
         double actual = _operation.volume * DefaultLote * _price;
@@ -77,6 +95,23 @@ public class TradeSim.Services.OperationsManager{
 
         operations.append_val(_operation);
 
+    }
+
+    public void close_operation_by_id(int _id, double price){
+
+        TradeSim.Objects.OperationItem _operation = get_operation_by_id(_id);
+
+        if(_operation != null){
+            close_operation(_operation, price);
+        }
+
+    }
+
+    public void close_operation(TradeSim.Objects.OperationItem _operation, double price){
+
+        _operation.profit = get_operation_profit_by_price(_operation, price);
+        _operation.state = TradeSim.Objects.OperationItem.State.CLOSED;
+        
     }
 
 }

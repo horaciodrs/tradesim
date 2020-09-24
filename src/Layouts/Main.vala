@@ -134,7 +134,6 @@ public class TradeSim.Layouts.Main : Gtk.Box {
           , _sl_price
           , _operation_type);
 
-        
         current_canvas.operations_manager.add_operation(new_operation);
 
         operations_panel.update_operations();

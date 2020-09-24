@@ -499,7 +499,7 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
                                 , ""
                                 , spin_volume.get_value()
                                 , spin_price.get_value()
-                                ,  entry_tp_price.get_value()
+                                , entry_tp_price.get_value()
                                 , entry_sl_price.get_value()
                                 , operation_type);
 
