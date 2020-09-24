@@ -87,6 +87,10 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
         build_content ();
         
         response.connect (on_response);
+        
+        destroy.connect(() => {
+            main_window.dialog_new_operation_is_open = false;
+        });
 
     }
 

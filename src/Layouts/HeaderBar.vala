@@ -102,20 +102,48 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         });
 
         preferencias.button.clicked.connect (e => {
+
+            var canvas = main_window.main_layout.current_canvas;
+
+            if(canvas != null){
+                canvas.stop_simulation ();
+            }
+
             main_window.open_dialog_preferences ();
         });
 
         new_button.button.clicked.connect (() => {
+
+            var canvas = main_window.main_layout.current_canvas;
+
+            if(canvas != null){
+                canvas.stop_simulation ();
+            }
 
             main_window.main_layout.add_canvas ("", "", "");
 
         });
 
         buy.button.clicked.connect(e => {
+
+            var canvas = main_window.main_layout.current_canvas;
+
+            if(canvas != null){
+                canvas.stop_simulation ();
+            }
+            
             main_window.open_dialog_operations(TradeSim.Objects.OperationItem.Type.BUY);
+
         });
 
         sell.button.clicked.connect(e => {
+
+            var canvas = main_window.main_layout.current_canvas;
+
+            if(canvas != null){
+                canvas.stop_simulation ();
+            }
+
             main_window.open_dialog_operations(TradeSim.Objects.OperationItem.Type.SELL);
         });
 

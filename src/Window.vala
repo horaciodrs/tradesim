@@ -27,6 +27,8 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
     public GLib.Settings settings;
 
+    public bool dialog_new_operation_is_open;
+
     public enum SettingsActions {
           APARENCE
         , DATA_SOURCE
@@ -37,6 +39,8 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
         Object (
             application: trade_sim_app
             );
+
+        dialog_new_operation_is_open = false;
     }
 
     construct {
@@ -89,9 +93,15 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
     public void open_dialog_operations(int otype){
 
+        if(dialog_new_operation_is_open){
+            return;
+        }
+
         if(main_layout.current_canvas != null){
 
             var operations_dialog = new TradeSim.Dialogs.NewOperationDialog(this, otype);
+
+            dialog_new_operation_is_open = true;
 
             operations_dialog.show_all();
             operations_dialog.present();
