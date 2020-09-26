@@ -437,6 +437,14 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
+    private string get_str_price_by_double (double price) {
+
+        char[] buf = new char[double.DTOSTR_BUF_SIZE];
+
+        return price.format (buf, "%g").concat ("0000").substring (0, 7);
+
+    }
+
     private void vertical_scale_calculation () {
 
         // buscar cantidad de medias figuras...
@@ -729,6 +737,21 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
+    public void write_text_white (Cairo.Context ctext, int x, int y, string txt) {
+
+        Pango.Layout layout;
+
+        layout = create_pango_layout (txt);
+
+        ctext.set_source_rgba (_r(255), _g(255), _b(255), 1);
+        ctext.move_to (x, y);
+        Pango.cairo_update_layout (ctext, layout);
+        Pango.cairo_show_layout (ctext, layout);
+
+        queue_draw ();
+
+    }
+
     public void draw_line (Cairo.Context ctext, int x1, int y1, int x2, int y2, double size, int r, int g, int b, bool dash = false, double dash_type = 5.0) {
 
         ctext.set_dash ({}, 0);
@@ -833,6 +856,39 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
+    public void draw_last_candle_price_label (Cairo.Context ctext) {
+
+        int posy = get_pos_y_by_price (last_candle_price);
+
+        ctext.set_dash ({}, 0);
+
+        ctext.set_source_rgba (_r (13), _g (82), _b (191), 1);
+        ctext.rectangle (_width - vertical_scale_width, posy - 10, vertical_scale_width, 20);
+        ctext.fill ();
+
+        ctext.move_to (_width - vertical_scale_width, posy + 10);
+        ctext.rel_line_to (-10, -10);
+        ctext.rel_line_to (10, -10);
+        ctext.close_path ();
+
+        ctext.set_line_width (1.0);
+        ctext.set_source_rgb (_r (13), _g (82), _b (191));
+        ctext.fill_preserve ();
+        ctext.stroke ();
+
+        //int x_last_candle = get_pos_x_by_date (last_candle_date);
+
+        ctext.set_dash ({ 5.0 }, 0);
+        ctext.set_line_width (1);
+        ctext.set_source_rgba (_r (13), _g (82), _b (191), 1);
+        ctext.move_to (0, posy); //ctext.move_to (x_last_candle + candle_width + 2, posy);
+        ctext.line_to (_width, posy);
+        ctext.stroke ();
+
+        write_text_white (ctext, _width - (vertical_scale_width - 4), posy - 8, get_str_price_by_double (last_candle_price));
+
+    }
+
     public void draw_horizontal_scale (Cairo.Context ctext) {
 
         ctext.set_source_rgba (_r (255), _g (225), _b (107), 1);
@@ -923,6 +979,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         draw_cursor_datetime_label (cr);
 
         draw_horizontal_scrollbar (cr);
+
+        draw_last_candle_price_label (cr); // Muestra el precio de la ultima vela.
 
         cr.restore ();
         cr.save ();
