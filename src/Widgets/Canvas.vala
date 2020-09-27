@@ -82,6 +82,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     private int total_candles_size; // Indica la cantidad de velas que puedo dibujar...
     private int drawed_candles;
 
+    private TradeSim.Services.Drawings draw_manager;
+    private bool draw_mode_line;
+    private bool draw_mode;
+
     public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame, string _simulation_name = "Unnamed Simulation", double _simulation_initial_balance = 500.000) {
 
         main_window = window;
@@ -99,6 +103,9 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         simulation_name = _simulation_name;
         simulation_initial_balance = _simulation_initial_balance;
+
+        draw_mode_line = false;
+        draw_mode = false;
 
         add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK | Gdk.EventMask.POINTER_MOTION_MASK | Gdk.EventMask.LEAVE_NOTIFY_MASK);
 
@@ -132,6 +139,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         _horizontal_scroll_moving = false;
 
         candles_cola_size = 0.8;
+
+        draw_manager = new TradeSim.Services.Drawings (this);
 
         operations_manager = new TradeSim.Services.OperationsManager ();
 
@@ -393,7 +402,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
-    private int get_pos_x_by_date (DateTime date_time) {
+    public int get_pos_x_by_date (DateTime date_time) {
 
         int candles = get_candle_count_betwen_dates (date_from, date_time);
         int candle_spacing = 5;
@@ -402,7 +411,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
-    private int get_pos_y_by_price (double precio) {
+    public int get_pos_y_by_price (double precio) {
 
         var aux_max_price = get_media_figura_up (max_price);
         int aux_precio = (int) (precio * 100000);
@@ -524,6 +533,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         }
 
+        user_draw_line ("linea1");
+
         return true;
 
     }
@@ -536,12 +547,22 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             _horizontal_scroll_moving = true;
         }
 
+        //draw_mode_line se pone en true cuando se elige la opcion de Linea en el Menu.
+        if (draw_mode_line == true) {
+            // comenzar a dibujar la linea.
+            draw_mode = true;
+            start_draw_mode(TradeSim.Services.Drawings.Type.LINE, "linea1");
+        }
+
         return true;
     }
 
     public bool on_mouse_up (Gdk.EventButton event) {
 
         _horizontal_scroll_moving = false;
+
+        draw_mode_line = false; //Si se estaba dibujando se aborta.
+        draw_mode = false;
 
         return true;
     }
@@ -743,7 +764,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         layout = create_pango_layout (txt);
 
-        ctext.set_source_rgba (_r(255), _g(255), _b(255), 1);
+        ctext.set_source_rgba (_r (255), _g (255), _b (255), 1);
         ctext.move_to (x, y);
         Pango.cairo_update_layout (ctext, layout);
         Pango.cairo_show_layout (ctext, layout);
@@ -876,12 +897,12 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         ctext.fill_preserve ();
         ctext.stroke ();
 
-        //int x_last_candle = get_pos_x_by_date (last_candle_date);
+        // int x_last_candle = get_pos_x_by_date (last_candle_date);
 
         ctext.set_dash ({ 5.0 }, 0);
         ctext.set_line_width (1);
         ctext.set_source_rgba (_r (13), _g (82), _b (191), 1);
-        ctext.move_to (0, posy); //ctext.move_to (x_last_candle + candle_width + 2, posy);
+        ctext.move_to (0, posy); // ctext.move_to (x_last_candle + candle_width + 2, posy);
         ctext.line_to (_width, posy);
         ctext.stroke ();
 
@@ -956,6 +977,37 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
+    public void start_user_draw_line(){
+        //Esta funcion la debe llamar el menu de insertar linea.
+        draw_mode_line = true;
+    }
+
+    public void user_draw_line (string line_id) {
+
+        if((draw_mode_line) && (draw_mode)){
+            DateTime posx = get_date_time_fecha_by_pos_x (mouse_x);
+            double posy = get_price_by_pos_y (mouse_y) / 100000.00;
+            draw_manager.draw_line (line_id, posx, posy, posx, posy);
+        }
+        
+    }
+
+    public void start_draw_mode (int type, string line_id) {
+
+        if (type == TradeSim.Services.Drawings.Type.LINE) {
+            user_draw_line (line_id);
+        }
+
+    }
+
+    public void end_draw_mode (int type) {
+
+        if (type == TradeSim.Services.Drawings.Type.LINE) {
+            draw_mode_line = false;
+        }
+
+    }
+
     public override bool draw (Cairo.Context cr) {
 
         _width = get_allocated_width ();
@@ -973,6 +1025,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         draw_chart (cr);
 
+        draw_manager.show_all (cr); // Dibuja todos los objetos creados por el usuario.
+
         draw_cross_lines (cr);
 
         draw_cursor_price_label (cr);
@@ -981,6 +1035,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         draw_horizontal_scrollbar (cr);
 
         draw_last_candle_price_label (cr); // Muestra el precio de la ultima vela.
+
 
         cr.restore ();
         cr.save ();
