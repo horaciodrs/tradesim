@@ -8,6 +8,7 @@ sources = files(
 
     'Drawings/Line.vala',
     'Drawings/Fibonacci.vala',
+    'Drawings/Rectangle.vala',
 
     'Services/Drawings.vala',
     'Services/Database.vala',

@@ -88,6 +88,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     private string draw_mode_id;
     private bool draw_mode_line;
     private bool draw_mode_fibo;
+    private bool draw_mode_rectangle;
     private bool draw_mode;
 
     public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame, string _simulation_name = "Unnamed Simulation", double _simulation_initial_balance = 500.000) {
@@ -111,6 +112,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         draw_mode_objects = 0;
         draw_mode_line = false;
         draw_mode_fibo = false;
+        draw_mode_rectangle = false;
         draw_mode = false;
 
         add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK | Gdk.EventMask.POINTER_MOTION_MASK | Gdk.EventMask.LEAVE_NOTIFY_MASK);
@@ -541,6 +543,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         user_draw_line ();
         user_draw_fibo ();
+        user_draw_rectangle ();
 
         return true;
 
@@ -566,6 +569,12 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             start_draw_mode(TradeSim.Services.Drawings.Type.FIBONACCI);
         }
 
+        if (draw_mode_rectangle == true) {
+            // comenzar a dibujar la linea.
+            draw_mode = true;
+            start_draw_mode(TradeSim.Services.Drawings.Type.RECTANGLE);
+        }
+
         return true;
     }
 
@@ -575,6 +584,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         draw_mode_line = false; //Si se estaba dibujando se aborta.
         draw_mode_fibo = false; //Si se estaba dibujando se aborta.
+        draw_mode_rectangle = false; //Si se estaba dibujando se aborta.
         draw_mode = false;
 
         return true;
@@ -1004,6 +1014,13 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         draw_mode_id = "object" + draw_mode_objects.to_string();
     }
 
+    public void start_user_draw_rectangle(){
+        //Esta funcion la debe llamar el menu de insertar linea.
+        draw_mode_rectangle = true;
+        draw_mode_objects++;
+        draw_mode_id = "object" + draw_mode_objects.to_string();
+    }
+
     public void user_draw_line () {
 
         if((draw_mode_line) && (draw_mode)){
@@ -1024,12 +1041,24 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         
     }
 
+    public void user_draw_rectangle () {
+
+        if((draw_mode_rectangle) && (draw_mode)){
+            DateTime posx = get_date_time_fecha_by_pos_x (mouse_x);
+            double posy = get_price_by_pos_y (mouse_y) / 100000.00;
+            draw_manager.draw_rectangle (draw_mode_id, posx, posy, posx, posy);
+        }
+        
+    }
+
     public void start_draw_mode (int type) {
 
         if (type == TradeSim.Services.Drawings.Type.LINE) {
             user_draw_line ();
         }else if (type == TradeSim.Services.Drawings.Type.FIBONACCI) {
             user_draw_fibo ();
+        }else if (type == TradeSim.Services.Drawings.Type.RECTANGLE) {
+            user_draw_rectangle ();
         }
 
     }
@@ -1040,8 +1069,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             draw_mode_line = false;
         }else if (type == TradeSim.Services.Drawings.Type.FIBONACCI) {
             draw_mode_fibo = false;
+        }else if (type == TradeSim.Services.Drawings.Type.RECTANGLE) {
+            draw_mode_rectangle = false;
         }
-
+        
     }
 
     public override bool draw (Cairo.Context cr) {
