@@ -19,29 +19,30 @@
  * Authored by: Horacio Daniel Ros <horaciodrs@gmail.com>
  */
 
-public class TradeSim.Services.Drawings {
+ public class TradeSim.Widgets.MenuButton : Gtk.Grid {
 
-    public weak TradeSim.Widgets.Canvas ref_canvas;
+    public Gtk.MenuButton button;
+    private Gtk.Label label_btn;
+    public TradeSim.Widgets.ButtonImage image;
 
-    public enum Type{
-          LINE
-        , RECTANGLE
-        , FIBONACCI
+    public MenuButton (string icon_name, string name, string[]? accels = null) {
+        label_btn = new Gtk.Label (name);
+        label_btn.get_style_context ().add_class ("headerbar-label");
+
+        button = new Gtk.MenuButton ();
+        button.can_focus = false;
+        button.halign = Gtk.Align.CENTER;
+        button.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
+        button.tooltip_markup = Granite.markup_accel_tooltip (accels, name);
+
+        image = new ButtonImage (icon_name);
+        button.add (image);
+
+        attach (button, 0, 0, 1, 1);
+        attach (label_btn, 0, 1, 1, 1);
+
+        valign = Gtk.Align.CENTER;
+        
     }
 
-    public bool drawing_mode; //Indica si se esta dibujando algo.
-
-    public Array<TradeSim.Drawings.Line> lines;
-
-    public Drawings(TradeSim.Widgets.Canvas _canvas){
-        ref_canvas = _canvas;
-    }
-
-    public void show_all(){
-
-        for(int i=0; i<lines.length;i++){
-            lines.index(i).render(ref_canvas);
-        }
-
-    }
 }

@@ -18,6 +18,7 @@ sources = files(
     'Layouts/HeaderBar.vala',
     'Layouts/Main.vala',
 
+    'Widgets/MenuButton.vala',
     'Widgets/ButtonImage.vala',
     'Widgets/HeaderBarButton.vala',
     'Widgets/ZoomButton.vala',

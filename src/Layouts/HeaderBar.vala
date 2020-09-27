@@ -35,7 +35,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
     public TradeSim.Widgets.HeaderBarButton buy;
     public TradeSim.Widgets.HeaderBarButton sell;
-    public TradeSim.Widgets.HeaderBarButton insert;
+    public TradeSim.Widgets.MenuButton insert;
     public TradeSim.Widgets.HeaderBarButton reporte;
     public TradeSim.Widgets.HeaderBarButton preferencias;
 
@@ -64,12 +64,15 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         forward = new TradeSim.Widgets.HeaderBarButton (main_window, "media-seek-forward-symbolic", "", { "<Ctrl>p" });
         buy = new TradeSim.Widgets.HeaderBarButton (main_window, "go-up", "Comprar", { "<Ctrl>p" });
         sell = new TradeSim.Widgets.HeaderBarButton (main_window, "go-down", "Vender", { "<Ctrl>p" });
-        insert = new TradeSim.Widgets.HeaderBarButton (main_window, "insert-object", "Insertar", { "<Ctrl>p" });
+        insert = new TradeSim.Widgets.MenuButton ("insert-object", "Insertar", { "<Ctrl>p" });
         reporte = new TradeSim.Widgets.HeaderBarButton (main_window, "x-office-presentation", "Reporte", { "<Ctrl>p" });
         preferencias = new TradeSim.Widgets.HeaderBarButton (main_window, "open-menu", "Settings", { "<Ctrl>p" });
 
         time_button = new TradeSim.Widgets.TimeButton (main_window);
 
+        var insert_popover = get_insert_menu ();
+        insert.button.popover = insert_popover;
+        insert.sensitive = true;
 
         play.button.clicked.connect (() => {
 
@@ -173,6 +176,70 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         pack_end (buy);
         pack_end (new Gtk.Separator (Gtk.Orientation.VERTICAL));
 
+    }
+
+    private Gtk.PopoverMenu get_insert_menu () {
+
+        var grid = new Gtk.Grid ();
+        grid.margin_top = 6;
+        grid.margin_bottom = 3;
+        grid.orientation = Gtk.Orientation.VERTICAL;
+        grid.width_request = 240;
+        grid.name = "main";
+
+        var draw_line_button = create_model_button ("Line","shape-line-symbolic");
+        var draw_hline_button = create_model_button ("Horizontal Line","shape-hline-symbolic");
+        var draw_rect_button = create_model_button ("Rectangle","shape-rectangle-symbolic");
+        var draw_fibo_button = create_model_button ("Fibonacci Retracement","shape-fibonacci-symbolic");
+
+        var separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+        separator.margin_top = separator.margin_bottom = 3;
+
+        var separator2 = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+        separator2.margin_top = separator.margin_bottom = 3;
+
+        var separator3 = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+        separator3.margin_top = separator.margin_bottom = 3;
+
+        grid.add (draw_line_button);
+        grid.add (separator);
+
+        grid.add (draw_hline_button);
+        grid.add (separator2);
+
+        grid.add (draw_rect_button);
+        grid.add (separator3);
+
+        grid.add (draw_fibo_button);
+        
+        grid.show_all ();
+
+        var popover = new Gtk.PopoverMenu ();
+        popover.add (grid);
+        popover.child_set_property (grid, "submenu", "main");
+
+        return popover;
+
+    }
+
+    private Gtk.ModelButton create_model_button (string text, string? icon) {
+        var button = new Gtk.ModelButton ();
+        button.get_child ().destroy ();
+        var label = new Granite.AccelLabel.from_action_name (text, "<Ctrl>J");
+
+        if (icon != null) {
+            var image = new Gtk.Image.from_icon_name (icon, Gtk.IconSize.MENU);
+            image.margin_end = 6;
+            label.attach_next_to (
+                image,
+                label.get_child_at (0, 0),
+                Gtk.PositionType.LEFT
+            );
+        }
+
+        button.add (label);
+
+        return button;
     }
 
 }

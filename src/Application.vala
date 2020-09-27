@@ -23,7 +23,7 @@ public class TradeSim.Application : Gtk.Application {
 
     public Application () {
         Object (
-            application_id: "com.github.horaciodrs.TradeSim",
+            application_id: "com.github.horaciodrs.tradesim",
             flags : GLib.ApplicationFlags.FLAGS_NONE
             );
     }
@@ -36,7 +36,7 @@ public class TradeSim.Application : Gtk.Application {
         Gtk.Settings.get_default ().set_property ("gtk-theme-name", "elementary");
 
         weak Gtk.IconTheme default_theme = Gtk.IconTheme.get_default ();
-        default_theme.add_resource_path ("/com/github/horaciodrs/TradeSim");
+        default_theme.add_resource_path ("/com/github/horaciodrs/tradesim");
 
         add_window (WindowTradeSim);
 

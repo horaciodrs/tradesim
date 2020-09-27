@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/com/github/horaciodrs/tradesim">
+    <file alias="shape-circle-symbolic.svg">icons/symbolic/shape-circle-symbolic.svg</file>
+    <file alias="shape-fibonacci-symbolic.svg">icons/symbolic/shape-fibonacci-symbolic.svg</file>
+    <file alias="shape-line-symbolic.svg">icons/symbolic/shape-line-symbolic.svg</file>
+    <file alias="shape-hline-symbolic.svg">icons/symbolic/shape-hline-symbolic.svg</file>
+    <file alias="shape-rectangle-symbolic.svg">icons/symbolic/shape-rectangle-symbolic.svg</file>
+    <file alias="shape-text-symbolic.svg">icons/symbolic/shape-text-symbolic.svg</file>
+    <file alias="shape-triangle-symbolic.svg">icons/symbolic/shape-triangle-symbolic.svg</file>
+  </gresource>
+</gresources>
