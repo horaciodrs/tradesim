@@ -6,6 +6,9 @@ sources = files(
     'Objects/Provider.vala',
     'Objects/Ticker.vala',
 
+    'Drawings/Line.vala',
+
+    'Services/Drawings.vala',
     'Services/Database.vala',
     'Services/QuoteItem.vala',
     'Services/QuotesManager.vala',
