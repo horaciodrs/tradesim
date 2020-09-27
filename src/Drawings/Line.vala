@@ -25,15 +25,15 @@ public class TradeSim.Drawings.Line {
 
     public string id;
 
-    private DateTime date1;
-    private DateTime date2;
-    private double price1;
-    private double price2;
+    protected DateTime date1;
+    protected DateTime date2;
+    protected double price1;
+    protected double price2;
     
-    private int? x1; //Se calcula en base a date1.
-    private int? x2; //Se calcula en base a date2.
-    private int? y1; //Se calcula en base a price1.
-    private int? y2; //Se calcula en base a price2.
+    protected int? x1; //Se calcula en base a date1.
+    protected int? x2; //Se calcula en base a date2.
+    protected int? y1; //Se calcula en base a price1.
+    protected int? y2; //Se calcula en base a price2.
 
     public Line(TradeSim.Widgets.Canvas _canvas, string _id){
         id = _id;
@@ -41,12 +41,18 @@ public class TradeSim.Drawings.Line {
         ref_canvas = _canvas;
     }
 
-    public void render(Cairo.Context ctext){
+    protected void update_data(){
 
         x1 = ref_canvas.get_pos_x_by_date(date1);
         x2 = ref_canvas.get_pos_x_by_date(date2);
         y1 = ref_canvas.get_pos_y_by_price(price1);
         y2 = ref_canvas.get_pos_y_by_price(price2);
+
+    }
+
+    public virtual void render(Cairo.Context ctext){
+
+        update_data();
 
         ctext.set_dash ({}, 0);
         ctext.set_line_width (1);

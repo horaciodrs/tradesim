@@ -7,6 +7,7 @@ sources = files(
     'Objects/Ticker.vala',
 
     'Drawings/Line.vala',
+    'Drawings/Fibonacci.vala',
 
     'Services/Drawings.vala',
     'Services/Database.vala',
