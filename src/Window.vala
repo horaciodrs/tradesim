@@ -46,6 +46,9 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
     construct {
         // inicializacion de la ventana...
 
+        Gtk.Settings.get_default ().set_property ("gtk-icon-theme-name", "elementary");
+        Gtk.Settings.get_default ().set_property ("gtk-theme-name", "elementary");
+
         create_dir_with_parents ("/.local/share/com.github.horaciodrs.tradesim");
 
         headerbar = new TradeSim.Layouts.HeaderBar (this);
