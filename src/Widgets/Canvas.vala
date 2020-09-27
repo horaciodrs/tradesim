@@ -83,6 +83,9 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     private int drawed_candles;
 
     private TradeSim.Services.Drawings draw_manager;
+
+    private int draw_mode_objects;
+    private string draw_mode_id;
     private bool draw_mode_line;
     private bool draw_mode;
 
@@ -104,6 +107,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         simulation_name = _simulation_name;
         simulation_initial_balance = _simulation_initial_balance;
 
+        draw_mode_objects = 0;
         draw_mode_line = false;
         draw_mode = false;
 
@@ -533,7 +537,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         }
 
-        user_draw_line ("linea1");
+        user_draw_line ();
 
         return true;
 
@@ -551,7 +555,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         if (draw_mode_line == true) {
             // comenzar a dibujar la linea.
             draw_mode = true;
-            start_draw_mode(TradeSim.Services.Drawings.Type.LINE, "linea1");
+            start_draw_mode(TradeSim.Services.Drawings.Type.LINE);
         }
 
         return true;
@@ -980,22 +984,24 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public void start_user_draw_line(){
         //Esta funcion la debe llamar el menu de insertar linea.
         draw_mode_line = true;
+        draw_mode_objects++;
+        draw_mode_id = "object" + draw_mode_objects.to_string();
     }
 
-    public void user_draw_line (string line_id) {
+    public void user_draw_line () {
 
         if((draw_mode_line) && (draw_mode)){
             DateTime posx = get_date_time_fecha_by_pos_x (mouse_x);
             double posy = get_price_by_pos_y (mouse_y) / 100000.00;
-            draw_manager.draw_line (line_id, posx, posy, posx, posy);
+            draw_manager.draw_line (draw_mode_id, posx, posy, posx, posy);
         }
         
     }
 
-    public void start_draw_mode (int type, string line_id) {
+    public void start_draw_mode (int type) {
 
         if (type == TradeSim.Services.Drawings.Type.LINE) {
-            user_draw_line (line_id);
+            user_draw_line ();
         }
 
     }

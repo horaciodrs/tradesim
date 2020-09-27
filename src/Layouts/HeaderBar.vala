@@ -150,16 +150,6 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
             main_window.open_dialog_operations(TradeSim.Objects.OperationItem.Type.SELL);
         });
 
-        insert.button.clicked.connect(e => {
-
-            var canvas = main_window.main_layout.current_canvas;
-
-            if(canvas != null){
-                canvas.start_user_draw_line();
-            }
-
-        });
-
         pack_start (new_button);
         pack_start (open);
         pack_start (save);
@@ -201,6 +191,16 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         var draw_hline_button = create_model_button ("Horizontal Line","shape-hline-symbolic");
         var draw_rect_button = create_model_button ("Rectangle","shape-rectangle-symbolic");
         var draw_fibo_button = create_model_button ("Fibonacci Retracement","shape-fibonacci-symbolic");
+
+        draw_line_button.clicked.connect(e => {
+
+            var canvas = main_window.main_layout.current_canvas;
+
+            if(canvas != null){
+                canvas.start_user_draw_line();
+            }
+
+        });
 
         var separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
         separator.margin_top = separator.margin_bottom = 3;
