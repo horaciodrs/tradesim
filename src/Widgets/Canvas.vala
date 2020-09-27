@@ -43,7 +43,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public bool _horizontal_scroll_active;
 
     private double zoom_factor;
-    private int vertical_scale_width;
+    public int vertical_scale_width;
     private int min_candles;
     private int max_candles;
     private int min_price;
@@ -89,6 +89,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     private bool draw_mode_line;
     private bool draw_mode_fibo;
     private bool draw_mode_rectangle;
+    private bool draw_mode_hline;
     private bool draw_mode;
 
     public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame, string _simulation_name = "Unnamed Simulation", double _simulation_initial_balance = 500.000) {
@@ -113,6 +114,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         draw_mode_line = false;
         draw_mode_fibo = false;
         draw_mode_rectangle = false;
+        draw_mode_hline = false;
         draw_mode = false;
 
         add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK | Gdk.EventMask.POINTER_MOTION_MASK | Gdk.EventMask.LEAVE_NOTIFY_MASK);
@@ -454,7 +456,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
-    private string get_str_price_by_double (double price) {
+    public string get_str_price_by_double (double price) {
 
         char[] buf = new char[double.DTOSTR_BUF_SIZE];
 
@@ -544,6 +546,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         user_draw_line ();
         user_draw_fibo ();
         user_draw_rectangle ();
+        user_draw_hline ();
 
         return true;
 
@@ -575,6 +578,12 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             start_draw_mode(TradeSim.Services.Drawings.Type.RECTANGLE);
         }
 
+        if (draw_mode_hline == true) {
+            // comenzar a dibujar la linea.
+            draw_mode = true;
+            start_draw_mode(TradeSim.Services.Drawings.Type.HLINE);
+        }
+
         return true;
     }
 
@@ -585,6 +594,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         draw_mode_line = false; //Si se estaba dibujando se aborta.
         draw_mode_fibo = false; //Si se estaba dibujando se aborta.
         draw_mode_rectangle = false; //Si se estaba dibujando se aborta.
+        draw_mode_hline = false; //Si se estaba dibujando se aborta.
         draw_mode = false;
 
         return true;
@@ -1021,6 +1031,13 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         draw_mode_id = "object" + draw_mode_objects.to_string();
     }
 
+    public void start_user_draw_hline(){
+        //Esta funcion la debe llamar el menu de insertar linea.
+        draw_mode_hline = true;
+        draw_mode_objects++;
+        draw_mode_id = "object" + draw_mode_objects.to_string();
+    }
+
     public void user_draw_line () {
 
         if((draw_mode_line) && (draw_mode)){
@@ -1051,6 +1068,16 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         
     }
 
+    public void user_draw_hline () {
+
+        if((draw_mode_hline) && (draw_mode)){
+            DateTime posx = get_date_time_fecha_by_pos_x (mouse_x);
+            double posy = get_price_by_pos_y (mouse_y) / 100000.00;
+            draw_manager.draw_hline (draw_mode_id, posx, posy, posx, posy);
+        }
+        
+    }
+
     public void start_draw_mode (int type) {
 
         if (type == TradeSim.Services.Drawings.Type.LINE) {
@@ -1059,6 +1086,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             user_draw_fibo ();
         }else if (type == TradeSim.Services.Drawings.Type.RECTANGLE) {
             user_draw_rectangle ();
+        }else if (type == TradeSim.Services.Drawings.Type.HLINE) {
+            user_draw_hline ();
         }
 
     }
@@ -1071,6 +1100,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             draw_mode_fibo = false;
         }else if (type == TradeSim.Services.Drawings.Type.RECTANGLE) {
             draw_mode_rectangle = false;
+        }else if (type == TradeSim.Services.Drawings.Type.HLINE) {
+            draw_mode_hline = false;
         }
         
     }
@@ -1092,7 +1123,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         draw_chart (cr);
 
-        draw_manager.show_all (cr); // Dibuja todos los objetos creados por el usuario.
+        //--->
 
         draw_cross_lines (cr);
 
@@ -1100,6 +1131,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         draw_cursor_datetime_label (cr);
 
         draw_horizontal_scrollbar (cr);
+
+        draw_manager.show_all (cr); // Dibuja todos los objetos creados por el usuario.
 
         draw_last_candle_price_label (cr); // Muestra el precio de la ultima vela.
 

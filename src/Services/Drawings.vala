@@ -35,12 +35,14 @@ public class TradeSim.Services.Drawings {
     public Array<TradeSim.Drawings.Line> lines;
     public Array<TradeSim.Drawings.Fibonacci> fibonacci;
     public Array<TradeSim.Drawings.Rectangle> rectangles;
+    public Array<TradeSim.Drawings.HLine> hlines;
 
     public Drawings (TradeSim.Widgets.Canvas _canvas) {
         ref_canvas = _canvas;
         lines = new Array<TradeSim.Drawings.Line> ();
         fibonacci = new Array<TradeSim.Drawings.Fibonacci> ();
         rectangles = new Array<TradeSim.Drawings.Rectangle> ();
+        hlines = new Array<TradeSim.Drawings.HLine> ();
     }
 
     public void show_all (Cairo.Context ctext) {
@@ -55,6 +57,38 @@ public class TradeSim.Services.Drawings {
 
         for (int z = 0 ; z < rectangles.length ; z++) {
             rectangles.index (z).render (ctext);
+        }
+
+        for (int z = 0 ; z < hlines.length ; z++) {
+            hlines.index (z).render (ctext);
+        }
+
+    }
+
+    public void draw_hline (string _id, DateTime d1, double p1, DateTime d2, double p2) {
+
+        var new_hline = hline_exists (_id);
+        bool is_new_hline = false;
+
+        if (new_hline == null) {
+            new_hline = new TradeSim.Drawings.HLine (ref_canvas, _id);
+            is_new_hline = true;
+        }
+
+        if (new_hline.get_x1 () == null) {
+            // Si no hay x1 es porque se esta creando la linea
+            // por primer vez.
+            new_hline.set_x1 (d1);
+            new_hline.set_x2 (d1);
+            new_hline.set_y1 (p1);
+            new_hline.set_y2 (p1);
+        } else {
+            new_hline.set_x2 (d2);
+            new_hline.set_y2 (p2);
+        }
+
+        if (is_new_hline) {
+            hlines.append_val (new_hline);
         }
 
     }
@@ -174,6 +208,18 @@ public class TradeSim.Services.Drawings {
         for (int i = 0 ; i < rectangles.length ; i++) {
             if (rectangles.index (i).id == _id) {
                 return rectangles.index (i);
+            }
+        }
+
+        return null;
+
+    }
+
+    public TradeSim.Drawings.HLine ? hline_exists (string _id) {
+
+        for (int i = 0 ; i < hlines.length ; i++) {
+            if (hlines.index (i).id == _id) {
+                return hlines.index (i);
             }
         }
 

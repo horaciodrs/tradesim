@@ -222,6 +222,16 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
         });
 
+        draw_hline_button.clicked.connect(e => {
+
+            var canvas = main_window.main_layout.current_canvas;
+
+            if(canvas != null){
+                canvas.start_user_draw_hline();
+            }
+
+        });
+
         var separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
         separator.margin_top = separator.margin_bottom = 3;
 
