@@ -55,7 +55,7 @@ public class TradeSim.Drawings.Line {
         update_data();
 
         ctext.set_dash ({}, 0);
-        ctext.set_line_width (1);
+        ctext.set_line_width (2);
         ctext.set_source_rgba (_r (13), _g (82), _b (191), 1);
         ctext.move_to (x1, y1);
         ctext.line_to (x2, y2);

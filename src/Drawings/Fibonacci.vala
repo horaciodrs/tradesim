@@ -16,14 +16,17 @@ public class TradeSim.Drawings.Fibonacci : TradeSim.Drawings.Line {
         int y50;
         int y618;
 
+        Pango.FontDescription font = new Pango.FontDescription();
+        font.set_size(8 * Pango.SCALE);
+
         y382 = (int) (y1 + distancia_vertical * 0.382);
         y50 = (int) (y1 + distancia_vertical * 0.5);
         y618 = (int) (y1 + distancia_vertical * 0.618);
 
         //Linea Diagonal
-        ctext.set_dash ({}, 0);
+        ctext.set_dash ({5.0}, 0);
         ctext.set_line_width (1);
-        ctext.set_source_rgba (_r (13), _g (82), _b (191), 1);
+        ctext.set_source_rgba (_r (125), _g (125), _b (125), 1);
         ctext.move_to (x1, y1);
         ctext.line_to (x2, y2);
         ctext.stroke ();
@@ -35,6 +38,7 @@ public class TradeSim.Drawings.Fibonacci : TradeSim.Drawings.Line {
         ctext.move_to (x1, y1);
         ctext.line_to (x2, y1);
         ctext.stroke ();
+        ref_canvas.write_text_custom(ctext, x2 + 5, y1-6, "0.00%", 13, 82, 191, font);
 
         //Linea 382
         ctext.set_dash ({}, 0);
@@ -43,6 +47,7 @@ public class TradeSim.Drawings.Fibonacci : TradeSim.Drawings.Line {
         ctext.move_to (x1, y382);
         ctext.line_to (x2, y382);
         ctext.stroke ();
+        ref_canvas.write_text_custom(ctext, x2 + 5, y382-6, "38.20%", 13, 82, 191, font);
 
         //Linea 50
         ctext.set_dash ({}, 0);
@@ -51,6 +56,7 @@ public class TradeSim.Drawings.Fibonacci : TradeSim.Drawings.Line {
         ctext.move_to (x1, y50);
         ctext.line_to (x2, y50);
         ctext.stroke ();
+        ref_canvas.write_text_custom(ctext, x2 + 5, y50-6, "50.00%", 13, 82, 191, font);
 
         //Linea 618
         ctext.set_dash ({}, 0);
@@ -59,6 +65,7 @@ public class TradeSim.Drawings.Fibonacci : TradeSim.Drawings.Line {
         ctext.move_to (x1, y618);
         ctext.line_to (x2, y618);
         ctext.stroke ();
+        ref_canvas.write_text_custom(ctext, x2 + 5, y618-6, "61.80%", 13, 82, 191, font);
 
         //Linea 100
         ctext.set_dash ({}, 0);
@@ -67,6 +74,7 @@ public class TradeSim.Drawings.Fibonacci : TradeSim.Drawings.Line {
         ctext.move_to (x1, y2);
         ctext.line_to (x2, y2);
         ctext.stroke ();
+        ref_canvas.write_text_custom(ctext, x2 + 5, y2-6, "100.00%", 13, 82, 191, font);
 
     }
 

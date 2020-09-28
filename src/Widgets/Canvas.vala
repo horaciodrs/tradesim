@@ -806,6 +806,33 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
+    public void write_text_custom_size( string txt, Pango.FontDescription font, out int txt_width, out int txt_height){
+        
+        Pango.Layout layout;
+
+        layout = create_pango_layout(txt);
+        layout.set_font_description(font);
+        layout.get_pixel_size(out txt_width, out txt_height);
+
+    }
+
+    public void write_text_custom (Cairo.Context ctext, int x, int y, string txt, int cred, int cgreen, int cblue, Pango.FontDescription font) {
+
+        Pango.Layout layout;
+
+        layout = create_pango_layout (txt);
+
+        layout.set_font_description(font);
+
+        ctext.set_source_rgba (_r (cred), _g (cgreen), _b (cblue), 1);
+        ctext.move_to (x, y);
+        Pango.cairo_update_layout (ctext, layout);
+        Pango.cairo_show_layout (ctext, layout);
+
+        queue_draw ();
+
+    }
+
     public void draw_line (Cairo.Context ctext, int x1, int y1, int x2, int y2, double size, int r, int g, int b, bool dash = false, double dash_type = 5.0) {
 
         ctext.set_dash ({}, 0);
