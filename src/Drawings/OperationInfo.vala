@@ -92,11 +92,23 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
 
     public void draw_left_desc (Cairo.Context ctext, string _desc, int posy, int cred, int cgreen, int cblue) {
 
+        Gtk.DrawingArea aux_canvas;
+        Pango.Layout layout;
+        int txt_width;
+        int txt_height;
+        int padding = 6;
+
+        aux_canvas = new Gtk.DrawingArea();
+        layout = aux_canvas.create_pango_layout(_desc);
+        layout.get_pixel_size(out txt_width, out txt_height);
+
         ctext.set_source_rgba (_r (cred), _g (cgreen), _b (cblue), 1);
-        ctext.rectangle (0, posy - 20, 100, 20);
+        ctext.rectangle (0, posy - txt_height - padding, txt_width + 20, txt_height + padding);
         ctext.fill ();
 
-        ref_canvas.write_text_white (ctext, 2, posy - 18, _desc);
+        int txt_y = posy - txt_height - padding/2;
+
+        ref_canvas.write_text_white (ctext, padding, txt_y, _desc);
 
     }
 
