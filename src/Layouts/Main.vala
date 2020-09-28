@@ -103,7 +103,15 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
     }
 
-    public void add_canvas (string provider_name, string ticker_name, string time_frame) {
+    public void add_canvas (string? provider_name, string? ticker_name, string time_frame) {
+
+        if(provider_name == null){
+            return;
+        }
+
+        if(ticker_name == null){
+            return;
+        }
 
 
         var new_chart_dialog = new TradeSim.Dialogs.NewChartDialog (main_window, provider_name, ticker_name);

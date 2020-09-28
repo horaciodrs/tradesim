@@ -58,17 +58,15 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
 
     }
 
-    public void configure_providers () {
-
-        scroll_prviders = new Gtk.ScrolledWindow (null, null);
-        scroll_prviders.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-
-        list_store_providers = new Gtk.TreeStore (6, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof(string));
-        add_iter_providers = Gtk.TreeIter ();
-        add_iter_ticker = Gtk.TreeIter ();
+    public void load_providers(){
 
         Array<TradeSim.Objects.Provider> db_providers = qm.db.get_providers_with_data();
 
+        list_store_providers.clear();
+
+        add_iter_providers = Gtk.TreeIter ();
+        add_iter_ticker = Gtk.TreeIter ();
+        
         for(int i=0; i<db_providers.length; i++){
 
             list_store_providers.append (out add_iter_providers, null);
@@ -85,6 +83,23 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
 
         }
 
+    }
+
+    public void refresh_providers(){
+        tree_view_providers.get_selection().unselect_all();
+        load_providers();
+        tree_view_providers.expand_all ();
+    }
+
+    public void configure_providers () {
+
+        scroll_prviders = new Gtk.ScrolledWindow (null, null);
+        scroll_prviders.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+
+        list_store_providers = new Gtk.TreeStore (6, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof(string));
+
+        load_providers();
+
         tree_view_providers = new Gtk.TreeView ();
 
         tree_view_providers.set_model (list_store_providers);
@@ -98,6 +113,10 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
 
         tree_view_providers.get_selection ().changed.connect ((sel) => {
 
+            if(sel.count_selected_rows() < 1){
+                return;
+            }
+
             Gtk.TreeIter edited_iter;
             Gtk.TreeModel model;
             GLib.Value nombre;
@@ -107,8 +126,10 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
 
             model.get_value (edited_iter, 5, out nombre);
             model.get_value (edited_iter, 0, out ticker_nombre);
-
+            
             main_window.main_layout.add_canvas(nombre.get_string(), ticker_nombre.get_string(), "H1");
+
+            tree_view_providers.get_selection().unselect_all();
 
         });
 

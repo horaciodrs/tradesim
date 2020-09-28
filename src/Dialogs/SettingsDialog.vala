@@ -426,6 +426,9 @@
             tree_view_time_frame.set_sensitive(true);
             tree_view_year.set_sensitive(true);
             tree_view_quotes.set_sensitive(true);
+
+            main_window.main_layout.providers_panel.refresh_providers();
+
             loop.quit ();
 
         });
@@ -572,6 +575,8 @@
 
                 list_store_quotes.set (edited_iter, 6, !toggle.active);
 
+                main_window.main_layout.providers_panel.refresh_providers();
+
                 return;
 
             }
@@ -642,6 +647,7 @@
             tree_view_quotes.set_sensitive(true);
             qm.db.end_import_quotes ();
             working = false;
+            main_window.main_layout.providers_panel.refresh_providers();
             return false;
         }
 
