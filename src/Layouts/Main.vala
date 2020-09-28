@@ -150,6 +150,8 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
         current_canvas.operations_manager.add_operation (new_operation);
 
+        current_canvas.draw_operation_info(new_operation);
+
         operations_panel.update_operations ();
 
     }

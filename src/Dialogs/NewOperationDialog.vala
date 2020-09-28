@@ -175,7 +175,7 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
         grid_tp.attach (entry_tp_amount, 0, 2);
         grid_tp.attach (entry_tp_price, 0, 3);
 
-        grid_tp.attach (new Gtk.Label ("Pips"), 1, 1);
+        grid_tp.attach (new Gtk.Label ("Points"), 1, 1);
         grid_tp.attach (new Gtk.Label ("USD"), 1, 2);
         grid_tp.attach (new Gtk.Label ("Price"), 1, 3);
         
@@ -222,10 +222,10 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
 
         spin_price.set_value (price);
         spin_volume.set_value (0.25);
-        entry_tp.set_value (80);
+        entry_tp.set_value (800);
         entry_tp_amount.set_value (285.50);
         entry_tp_price.set_value (1.15012);
-        entry_sl.set_value (20);
+        entry_sl.set_value (200);
         entry_sl_amount.set_value (75.23);
         entry_sl_price.set_value (1.05012);
 

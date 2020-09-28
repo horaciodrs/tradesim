@@ -110,6 +110,7 @@
 
         label_name = new Gtk.Label ("Simulation Name:");
         txt_name = new Gtk.Entry ();
+        txt_name.set_text("Unnamed Simulation");
         label_name.halign = Gtk.Align.END;
 
         form_grid.attach (label_name, 0, 0, 1, 1);
@@ -129,6 +130,7 @@
 
         label_amount = new Gtk.Label ("Initial Balance:");
         txt_amount = new Gtk.Entry ();
+        txt_amount.set_text("1000");
         label_amount.halign = Gtk.Align.END;
 
         form_grid.attach (label_provider, 0, 1, 1, 1);

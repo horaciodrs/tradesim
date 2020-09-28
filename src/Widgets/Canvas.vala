@@ -1078,6 +1078,12 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         
     }
 
+    public void draw_operation_info (TradeSim.Objects.OperationItem _op) {
+
+        draw_manager.draw_operation (_op);
+
+    }
+
     public void start_draw_mode (int type) {
 
         if (type == TradeSim.Services.Drawings.Type.LINE) {

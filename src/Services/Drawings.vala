@@ -24,10 +24,11 @@ public class TradeSim.Services.Drawings {
     public weak TradeSim.Widgets.Canvas ref_canvas;
 
     public enum Type {
-          LINE
+        LINE
         , HLINE
         , RECTANGLE
         , FIBONACCI
+        , OPERATION_INFO
     }
 
     public bool drawing_mode; // Indica si se esta dibujando algo.
@@ -36,13 +37,18 @@ public class TradeSim.Services.Drawings {
     public Array<TradeSim.Drawings.Fibonacci> fibonacci;
     public Array<TradeSim.Drawings.Rectangle> rectangles;
     public Array<TradeSim.Drawings.HLine> hlines;
+    public Array<TradeSim.Drawings.OperationInfo> operations;
 
     public Drawings (TradeSim.Widgets.Canvas _canvas) {
+
         ref_canvas = _canvas;
+
         lines = new Array<TradeSim.Drawings.Line> ();
         fibonacci = new Array<TradeSim.Drawings.Fibonacci> ();
         rectangles = new Array<TradeSim.Drawings.Rectangle> ();
         hlines = new Array<TradeSim.Drawings.HLine> ();
+        operations = new Array<TradeSim.Drawings.OperationInfo> ();
+
     }
 
     public void show_all (Cairo.Context ctext) {
@@ -61,6 +67,32 @@ public class TradeSim.Services.Drawings {
 
         for (int z = 0 ; z < hlines.length ; z++) {
             hlines.index (z).render (ctext);
+        }
+
+        for (int z = 0 ; z < operations.length ; z++) {
+            operations.index (z).render (ctext);
+        }
+
+    }
+
+    public void draw_operation (TradeSim.Objects.OperationItem _op) {
+
+        //Esta función debe ser llamada cada vez que se crea o modifica
+        //una operación.
+
+        string _id = "operation" + _op.id.to_string ();
+        var new_operation = operation_exists (_id);
+        bool is_new_operation = false;
+
+        if (new_operation == null) {
+            new_operation = new TradeSim.Drawings.OperationInfo (ref_canvas, _id);
+            is_new_operation = true;
+        }
+
+        new_operation.set_data (_op);
+
+        if (is_new_operation) {
+            operations.append_val (new_operation);
         }
 
     }
@@ -131,7 +163,7 @@ public class TradeSim.Services.Drawings {
             is_new_fibo = true;
         }
 
-        
+
 
         if (new_fibo.get_x1 () == null) {
             // Si no hay x1 es porque se esta creando la linea
@@ -220,6 +252,18 @@ public class TradeSim.Services.Drawings {
         for (int i = 0 ; i < hlines.length ; i++) {
             if (hlines.index (i).id == _id) {
                 return hlines.index (i);
+            }
+        }
+
+        return null;
+
+    }
+
+    public TradeSim.Drawings.OperationInfo ? operation_exists (string _id) {
+
+        for (int i = 0 ; i < operations.length ; i++) {
+            if (operations.index (i).id == _id) {
+                return operations.index (i);
             }
         }
 
