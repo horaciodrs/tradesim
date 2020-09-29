@@ -21,6 +21,9 @@
 
 public class TradeSim.Layouts.Main : Gtk.Box {
 
+    //voy a modificar este archivo para crear una nueva seccion en el panel de la izquierda
+    //que me permita incorporar una seccion para editar los objetos dibujados.
+
     public weak TradeSim.MainWindow main_window { get; construct; }
 
     public TradeSim.Layouts.Welcome welcome_widget;
