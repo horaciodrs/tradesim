@@ -22,6 +22,7 @@ sources = files(
     'Layouts/HeaderBar.vala',
     'Layouts/Main.vala',
 
+    'Widgets/DrawingsPanelItem.vala',
     'Widgets/MenuButton.vala',
     'Widgets/ButtonImage.vala',
     'Widgets/HeaderBarButton.vala',
@@ -29,6 +30,7 @@ sources = files(
     'Widgets/TimeButton.vala',
     'Widgets/ProvidersPanel.vala',
     'Widgets/OperationsPanel.vala',
+    'Widgets/DrawingsPanel.vala',
     'Widgets/CanvasContainer.vala',
     'Widgets/Canvas.vala',
 

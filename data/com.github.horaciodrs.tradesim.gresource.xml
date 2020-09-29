@@ -8,5 +8,9 @@
     <file alias="shape-rectangle-symbolic.svg">icons/symbolic/shape-rectangle-symbolic.svg</file>
     <file alias="shape-text-symbolic.svg">icons/symbolic/shape-text-symbolic.svg</file>
     <file alias="shape-triangle-symbolic.svg">icons/symbolic/shape-triangle-symbolic.svg</file>
+    <file alias="draw-item-sensitive-no-symbolic.svg">icons/symbolic/draw-item-sensitive-no-symbolic.svg</file>
+    <file alias="draw-item-sensitive-symbolic.svg">icons/symbolic/draw-item-sensitive-symbolic.svg</file>    
+    <file alias="draw-item-visible-no-symbolic.svg">icons/symbolic/draw-item-visible-no-symbolic.svg</file>
+    <file alias="draw-item-visible-symbolic.svg">icons/symbolic/draw-item-visible-symbolic.svg</file>
   </gresource>
 </gresources>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16"
+   height="16"
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg13"
+   sodipodi:docname="draw-item-visible-no.svg"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
+  <metadata
+     id="metadata17">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>text</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1680"
+     inkscape:window-height="983"
+     id="namedview15"
+     showgrid="true"
+     inkscape:showpageshadow="false"
+     inkscape:zoom="22.627417"
+     inkscape:cx="8.6878365"
+     inkscape:cy="7.3027141"
+     inkscape:window-x="0"
+     inkscape:window-y="30"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg13"
+     inkscape:document-rotation="0"
+     showguides="true"
+     inkscape:guide-bbox="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid824" />
+    <sodipodi:guide
+       position="12,14"
+       orientation="0,-1"
+       id="guide10" />
+    <sodipodi:guide
+       position="18.6875,2"
+       orientation="0,-1"
+       id="guide12" />
+    <sodipodi:guide
+       position="2,7.53125"
+       orientation="1,0"
+       id="guide14" />
+    <sodipodi:guide
+       position="14,8.34375"
+       orientation="1,0"
+       id="guide16" />
+  </sodipodi:namedview>
+  <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+  <title
+     id="title2">text</title>
+  <desc
+     id="desc4">Created with Sketch.</desc>
+  <defs
+     id="defs6" />
+  <path
+     id="path82"
+     style="fill:#666666;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="M 8 5.3105469 C 4.8537033 5.3085169 3.1816406 7.828125 3.1816406 7.828125 C 3.1816406 7.828125 4.9924567 10.708984 8 10.708984 C 11.007543 10.708984 12.804686 7.828125 12.804688 7.828125 C 12.804688 7.828125 11.146297 5.3125727 8 5.3105469 z M 7.9921875 6.1035156 A 1.9058579 1.9058579 0 0 1 9.8984375 8.0097656 A 1.9058579 1.9058579 0 0 1 7.9921875 9.9160156 A 1.9058579 1.9058579 0 0 1 6.0859375 8.0097656 A 1.9058579 1.9058579 0 0 1 7.9921875 6.1035156 z M 7.9941406 6.875 A 1.1353091 1.1353091 0 0 0 6.8574219 8.0097656 A 1.1353091 1.1353091 0 0 0 7.9941406 9.1445312 A 1.1353091 1.1353091 0 0 0 9.1289062 8.0097656 A 1.1353091 1.1353091 0 0 0 7.9941406 6.875 z " />
+  <path
+     style="fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.707107px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="m 6.5498129,13 2,-10.3333333 1,0.3333333 -2,10.333333 z"
+     id="path931" />
+</svg>
