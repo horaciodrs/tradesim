@@ -22,9 +22,9 @@
 public class TradeSim.Widgets.DrawingsPanelItem : Gtk.Grid {
 
     private int type;
-    private bool visible;
-    private bool sensitive;
-    private string name;
+    private bool hidden;
+    private bool enabled;
+    private string desc;
     private string css;
     private string icon_name;
 
@@ -36,9 +36,12 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.Grid {
 
     public DrawingsPanelItem (string _name, int _type, string _css) {
 
-        name = _name;
+        desc = _name;
         type = _type;
         css = _css;
+
+        enabled = true;
+        hidden = false;
 
         switch (type) {
         case TradeSim.Services.Drawings.Type.LINE:
@@ -66,7 +69,7 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.Grid {
         type_icon = new Gtk.Image.from_icon_name (icon_name, Gtk.IconSize.MENU);
         visible_icon = new Gtk.Image.from_icon_name ("draw-item-visible-symbolic", Gtk.IconSize.MENU);
         sensitive_icon = new Gtk.Image.from_icon_name ("draw-item-sensitive-symbolic", Gtk.IconSize.MENU);
-        label_name = new Gtk.Label (name);
+        label_name = new Gtk.Label (desc);
         item_color = new Gtk.ColorButton ();
 
         type_icon.hexpand = false;
