@@ -30,6 +30,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
     public Gtk.Paned pane_top;
     public Gtk.Paned pane_left;
+    public Gtk.Paned pane_left_vertical;
 
     public Gtk.Notebook nb_chart_container;
 
@@ -67,8 +68,12 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
         pane_top = new Gtk.Paned (Gtk.Orientation.VERTICAL);
         pane_left = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
+        pane_left_vertical = new Gtk.Paned (Gtk.Orientation.VERTICAL);
 
-        pane_left.pack1 (providers_panel, true, true);
+        pane_left_vertical.pack1(providers_panel, true, true);
+        pane_left_vertical.pack2(new Gtk.Label("nueva seccion"), true, true);
+
+        pane_left.pack1 (pane_left_vertical, true, true);
         pane_left.pack2 (nb_chart_container, true, true);
 
         pane_top.pack1 (pane_left, true, false);
