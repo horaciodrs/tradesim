@@ -591,6 +591,22 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         _horizontal_scroll_moving = false;
 
+        if(draw_mode == true){
+
+            var target = main_window.main_layout.drawings_panel;
+
+            if(draw_mode_line == true){
+                target.insert_object(draw_mode_id, TradeSim.Services.Drawings.Type.LINE, draw_mode_objects);
+            }else if(draw_mode_fibo == true){
+                target.insert_object(draw_mode_id, TradeSim.Services.Drawings.Type.FIBONACCI, draw_mode_objects);
+            }else if(draw_mode_rectangle == true){
+                target.insert_object(draw_mode_id, TradeSim.Services.Drawings.Type.RECTANGLE, draw_mode_objects);
+            }else if(draw_mode_hline == true){
+                target.insert_object(draw_mode_id, TradeSim.Services.Drawings.Type.HLINE, draw_mode_objects);
+            }
+            
+        }
+        
         draw_mode_line = false; //Si se estaba dibujando se aborta.
         draw_mode_fibo = false; //Si se estaba dibujando se aborta.
         draw_mode_rectangle = false; //Si se estaba dibujando se aborta.
@@ -1041,28 +1057,28 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         //Esta funcion la debe llamar el menu de insertar linea.
         draw_mode_line = true;
         draw_mode_objects++;
-        draw_mode_id = "object" + draw_mode_objects.to_string();
+        draw_mode_id = "Line " + draw_mode_objects.to_string();
     }
 
     public void start_user_draw_fibo(){
         //Esta funcion la debe llamar el menu de insertar linea.
         draw_mode_fibo = true;
         draw_mode_objects++;
-        draw_mode_id = "object" + draw_mode_objects.to_string();
+        draw_mode_id = "Fibonacci " + draw_mode_objects.to_string();
     }
 
     public void start_user_draw_rectangle(){
         //Esta funcion la debe llamar el menu de insertar linea.
         draw_mode_rectangle = true;
         draw_mode_objects++;
-        draw_mode_id = "object" + draw_mode_objects.to_string();
+        draw_mode_id = "Rectangle " + draw_mode_objects.to_string();
     }
 
     public void start_user_draw_hline(){
         //Esta funcion la debe llamar el menu de insertar linea.
         draw_mode_hline = true;
         draw_mode_objects++;
-        draw_mode_id = "object" + draw_mode_objects.to_string();
+        draw_mode_id = "Horizontal Line " + draw_mode_objects.to_string();
     }
 
     public void user_draw_line () {

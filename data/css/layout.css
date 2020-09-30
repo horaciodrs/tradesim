@@ -144,3 +144,15 @@ paned > separator {
     border-bottom: 1px solid shade (@bg_color, 0.8);
     background-color: rgba(255, 255, 255, 0.1);
 }
+
+.scrolled-window-drawings-row-mouse-over{
+    border-bottom: 1px solid shade (@bg_color, 0.8);
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black;
+}
+
+.scrolled-window-drawings-row-alternate-mouse-over{
+    border-bottom: 1px solid shade (@bg_color, 0.8);
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black;
+}

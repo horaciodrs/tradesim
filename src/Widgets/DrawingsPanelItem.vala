@@ -19,28 +19,29 @@
  * Authored by: Horacio Daniel Ros <horaciodrs@gmail.com>
  */
 
-public class TradeSim.Widgets.DrawingsPanelItem : Gtk.Grid {
+public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
 
     private int type;
     private bool hidden;
     private bool enabled;
     private string desc;
-    private string css;
+    private string ? css;
     private string icon_name;
 
+    public Gtk.Grid main_grid;
     public Gtk.Label label_name;
     public Gtk.Image type_icon;
     public Gtk.Image visible_icon;
     public Gtk.Image sensitive_icon;
     public Gtk.ColorButton item_color;
 
-    public DrawingsPanelItem (string _name, int _type, string _css) {
+    public DrawingsPanelItem (string _name, int _type, string ? _css = null) {
 
         desc = _name;
         type = _type;
         css = _css;
 
-        enabled = true;
+        //enabled = true;
         hidden = false;
 
         switch (type) {
@@ -62,10 +63,15 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.Grid {
 
     }
 
+    public void set_class (string css) {
+        main_grid.get_style_context ().add_class (css);
+    }
+
     public void init () {
 
+        add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK | Gdk.EventMask.POINTER_MOTION_MASK | Gdk.EventMask.LEAVE_NOTIFY_MASK);
 
-
+        main_grid = new Gtk.Grid();
         type_icon = new Gtk.Image.from_icon_name (icon_name, Gtk.IconSize.MENU);
         visible_icon = new Gtk.Image.from_icon_name ("draw-item-visible-symbolic", Gtk.IconSize.MENU);
         sensitive_icon = new Gtk.Image.from_icon_name ("draw-item-sensitive-symbolic", Gtk.IconSize.MENU);
@@ -89,24 +95,51 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.Grid {
         label_name.hexpand = true;
         label_name.halign = Gtk.Align.START;
 
-        get_style_context ().add_class (css);
+        if (css != null) {
+            main_grid.get_style_context ().add_class (css);
+        }
 
-        hexpand = true;
-        column_homogeneous = false;
-        row_spacing = 0;
-        column_spacing = 4;
+        main_grid.hexpand = true;
+        main_grid.column_homogeneous = false;
+        main_grid.row_spacing = 0;
+        main_grid.column_spacing = 4;
 
         var lbl_test = new Gtk.Label (" ");
         lbl_test.hexpand = true;
 
-        attach (type_icon, 0, 0, 1);
-        attach (label_name, 1, 0, 3);
-        attach (item_color, 4, 0);
+        main_grid.attach (type_icon, 0, 0, 1);
+        main_grid.attach (label_name, 1, 0, 3);
+        main_grid.attach (item_color, 4, 0);
 
-        attach (sensitive_icon, 1, 1);
-        attach (visible_icon, 2, 1, 1);
-        attach (lbl_test, 3, 1);
+        main_grid.attach (sensitive_icon, 1, 1);
+        main_grid.attach (visible_icon, 2, 1, 1);
+        main_grid.attach (lbl_test, 3, 1);
 
+        main_grid.set_sensitive(true);
+
+        motion_notify_event.connect (on_mouse_over);
+
+        leave_notify_event.connect (on_mouse_out);
+
+        add(main_grid);
+
+    }
+
+    public bool on_mouse_over(Gdk.EventMotion event){
+
+        main_grid.get_style_context().remove_class(css);
+        main_grid.get_style_context ().add_class (css + "-mouse-over");
+
+        return true;
+        
+    }
+
+    public bool on_mouse_out(Gdk.EventCrossing event){
+
+        main_grid.get_style_context().remove_class(css + "-mouse-over");
+        main_grid.get_style_context ().add_class (css);
+
+        return true;
     }
 
 }

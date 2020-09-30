@@ -54,16 +54,24 @@ public class TradeSim.Widgets.DrawingsPanel : Gtk.Grid{
         attach(label_title, 0, 0);
         attach(scroll_drawings, 0, 1);
 
-        grid_data.attach(new TradeSim.Widgets.DrawingsPanelItem("Dibujo 1", 0, "scrolled-window-drawings-row"), 0, 0);
-        grid_data.attach(new TradeSim.Widgets.DrawingsPanelItem("Dibujo 2", 1, "scrolled-window-drawings-row-alternate"), 0, 1);
-        grid_data.attach(new TradeSim.Widgets.DrawingsPanelItem("Dibujo 3", 2, "scrolled-window-drawings-row"), 0, 2);
-        grid_data.attach(new TradeSim.Widgets.DrawingsPanelItem("Dibujo 4 - Test", 3, "scrolled-window-drawings-row-alternate"), 0, 3);
-        grid_data.attach(new TradeSim.Widgets.DrawingsPanelItem("Object7", 3, "scrolled-window-drawings-row"), 0, 4);
-        grid_data.attach(new TradeSim.Widgets.DrawingsPanelItem("Resistencia 1", 3, "scrolled-window-drawings-row-alternate"), 0, 5);
-        grid_data.attach(new TradeSim.Widgets.DrawingsPanelItem("Fibo de prueba", 3, "scrolled-window-drawings-row"), 0, 6);
-        grid_data.attach(new TradeSim.Widgets.DrawingsPanelItem("Test", 3, "scrolled-window-drawings-row-alternate"), 0, 7);
-
         scroll_drawings.add(grid_data);
 
     }
+
+    public void insert_object(string _id, int type, int order){
+
+        string css = "scrolled-window-drawings-row";
+
+        if(order % 2 == 0){
+            css ="scrolled-window-drawings-row-alternate";
+        }
+
+        var new_obj = new TradeSim.Widgets.DrawingsPanelItem(_id, type, css);
+
+        grid_data.attach(new_obj, 0, order);
+
+        grid_data.show_all();
+
+    }
+
 }
