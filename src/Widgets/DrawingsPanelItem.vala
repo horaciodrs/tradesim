@@ -31,8 +31,6 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
     private string icon_name;
     private Gdk.RGBA original_color;
 
-    private int order_in_grid;
-
     public Gtk.Grid main_grid;
     public Gtk.Label label_name;
     public Gtk.Image type_icon;
@@ -41,14 +39,13 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
     public Gtk.Button trash_icon;
     public Gtk.ColorButton item_color;
 
-    public DrawingsPanelItem (TradeSim.MainWindow _window, string _name, int _order, int _type, string ? _css = null,Gdk.RGBA ?  _color = null) {
+    public DrawingsPanelItem (TradeSim.MainWindow _window, string _name, int _type, string ? _css = null,Gdk.RGBA ?  _color = null) {
 
         main_window = _window;
 
         desc = _name;
         type = _type;
         css = _css;
-        order_in_grid = _order;
 
         if(_color == null){
             var default_color = new TradeSim.Utils.Color.default();
@@ -138,7 +135,7 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
 
             var target = main_window.main_layout.drawings_panel;
 
-            target.delete_object(desc, type, order_in_grid);
+            target.delete_object(desc, type);
             
         });
 
