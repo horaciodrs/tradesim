@@ -26,7 +26,6 @@ public class TradeSim.Drawings.Fibonacci : TradeSim.Drawings.Line {
         //Linea Diagonal
         ctext.set_dash ({5.0}, 0);
         ctext.set_line_width (1);
-        //ctext.set_source_rgba (_r (125), _g (125), _b (125), 1);
         color.apply_to(ctext);
         ctext.move_to (x1, y1);
         ctext.line_to (x2, y2);
@@ -35,7 +34,6 @@ public class TradeSim.Drawings.Fibonacci : TradeSim.Drawings.Line {
         //Linea 0
         ctext.set_dash ({}, 0);
         ctext.set_line_width (1);
-        //ctext.set_source_rgba (_r (13), _g (82), _b (191), 1);
         color.apply_to(ctext);
         ctext.move_to (x1, y1);
         ctext.line_to (x2, y1);
@@ -45,7 +43,6 @@ public class TradeSim.Drawings.Fibonacci : TradeSim.Drawings.Line {
         //Linea 382
         ctext.set_dash ({}, 0);
         ctext.set_line_width (1);
-        //ctext.set_source_rgba (_r (13), _g (82), _b (191), 1);
         color.apply_to(ctext);
         ctext.move_to (x1, y382);
         ctext.line_to (x2, y382);
@@ -55,7 +52,6 @@ public class TradeSim.Drawings.Fibonacci : TradeSim.Drawings.Line {
         //Linea 50
         ctext.set_dash ({}, 0);
         ctext.set_line_width (1);
-        //ctext.set_source_rgba (_r (13), _g (82), _b (191), 1);
         color.apply_to(ctext);
         ctext.move_to (x1, y50);
         ctext.line_to (x2, y50);
@@ -65,7 +61,6 @@ public class TradeSim.Drawings.Fibonacci : TradeSim.Drawings.Line {
         //Linea 618
         ctext.set_dash ({}, 0);
         ctext.set_line_width (1);
-        //ctext.set_source_rgba (_r (13), _g (82), _b (191), 1);
         color.apply_to(ctext);
         ctext.move_to (x1, y618);
         ctext.line_to (x2, y618);
@@ -75,7 +70,6 @@ public class TradeSim.Drawings.Fibonacci : TradeSim.Drawings.Line {
         //Linea 100
         ctext.set_dash ({}, 0);
         ctext.set_line_width (1);
-        //ctext.set_source_rgba (_r (13), _g (82), _b (191), 1);
         color.apply_to(ctext);
         ctext.move_to (x1, y2);
         ctext.line_to (x2, y2);

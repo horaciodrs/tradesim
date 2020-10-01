@@ -275,8 +275,6 @@ public class TradeSim.Services.Drawings {
 
         var _color = new TradeSim.Utils.Color.with_rgba(_c);
 
-        //print("red:" + _color.red.to_string() + " green:" + _color.green.to_string() + " blue:" + _color.blue.to_string() + "\n");
-
         if(_type==TradeSim.Services.Drawings.Type.LINE){
             for(int i=0; i< lines.length; i++){
                 if(lines.index(i).id == _id){
