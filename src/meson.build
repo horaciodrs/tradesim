@@ -35,6 +35,7 @@ sources = files(
     'Widgets/CanvasContainer.vala',
     'Widgets/Canvas.vala',
 
+    'Dialogs/DrawEditDialog.vala',
     'Dialogs/NewOperationDialog.vala',
     'Dialogs/NewChartDialog.vala',
     'Dialogs/SettingsDialog.vala',

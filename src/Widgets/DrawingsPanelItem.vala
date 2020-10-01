@@ -138,10 +138,25 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
         main_grid.set_sensitive(true);
 
         motion_notify_event.connect (on_mouse_over);
-
         leave_notify_event.connect (on_mouse_out);
+        button_press_event.connect(on_mouse_click);
 
         add(main_grid);
+
+    }
+
+    public bool on_mouse_click(Gdk.EventButton event){
+
+        if(event.type == Gdk.EventType.2BUTTON_PRESS){
+            
+            var edit_object_dialog = new TradeSim.Dialogs.DrawEditDialog (main_window, desc, type);
+
+            edit_object_dialog.show_all ();
+            edit_object_dialog.present ();
+
+        }
+
+        return true;
 
     }
 
