@@ -27,9 +27,13 @@ public class TradeSim.Widgets.DrawingsPanel : Gtk.Grid{
     public Gtk.ScrolledWindow scroll_drawings;
     public Gtk.Grid grid_data;
 
+    private int rows;
+
     public DrawingsPanel(TradeSim.MainWindow _window){
 
         main_window = _window;
+
+        rows = -1;
 
         init();
 
@@ -58,20 +62,46 @@ public class TradeSim.Widgets.DrawingsPanel : Gtk.Grid{
 
     }
 
-    public void insert_object(string _id, int type, int order){
+    public void insert_object(string _id, int type){
+
+        rows++;
 
         string css = "scrolled-window-drawings-row";
 
-        if(order % 2 == 0){
+        if(rows % 2 == 0){
             css ="scrolled-window-drawings-row-alternate";
         }
 
-        var new_obj = new TradeSim.Widgets.DrawingsPanelItem(main_window, _id, type, css);
+        var new_obj = new TradeSim.Widgets.DrawingsPanelItem(main_window, _id, rows, type, css);
 
-        grid_data.attach(new_obj, 0, order);
+        grid_data.attach(new_obj, 0, rows);
 
         grid_data.show_all();
 
+    }
+
+    public void delete_object(string _id, int type, int order){
+
+        var dm = main_window.main_layout.current_canvas.draw_manager;
+        bool salir = false;
+        int i=0;
+        while(!salir){
+            Gtk.Widget ? generic_widget = grid_data.get_child_at(0, i);
+            if(generic_widget == null){
+                salir = true;
+            }else{
+                if(generic_widget.get_type() == typeof(TradeSim.Widgets.DrawingsPanelItem)){
+                    TradeSim.Widgets.DrawingsPanelItem row = (TradeSim.Widgets.DrawingsPanelItem) generic_widget;
+                    if(row.desc == _id){
+                        dm.delete_draw(_id, type);
+                        grid_data.remove_row(i);
+                        rows--;
+                        break;
+                    }
+                }
+            }
+            i++;
+        }
     }
 
 }

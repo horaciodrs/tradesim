@@ -596,13 +596,13 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             var target = main_window.main_layout.drawings_panel;
 
             if(draw_mode_line == true){
-                target.insert_object(draw_mode_id, TradeSim.Services.Drawings.Type.LINE, draw_mode_objects);
+                target.insert_object(draw_mode_id, TradeSim.Services.Drawings.Type.LINE);
             }else if(draw_mode_fibo == true){
-                target.insert_object(draw_mode_id, TradeSim.Services.Drawings.Type.FIBONACCI, draw_mode_objects);
+                target.insert_object(draw_mode_id, TradeSim.Services.Drawings.Type.FIBONACCI);
             }else if(draw_mode_rectangle == true){
-                target.insert_object(draw_mode_id, TradeSim.Services.Drawings.Type.RECTANGLE, draw_mode_objects);
+                target.insert_object(draw_mode_id, TradeSim.Services.Drawings.Type.RECTANGLE);
             }else if(draw_mode_hline == true){
-                target.insert_object(draw_mode_id, TradeSim.Services.Drawings.Type.HLINE, draw_mode_objects);
+                target.insert_object(draw_mode_id, TradeSim.Services.Drawings.Type.HLINE);
             }
             
         }

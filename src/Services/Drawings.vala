@@ -573,4 +573,33 @@ public class TradeSim.Services.Drawings {
 
     }
 
+    public void delete_draw(string _id, int _type){
+
+        if (_type == TradeSim.Services.Drawings.Type.LINE) {
+            for (int i = 0 ; i < lines.length ; i++) {
+                if (lines.index (i).id == _id) {
+                    lines.remove_index(i);
+                }
+            }
+        } else if (_type == TradeSim.Services.Drawings.Type.HLINE) {
+            for (int i = 0 ; i < hlines.length ; i++) {
+                if (hlines.index (i).id == _id) {
+                    hlines.remove_index(i);
+                }
+            }
+        } else if (_type == TradeSim.Services.Drawings.Type.FIBONACCI) {
+            for (int i = 0 ; i < fibonacci.length ; i++) {
+                if (fibonacci.index (i).id == _id) {
+                    fibonacci.remove_index(i);
+                }
+            }
+        } else if (_type == TradeSim.Services.Drawings.Type.RECTANGLE) {
+            for (int i = 0 ; i < rectangles.length ; i++) {
+                if (rectangles.index (i).id == _id) {
+                    rectangles.remove_index(i);
+                }
+            }
+        }
+    }
+
 }
