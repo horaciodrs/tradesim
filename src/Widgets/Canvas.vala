@@ -82,7 +82,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     private int total_candles_size; // Indica la cantidad de velas que puedo dibujar...
     private int drawed_candles;
 
-    private TradeSim.Services.Drawings draw_manager;
+    public TradeSim.Services.Drawings draw_manager;
 
     private int draw_mode_objects;
     private string draw_mode_id;

@@ -31,7 +31,7 @@
 
         update_data ();
 
-        ctext.set_source_rgba (_r (53), _g (100), _b (86), 0.5);
+        color.apply_to(ctext);
         ctext.rectangle (x1, y1, x2-x1, y2-y1);
         ctext.fill ();
         ctext.stroke ();

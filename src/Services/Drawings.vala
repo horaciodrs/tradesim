@@ -270,4 +270,41 @@ public class TradeSim.Services.Drawings {
         return null;
 
     }
+
+    public void set_draw_color(string _id, int _type, Gdk.RGBA _c){
+
+        var _color = new TradeSim.Utils.Color.with_rgba(_c);
+
+        //print("red:" + _color.red.to_string() + " green:" + _color.green.to_string() + " blue:" + _color.blue.to_string() + "\n");
+
+        if(_type==TradeSim.Services.Drawings.Type.LINE){
+            for(int i=0; i< lines.length; i++){
+                if(lines.index(i).id == _id){
+                    lines.index(i).set_color(_color);
+                    break;
+                }
+            }
+        }else if(_type==TradeSim.Services.Drawings.Type.HLINE){
+            for(int i=0; i< hlines.length; i++){
+                if(hlines.index(i).id == _id){
+                    hlines.index(i).set_color(_color);
+                    break;
+                }
+            }
+        }else if(_type==TradeSim.Services.Drawings.Type.FIBONACCI){
+            for(int i=0; i< fibonacci.length; i++){
+                if(fibonacci.index(i).id == _id){
+                    fibonacci.index(i).set_color(_color);
+                    break;
+                }
+            }
+        }else if(_type==TradeSim.Services.Drawings.Type.RECTANGLE){
+            for(int i=0; i< rectangles.length; i++){
+                if(rectangles.index(i).id == _id){
+                    rectangles.index(i).set_color(_color);
+                    break;
+                }
+            }
+        }
+    }
 }

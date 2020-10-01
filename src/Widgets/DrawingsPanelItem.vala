@@ -21,12 +21,15 @@
 
 public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
 
+    public weak TradeSim.MainWindow main_window;
+
     private int type;
     private bool hidden;
     private bool enabled;
     private string desc;
     private string ? css;
     private string icon_name;
+    private Gdk.RGBA original_color;
 
     public Gtk.Grid main_grid;
     public Gtk.Label label_name;
@@ -35,11 +38,20 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
     public Gtk.Image sensitive_icon;
     public Gtk.ColorButton item_color;
 
-    public DrawingsPanelItem (string _name, int _type, string ? _css = null) {
+    public DrawingsPanelItem (TradeSim.MainWindow _window, string _name, int _type, string ? _css = null,Gdk.RGBA ?  _color = null) {
+
+        main_window = _window;
 
         desc = _name;
         type = _type;
         css = _css;
+
+        if(_color == null){
+            var default_color = new TradeSim.Utils.Color.default();
+            original_color = default_color.get_rgba();
+        }else{
+            original_color = _color;
+        }
 
         //enabled = true;
         hidden = false;
@@ -76,7 +88,7 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
         visible_icon = new Gtk.Image.from_icon_name ("draw-item-visible-symbolic", Gtk.IconSize.MENU);
         sensitive_icon = new Gtk.Image.from_icon_name ("draw-item-sensitive-symbolic", Gtk.IconSize.MENU);
         label_name = new Gtk.Label (desc);
-        item_color = new Gtk.ColorButton ();
+        item_color = new Gtk.ColorButton.with_rgba (original_color);
 
         type_icon.hexpand = false;
         type_icon.margin = 4;
@@ -91,6 +103,14 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
 
         item_color.hexpand = false;
         item_color.margin = 4;
+
+        item_color.color_set.connect(() =>{
+
+            var target = main_window.main_layout.current_canvas.draw_manager;
+
+            target.set_draw_color(desc, type, item_color.get_rgba());
+
+        });
 
         label_name.hexpand = true;
         label_name.halign = Gtk.Align.START;

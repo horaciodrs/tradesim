@@ -29,6 +29,8 @@ public class TradeSim.Drawings.Line {
     protected DateTime date2;
     protected double price1;
     protected double price2;
+
+    protected TradeSim.Utils.Color color;
     
     protected int? x1; //Se calcula en base a date1.
     protected int? x2; //Se calcula en base a date2.
@@ -39,6 +41,7 @@ public class TradeSim.Drawings.Line {
         id = _id;
         x1 = null;
         ref_canvas = _canvas;
+        color = new TradeSim.Utils.Color.with_alpha(13, 82, 191, 1.0);
     }
 
     protected void update_data(){
@@ -56,11 +59,15 @@ public class TradeSim.Drawings.Line {
 
         ctext.set_dash ({}, 0);
         ctext.set_line_width (2);
-        ctext.set_source_rgba (_r (13), _g (82), _b (191), 1);
+        color.apply_to(ctext);
         ctext.move_to (x1, y1);
         ctext.line_to (x2, y2);
         ctext.stroke ();
 
+    }
+
+    public void set_color(TradeSim.Utils.Color _color){
+        color = _color;
     }
 
     public void set_x1(DateTime d1){
@@ -85,5 +92,9 @@ public class TradeSim.Drawings.Line {
 
     public int? get_x2(){
         return x2;
+    }
+
+    public TradeSim.Utils.Color get_color(){
+        return color;
     }
 }

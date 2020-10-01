@@ -33,7 +33,7 @@
 
         ctext.set_dash ({}, 0);
         ctext.set_line_width (3);
-        ctext.set_source_rgba (_r (13), _g (82), _b (191), 1);
+        color.apply_to(ctext);
         ctext.move_to (0, y2);
         ctext.line_to (ref_canvas._width, y2);
         ctext.stroke ();
@@ -48,7 +48,7 @@
 
         ctext.set_dash ({}, 0);
 
-        ctext.set_source_rgba (_r (13), _g (82), _b (191), 1);
+        color.apply_to(ctext);
         ctext.rectangle (ref_canvas._width - ref_canvas.vertical_scale_width, posy - 10, ref_canvas.vertical_scale_width, 20);
         ctext.fill ();
 
@@ -58,13 +58,13 @@
         ctext.close_path ();
 
         ctext.set_line_width (1.0);
-        ctext.set_source_rgb (_r (13), _g (82), _b (191));
+        color.apply_to(ctext);
         ctext.fill_preserve ();
         ctext.stroke ();
 
         ctext.set_dash ({ 5.0 }, 0);
         ctext.set_line_width (1);
-        ctext.set_source_rgba (_r (13), _g (82), _b (191), 1);
+        color.apply_to(ctext);
         ctext.move_to (0, posy);
         ctext.line_to (ref_canvas._width, posy);
         ctext.stroke ();
