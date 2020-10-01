@@ -68,4 +68,12 @@ public class TradeSim.Utils.Color{
 
     }
 
+    public Gdk.Color get_gdk_color(){
+
+        Gdk.Color return_value = {(uint16) red, (uint16) green, (uint16) blue};
+
+        return return_value;
+
+    }
+
 }

@@ -12,5 +12,9 @@
     <file alias="draw-item-sensitive-symbolic.svg">icons/symbolic/draw-item-sensitive-symbolic.svg</file>    
     <file alias="draw-item-visible-no-symbolic.svg">icons/symbolic/draw-item-visible-no-symbolic.svg</file>
     <file alias="draw-item-visible-symbolic.svg">icons/symbolic/draw-item-visible-symbolic.svg</file>
+    <file alias="shape-thickness1-symbolic.svg">icons/symbolic/shape-thickness1-symbolic.svg</file>
+    <file alias="shape-thickness2-symbolic.svg">icons/symbolic/shape-thickness2-symbolic.svg</file>
+    <file alias="shape-thickness3-symbolic.svg">icons/symbolic/shape-thickness3-symbolic.svg</file>
+    <file alias="shape-thickness4-symbolic.svg">icons/symbolic/shape-thickness4-symbolic.svg</file>
   </gresource>
 </gresources>

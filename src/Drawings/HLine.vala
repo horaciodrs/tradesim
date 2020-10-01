@@ -24,6 +24,8 @@
     public HLine (TradeSim.Widgets.Canvas canvas, string _id) {
 
         base (canvas, _id);
+
+        thickness = TradeSim.Services.Drawings.Thickness.THICK;
         
     }
 
@@ -32,7 +34,7 @@
         update_data();
 
         ctext.set_dash ({}, 0);
-        ctext.set_line_width (3);
+        ctext.set_line_width (thickness);
         color.apply_to(ctext);
         ctext.move_to (0, y2);
         ctext.line_to (ref_canvas._width, y2);

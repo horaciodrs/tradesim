@@ -31,6 +31,7 @@ public class TradeSim.Drawings.Line {
     protected double price2;
 
     protected TradeSim.Utils.Color color;
+    protected int thickness;
     
     protected int? x1; //Se calcula en base a date1.
     protected int? x2; //Se calcula en base a date2.
@@ -42,6 +43,7 @@ public class TradeSim.Drawings.Line {
         x1 = null;
         ref_canvas = _canvas;
         color = new TradeSim.Utils.Color.with_alpha(13, 82, 191, 1.0);
+        thickness = TradeSim.Services.Drawings.Thickness.FINE;
     }
 
     protected void update_data(){
@@ -58,12 +60,16 @@ public class TradeSim.Drawings.Line {
         update_data();
 
         ctext.set_dash ({}, 0);
-        ctext.set_line_width (2);
+        ctext.set_line_width (thickness);
         color.apply_to(ctext);
         ctext.move_to (x1, y1);
         ctext.line_to (x2, y2);
         ctext.stroke ();
 
+    }
+
+    public void set_thickness(int _thicness){
+        thickness = _thicness;
     }
 
     public void set_color(TradeSim.Utils.Color _color){
@@ -96,5 +102,9 @@ public class TradeSim.Drawings.Line {
 
     public TradeSim.Utils.Color get_color(){
         return color;
+    }
+
+    public int get_thicness(){
+        return thickness;
     }
 }

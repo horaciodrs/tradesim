@@ -145,11 +145,24 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
 
     }
 
+    public void refresh(string _new_desc){
+
+        var draw_manager = main_window.main_layout.current_canvas.draw_manager;
+
+        desc = _new_desc;
+
+        var object_color = draw_manager.get_draw_color(desc, type);
+
+        label_name.set_text(desc);
+        item_color.set_rgba(object_color.get_rgba());
+
+    }
+
     public bool on_mouse_click(Gdk.EventButton event){
 
         if(event.type == Gdk.EventType.2BUTTON_PRESS){
             
-            var edit_object_dialog = new TradeSim.Dialogs.DrawEditDialog (main_window, desc, type);
+            var edit_object_dialog = new TradeSim.Dialogs.DrawEditDialog (main_window, this, desc, type);
 
             edit_object_dialog.show_all ();
             edit_object_dialog.present ();

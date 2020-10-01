@@ -24,6 +24,8 @@
     public Rectangle (TradeSim.Widgets.Canvas canvas, string _id) {
 
         base (canvas, _id);
+
+        color.alpha = 0.5;
         
     }
 

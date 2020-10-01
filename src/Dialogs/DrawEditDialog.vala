@@ -22,9 +22,11 @@
  public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
 
     public weak TradeSim.MainWindow main_window { get; construct; }
+    public weak TradeSim.Widgets.DrawingsPanelItem item_to_update { get; construct; }
 
     private string object_id;
     private int type;
+    private int selected_thicness;
 
     public Gtk.Button acept_button;
     public Gtk.Button cancel_button;
@@ -49,18 +51,19 @@
         CANCEL
     }
 
-    public DrawEditDialog (TradeSim.MainWindow ? parent, string _id, int _type) {
+    public DrawEditDialog (TradeSim.MainWindow ? parent, TradeSim.Widgets.DrawingsPanelItem _item_to_update, string _id, int _type) {
         Object (
             border_width: 5,
             deletable: false,
             resizable: true,
             title: "Edit Object",
             transient_for: parent,
-            main_window: parent
+            main_window: parent,
+            item_to_update: _item_to_update
             );
 
         object_id = _id;
-        type = type;
+        type = _type;
 
         init ();
 
@@ -146,6 +149,8 @@
 
     private Gtk.Grid get_button_thickness(){
 
+        var draw_manager = main_window.main_layout.current_canvas.draw_manager;
+
         Gtk.Grid grilla = new Gtk.Grid();
 
         grilla.get_style_context ().add_class (Gtk.STYLE_CLASS_LINKED);
@@ -153,20 +158,81 @@
 
         grilla.hexpand = true;
 
-        button_thickness1 = new Gtk.Button.from_icon_name("shape-line-symbolic");
-        button_thickness2 = new Gtk.Button.from_icon_name("shape-line-symbolic");
-        button_thickness3 = new Gtk.Button.from_icon_name("shape-line-symbolic");
-        button_thickness4 = new Gtk.Button.from_icon_name("shape-line-symbolic");
+        button_thickness1 = new Gtk.Button.from_icon_name("shape-thickness1-symbolic");
+        button_thickness2 = new Gtk.Button.from_icon_name("shape-thickness2-symbolic");
+        button_thickness3 = new Gtk.Button.from_icon_name("shape-thickness3-symbolic");
+        button_thickness4 = new Gtk.Button.from_icon_name("shape-thickness4-symbolic");
 
         button_thickness1.hexpand = true;
         button_thickness2.hexpand = true;
         button_thickness3.hexpand = true;
         button_thickness4.hexpand = true;
 
+        selected_thicness = draw_manager.get_draw_thicness(object_id, type);
+
+        //print("type:" + type.to_string() + "\n");
+        //print(selected_thicness.to_string() + "\n");
+
+        if(selected_thicness == TradeSim.Services.Drawings.Thickness.VERY_FINE){
+            button_thickness1.get_style_context().add_class("btn-thicness-selected");
+            button_thickness2.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness3.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness4.get_style_context().remove_class("btn-thicness-selected");
+        }else if(selected_thicness == TradeSim.Services.Drawings.Thickness.FINE){
+            button_thickness2.get_style_context().add_class("btn-thicness-selected");
+            button_thickness1.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness3.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness4.get_style_context().remove_class("btn-thicness-selected");
+        }else if(selected_thicness == TradeSim.Services.Drawings.Thickness.THICK){
+            button_thickness3.get_style_context().add_class("btn-thicness-selected");
+            button_thickness2.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness1.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness4.get_style_context().remove_class("btn-thicness-selected");
+        }else if(selected_thicness == TradeSim.Services.Drawings.Thickness.VERY_THICK){
+            button_thickness4.get_style_context().add_class("btn-thicness-selected");
+            button_thickness2.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness3.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness1.get_style_context().remove_class("btn-thicness-selected");
+        }
+
         grilla.attach(button_thickness1, 0, 0);
         grilla.attach(button_thickness2, 1, 0);
         grilla.attach(button_thickness3, 2, 0);
         grilla.attach(button_thickness4, 3, 0);
+
+        
+
+        button_thickness1.clicked.connect(() =>{
+            selected_thicness = TradeSim.Services.Drawings.Thickness.VERY_FINE;
+            button_thickness1.get_style_context().add_class("btn-thicness-selected");
+            button_thickness2.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness3.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness4.get_style_context().remove_class("btn-thicness-selected");
+        });
+
+        button_thickness2.clicked.connect(() =>{
+            selected_thicness = TradeSim.Services.Drawings.Thickness.FINE;
+            button_thickness2.get_style_context().add_class("btn-thicness-selected");
+            button_thickness1.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness3.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness4.get_style_context().remove_class("btn-thicness-selected");
+        });
+
+        button_thickness3.clicked.connect(() =>{
+            selected_thicness = TradeSim.Services.Drawings.Thickness.THICK;
+            button_thickness3.get_style_context().add_class("btn-thicness-selected");
+            button_thickness2.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness1.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness4.get_style_context().remove_class("btn-thicness-selected");
+        });
+
+        button_thickness4.clicked.connect(() =>{
+            selected_thicness = TradeSim.Services.Drawings.Thickness.VERY_THICK;
+            button_thickness4.get_style_context().add_class("btn-thicness-selected");
+            button_thickness2.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness3.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness1.get_style_context().remove_class("btn-thicness-selected");
+        });
 
         return grilla;
 
@@ -175,7 +241,7 @@
     private string validate_data () {
 
         if (txt_name.get_text ().length < 1) {
-            return "Please enter the simulation name";
+            return "Please enter the object name";
         }
 
         return "";
@@ -201,11 +267,16 @@
         switch (response_id) {
         case Action.OK:
 
-            TradeSim.Dialogs.NewChartDialog dialogo = ((TradeSim.Dialogs.NewChartDialog)source);
+            TradeSim.Dialogs.DrawEditDialog dialogo = ((TradeSim.Dialogs.DrawEditDialog)source);
 
             var objetivo = dialogo.main_window.main_layout;
+            var target = objetivo.current_canvas.draw_manager;
 
-            //acciones a realizar...
+            target.set_draw_color(object_id, type, button_color.get_rgba());
+            target.set_draw_thickness(object_id, type, selected_thicness);
+            target.set_draw_name(object_id, type, txt_name.get_text());
+
+            dialogo.item_to_update.refresh(txt_name.get_text());
 
             destroy ();
 
