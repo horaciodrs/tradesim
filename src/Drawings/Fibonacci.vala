@@ -8,6 +8,10 @@ public class TradeSim.Drawings.Fibonacci : TradeSim.Drawings.Line {
 
     public override void render (Cairo.Context ctext) {
 
+        if(!visible){
+            return;
+        }
+
         update_data ();
 
         int distancia_vertical = y2 - y1;

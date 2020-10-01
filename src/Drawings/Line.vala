@@ -32,6 +32,8 @@ public class TradeSim.Drawings.Line {
 
     protected TradeSim.Utils.Color color;
     protected int thickness;
+
+    protected bool visible;
     
     protected int? x1; //Se calcula en base a date1.
     protected int? x2; //Se calcula en base a date2.
@@ -44,6 +46,7 @@ public class TradeSim.Drawings.Line {
         ref_canvas = _canvas;
         color = new TradeSim.Utils.Color.with_alpha(13, 82, 191, 1.0);
         thickness = TradeSim.Services.Drawings.Thickness.FINE;
+        visible = true;
     }
 
     protected void update_data(){
@@ -56,6 +59,10 @@ public class TradeSim.Drawings.Line {
     }
 
     public virtual void render(Cairo.Context ctext){
+
+        if(!visible){
+            return;
+        }
 
         update_data();
 
@@ -107,4 +114,21 @@ public class TradeSim.Drawings.Line {
     public int get_thicness(){
         return thickness;
     }
+
+    public void set_alpha(double _alpha){
+        color.alpha = _alpha;
+    }
+
+    public double get_alpha(){
+        return color.alpha;
+    }
+
+    public bool get_visible(){
+        return visible;
+    }
+
+    public void set_visible(bool _state){
+        visible = _state;
+    }
+
 }

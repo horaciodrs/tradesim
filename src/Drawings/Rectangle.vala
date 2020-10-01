@@ -31,6 +31,10 @@
 
     public override void render (Cairo.Context ctext) {
 
+        if(!visible){
+            return;
+        }
+
         update_data ();
 
         color.apply_to(ctext);

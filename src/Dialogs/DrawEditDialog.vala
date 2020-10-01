@@ -44,6 +44,7 @@
     private Gtk.Button button_thickness2;
     private Gtk.Button button_thickness3;
     private Gtk.Button button_thickness4;
+    private Gtk.Scale scale_alpha;
 
 
     enum Action {
@@ -128,13 +129,34 @@
         form_grid.attach (label_color, 0, 1);
         form_grid.attach (button_color, 1, 1);
 
+        //Alpha
+
+        label_alpha = new Gtk.Label ("Opacity:");
+        scale_alpha = new Gtk.Scale.with_range(Gtk.Orientation.HORIZONTAL, 0, 100, 0.1);
+        label_alpha.halign = Gtk.Align.END;
+
+        scale_alpha.set_value(aux_color.alpha*100);
+
+        scale_alpha.value_changed.connect((a) => {
+
+            var color_aux = button_color.get_rgba();
+
+            color_aux.alpha = scale_alpha.get_value() / 100.00;
+
+            button_color.set_rgba(color_aux);
+
+        });
+
+        form_grid.attach (label_alpha, 0, 2);
+        form_grid.attach (scale_alpha, 1, 2);
+
         //Thickness
 
         label_thickness = new Gtk.Label ("Thickness:");
         label_thickness.halign = Gtk.Align.END;
 
-        form_grid.attach (label_thickness, 0, 2);
-        form_grid.attach (get_button_thickness(), 1, 2);
+        form_grid.attach (label_thickness, 0, 3);
+        form_grid.attach (get_button_thickness(), 1, 3);
 
         body.add (form_grid);
 
@@ -275,6 +297,7 @@
             target.set_draw_color(object_id, type, button_color.get_rgba());
             target.set_draw_thickness(object_id, type, selected_thicness);
             target.set_draw_name(object_id, type, txt_name.get_text());
+            target.set_draw_alpha(object_id, type, scale_alpha.get_value() / 100.00);
 
             dialogo.item_to_update.refresh(txt_name.get_text());
 

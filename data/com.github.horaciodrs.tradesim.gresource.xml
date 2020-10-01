@@ -16,5 +16,7 @@
     <file alias="shape-thickness2-symbolic.svg">icons/symbolic/shape-thickness2-symbolic.svg</file>
     <file alias="shape-thickness3-symbolic.svg">icons/symbolic/shape-thickness3-symbolic.svg</file>
     <file alias="shape-thickness4-symbolic.svg">icons/symbolic/shape-thickness4-symbolic.svg</file>
+    <file alias="draw-item-trash-symbolic.svg">icons/symbolic/draw-item-trash-symbolic.svg</file>
+    
   </gresource>
 </gresources>

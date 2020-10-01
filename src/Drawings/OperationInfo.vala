@@ -38,6 +38,10 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
 
     public override void render (Cairo.Context ctext) {
 
+        if(!visible){
+            return;
+        }
+
         // update_data();
 
         int line_width = 2;

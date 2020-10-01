@@ -34,8 +34,9 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
     public Gtk.Grid main_grid;
     public Gtk.Label label_name;
     public Gtk.Image type_icon;
-    public Gtk.Image visible_icon;
-    public Gtk.Image sensitive_icon;
+    public Gtk.Button visible_icon;
+    public Gtk.Button sensitive_icon;
+    public Gtk.Button trash_icon;
     public Gtk.ColorButton item_color;
 
     public DrawingsPanelItem (TradeSim.MainWindow _window, string _name, int _type, string ? _css = null,Gdk.RGBA ?  _color = null) {
@@ -85,8 +86,9 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
 
         main_grid = new Gtk.Grid();
         type_icon = new Gtk.Image.from_icon_name (icon_name, Gtk.IconSize.MENU);
-        visible_icon = new Gtk.Image.from_icon_name ("draw-item-visible-symbolic", Gtk.IconSize.MENU);
-        sensitive_icon = new Gtk.Image.from_icon_name ("draw-item-sensitive-symbolic", Gtk.IconSize.MENU);
+        visible_icon = new Gtk.Button.from_icon_name ("draw-item-visible-symbolic", Gtk.IconSize.MENU);
+        sensitive_icon = new Gtk.Button.from_icon_name ("draw-item-sensitive-symbolic", Gtk.IconSize.MENU);
+        trash_icon = new Gtk.Button.from_icon_name ("draw-item-trash-symbolic", Gtk.IconSize.MENU);
         label_name = new Gtk.Label (desc);
         item_color = new Gtk.ColorButton.with_rgba (original_color);
 
@@ -96,10 +98,38 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
         visible_icon.hexpand = false;
         visible_icon.halign = Gtk.Align.START;
         visible_icon.margin = 4;
+        visible_icon.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
+
+        visible_icon.clicked.connect(()=>{
+
+            var dm = main_window.main_layout.current_canvas.draw_manager;
+
+            bool visible = dm.get_draw_visible(desc, type);
+
+            dm.set_draw_visible(desc, type, !visible);
+            string imagen_name = "draw-item-visible-no-symbolic";
+
+            if(!visible){
+                imagen_name = "draw-item-visible-symbolic";
+            }
+
+            var imagen = new Gtk.Image.from_icon_name(imagen_name, Gtk.IconSize.MENU);
+
+            visible_icon.set_image(imagen);
+
+        });
+
+        //visible_icon.
 
         sensitive_icon.hexpand = false;
         sensitive_icon.halign = Gtk.Align.START;
         sensitive_icon.margin = 4;
+        sensitive_icon.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
+
+        trash_icon.hexpand = false;
+        trash_icon.halign = Gtk.Align.START;
+        trash_icon.margin = 4;
+        trash_icon.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
 
         item_color.hexpand = false;
         item_color.margin = 4;
@@ -128,12 +158,13 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
         lbl_test.hexpand = true;
 
         main_grid.attach (type_icon, 0, 0, 1);
-        main_grid.attach (label_name, 1, 0, 3);
-        main_grid.attach (item_color, 4, 0);
+        main_grid.attach (label_name, 1, 0, 4);
+        main_grid.attach (item_color, 5, 0);
 
         main_grid.attach (sensitive_icon, 1, 1);
         main_grid.attach (visible_icon, 2, 1, 1);
-        main_grid.attach (lbl_test, 3, 1);
+        main_grid.attach (trash_icon, 3, 1, 1);
+        main_grid.attach (lbl_test, 4, 1);
 
         main_grid.set_sensitive(true);
 
