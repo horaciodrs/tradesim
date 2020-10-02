@@ -160,6 +160,10 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
 
         trash_icon.clicked.connect(()=>{
 
+            if(!confirm("Are you sure you want to delete this object?", main_window, Gtk.MessageType.QUESTION)){
+                return;
+            }
+
             var dm = main_window.main_layout.current_canvas.draw_manager;
             var target = main_window.main_layout.drawings_panel;
             bool enabled = dm.get_draw_enabled(desc, type);

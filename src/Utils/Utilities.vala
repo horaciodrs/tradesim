@@ -266,3 +266,18 @@ DateTime date_add_int_by_time_frame (DateTime add_date, string time_frame, int q
     }
 
 }
+
+public bool confirm(string message, TradeSim.MainWindow _main_window, Gtk.MessageType mt)
+{
+    Gtk.MessageDialog m = new Gtk.MessageDialog(_main_window, Gtk.DialogFlags.MODAL, mt, Gtk.ButtonsType.OK_CANCEL, message);
+    Gtk.ResponseType result = (Gtk.ResponseType)m.run ();
+    m.close ();
+    if (result == Gtk.ResponseType.OK)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
