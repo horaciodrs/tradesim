@@ -34,6 +34,7 @@ public class TradeSim.Drawings.Line {
     protected int thickness;
 
     protected bool visible;
+    protected bool enabled;
     
     protected int? x1; //Se calcula en base a date1.
     protected int? x2; //Se calcula en base a date2.
@@ -47,6 +48,7 @@ public class TradeSim.Drawings.Line {
         color = new TradeSim.Utils.Color.with_alpha(13, 82, 191, 1.0);
         thickness = TradeSim.Services.Drawings.Thickness.FINE;
         visible = true;
+        enabled = true;
     }
 
     protected void update_data(){
@@ -129,6 +131,14 @@ public class TradeSim.Drawings.Line {
 
     public void set_visible(bool _state){
         visible = _state;
+    }
+
+    public bool get_enabled(){
+        return enabled;
+    }
+
+    public void set_enabled(bool _enabled){
+        enabled = _enabled;
     }
 
 }

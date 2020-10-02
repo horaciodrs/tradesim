@@ -103,6 +103,11 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
         visible_icon.clicked.connect(()=>{
 
             var dm = main_window.main_layout.current_canvas.draw_manager;
+            bool enabled = dm.get_draw_enabled(desc, type);
+
+            if(!enabled){
+                return;
+            }
 
             bool visible = dm.get_draw_visible(desc, type);
 
@@ -126,6 +131,28 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
         sensitive_icon.margin = 4;
         sensitive_icon.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
 
+        sensitive_icon.clicked.connect(()=>{
+
+            var dm = main_window.main_layout.current_canvas.draw_manager;
+
+            bool enabled = dm.get_draw_enabled(desc, type);
+
+            dm.set_draw_enabled(desc, type, !enabled);
+            string imagen_name = "draw-item-sensitive-no-symbolic";
+
+            item_color.set_sensitive(false);
+
+            if(!enabled){
+                imagen_name = "draw-item-sensitive-symbolic";
+                item_color.set_sensitive(true);
+            }
+
+            var imagen = new Gtk.Image.from_icon_name(imagen_name, Gtk.IconSize.MENU);
+
+            sensitive_icon.set_image(imagen);
+            
+        });
+
         trash_icon.hexpand = false;
         trash_icon.halign = Gtk.Align.START;
         trash_icon.margin = 4;
@@ -133,7 +160,13 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
 
         trash_icon.clicked.connect(()=>{
 
+            var dm = main_window.main_layout.current_canvas.draw_manager;
             var target = main_window.main_layout.drawings_panel;
+            bool enabled = dm.get_draw_enabled(desc, type);
+
+            if(!enabled){
+                return;
+            }
 
             target.delete_object(desc, type);
             
@@ -144,7 +177,13 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
 
         item_color.color_set.connect(() =>{
 
+            var dm = main_window.main_layout.current_canvas.draw_manager;
             var target = main_window.main_layout.current_canvas.draw_manager;
+            bool enabled = dm.get_draw_enabled(desc, type);
+
+            if(!enabled){
+                return;
+            }
 
             target.set_draw_color(desc, type, item_color.get_rgba());
 
@@ -200,6 +239,13 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
     public bool on_mouse_click(Gdk.EventButton event){
 
         if(event.type == Gdk.EventType.2BUTTON_PRESS){
+
+            var dm = main_window.main_layout.current_canvas.draw_manager;
+            bool enabled = dm.get_draw_enabled(desc, type);
+
+            if(!enabled){
+                return true;
+            }
             
             var edit_object_dialog = new TradeSim.Dialogs.DrawEditDialog (main_window, this, desc, type);
 
