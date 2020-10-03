@@ -11,6 +11,7 @@ sources = files(
     'Drawings/Fibonacci.vala',
     'Drawings/Rectangle.vala',
     'Drawings/HLine.vala',
+    'Drawings/OperationBox.vala',
     'Drawings/OperationInfo.vala',
 
     'Services/Drawings.vala',

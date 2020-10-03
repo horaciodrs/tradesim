@@ -23,6 +23,9 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
 
     public TradeSim.Objects.OperationItem operation_data;
 
+    private TradeSim.Drawings.OperationBox box_tp;
+    private TradeSim.Drawings.OperationBox box_sl;
+
     /*
      * Utilizamos las propiedades x1, y1, x2, y2 como indicador
      * de la posición del mouse.
@@ -34,11 +37,40 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
 
         base (_canvas, _id);
 
+        box_tp = new TradeSim.Drawings.OperationBox();
+        box_sl = new TradeSim.Drawings.OperationBox();
+
+    }
+
+    public void drag_start (int mouse_x, int mouse_y) {
+
+        //Esta función esta pensada para ser llamada
+        //cuando el boton del mouse se encuentra presionado.
+        //La función modifica la posición vertical donde
+        //se dibuja la linea de tp y en base a esta nueva
+        //posicion se recalcula el precio de tp
+        //y se modifica en dicha operación.
+        //Esta idea se aplica tanto para TP como para SL.
+
+        //Verificamos click en la zona de TP.
+        if((mouse_x >= box_tp.left) && (mouse_x <= box_tp.left + box_tp.width)){
+            if((mouse_y >= box_tp.top) && (mouse_y <= box_tp.top + box_tp.height)){
+                //...
+            }
+        }
+
+        //Verificamos click en la zona de SL.
+        if((mouse_x >= box_sl.left) && (mouse_x <= box_sl.left + box_sl.width)){
+            if((mouse_y >= box_sl.top) && (mouse_y <= box_sl.top + box_sl.height)){
+                //...
+            }
+        }
+
     }
 
     public override void render (Cairo.Context ctext) {
 
-        if(!visible){
+        if (!visible) {
             return;
         }
 
@@ -60,9 +92,11 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
         ctext.stroke ();
 
         string tp_desc = operation_data.id.to_string () + " - TP";
+        var tp_color = new TradeSim.Utils.Color(0, 100, 0);
 
         draw_price_label (ctext, operation_data.tp, 0, 100, 0);
-        draw_left_desc (ctext, tp_desc, y_tp, 0, 100, 0);
+        box_tp.set_text(tp_desc);
+        box_tp.draw(ref_canvas, ctext, y_tp, tp_color); //draw_left_desc (ctext, tp_desc, y_tp, 0, 100, 0);
 
         // Draw Line OPEN
 
@@ -88,9 +122,11 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
         ctext.stroke ();
 
         string op_sl = operation_data.id.to_string () + " - " + "SL";
+        var sl_color = new TradeSim.Utils.Color(100, 0, 0);
 
         draw_price_label (ctext, operation_data.sl, 100, 0, 0);
-        draw_left_desc (ctext, op_sl, y_sl, 100, 0, 0);
+        box_tp.set_text(op_sl);
+        box_tp.draw(ref_canvas, ctext, y_sl, sl_color); //draw_left_desc (ctext, op_sl, y_sl, 100, 0, 0);
 
     }
 
@@ -102,15 +138,20 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
         int txt_height;
         int padding = 6;
 
-        aux_canvas = new Gtk.DrawingArea();
-        layout = aux_canvas.create_pango_layout(_desc);
-        layout.get_pixel_size(out txt_width, out txt_height);
+        aux_canvas = new Gtk.DrawingArea ();
+        layout = aux_canvas.create_pango_layout (_desc);
+        layout.get_pixel_size (out txt_width, out txt_height);
+
+        int left_desc_x = 0;
+        int left_desc_y = posy - txt_height - padding;
+        int left_desc_w = txt_width + 20;
+        int left_desc_h = txt_height + padding;
 
         ctext.set_source_rgba (_r (cred), _g (cgreen), _b (cblue), 1);
-        ctext.rectangle (0, posy - txt_height - padding, txt_width + 20, txt_height + padding);
+        ctext.rectangle (left_desc_x, left_desc_y, left_desc_w, left_desc_h);
         ctext.fill ();
 
-        int txt_y = posy - txt_height - padding/2;
+        int txt_y = posy - txt_height - padding / 2;
 
         ref_canvas.write_text_white (ctext, padding, txt_y, _desc);
 
