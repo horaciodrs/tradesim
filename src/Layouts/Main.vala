@@ -100,10 +100,13 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
             var container = ((TradeSim.Widgets.CanvasContainer)tab);
 
+            drawings_panel.delete_all();
+
             current_canvas = container.chart_canvas;
 
             main_window.headerbar.set_subtitle (current_canvas.simulation_name);
 
+            drawings_panel.reload_objects();
             operations_panel.update_operations ();
             operations_panel.update_bottom_info ();
 
