@@ -27,8 +27,37 @@ public class TradeSim.Drawings.OperationBox{
     public int height;
     public string text;
 
+    public int ? mouse_dist_y;
+
     public OperationBox(){
         text = "";
+        mouse_dist_y = null;
+    }
+
+    public void mouse_dist_y_calc(int mouse_y){
+        if(mouse_dist_y == null){
+            mouse_dist_y = mouse_y - top;
+        }
+    }
+
+    public void drag_end(){
+        mouse_dist_y = null;
+    }
+
+    public void drag_start(int mouse_x, int mouse_y){
+
+        if((mouse_x >= left) && (mouse_x <= left + width)){
+            if((mouse_y >= top) && (mouse_y <= top + height)){
+                mouse_dist_y_calc(mouse_y);
+                top = mouse_y - mouse_dist_y;
+                //En algún momento se tiene que recalcular el precio de SL o TP
+                //de la operación en base a la posición top.
+                return;
+            }
+        }
+
+        drag_end();
+
     }
 
     public void set_text(string _text){

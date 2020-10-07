@@ -53,18 +53,10 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
         //Esta idea se aplica tanto para TP como para SL.
 
         //Verificamos click en la zona de TP.
-        if((mouse_x >= box_tp.left) && (mouse_x <= box_tp.left + box_tp.width)){
-            if((mouse_y >= box_tp.top) && (mouse_y <= box_tp.top + box_tp.height)){
-                //...
-            }
-        }
+        box_tp.drag_start(mouse_x, mouse_y);
 
         //Verificamos click en la zona de SL.
-        if((mouse_x >= box_sl.left) && (mouse_x <= box_sl.left + box_sl.width)){
-            if((mouse_y >= box_sl.top) && (mouse_y <= box_sl.top + box_sl.height)){
-                //...
-            }
-        }
+        box_sl.drag_start(mouse_x, mouse_y);
 
     }
 
