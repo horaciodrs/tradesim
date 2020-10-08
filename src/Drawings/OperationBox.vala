@@ -19,7 +19,9 @@
  * Authored by: Horacio Daniel Ros <horaciodrs@gmail.com>
  */
 
-public class TradeSim.Drawings.OperationBox{
+ public class TradeSim.Drawings.OperationBox{
+
+    public weak TradeSim.Drawings.OperationInfo parent;
 
     public int left;
     public int top;
@@ -27,11 +29,21 @@ public class TradeSim.Drawings.OperationBox{
     public int height;
     public string text;
 
+    public bool draging;
     public int ? mouse_dist_y;
+    public int type;
 
-    public OperationBox(){
+    public enum Type{
+          TP
+        , SL
+    }
+
+    public OperationBox(TradeSim.Drawings.OperationInfo _parent, int _type){
+        parent = _parent;
         text = "";
         mouse_dist_y = null;
+        draging = false;
+        type = _type;
     }
 
     public void mouse_dist_y_calc(int mouse_y){
@@ -40,23 +52,53 @@ public class TradeSim.Drawings.OperationBox{
         }
     }
 
-    public void drag_end(){
-        mouse_dist_y = null;
-    }
-
     public void drag_start(int mouse_x, int mouse_y){
-
         if((mouse_x >= left) && (mouse_x <= left + width)){
             if((mouse_y >= top) && (mouse_y <= top + height)){
-                mouse_dist_y_calc(mouse_y);
-                top = mouse_y - mouse_dist_y;
-                //En algún momento se tiene que recalcular el precio de SL o TP
-                //de la operación en base a la posición top.
-                return;
+                draging = true;
+                mouse_dist_y = null;
             }
         }
+    }
 
-        drag_end();
+    public void drag_end(){
+        mouse_dist_y = null;
+        draging = false;
+    }
+
+    private void update_price_level(TradeSim.Widgets.Canvas ref_canvas){
+        /*
+         * La idea de esta función es actualizar el precio de SL o de TP
+         * según corresponda. Por esta razón necesitamos determinar
+         * de alguna manera si es una Box de TP o de SL.
+         * Esto lo hacemos a traves de un tipo de Box.
+         */
+
+         //Actualizar el precio calculado en base a la posición top
+         //en parent.operation_data...
+
+         if(type == TradeSim.Drawings.OperationBox.Type.TP){
+            parent.operation_data.tp = ref_canvas.get_price_by_pos_y(top+height) / 100000.00;
+         }else{
+            parent.operation_data.sl = ref_canvas.get_price_by_pos_y(top+height) / 100000.00;
+         }
+         
+    }
+
+    public void drag(TradeSim.Widgets.Canvas ref_canvas, int mouse_x, int mouse_y){
+
+        if(!draging){
+            return;
+        }
+
+        //if((mouse_x >= left) && (mouse_x <= left + width)){
+        //    if((mouse_y >= top) && (mouse_y <= top + height)){
+                mouse_dist_y_calc(mouse_y);
+                top = mouse_y - mouse_dist_y;
+                update_price_level(ref_canvas);
+                return;
+        //    }
+       // }
 
     }
 
@@ -72,6 +114,7 @@ public class TradeSim.Drawings.OperationBox{
 
         Gtk.DrawingArea aux_canvas;
         Pango.Layout layout;
+        int txt_y;
         int txt_width;
         int txt_height;
         int padding = 6;
@@ -80,16 +123,24 @@ public class TradeSim.Drawings.OperationBox{
         layout = aux_canvas.create_pango_layout (text);
         layout.get_pixel_size (out txt_width, out txt_height);
 
+        //Asignación de la posición y las dimensiones.
+
         left = 0;
-        top = posy - txt_height - padding;
+
+        if(draging == false){
+            //Cuando no se esta modificando utilizamos la posición estandar.
+            top = posy - txt_height - padding;
+            txt_y = posy - txt_height - padding / 2;
+        }else{
+            txt_y = top + txt_height - padding*2;
+        }
+        
         width = txt_width + 20;
         height = txt_height + padding;
 
         color.apply_to(ctext);
         ctext.rectangle (left, top, width, height);
         ctext.fill ();
-
-        int txt_y = posy - txt_height - padding / 2;
 
         ref_canvas.write_text_white (ctext, padding, txt_y, text);
 

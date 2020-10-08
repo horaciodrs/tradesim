@@ -435,7 +435,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
-    private int get_price_by_pos_y (int y) {
+    public int get_price_by_pos_y (int y) {
 
         /* ES LA FUNCION INVERSA DE "get_pos_y_by_price" */
 
@@ -446,7 +446,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
-    private string get_str_price_by_pos_y (int y) {
+    public string get_str_price_by_pos_y (int y) {
 
         int a = get_price_by_pos_y (y);
         char[] buf = new char[double.DTOSTR_BUF_SIZE];
@@ -543,6 +543,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         }
 
+        for(int i=0; i<draw_manager.operations.length; i++){
+            draw_manager.operations.index(i).drag(this, mouse_x, mouse_y);
+        }
+
         user_draw_line ();
         user_draw_fibo ();
         user_draw_rectangle ();
@@ -584,6 +588,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             start_draw_mode(TradeSim.Services.Drawings.Type.HLINE);
         }
 
+        for(int i=0; i<draw_manager.operations.length; i++){
+            draw_manager.operations.index(i).drag_start(mouse_x, mouse_y);
+        }
+
         return true;
     }
 
@@ -605,6 +613,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
                 target.insert_object(draw_mode_id, TradeSim.Services.Drawings.Type.HLINE);
             }
             
+        }
+
+        for(int i=0; i<draw_manager.operations.length; i++){
+            draw_manager.operations.index(i).drag_end();
         }
         
         draw_mode_line = false; //Si se estaba dibujando se aborta.
