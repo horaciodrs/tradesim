@@ -65,6 +65,13 @@ public class TradeSim.Drawings.OperationBox {
     public void drag_end () {
         mouse_dist_y = null;
         draging = false;
+
+        //llamar a update_operation_by_id(id_de_operacion) que esta en OperationsPanel...
+
+        var target = parent.ref_canvas.main_window.main_layout.operations_panel;
+
+        target.update_operation_by_id(parent.operation_data.id);
+
     }
 
     public void update_price_level (TradeSim.Widgets.Canvas ref_canvas) {

@@ -241,6 +241,56 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         
     }
 
+    public void update_operation_by_id(int _id){
+        var canvas = main_window.main_layout.current_canvas;
+        var ops = canvas.operations_manager;
+        var operation_data = ops.get_operation_by_id(_id);
+        bool seguir;
+
+        if (ops.operations.length <= 0) {
+            return;
+        }
+
+        Gtk.TreeIter row;
+        GLib.Value cell_op_id;
+        GLib.Value cell_tp_price;
+        GLib.Value cell_sl_price;
+
+        seguir = list_store_operations.get_iter_first (out row);
+
+        list_store_operations.get_value (row, OperationColumns.ID, out cell_op_id);
+        list_store_operations.get_value (row, OperationColumns.TP_PRICE, out cell_tp_price);
+        list_store_operations.get_value (row, OperationColumns.SL_PRICE, out cell_sl_price);
+
+        while (seguir) {
+
+            var op_id = int.parse (cell_op_id.get_string ());
+            
+            if(op_id == _id){
+                cell_tp_price.set_string(get_money(operation_data.tp, 5));
+                cell_sl_price.set_string(get_money(operation_data.sl, 5));
+    
+                list_store_operations.set_value (row, OperationColumns.TP_PRICE, cell_tp_price);
+                list_store_operations.set_value (row, OperationColumns.SL_PRICE, cell_sl_price);
+
+                seguir = false;
+
+            }else{
+                seguir = list_store_operations.iter_next (ref row);
+            }
+
+            if (seguir) {
+                list_store_operations.get_value (row, OperationColumns.ID, out cell_op_id);
+                list_store_operations.get_value (row, OperationColumns.TP_PRICE, out cell_tp_price);
+                list_store_operations.get_value (row, OperationColumns.SL_PRICE, out cell_sl_price);
+            }
+
+        }
+
+        tree_view_operations.set_model (list_store_operations);
+
+    }
+
     public void update_operations_profit () {
 
         var canvas = main_window.main_layout.current_canvas;
@@ -283,22 +333,11 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
             cell_value.set_string (get_money (profit)); // obtener_profit_por
 
             if(profit>0){
-                //if(cell_type.get_string() == "Buy"){
-                    cell_color.set_string("green");
-                    cell_icon.set_string("view-sort-descending");
-                //}else{
-                  //  cell_color.set_string("red");
-                   // cell_icon.set_string("view-sort-ascending");
-                //}
-                
+                cell_color.set_string("green");
+                cell_icon.set_string("view-sort-descending");
             }else{
-                //if(cell_type.get_string() == "Buy"){
-                    cell_color.set_string("red");
-                    cell_icon.set_string("view-sort-ascending");
-                //}else{
-                  //  cell_color.set_string("green");
-                   // cell_icon.set_string("view-sort-descending");
-                //}
+                cell_color.set_string("red");
+                cell_icon.set_string("view-sort-ascending");
             }
 
             if(cell_state.get_string() == "Closed"){
