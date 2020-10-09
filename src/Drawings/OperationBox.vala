@@ -44,7 +44,7 @@ public class TradeSim.Drawings.OperationBox {
         mouse_dist_y = null;
         draging = false;
         type = _type;
-        update_price_level(parent.ref_canvas);
+        update_price_level (parent.ref_canvas);
     }
 
     public void mouse_dist_y_calc (int mouse_y) {
@@ -66,11 +66,11 @@ public class TradeSim.Drawings.OperationBox {
         mouse_dist_y = null;
         draging = false;
 
-        //llamar a update_operation_by_id(id_de_operacion) que esta en OperationsPanel...
+        // llamar a update_operation_by_id(id_de_operacion) que esta en OperationsPanel...
 
         var target = parent.ref_canvas.main_window.main_layout.operations_panel;
 
-        target.update_operation_by_id(parent.operation_data.id);
+        target.update_operation_by_id (parent.operation_data.id);
 
     }
 
@@ -101,13 +101,57 @@ public class TradeSim.Drawings.OperationBox {
 
         mouse_dist_y_calc (mouse_y);
         top = mouse_y - mouse_dist_y;
+
+        double top_price = ref_canvas.get_price_by_pos_y (top + height) / 100000.00;
+
+        if (parent.operation_data.type_op == TradeSim.Objects.OperationItem.Type.BUY) {
+
+            if (type == TradeSim.Drawings.OperationBox.Type.TP) {
+
+                if (top_price < ref_canvas.last_candle_price) {
+                    top = ref_canvas.get_pos_y_by_price (ref_canvas.last_candle_price) - height;
+                }
+
+                if (top_price < parent.operation_data.price) {
+                    top = ref_canvas.get_pos_y_by_price (parent.operation_data.price) - height;
+                }
+
+            } else if (type == TradeSim.Drawings.OperationBox.Type.SL) {
+
+                if (top_price > ref_canvas.last_candle_price) {
+                    top = ref_canvas.get_pos_y_by_price (ref_canvas.last_candle_price) - height;
+                }
+
+            }
+        } else if (parent.operation_data.type_op == TradeSim.Objects.OperationItem.Type.SELL) {
+
+            if (type == TradeSim.Drawings.OperationBox.Type.TP) {
+
+                if (top_price > ref_canvas.last_candle_price) {
+                    top = ref_canvas.get_pos_y_by_price (ref_canvas.last_candle_price) - height;
+                }
+
+                if (top_price > parent.operation_data.price) {
+                    top = ref_canvas.get_pos_y_by_price (parent.operation_data.price) - height;
+                }
+
+            } else if (type == TradeSim.Drawings.OperationBox.Type.SL) {
+
+                if (top_price < ref_canvas.last_candle_price) {
+                    top = ref_canvas.get_pos_y_by_price (ref_canvas.last_candle_price) - height;
+                }
+
+            }
+
+        }
+
         update_price_level (ref_canvas);
         return;
 
     }
 
-    public void update_text(){
-        
+    public void update_text () {
+
         text = "";
         text = text + parent.operation_data.id.to_string ();
 
@@ -128,7 +172,7 @@ public class TradeSim.Drawings.OperationBox {
 
     public void draw (TradeSim.Widgets.Canvas ref_canvas, Cairo.Context ctext, int posy, TradeSim.Utils.Color color) {
 
-        update_text();
+        update_text ();
 
         if (text == "") {
             return;

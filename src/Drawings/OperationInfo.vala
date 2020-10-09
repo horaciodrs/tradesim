@@ -76,6 +76,10 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
             return;
         }
 
+        if(operation_data.state == TradeSim.Objects.OperationItem.State.CLOSED){
+            return;
+        }
+
         //box_tp.update_price_level (ref_canvas);
         //box_sl.update_price_level (ref_canvas);
 
