@@ -37,37 +37,37 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
 
         base (_canvas, _id);
 
-        box_tp = new TradeSim.Drawings.OperationBox(this, TradeSim.Drawings.OperationBox.Type.TP);
-        box_sl = new TradeSim.Drawings.OperationBox(this, TradeSim.Drawings.OperationBox.Type.SL);
+        box_tp = new TradeSim.Drawings.OperationBox (this, TradeSim.Drawings.OperationBox.Type.TP);
+        box_sl = new TradeSim.Drawings.OperationBox (this, TradeSim.Drawings.OperationBox.Type.SL);
 
     }
 
-    public void drag_start(int mouse_x, int mouse_y){
-        box_tp.drag_start(mouse_x, mouse_y);
-        box_sl.drag_start(mouse_x, mouse_y);
+    public void drag_start (int mouse_x, int mouse_y) {
+        box_tp.drag_start (mouse_x, mouse_y);
+        box_sl.drag_start (mouse_x, mouse_y);
     }
 
     public void drag (TradeSim.Widgets.Canvas ref_canvas, int mouse_x, int mouse_y) {
 
-        //Esta función esta pensada para ser llamada
-        //cuando el boton del mouse se encuentra presionado.
-        //La función modifica la posición vertical donde
-        //se dibuja la linea de tp y en base a esta nueva
-        //posicion se recalcula el precio de tp
-        //y se modifica en dicha operación.
-        //Esta idea se aplica tanto para TP como para SL.
+        // Esta función esta pensada para ser llamada
+        // cuando el boton del mouse se encuentra presionado.
+        // La función modifica la posición vertical donde
+        // se dibuja la linea de tp y en base a esta nueva
+        // posicion se recalcula el precio de tp
+        // y se modifica en dicha operación.
+        // Esta idea se aplica tanto para TP como para SL.
 
-        //Verificamos click en la zona de TP.
-        box_tp.drag(ref_canvas, mouse_x, mouse_y);
+        // Verificamos click en la zona de TP.
+        box_tp.drag (ref_canvas, mouse_x, mouse_y);
 
-        //Verificamos click en la zona de SL.
-        box_sl.drag(ref_canvas, mouse_x, mouse_y);
+        // Verificamos click en la zona de SL.
+        box_sl.drag (ref_canvas, mouse_x, mouse_y);
 
     }
 
-    public void drag_end(){
-        box_tp.drag_end();
-        box_sl.drag_end();
+    public void drag_end () {
+        box_tp.drag_end ();
+        box_sl.drag_end ();
     }
 
     public override void render (Cairo.Context ctext) {
@@ -76,7 +76,8 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
             return;
         }
 
-        // update_data();
+        //box_tp.update_price_level (ref_canvas);
+        //box_sl.update_price_level (ref_canvas);
 
         int line_width = 2;
 
@@ -93,12 +94,11 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
         ctext.line_to (ref_canvas._width, y_tp);
         ctext.stroke ();
 
-        string tp_desc = operation_data.id.to_string () + " - TP";
-        var tp_color = new TradeSim.Utils.Color(0, 100, 0);
+
+        var tp_color = new TradeSim.Utils.Color (0, 100, 0);
 
         draw_price_label (ctext, operation_data.tp, 0, 100, 0);
-        box_tp.set_text(tp_desc);
-        box_tp.draw(ref_canvas, ctext, y_tp, tp_color); //draw_left_desc (ctext, tp_desc, y_tp, 0, 100, 0);
+        box_tp.draw (ref_canvas, ctext, y_tp, tp_color);
 
         // Draw Line OPEN
 
@@ -123,12 +123,10 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
         ctext.line_to (ref_canvas._width, y_sl);
         ctext.stroke ();
 
-        string op_sl = operation_data.id.to_string () + " - " + "SL";
-        var sl_color = new TradeSim.Utils.Color(100, 0, 0);
+        var sl_color = new TradeSim.Utils.Color (100, 0, 0);
 
         draw_price_label (ctext, operation_data.sl, 100, 0, 0);
-        box_sl.set_text(op_sl);
-        box_sl.draw(ref_canvas, ctext, y_sl, sl_color); //draw_left_desc (ctext, op_sl, y_sl, 100, 0, 0);
+        box_sl.draw (ref_canvas, ctext, y_sl, sl_color);
 
     }
 
