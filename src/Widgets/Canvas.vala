@@ -48,7 +48,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     private int max_candles;
     private int min_price;
     private int max_price;
-    private int candle_width;
+    public int candle_width;
     private int vertical_scale;
     private int scale_step;
     private int scale_label_step;

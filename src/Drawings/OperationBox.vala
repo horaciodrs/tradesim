@@ -85,6 +85,14 @@ public class TradeSim.Drawings.OperationBox {
         // Actualizar el precio calculado en base a la posición top
         // en parent.operation_data...
 
+        if(parent.ref_canvas == null){
+            return;
+        }
+
+        if(parent.operation_data == null){
+            return;
+        }
+
         if (type == TradeSim.Drawings.OperationBox.Type.TP) {
             parent.operation_data.tp = parent.ref_canvas.get_price_by_pos_y (top + height) / 100000.00;
         } else {

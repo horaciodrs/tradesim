@@ -72,16 +72,51 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
 
     public override void render (Cairo.Context ctext) {
 
+        //Dibujar un circulo en la vela donde se abrio la operación.
+        
+        int open_op_x = ref_canvas.get_pos_x_by_date(operation_data.operation_date);
+        int open_op_y = -1;
+        double aux_price = -1.0;
+        double xc = -1.0;
+        double yc = -1.0;
+        double radius = 0;
+
+        if(open_op_x > 0){
+            if(operation_data.type_op == TradeSim.Objects.OperationItem.Type.BUY){
+                aux_price = ref_canvas.data.get_quote_by_time(operation_data.operation_date).min_price;
+                open_op_y = ref_canvas.get_pos_y_by_price(aux_price);
+                xc = (int) (open_op_x + ref_canvas.candle_width/2);
+                yc = open_op_y + ref_canvas.candle_width;
+                radius = ref_canvas.candle_width / 2;
+            }else if(operation_data.type_op == TradeSim.Objects.OperationItem.Type.SELL){
+                aux_price = ref_canvas.data.get_quote_by_time(operation_data.operation_date).max_price;
+                open_op_y = ref_canvas.get_pos_y_by_price(aux_price);
+                xc = (int) (open_op_x + ref_canvas.candle_width/2);
+                yc = open_op_y - ref_canvas.candle_width;
+                radius = ref_canvas.candle_width / 2;
+            }
+        }
+
+        var circle_color = new TradeSim.Utils.Color (54, 134, 230);
+
+        circle_color.apply_to(ctext);
+        ctext.set_dash ({}, 0);
+        ctext.set_line_width (1.0);
+        ctext.arc (xc, yc, radius, 0, 2*Math.PI);
+        ctext.fill ();
+        
+
         if (!visible) {
+            return;
+        }
+
+        if(operation_data == null){
             return;
         }
 
         if(operation_data.state == TradeSim.Objects.OperationItem.State.CLOSED){
             return;
         }
-
-        //box_tp.update_price_level (ref_canvas);
-        //box_sl.update_price_level (ref_canvas);
 
         int line_width = 2;
 
