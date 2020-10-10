@@ -987,7 +987,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         // int x_last_candle = get_pos_x_by_date (last_candle_date);
 
-        ctext.set_dash ({ 5.0 }, 0);
+        ctext.set_dash ({}, 0);
         ctext.set_line_width (1);
         ctext.set_source_rgba (_r (13), _g (82), _b (191), 1);
         ctext.move_to (0, posy); // ctext.move_to (x_last_candle + candle_width + 2, posy);
