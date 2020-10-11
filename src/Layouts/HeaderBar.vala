@@ -108,7 +108,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
             var canvas = main_window.main_layout.current_canvas;
 
-            if(canvas != null){
+            if (canvas != null) {
                 canvas.stop_simulation ();
             }
 
@@ -119,7 +119,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
             var canvas = main_window.main_layout.current_canvas;
 
-            if(canvas != null){
+            if (canvas != null) {
                 canvas.stop_simulation ();
             }
 
@@ -127,27 +127,27 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
         });
 
-        buy.button.clicked.connect(e => {
+        buy.button.clicked.connect (e => {
 
             var canvas = main_window.main_layout.current_canvas;
 
-            if(canvas != null){
+            if (canvas != null) {
                 canvas.stop_simulation ();
             }
 
-            main_window.open_dialog_operations(TradeSim.Objects.OperationItem.Type.BUY);
+            main_window.open_dialog_operations (TradeSim.Objects.OperationItem.Type.BUY);
 
         });
 
-        sell.button.clicked.connect(e => {
+        sell.button.clicked.connect (e => {
 
             var canvas = main_window.main_layout.current_canvas;
 
-            if(canvas != null){
+            if (canvas != null) {
                 canvas.stop_simulation ();
             }
 
-            main_window.open_dialog_operations(TradeSim.Objects.OperationItem.Type.SELL);
+            main_window.open_dialog_operations (TradeSim.Objects.OperationItem.Type.SELL);
         });
 
         pack_start (new_button);
@@ -187,47 +187,47 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         grid.width_request = 240;
         grid.name = "main";
 
-        var draw_line_button = create_model_button ("Line","shape-line-symbolic");
-        var draw_hline_button = create_model_button ("Horizontal Line","shape-hline-symbolic");
-        var draw_rect_button = create_model_button ("Rectangle","shape-rectangle-symbolic");
-        var draw_fibo_button = create_model_button ("Fibonacci Retracement","shape-fibonacci-symbolic");
+        var draw_line_button = create_model_button ("Line", "shape-line-symbolic");
+        var draw_hline_button = create_model_button ("Horizontal Line", "shape-hline-symbolic");
+        var draw_rect_button = create_model_button ("Rectangle", "shape-rectangle-symbolic");
+        var draw_fibo_button = create_model_button ("Fibonacci Retracement", "shape-fibonacci-symbolic");
 
-        draw_line_button.clicked.connect(e => {
+        draw_line_button.clicked.connect (e => {
 
             var canvas = main_window.main_layout.current_canvas;
 
-            if(canvas != null){
-                canvas.start_user_draw_line();
+            if (canvas != null) {
+                canvas.start_user_draw_line ();
             }
 
         });
 
-        draw_fibo_button.clicked.connect(e => {
+        draw_fibo_button.clicked.connect (e => {
 
             var canvas = main_window.main_layout.current_canvas;
 
-            if(canvas != null){
-                canvas.start_user_draw_fibo();
+            if (canvas != null) {
+                canvas.start_user_draw_fibo ();
             }
 
         });
 
-        draw_rect_button.clicked.connect(e => {
+        draw_rect_button.clicked.connect (e => {
 
             var canvas = main_window.main_layout.current_canvas;
 
-            if(canvas != null){
-                canvas.start_user_draw_rectangle();
+            if (canvas != null) {
+                canvas.start_user_draw_rectangle ();
             }
 
         });
 
-        draw_hline_button.clicked.connect(e => {
+        draw_hline_button.clicked.connect (e => {
 
             var canvas = main_window.main_layout.current_canvas;
 
-            if(canvas != null){
-                canvas.start_user_draw_hline();
+            if (canvas != null) {
+                canvas.start_user_draw_hline ();
             }
 
         });
@@ -262,7 +262,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
     }
 
-    private Gtk.ModelButton create_model_button (string text, string? icon) {
+    private Gtk.ModelButton create_model_button (string text, string ? icon) {
         var button = new Gtk.ModelButton ();
         button.get_child ().destroy ();
         var label = new Granite.AccelLabel.from_action_name (text, "<Ctrl>J");
@@ -274,7 +274,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
                 image,
                 label.get_child_at (0, 0),
                 Gtk.PositionType.LEFT
-            );
+                );
         }
 
         button.add (label);

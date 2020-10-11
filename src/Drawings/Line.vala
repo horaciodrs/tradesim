@@ -35,109 +35,109 @@ public class TradeSim.Drawings.Line {
 
     protected bool visible;
     protected bool enabled;
-    
-    protected int? x1; //Se calcula en base a date1.
-    protected int? x2; //Se calcula en base a date2.
-    protected int? y1; //Se calcula en base a price1.
-    protected int? y2; //Se calcula en base a price2.
 
-    public Line(TradeSim.Widgets.Canvas _canvas, string _id){
+    protected int ? x1; // Se calcula en base a date1.
+    protected int ? x2; // Se calcula en base a date2.
+    protected int ? y1; // Se calcula en base a price1.
+    protected int ? y2; // Se calcula en base a price2.
+
+    public Line (TradeSim.Widgets.Canvas _canvas, string _id) {
         id = _id;
         x1 = null;
         ref_canvas = _canvas;
-        color = new TradeSim.Utils.Color.with_alpha(13, 82, 191, 1.0);
+        color = new TradeSim.Utils.Color.with_alpha (13, 82, 191, 1.0);
         thickness = TradeSim.Services.Drawings.Thickness.FINE;
         visible = true;
         enabled = true;
     }
 
-    protected void update_data(){
+    protected void update_data () {
 
-        x1 = ref_canvas.get_pos_x_by_date(date1);
-        x2 = ref_canvas.get_pos_x_by_date(date2);
-        y1 = ref_canvas.get_pos_y_by_price(price1);
-        y2 = ref_canvas.get_pos_y_by_price(price2);
+        x1 = ref_canvas.get_pos_x_by_date (date1);
+        x2 = ref_canvas.get_pos_x_by_date (date2);
+        y1 = ref_canvas.get_pos_y_by_price (price1);
+        y2 = ref_canvas.get_pos_y_by_price (price2);
 
     }
 
-    public virtual void render(Cairo.Context ctext){
+    public virtual void render (Cairo.Context ctext) {
 
-        if(!visible){
+        if (!visible) {
             return;
         }
 
-        update_data();
+        update_data ();
 
         ctext.set_dash ({}, 0);
         ctext.set_line_width (thickness);
-        color.apply_to(ctext);
+        color.apply_to (ctext);
         ctext.move_to (x1, y1);
         ctext.line_to (x2, y2);
         ctext.stroke ();
 
     }
 
-    public void set_thickness(int _thicness){
+    public void set_thickness (int _thicness) {
         thickness = _thicness;
     }
 
-    public void set_color(TradeSim.Utils.Color _color){
+    public void set_color (TradeSim.Utils.Color _color) {
         color = _color;
     }
 
-    public void set_x1(DateTime d1){
-        date1 = d1;   
+    public void set_x1 (DateTime d1) {
+        date1 = d1;
     }
 
-    public void set_x2(DateTime d2){
+    public void set_x2 (DateTime d2) {
         date2 = d2;
     }
 
-    public void set_y1(double price){
+    public void set_y1 (double price) {
         price1 = price;
     }
 
-    public void set_y2(double price){
+    public void set_y2 (double price) {
         price2 = price;
     }
 
-    public int? get_x1(){
+    public int ? get_x1 () {
         return x1;
     }
 
-    public int? get_x2(){
+    public int ? get_x2 () {
         return x2;
     }
 
-    public TradeSim.Utils.Color get_color(){
+    public TradeSim.Utils.Color get_color () {
         return color;
     }
 
-    public int get_thicness(){
+    public int get_thicness () {
         return thickness;
     }
 
-    public void set_alpha(double _alpha){
+    public void set_alpha (double _alpha) {
         color.alpha = _alpha;
     }
 
-    public double get_alpha(){
+    public double get_alpha () {
         return color.alpha;
     }
 
-    public bool get_visible(){
+    public bool get_visible () {
         return visible;
     }
 
-    public void set_visible(bool _state){
+    public void set_visible (bool _state) {
         visible = _state;
     }
 
-    public bool get_enabled(){
+    public bool get_enabled () {
         return enabled;
     }
 
-    public void set_enabled(bool _enabled){
+    public void set_enabled (bool _enabled) {
         enabled = _enabled;
     }
 

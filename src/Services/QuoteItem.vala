@@ -37,15 +37,15 @@ public class TradeSim.Services.QuoteItem {
         ticker = _ticker;
     }
 
-    public void set_provider_name(string _name){
+    public void set_provider_name (string _name) {
         provider_name = _name;
     }
 
-    public void set_provider_folder_name(string _name){
+    public void set_provider_folder_name (string _name) {
         provider_folder_name = _name;
     }
 
-    public void set_time_frame_name(string _name){
+    public void set_time_frame_name (string _name) {
         time_frame_name = _name;
     }
 

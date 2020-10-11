@@ -19,7 +19,7 @@
  * Authored by: Horacio Daniel Ros <horaciodrs@gmail.com>
  */
 
- public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
+public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
     public weak TradeSim.MainWindow main_window { get; construct; }
     private Gtk.Stack stack;
     private Gtk.Switch dark_theme_switch;
@@ -129,7 +129,7 @@
 
     }
 
-    public bool before_destroy(){
+    public bool before_destroy () {
         return working;
     }
 
@@ -408,11 +408,11 @@
         var loop = new MainLoop ();
 
         working = true;
-        tree_view_provider.set_sensitive(false);
-        tree_view_ticker.set_sensitive(false);
-        tree_view_time_frame.set_sensitive(false);
-        tree_view_year.set_sensitive(false);
-        tree_view_quotes.set_sensitive(false);
+        tree_view_provider.set_sensitive (false);
+        tree_view_ticker.set_sensitive (false);
+        tree_view_time_frame.set_sensitive (false);
+        tree_view_year.set_sensitive (false);
+        tree_view_quotes.set_sensitive (false);
 
         update_quotes_by_filter.begin ((obj, res) => {
 
@@ -421,13 +421,13 @@
             label_waiting.get_style_context ().add_class ("label-status");
             spiner_data_source.stop ();
             working = false;
-            tree_view_provider.set_sensitive(true);
-            tree_view_ticker.set_sensitive(true);
-            tree_view_time_frame.set_sensitive(true);
-            tree_view_year.set_sensitive(true);
-            tree_view_quotes.set_sensitive(true);
+            tree_view_provider.set_sensitive (true);
+            tree_view_ticker.set_sensitive (true);
+            tree_view_time_frame.set_sensitive (true);
+            tree_view_year.set_sensitive (true);
+            tree_view_quotes.set_sensitive (true);
 
-            main_window.main_layout.providers_panel.refresh_providers();
+            main_window.main_layout.providers_panel.refresh_providers ();
 
             loop.quit ();
 
@@ -575,7 +575,7 @@
 
                 list_store_quotes.set (edited_iter, 6, !toggle.active);
 
-                main_window.main_layout.providers_panel.refresh_providers();
+                main_window.main_layout.providers_panel.refresh_providers ();
 
                 return;
 
@@ -640,14 +640,14 @@
 
         if (qm.db.imported_lines == qm.db.import_total_lines) {
             label_waiting.set_text ("Import Completed!");
-            tree_view_provider.set_sensitive(true);
-            tree_view_ticker.set_sensitive(true);
-            tree_view_time_frame.set_sensitive(true);
-            tree_view_year.set_sensitive(true);
-            tree_view_quotes.set_sensitive(true);
+            tree_view_provider.set_sensitive (true);
+            tree_view_ticker.set_sensitive (true);
+            tree_view_time_frame.set_sensitive (true);
+            tree_view_year.set_sensitive (true);
+            tree_view_quotes.set_sensitive (true);
             qm.db.end_import_quotes ();
             working = false;
-            main_window.main_layout.providers_panel.refresh_providers();
+            main_window.main_layout.providers_panel.refresh_providers ();
             return false;
         }
 
@@ -668,11 +668,11 @@
 
         working = true;
 
-        tree_view_provider.set_sensitive(false);
-        tree_view_ticker.set_sensitive(false);
-        tree_view_time_frame.set_sensitive(false);
-        tree_view_year.set_sensitive(false);
-        tree_view_quotes.set_sensitive(false);
+        tree_view_provider.set_sensitive (false);
+        tree_view_ticker.set_sensitive (false);
+        tree_view_time_frame.set_sensitive (false);
+        tree_view_year.set_sensitive (false);
+        tree_view_quotes.set_sensitive (false);
 
         qm.db.start_import_quotes (yield get_file_lines (url));
         Timeout.add (100, check_import_state, GLib.Priority.HIGH);
@@ -725,11 +725,11 @@
         grid.column_homogeneous = true;
         grid.set_hexpand (true);
 
-        var grid_waiting = new Gtk.Grid();
+        var grid_waiting = new Gtk.Grid ();
         spiner_data_source = new Gtk.Spinner ();
         label_waiting = new Gtk.Label ("");
-        grid_waiting.attach(spiner_data_source, 0,0);
-        grid_waiting.attach(label_waiting, 1,0);
+        grid_waiting.attach (spiner_data_source, 0, 0);
+        grid_waiting.attach (label_waiting, 1, 0);
         grid_waiting.halign = Gtk.Align.CENTER;
 
         progress_import = new Gtk.ProgressBar ();

@@ -30,7 +30,7 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
     public bool dialog_new_operation_is_open;
 
     public enum SettingsActions {
-          APARENCE
+        APARENCE
         , DATA_SOURCE
         , ABOUT_US
     }
@@ -58,16 +58,16 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
         var css_provider = new Gtk.CssProvider ();
 
-        try{
+        try {
 
             css_provider.load_from_path ("/usr/share/com.github.horaciodrs.TradeSim/stylesheet.css");
 
             Gtk.StyleContext.add_provider_for_screen (
                 Gdk.Screen.get_default (), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-            );
+                );
 
-        }catch(Error e){
-            warning("fail to load css styles for main window.");
+        } catch (Error e) {
+            warning ("fail to load css styles for main window.");
         }
 
         add (main_layout);
@@ -94,26 +94,26 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
         show_all ();
     }
 
-    public void open_dialog_operations(int otype){
+    public void open_dialog_operations (int otype) {
 
-        if(dialog_new_operation_is_open){
+        if (dialog_new_operation_is_open) {
             return;
         }
 
-        if(main_layout.current_canvas != null){
+        if (main_layout.current_canvas != null) {
 
-            var operations_dialog = new TradeSim.Dialogs.NewOperationDialog(this, otype);
+            var operations_dialog = new TradeSim.Dialogs.NewOperationDialog (this, otype);
 
             dialog_new_operation_is_open = true;
 
-            operations_dialog.show_all();
-            operations_dialog.present();
+            operations_dialog.show_all ();
+            operations_dialog.present ();
 
         }
 
     }
 
-    public void open_dialog_preferences(int show_item = SettingsActions.APARENCE){
+    public void open_dialog_preferences (int show_item = SettingsActions.APARENCE) {
         var settings_dialog = new TradeSim.Dialogs.SettingsDialog (this, show_item);
         settings_dialog.show_all ();
         settings_dialog.present ();
@@ -122,12 +122,12 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
         });
     }
 
-    public void change_zoom_level(double factor){
+    public void change_zoom_level (double factor) {
 
-        //main_layout.canvas_container.chart_canvas.change_zoom_level(factor);
-        main_layout.current_canvas.change_zoom_level(factor);
+        // main_layout.canvas_container.chart_canvas.change_zoom_level(factor);
+        main_layout.current_canvas.change_zoom_level (factor);
 
-        //print("cambiando nivel de zoom: " + factor.to_string() + "\n");
+        // print("cambiando nivel de zoom: " + factor.to_string() + "\n");
 
     }
 

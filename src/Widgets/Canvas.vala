@@ -311,7 +311,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
             var item = operations_manager.operations.index (i);
 
-            if(item.state == TradeSim.Objects.OperationItem.State.CLOSED) {
+            if (item.state == TradeSim.Objects.OperationItem.State.CLOSED) {
                 continue;
             }
 
@@ -327,7 +327,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
                     need_update = true;
                 }
 
-            }else if (item.type_op == TradeSim.Objects.OperationItem.Type.SELL) {
+            } else if (item.type_op == TradeSim.Objects.OperationItem.Type.SELL) {
 
                 if (item.tp > last_candle_min_price) {
                     operations_manager.close_operation_by_id (item.id, item.tp, last_candle_date);
@@ -343,8 +343,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         }
 
-        if(need_update){
-            main_window.main_layout.operations_panel.update_operations();
+        if (need_update) {
+            main_window.main_layout.operations_panel.update_operations ();
         }
 
     }

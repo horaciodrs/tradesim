@@ -32,11 +32,11 @@ public class TradeSim.Widgets.ButtonImage : Gtk.Image {
         set_from_icon_name (icon, size);
     }
 
-    public void change_icon(string icon_name, Gtk.IconSize icon_size = Gtk.IconSize.LARGE_TOOLBAR){
+    public void change_icon (string icon_name, Gtk.IconSize icon_size = Gtk.IconSize.LARGE_TOOLBAR) {
         icon = icon_name;
         size = icon_size;
         set_from_icon_name (icon, size);
-        show_all();
+        show_all ();
     }
 
 }

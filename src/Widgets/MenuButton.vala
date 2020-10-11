@@ -19,13 +19,13 @@
  * Authored by: Horacio Daniel Ros <horaciodrs@gmail.com>
  */
 
- public class TradeSim.Widgets.MenuButton : Gtk.Grid {
+public class TradeSim.Widgets.MenuButton : Gtk.Grid {
 
     public Gtk.MenuButton button;
     private Gtk.Label label_btn;
     public TradeSim.Widgets.ButtonImage image;
 
-    public MenuButton (string icon_name, string name, string[]? accels = null) {
+    public MenuButton (string icon_name, string name, string[] ? accels = null) {
         label_btn = new Gtk.Label (name);
         label_btn.get_style_context ().add_class ("headerbar-label");
 
@@ -42,7 +42,7 @@
         attach (label_btn, 0, 1, 1, 1);
 
         valign = Gtk.Align.CENTER;
-        
+
     }
 
 }

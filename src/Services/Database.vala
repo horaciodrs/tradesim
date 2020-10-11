@@ -1017,12 +1017,12 @@ public class TradeSim.Services.Database : GLib.Object {
 
             DateTime item_date = new DateTime.local (date_year, date_month, date_day, date_hour, date_minute, 0);
 
-            //print(">>>>La fecha de la quote es:" + item_date.to_string() + "\n");
-            //print("DATE YEAAAAAAAAAAAAAAAAAAAAAAARRRRRRRRRRRRRR:" + target_date.get_year().to_string() +"\n\n\n\n");
-            //print("DATE MONTHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH:" + target_date.get_month().to_string() +"\n\n\n\n");
-            //print("DATE DAYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY:" + target_date.get_day_of_month().to_string() +"\n\n\n\n");
-            //print("DATE HOURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR:" + target_date.get_hour().to_string() +"\n\n\n\n");
-            //print("DATE MINUTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE:" + target_date.get_minute().to_string() +"\n\n\n\n");
+            // print(">>>>La fecha de la quote es:" + item_date.to_string() + "\n");
+            // print("DATE YEAAAAAAAAAAAAAAAAAAAAAAARRRRRRRRRRRRRR:" + target_date.get_year().to_string() +"\n\n\n\n");
+            // print("DATE MONTHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH:" + target_date.get_month().to_string() +"\n\n\n\n");
+            // print("DATE DAYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY:" + target_date.get_day_of_month().to_string() +"\n\n\n\n");
+            // print("DATE HOURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR:" + target_date.get_hour().to_string() +"\n\n\n\n");
+            // print("DATE MINUTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE:" + target_date.get_minute().to_string() +"\n\n\n\n");
 
             quote_item.set_provider_name (_provider_name);
             quote_item.set_provider_folder_name (item_folder_name);
@@ -1035,9 +1035,9 @@ public class TradeSim.Services.Database : GLib.Object {
 
             return quote_item;
 
-        }//else{
-            //print("no hay quote.........................");
-        //}
+        } // else{
+          // print("no hay quote.........................");
+        // }
 
         return null;
     }

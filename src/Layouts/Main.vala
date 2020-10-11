@@ -21,8 +21,8 @@
 
 public class TradeSim.Layouts.Main : Gtk.Box {
 
-    //voy a modificar este archivo para crear una nueva seccion en el panel de la izquierda
-    //que me permita incorporar una seccion para editar los objetos dibujados.
+    // voy a modificar este archivo para crear una nueva seccion en el panel de la izquierda
+    // que me permita incorporar una seccion para editar los objetos dibujados.
 
     public weak TradeSim.MainWindow main_window { get; construct; }
 
@@ -69,8 +69,8 @@ public class TradeSim.Layouts.Main : Gtk.Box {
         pane_left = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
         pane_left_vertical = new Gtk.Paned (Gtk.Orientation.VERTICAL);
 
-        pane_left_vertical.pack1(providers_panel, true, true);
-        pane_left_vertical.pack2(drawings_panel, true, true);
+        pane_left_vertical.pack1 (providers_panel, true, true);
+        pane_left_vertical.pack2 (drawings_panel, true, true);
 
         pane_left.pack1 (pane_left_vertical, true, true);
         pane_left.pack2 (nb_chart_container, true, true);
@@ -84,7 +84,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
     public void on_change_canvas_focus (Gtk.Notebook nb, Gtk.Widget tab, uint order) {
 
-        if(current_canvas != null){
+        if (current_canvas != null) {
 
             if (current_canvas.get_type () == typeof (TradeSim.Widgets.Canvas)) {
                 // Si en la pestaña anterior hay un canvas...
@@ -97,29 +97,29 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
             var container = ((TradeSim.Widgets.CanvasContainer)tab);
 
-            drawings_panel.delete_all();
+            drawings_panel.delete_all ();
 
             current_canvas = container.chart_canvas;
 
             main_window.headerbar.set_subtitle (current_canvas.simulation_name);
 
-            drawings_panel.reload_objects();
+            drawings_panel.reload_objects ();
             operations_panel.update_operations ();
             operations_panel.update_bottom_info ();
 
-        }else if (tab.get_type () == typeof (TradeSim.Layouts.Welcome)) {
+        } else if (tab.get_type () == typeof (TradeSim.Layouts.Welcome)) {
             main_window.headerbar.set_subtitle ("The Linux trading simulator");
         }
 
     }
 
-    public void add_canvas (string? provider_name, string? ticker_name, string time_frame) {
+    public void add_canvas (string ? provider_name, string ? ticker_name, string time_frame) {
 
-        if(provider_name == null){
+        if (provider_name == null) {
             return;
         }
 
-        if(ticker_name == null){
+        if (ticker_name == null) {
             return;
         }
 
@@ -136,23 +136,23 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
         int position = nb_chart_container.get_n_pages ();
 
-        var grid_tab = new Gtk.Grid();
+        var grid_tab = new Gtk.Grid ();
         var label_title = new Gtk.Label (provider_name + " - " + ticker_name + ", " + time_frame_name);
         var button_close = new Gtk.Button.from_icon_name ("window-close", Gtk.IconSize.SMALL_TOOLBAR);
 
         button_close.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
 
-        grid_tab.attach(label_title, 0, 0);
-        grid_tab.attach(button_close, 1, 0);
+        grid_tab.attach (label_title, 0, 0);
+        grid_tab.attach (button_close, 1, 0);
 
-        grid_tab.show_all();
+        grid_tab.show_all ();
 
         var canvas_container = new TradeSim.Widgets.CanvasContainer (main_window, provider_name, ticker_name, time_frame_name, _simulation_name, _simulation_initial_balance);
 
-        canvas_container.set_page(position);
+        canvas_container.set_page (position);
 
-        button_close.clicked.connect(()=>{
-            close_tab(canvas_container);
+        button_close.clicked.connect (() => {
+            close_tab (canvas_container);
         });
 
         nb_chart_container.insert_page (canvas_container, grid_tab, position);
@@ -165,18 +165,18 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
     }
 
-    public void close_tab(TradeSim.Widgets.CanvasContainer cc){
+    public void close_tab (TradeSim.Widgets.CanvasContainer cc) {
 
-        nb_chart_container.remove_page(cc.get_page());
+        nb_chart_container.remove_page (cc.get_page ());
 
     }
 
-    public void on_page_removed(Gtk.Widget child, uint page_num) {
+    public void on_page_removed (Gtk.Widget child, uint page_num) {
 
-        for(int i = 0; i < nb_chart_container.get_n_pages (); i++) {
-            if(i > 0) {
-                var item = (TradeSim.Widgets.CanvasContainer) nb_chart_container.get_nth_page(i);
-                item.set_page(i);
+        for (int i = 0 ; i < nb_chart_container.get_n_pages () ; i++) {
+            if (i > 0) {
+                var item = (TradeSim.Widgets.CanvasContainer)nb_chart_container.get_nth_page (i);
+                item.set_page (i);
             }
         }
     }
@@ -201,7 +201,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
         current_canvas.operations_manager.add_operation (new_operation);
 
-        current_canvas.draw_operation_info(new_operation);
+        current_canvas.draw_operation_info (new_operation);
 
         operations_panel.update_operations ();
 

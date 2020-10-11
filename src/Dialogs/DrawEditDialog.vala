@@ -19,7 +19,7 @@
  * Authored by: Horacio Daniel Ros <horaciodrs@gmail.com>
  */
 
- public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
+public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
 
     public weak TradeSim.MainWindow main_window { get; construct; }
     public weak TradeSim.Widgets.DrawingsPanelItem item_to_update { get; construct; }
@@ -112,15 +112,15 @@
 
         label_name = new Gtk.Label ("Object Name:");
         txt_name = new Gtk.Entry ();
-        txt_name.set_text(object_id);
+        txt_name.set_text (object_id);
         label_name.halign = Gtk.Align.END;
 
         form_grid.attach (label_name, 0, 0);
         form_grid.attach (txt_name, 1, 0);
 
-        //Color.
+        // Color.
 
-        Gdk.RGBA aux_color = draw_manager.get_draw_color(object_id, type).get_rgba();
+        Gdk.RGBA aux_color = draw_manager.get_draw_color (object_id, type).get_rgba ();
 
         label_color = new Gtk.Label ("Color:");
         button_color = new Gtk.ColorButton.with_rgba (aux_color);
@@ -129,34 +129,34 @@
         form_grid.attach (label_color, 0, 1);
         form_grid.attach (button_color, 1, 1);
 
-        //Alpha
+        // Alpha
 
         label_alpha = new Gtk.Label ("Opacity:");
-        scale_alpha = new Gtk.Scale.with_range(Gtk.Orientation.HORIZONTAL, 0, 100, 0.1);
+        scale_alpha = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 0, 100, 0.1);
         label_alpha.halign = Gtk.Align.END;
 
-        scale_alpha.set_value(aux_color.alpha*100);
+        scale_alpha.set_value (aux_color.alpha * 100);
 
-        scale_alpha.value_changed.connect((a) => {
+        scale_alpha.value_changed.connect ((a) => {
 
-            var color_aux = button_color.get_rgba();
+            var color_aux = button_color.get_rgba ();
 
-            color_aux.alpha = scale_alpha.get_value() / 100.00;
+            color_aux.alpha = scale_alpha.get_value () / 100.00;
 
-            button_color.set_rgba(color_aux);
+            button_color.set_rgba (color_aux);
 
         });
 
         form_grid.attach (label_alpha, 0, 2);
         form_grid.attach (scale_alpha, 1, 2);
 
-        //Thickness
+        // Thickness
 
         label_thickness = new Gtk.Label ("Thickness:");
         label_thickness.halign = Gtk.Align.END;
 
         form_grid.attach (label_thickness, 0, 3);
-        form_grid.attach (get_button_thickness(), 1, 3);
+        form_grid.attach (get_button_thickness (), 1, 3);
 
         body.add (form_grid);
 
@@ -169,91 +169,91 @@
 
     }
 
-    private Gtk.Grid get_button_thickness(){
+    private Gtk.Grid get_button_thickness () {
 
         var draw_manager = main_window.main_layout.current_canvas.draw_manager;
 
-        Gtk.Grid grilla = new Gtk.Grid();
+        Gtk.Grid grilla = new Gtk.Grid ();
 
         grilla.get_style_context ().add_class (Gtk.STYLE_CLASS_LINKED);
         grilla.get_style_context ().add_class ("linked-flat");
 
         grilla.hexpand = true;
 
-        button_thickness1 = new Gtk.Button.from_icon_name("shape-thickness1-symbolic");
-        button_thickness2 = new Gtk.Button.from_icon_name("shape-thickness2-symbolic");
-        button_thickness3 = new Gtk.Button.from_icon_name("shape-thickness3-symbolic");
-        button_thickness4 = new Gtk.Button.from_icon_name("shape-thickness4-symbolic");
+        button_thickness1 = new Gtk.Button.from_icon_name ("shape-thickness1-symbolic");
+        button_thickness2 = new Gtk.Button.from_icon_name ("shape-thickness2-symbolic");
+        button_thickness3 = new Gtk.Button.from_icon_name ("shape-thickness3-symbolic");
+        button_thickness4 = new Gtk.Button.from_icon_name ("shape-thickness4-symbolic");
 
         button_thickness1.hexpand = true;
         button_thickness2.hexpand = true;
         button_thickness3.hexpand = true;
         button_thickness4.hexpand = true;
 
-        selected_thicness = draw_manager.get_draw_thicness(object_id, type);
+        selected_thicness = draw_manager.get_draw_thicness (object_id, type);
 
-        //print("type:" + type.to_string() + "\n");
-        //print(selected_thicness.to_string() + "\n");
+        // print("type:" + type.to_string() + "\n");
+        // print(selected_thicness.to_string() + "\n");
 
-        if(selected_thicness == TradeSim.Services.Drawings.Thickness.VERY_FINE){
-            button_thickness1.get_style_context().add_class("btn-thicness-selected");
-            button_thickness2.get_style_context().remove_class("btn-thicness-selected");
-            button_thickness3.get_style_context().remove_class("btn-thicness-selected");
-            button_thickness4.get_style_context().remove_class("btn-thicness-selected");
-        }else if(selected_thicness == TradeSim.Services.Drawings.Thickness.FINE){
-            button_thickness2.get_style_context().add_class("btn-thicness-selected");
-            button_thickness1.get_style_context().remove_class("btn-thicness-selected");
-            button_thickness3.get_style_context().remove_class("btn-thicness-selected");
-            button_thickness4.get_style_context().remove_class("btn-thicness-selected");
-        }else if(selected_thicness == TradeSim.Services.Drawings.Thickness.THICK){
-            button_thickness3.get_style_context().add_class("btn-thicness-selected");
-            button_thickness2.get_style_context().remove_class("btn-thicness-selected");
-            button_thickness1.get_style_context().remove_class("btn-thicness-selected");
-            button_thickness4.get_style_context().remove_class("btn-thicness-selected");
-        }else if(selected_thicness == TradeSim.Services.Drawings.Thickness.VERY_THICK){
-            button_thickness4.get_style_context().add_class("btn-thicness-selected");
-            button_thickness2.get_style_context().remove_class("btn-thicness-selected");
-            button_thickness3.get_style_context().remove_class("btn-thicness-selected");
-            button_thickness1.get_style_context().remove_class("btn-thicness-selected");
+        if (selected_thicness == TradeSim.Services.Drawings.Thickness.VERY_FINE) {
+            button_thickness1.get_style_context ().add_class ("btn-thicness-selected");
+            button_thickness2.get_style_context ().remove_class ("btn-thicness-selected");
+            button_thickness3.get_style_context ().remove_class ("btn-thicness-selected");
+            button_thickness4.get_style_context ().remove_class ("btn-thicness-selected");
+        } else if (selected_thicness == TradeSim.Services.Drawings.Thickness.FINE) {
+            button_thickness2.get_style_context ().add_class ("btn-thicness-selected");
+            button_thickness1.get_style_context ().remove_class ("btn-thicness-selected");
+            button_thickness3.get_style_context ().remove_class ("btn-thicness-selected");
+            button_thickness4.get_style_context ().remove_class ("btn-thicness-selected");
+        } else if (selected_thicness == TradeSim.Services.Drawings.Thickness.THICK) {
+            button_thickness3.get_style_context ().add_class ("btn-thicness-selected");
+            button_thickness2.get_style_context ().remove_class ("btn-thicness-selected");
+            button_thickness1.get_style_context ().remove_class ("btn-thicness-selected");
+            button_thickness4.get_style_context ().remove_class ("btn-thicness-selected");
+        } else if (selected_thicness == TradeSim.Services.Drawings.Thickness.VERY_THICK) {
+            button_thickness4.get_style_context ().add_class ("btn-thicness-selected");
+            button_thickness2.get_style_context ().remove_class ("btn-thicness-selected");
+            button_thickness3.get_style_context ().remove_class ("btn-thicness-selected");
+            button_thickness1.get_style_context ().remove_class ("btn-thicness-selected");
         }
 
-        grilla.attach(button_thickness1, 0, 0);
-        grilla.attach(button_thickness2, 1, 0);
-        grilla.attach(button_thickness3, 2, 0);
-        grilla.attach(button_thickness4, 3, 0);
+        grilla.attach (button_thickness1, 0, 0);
+        grilla.attach (button_thickness2, 1, 0);
+        grilla.attach (button_thickness3, 2, 0);
+        grilla.attach (button_thickness4, 3, 0);
 
-        
 
-        button_thickness1.clicked.connect(() =>{
+
+        button_thickness1.clicked.connect (() => {
             selected_thicness = TradeSim.Services.Drawings.Thickness.VERY_FINE;
-            button_thickness1.get_style_context().add_class("btn-thicness-selected");
-            button_thickness2.get_style_context().remove_class("btn-thicness-selected");
-            button_thickness3.get_style_context().remove_class("btn-thicness-selected");
-            button_thickness4.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness1.get_style_context ().add_class ("btn-thicness-selected");
+            button_thickness2.get_style_context ().remove_class ("btn-thicness-selected");
+            button_thickness3.get_style_context ().remove_class ("btn-thicness-selected");
+            button_thickness4.get_style_context ().remove_class ("btn-thicness-selected");
         });
 
-        button_thickness2.clicked.connect(() =>{
+        button_thickness2.clicked.connect (() => {
             selected_thicness = TradeSim.Services.Drawings.Thickness.FINE;
-            button_thickness2.get_style_context().add_class("btn-thicness-selected");
-            button_thickness1.get_style_context().remove_class("btn-thicness-selected");
-            button_thickness3.get_style_context().remove_class("btn-thicness-selected");
-            button_thickness4.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness2.get_style_context ().add_class ("btn-thicness-selected");
+            button_thickness1.get_style_context ().remove_class ("btn-thicness-selected");
+            button_thickness3.get_style_context ().remove_class ("btn-thicness-selected");
+            button_thickness4.get_style_context ().remove_class ("btn-thicness-selected");
         });
 
-        button_thickness3.clicked.connect(() =>{
+        button_thickness3.clicked.connect (() => {
             selected_thicness = TradeSim.Services.Drawings.Thickness.THICK;
-            button_thickness3.get_style_context().add_class("btn-thicness-selected");
-            button_thickness2.get_style_context().remove_class("btn-thicness-selected");
-            button_thickness1.get_style_context().remove_class("btn-thicness-selected");
-            button_thickness4.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness3.get_style_context ().add_class ("btn-thicness-selected");
+            button_thickness2.get_style_context ().remove_class ("btn-thicness-selected");
+            button_thickness1.get_style_context ().remove_class ("btn-thicness-selected");
+            button_thickness4.get_style_context ().remove_class ("btn-thicness-selected");
         });
 
-        button_thickness4.clicked.connect(() =>{
+        button_thickness4.clicked.connect (() => {
             selected_thicness = TradeSim.Services.Drawings.Thickness.VERY_THICK;
-            button_thickness4.get_style_context().add_class("btn-thicness-selected");
-            button_thickness2.get_style_context().remove_class("btn-thicness-selected");
-            button_thickness3.get_style_context().remove_class("btn-thicness-selected");
-            button_thickness1.get_style_context().remove_class("btn-thicness-selected");
+            button_thickness4.get_style_context ().add_class ("btn-thicness-selected");
+            button_thickness2.get_style_context ().remove_class ("btn-thicness-selected");
+            button_thickness3.get_style_context ().remove_class ("btn-thicness-selected");
+            button_thickness1.get_style_context ().remove_class ("btn-thicness-selected");
         });
 
         return grilla;
@@ -294,12 +294,12 @@
             var objetivo = dialogo.main_window.main_layout;
             var target = objetivo.current_canvas.draw_manager;
 
-            target.set_draw_color(object_id, type, button_color.get_rgba());
-            target.set_draw_thickness(object_id, type, selected_thicness);
-            target.set_draw_name(object_id, type, txt_name.get_text());
-            target.set_draw_alpha(object_id, type, scale_alpha.get_value() / 100.00);
+            target.set_draw_color (object_id, type, button_color.get_rgba ());
+            target.set_draw_thickness (object_id, type, selected_thicness);
+            target.set_draw_name (object_id, type, txt_name.get_text ());
+            target.set_draw_alpha (object_id, type, scale_alpha.get_value () / 100.00);
 
-            dialogo.item_to_update.refresh(txt_name.get_text());
+            dialogo.item_to_update.refresh (txt_name.get_text ());
 
             destroy ();
 

@@ -85,11 +85,11 @@ public class TradeSim.Drawings.OperationBox {
         // Actualizar el precio calculado en base a la posición top
         // en parent.operation_data...
 
-        if(parent.ref_canvas == null){
+        if (parent.ref_canvas == null) {
             return;
         }
 
-        if(parent.operation_data == null){
+        if (parent.operation_data == null) {
             return;
         }
 

@@ -19,26 +19,26 @@
  * Authored by: Horacio Daniel Ros <horaciodrs@gmail.com>
  */
 
- public class TradeSim.Drawings.Rectangle : TradeSim.Drawings.Line {
+public class TradeSim.Drawings.Rectangle : TradeSim.Drawings.Line {
 
     public Rectangle (TradeSim.Widgets.Canvas canvas, string _id) {
 
         base (canvas, _id);
 
         color.alpha = 0.5;
-        
+
     }
 
     public override void render (Cairo.Context ctext) {
 
-        if(!visible){
+        if (!visible) {
             return;
         }
 
         update_data ();
 
-        color.apply_to(ctext);
-        ctext.rectangle (x1, y1, x2-x1, y2-y1);
+        color.apply_to (ctext);
+        ctext.rectangle (x1, y1, x2 - x1, y2 - y1);
         ctext.fill ();
         ctext.stroke ();
 

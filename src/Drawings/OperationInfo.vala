@@ -72,34 +72,34 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
 
     public override void render (Cairo.Context ctext) {
 
-        if(!operation_data.visible){
+        if (!operation_data.visible) {
             return;
         }
 
-        //Dibujar el historial.
+        // Dibujar el historial.
 
-        draw_operation_history_line(ctext);
+        draw_operation_history_line (ctext);
 
-        //Dibujar un circulo en la vela donde se abrio la operación.
+        // Dibujar un circulo en la vela donde se abrio la operación.
 
-        int open_op_x = ref_canvas.get_pos_x_by_date(operation_data.operation_date);
+        int open_op_x = ref_canvas.get_pos_x_by_date (operation_data.operation_date);
         int open_op_y = -1;
         double aux_price = -1.0;
         double xc = -1.0;
         double yc = -1.0;
         double radius = 0;
 
-        if(open_op_x > 0){
-            if(operation_data.type_op == TradeSim.Objects.OperationItem.Type.BUY){
-                aux_price = ref_canvas.data.get_quote_by_time(operation_data.operation_date).min_price;
-                open_op_y = ref_canvas.get_pos_y_by_price(aux_price);
-                xc = (int) (open_op_x + ref_canvas.candle_width/2);
+        if (open_op_x > 0) {
+            if (operation_data.type_op == TradeSim.Objects.OperationItem.Type.BUY) {
+                aux_price = ref_canvas.data.get_quote_by_time (operation_data.operation_date).min_price;
+                open_op_y = ref_canvas.get_pos_y_by_price (aux_price);
+                xc = (int) (open_op_x + ref_canvas.candle_width / 2);
                 yc = open_op_y + ref_canvas.candle_width;
                 radius = ref_canvas.candle_width / 2;
-            }else if(operation_data.type_op == TradeSim.Objects.OperationItem.Type.SELL){
-                aux_price = ref_canvas.data.get_quote_by_time(operation_data.operation_date).max_price;
-                open_op_y = ref_canvas.get_pos_y_by_price(aux_price);
-                xc = (int) (open_op_x + ref_canvas.candle_width/2);
+            } else if (operation_data.type_op == TradeSim.Objects.OperationItem.Type.SELL) {
+                aux_price = ref_canvas.data.get_quote_by_time (operation_data.operation_date).max_price;
+                open_op_y = ref_canvas.get_pos_y_by_price (aux_price);
+                xc = (int) (open_op_x + ref_canvas.candle_width / 2);
                 yc = open_op_y - ref_canvas.candle_width;
                 radius = ref_canvas.candle_width / 2;
             }
@@ -107,10 +107,10 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
 
         var circle_color = new TradeSim.Utils.Color (54, 134, 230);
 
-        circle_color.apply_to(ctext);
+        circle_color.apply_to (ctext);
         ctext.set_dash ({}, 0);
         ctext.set_line_width (1.0);
-        ctext.arc (xc, yc, radius, 0, 2*Math.PI);
+        ctext.arc (xc, yc, radius, 0, 2 * Math.PI);
         ctext.fill ();
 
 
@@ -118,11 +118,11 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
             return;
         }
 
-        if(operation_data == null){
+        if (operation_data == null) {
             return;
         }
 
-        if(operation_data.state == TradeSim.Objects.OperationItem.State.CLOSED){
+        if (operation_data.state == TradeSim.Objects.OperationItem.State.CLOSED) {
             return;
         }
 
@@ -177,19 +177,19 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
 
     }
 
-    public void draw_operation_history_line(Cairo.Context ctext){
+    public void draw_operation_history_line (Cairo.Context ctext) {
 
-        if(operation_data.state == TradeSim.Objects.OperationItem.State.CLOSED) {
+        if (operation_data.state == TradeSim.Objects.OperationItem.State.CLOSED) {
 
             int xi = ref_canvas.get_pos_x_by_date (operation_data.operation_date);
             int xf = ref_canvas.get_pos_x_by_date (operation_data.close_date);
-            int yi = ref_canvas.get_pos_y_by_price(operation_data.price);
-            int yf = ref_canvas.get_pos_y_by_price(operation_data.close_price);
-            TradeSim.Utils.Color aux_color = new TradeSim.Utils.Color(204, 59, 2);
+            int yi = ref_canvas.get_pos_y_by_price (operation_data.price);
+            int yf = ref_canvas.get_pos_y_by_price (operation_data.close_price);
+            TradeSim.Utils.Color aux_color = new TradeSim.Utils.Color (204, 59, 2);
 
-            ctext.set_dash ({5.0}, 0);
+            ctext.set_dash ({ 5.0 }, 0);
             ctext.set_line_width (2);
-            aux_color.apply_to(ctext);
+            aux_color.apply_to (ctext);
             ctext.move_to (xi, yi);
             ctext.line_to (xf, yf);
             ctext.stroke ();

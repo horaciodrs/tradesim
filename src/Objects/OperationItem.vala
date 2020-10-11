@@ -106,12 +106,12 @@ public class TradeSim.Objects.OperationItem {
 
         if (type_op == TradeSim.Objects.OperationItem.Type.BUY) {
             return_value = calc_costo - calc_profit;
-            if(sl > price){
+            if (sl > price) {
                 return_value = return_value * (-1.00);
             }
         } else if (type_op == TradeSim.Objects.OperationItem.Type.SELL) {
             return_value = calc_profit - calc_costo;
-            if(sl < price){
+            if (sl < price) {
                 return_value = return_value * (-1.00);
             }
         }

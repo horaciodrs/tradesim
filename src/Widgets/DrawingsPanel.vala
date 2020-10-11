@@ -91,7 +91,7 @@ public class TradeSim.Widgets.DrawingsPanel : Gtk.Grid {
             if (i > rows) {
                 salir = true;
             } else {
-                if(generic_widget != null){
+                if (generic_widget != null) {
                     if (generic_widget.get_type () == typeof (TradeSim.Widgets.DrawingsPanelItem)) {
                         TradeSim.Widgets.DrawingsPanelItem row = (TradeSim.Widgets.DrawingsPanelItem)generic_widget;
                         if (row.desc == _id) {
@@ -112,10 +112,10 @@ public class TradeSim.Widgets.DrawingsPanel : Gtk.Grid {
 
         var ml = main_window.main_layout;
 
-        if(ml.current_canvas != null){
+        if (ml.current_canvas != null) {
 
             if (ml.current_canvas.get_type () == typeof (TradeSim.Widgets.Canvas)) {
-                
+
                 var dm = main_window.main_layout.current_canvas.draw_manager;
 
                 for (int i = 0 ; i < dm.lines.length ; i++) {
@@ -148,10 +148,10 @@ public class TradeSim.Widgets.DrawingsPanel : Gtk.Grid {
 
         bool salir = false;
 
-        while(!salir){
-            if(rows==-1){
+        while (!salir) {
+            if (rows == -1) {
                 salir = true;
-            }else{
+            } else {
                 grid_data.remove_row (0);
                 rows--;
             }

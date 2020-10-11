@@ -108,19 +108,19 @@ public class TradeSim.Services.QuotesManager {
         var return_value = new TradeSim.Services.QuoteItem (data[ItemCSVColumns.TICKER]);
 
 
-        DateTime item_date = new DateTime.local (int.parse(data[ItemCSVColumns.DATE_YEAR])
-                                                 , int.parse(data[ItemCSVColumns.DATE_MONTH])
-                                                 , int.parse(data[ItemCSVColumns.DATE_DAY])
-                                                 , int.parse(data[ItemCSVColumns.DATE_HOURS])
-                                                 , int.parse(data[ItemCSVColumns.DATE_MINUTES])
+        DateTime item_date = new DateTime.local (int.parse (data[ItemCSVColumns.DATE_YEAR])
+                                                 , int.parse (data[ItemCSVColumns.DATE_MONTH])
+                                                 , int.parse (data[ItemCSVColumns.DATE_DAY])
+                                                 , int.parse (data[ItemCSVColumns.DATE_HOURS])
+                                                 , int.parse (data[ItemCSVColumns.DATE_MINUTES])
                                                  , 0);
 
         return_value.set_date_time (item_date);
 
-        return_value.set_open_price (double.parse(data[ItemCSVColumns.OPEN]));
-        return_value.set_close_price (double.parse(data[ItemCSVColumns.CLOSE]));
-        return_value.set_min_price (double.parse(data[ItemCSVColumns.LOW]));
-        return_value.set_max_price (double.parse(data[ItemCSVColumns.HIGH]));
+        return_value.set_open_price (double.parse (data[ItemCSVColumns.OPEN]));
+        return_value.set_close_price (double.parse (data[ItemCSVColumns.CLOSE]));
+        return_value.set_min_price (double.parse (data[ItemCSVColumns.LOW]));
+        return_value.set_max_price (double.parse (data[ItemCSVColumns.HIGH]));
         return_value.set_provider_name (data[ItemCSVColumns.PROVIDER_NAME]);
         return_value.set_provider_folder_name (data[ItemCSVColumns.PROVIDER_NAME]);
         return_value.set_time_frame_name (data[ItemCSVColumns.TIME_FRAME_NAME]);

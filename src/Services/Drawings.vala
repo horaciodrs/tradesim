@@ -383,25 +383,25 @@ public class TradeSim.Services.Drawings {
         if (_type == TradeSim.Services.Drawings.Type.LINE) {
             for (int i = 0 ; i < lines.length ; i++) {
                 if (lines.index (i).id == _id) {
-                    return lines.index (i).get_thicness();
+                    return lines.index (i).get_thicness ();
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.HLINE) {
             for (int i = 0 ; i < hlines.length ; i++) {
                 if (hlines.index (i).id == _id) {
-                    return hlines.index (i).get_thicness();
+                    return hlines.index (i).get_thicness ();
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.FIBONACCI) {
             for (int i = 0 ; i < fibonacci.length ; i++) {
                 if (fibonacci.index (i).id == _id) {
-                    return fibonacci.index (i).get_thicness();
+                    return fibonacci.index (i).get_thicness ();
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.RECTANGLE) {
             for (int i = 0 ; i < rectangles.length ; i++) {
                 if (rectangles.index (i).id == _id) {
-                    return rectangles.index (i).get_thicness();
+                    return rectangles.index (i).get_thicness ();
                 }
             }
         }
@@ -448,25 +448,25 @@ public class TradeSim.Services.Drawings {
         if (_type == TradeSim.Services.Drawings.Type.LINE) {
             for (int i = 0 ; i < lines.length ; i++) {
                 if (lines.index (i).id == _id) {
-                    return lines.index (i).get_alpha();
+                    return lines.index (i).get_alpha ();
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.HLINE) {
             for (int i = 0 ; i < hlines.length ; i++) {
                 if (hlines.index (i).id == _id) {
-                    return hlines.index (i).get_alpha();
+                    return hlines.index (i).get_alpha ();
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.FIBONACCI) {
             for (int i = 0 ; i < fibonacci.length ; i++) {
                 if (fibonacci.index (i).id == _id) {
-                    return fibonacci.index (i).get_alpha();
+                    return fibonacci.index (i).get_alpha ();
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.RECTANGLE) {
             for (int i = 0 ; i < rectangles.length ; i++) {
                 if (rectangles.index (i).id == _id) {
-                    return rectangles.index (i).get_alpha();
+                    return rectangles.index (i).get_alpha ();
                 }
             }
         }
@@ -480,28 +480,28 @@ public class TradeSim.Services.Drawings {
         if (_type == TradeSim.Services.Drawings.Type.LINE) {
             for (int i = 0 ; i < lines.length ; i++) {
                 if (lines.index (i).id == _id) {
-                    lines.index (i).set_alpha(_alpha);
+                    lines.index (i).set_alpha (_alpha);
                     break;
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.HLINE) {
             for (int i = 0 ; i < hlines.length ; i++) {
                 if (hlines.index (i).id == _id) {
-                    hlines.index (i).set_alpha(_alpha);
+                    hlines.index (i).set_alpha (_alpha);
                     break;
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.FIBONACCI) {
             for (int i = 0 ; i < fibonacci.length ; i++) {
                 if (fibonacci.index (i).id == _id) {
-                    fibonacci.index (i).set_alpha(_alpha);
+                    fibonacci.index (i).set_alpha (_alpha);
                     break;
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.RECTANGLE) {
             for (int i = 0 ; i < rectangles.length ; i++) {
                 if (rectangles.index (i).id == _id) {
-                    rectangles.index (i).set_alpha(_alpha);
+                    rectangles.index (i).set_alpha (_alpha);
                     break;
                 }
             }
@@ -513,28 +513,28 @@ public class TradeSim.Services.Drawings {
         if (_type == TradeSim.Services.Drawings.Type.LINE) {
             for (int i = 0 ; i < lines.length ; i++) {
                 if (lines.index (i).id == _id) {
-                    lines.index (i).set_visible(_visible);
+                    lines.index (i).set_visible (_visible);
                     break;
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.HLINE) {
             for (int i = 0 ; i < hlines.length ; i++) {
                 if (hlines.index (i).id == _id) {
-                    hlines.index (i).set_visible(_visible);
+                    hlines.index (i).set_visible (_visible);
                     break;
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.FIBONACCI) {
             for (int i = 0 ; i < fibonacci.length ; i++) {
                 if (fibonacci.index (i).id == _id) {
-                    fibonacci.index (i).set_visible(_visible);
+                    fibonacci.index (i).set_visible (_visible);
                     break;
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.RECTANGLE) {
             for (int i = 0 ; i < rectangles.length ; i++) {
                 if (rectangles.index (i).id == _id) {
-                    rectangles.index (i).set_visible(_visible);
+                    rectangles.index (i).set_visible (_visible);
                     break;
                 }
             }
@@ -546,25 +546,25 @@ public class TradeSim.Services.Drawings {
         if (_type == TradeSim.Services.Drawings.Type.LINE) {
             for (int i = 0 ; i < lines.length ; i++) {
                 if (lines.index (i).id == _id) {
-                    return lines.index (i).get_visible();
+                    return lines.index (i).get_visible ();
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.HLINE) {
             for (int i = 0 ; i < hlines.length ; i++) {
                 if (hlines.index (i).id == _id) {
-                    return hlines.index (i).get_visible();
+                    return hlines.index (i).get_visible ();
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.FIBONACCI) {
             for (int i = 0 ; i < fibonacci.length ; i++) {
                 if (fibonacci.index (i).id == _id) {
-                    return fibonacci.index (i).get_visible();
+                    return fibonacci.index (i).get_visible ();
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.RECTANGLE) {
             for (int i = 0 ; i < rectangles.length ; i++) {
                 if (rectangles.index (i).id == _id) {
-                    return rectangles.index (i).get_visible();
+                    return rectangles.index (i).get_visible ();
                 }
             }
         }
@@ -573,35 +573,35 @@ public class TradeSim.Services.Drawings {
 
     }
 
-    //-------------------------------------->
+    // -------------------------------------->
 
     public void set_draw_enabled (string _id, int _type, bool _enabled) {
 
         if (_type == TradeSim.Services.Drawings.Type.LINE) {
             for (int i = 0 ; i < lines.length ; i++) {
                 if (lines.index (i).id == _id) {
-                    lines.index (i).set_enabled(_enabled);
+                    lines.index (i).set_enabled (_enabled);
                     break;
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.HLINE) {
             for (int i = 0 ; i < hlines.length ; i++) {
                 if (hlines.index (i).id == _id) {
-                    hlines.index (i).set_enabled(_enabled);
+                    hlines.index (i).set_enabled (_enabled);
                     break;
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.FIBONACCI) {
             for (int i = 0 ; i < fibonacci.length ; i++) {
                 if (fibonacci.index (i).id == _id) {
-                    fibonacci.index (i).set_enabled(_enabled);
+                    fibonacci.index (i).set_enabled (_enabled);
                     break;
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.RECTANGLE) {
             for (int i = 0 ; i < rectangles.length ; i++) {
                 if (rectangles.index (i).id == _id) {
-                    rectangles.index (i).set_enabled(_enabled);
+                    rectangles.index (i).set_enabled (_enabled);
                     break;
                 }
             }
@@ -613,25 +613,25 @@ public class TradeSim.Services.Drawings {
         if (_type == TradeSim.Services.Drawings.Type.LINE) {
             for (int i = 0 ; i < lines.length ; i++) {
                 if (lines.index (i).id == _id) {
-                    return lines.index (i).get_enabled();
+                    return lines.index (i).get_enabled ();
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.HLINE) {
             for (int i = 0 ; i < hlines.length ; i++) {
                 if (hlines.index (i).id == _id) {
-                    return hlines.index (i).get_enabled();
+                    return hlines.index (i).get_enabled ();
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.FIBONACCI) {
             for (int i = 0 ; i < fibonacci.length ; i++) {
                 if (fibonacci.index (i).id == _id) {
-                    return fibonacci.index (i).get_enabled();
+                    return fibonacci.index (i).get_enabled ();
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.RECTANGLE) {
             for (int i = 0 ; i < rectangles.length ; i++) {
                 if (rectangles.index (i).id == _id) {
-                    return rectangles.index (i).get_enabled();
+                    return rectangles.index (i).get_enabled ();
                 }
             }
         }
@@ -640,32 +640,32 @@ public class TradeSim.Services.Drawings {
 
     }
 
-    //--------------------------------------<
+    // --------------------------------------<
 
-    public void delete_draw(string _id, int _type){
+    public void delete_draw (string _id, int _type) {
 
         if (_type == TradeSim.Services.Drawings.Type.LINE) {
             for (int i = 0 ; i < lines.length ; i++) {
                 if (lines.index (i).id == _id) {
-                    lines.remove_index(i);
+                    lines.remove_index (i);
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.HLINE) {
             for (int i = 0 ; i < hlines.length ; i++) {
                 if (hlines.index (i).id == _id) {
-                    hlines.remove_index(i);
+                    hlines.remove_index (i);
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.FIBONACCI) {
             for (int i = 0 ; i < fibonacci.length ; i++) {
                 if (fibonacci.index (i).id == _id) {
-                    fibonacci.remove_index(i);
+                    fibonacci.remove_index (i);
                 }
             }
         } else if (_type == TradeSim.Services.Drawings.Type.RECTANGLE) {
             for (int i = 0 ; i < rectangles.length ; i++) {
                 if (rectangles.index (i).id == _id) {
-                    rectangles.remove_index(i);
+                    rectangles.remove_index (i);
                 }
             }
         }

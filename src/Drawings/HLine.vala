@@ -19,32 +19,32 @@
  * Authored by: Horacio Daniel Ros <horaciodrs@gmail.com>
  */
 
- public class TradeSim.Drawings.HLine : TradeSim.Drawings.Line {
+public class TradeSim.Drawings.HLine : TradeSim.Drawings.Line {
 
     public HLine (TradeSim.Widgets.Canvas canvas, string _id) {
 
         base (canvas, _id);
 
         thickness = TradeSim.Services.Drawings.Thickness.THICK;
-        
+
     }
 
     public override void render (Cairo.Context ctext) {
 
-        if(!visible){
+        if (!visible) {
             return;
         }
 
-        update_data();
+        update_data ();
 
         ctext.set_dash ({}, 0);
         ctext.set_line_width (thickness);
-        color.apply_to(ctext);
+        color.apply_to (ctext);
         ctext.move_to (0, y2);
         ctext.line_to (ref_canvas._width, y2);
         ctext.stroke ();
 
-        draw_price_label(ctext);
+        draw_price_label (ctext);
 
     }
 
@@ -54,7 +54,7 @@
 
         ctext.set_dash ({}, 0);
 
-        color.apply_to(ctext);
+        color.apply_to (ctext);
         ctext.rectangle (ref_canvas._width - ref_canvas.vertical_scale_width, posy - 10, ref_canvas.vertical_scale_width, 20);
         ctext.fill ();
 
@@ -64,13 +64,13 @@
         ctext.close_path ();
 
         ctext.set_line_width (1.0);
-        color.apply_to(ctext);
+        color.apply_to (ctext);
         ctext.fill_preserve ();
         ctext.stroke ();
 
         ctext.set_dash ({ 5.0 }, 0);
         ctext.set_line_width (1);
-        color.apply_to(ctext);
+        color.apply_to (ctext);
         ctext.move_to (0, posy);
         ctext.line_to (ref_canvas._width, posy);
         ctext.stroke ();

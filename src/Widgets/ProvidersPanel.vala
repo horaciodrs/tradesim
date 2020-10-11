@@ -32,7 +32,7 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
     public TradeSim.Services.QuotesManager qm;
 
     public enum TreeViewProviderColumns {
-          PROVIDER_ID
+        PROVIDER_ID
         , PROVIDER_NAME
         , TICKER_ID
         , TICKER_NAME
@@ -58,26 +58,26 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
 
     }
 
-    public void load_providers(){
+    public void load_providers () {
 
-        Array<TradeSim.Objects.Provider> db_providers = qm.db.get_providers_with_data();
+        Array<TradeSim.Objects.Provider> db_providers = qm.db.get_providers_with_data ();
 
-        list_store_providers.clear();
+        list_store_providers.clear ();
 
         add_iter_providers = Gtk.TreeIter ();
         add_iter_ticker = Gtk.TreeIter ();
-        
-        for(int i=0; i<db_providers.length; i++){
+
+        for (int i = 0 ; i < db_providers.length ; i++) {
 
             list_store_providers.append (out add_iter_providers, null);
-            list_store_providers.set (add_iter_providers, 0, db_providers.index(i).name, -1);
+            list_store_providers.set (add_iter_providers, 0, db_providers.index (i).name, -1);
 
-            Array<TradeSim.Objects.ProviderTicker> db_imported_tickers = qm.db.get_providers_tickers(db_providers.index(i).name);
+            Array<TradeSim.Objects.ProviderTicker> db_imported_tickers = qm.db.get_providers_tickers (db_providers.index (i).name);
 
-            for(int z=0; z<db_imported_tickers.length; z++){
+            for (int z = 0 ; z < db_imported_tickers.length ; z++) {
 
                 list_store_providers.append (out add_iter_ticker, add_iter_providers);
-                list_store_providers.set (add_iter_ticker, 0, db_imported_tickers.index(z).ticker_name, 1, "1.12352", 2, "21", 3, db_imported_tickers.index(z).provider_id.to_string(), 4, db_imported_tickers.index(z).ticker_id.to_string(), 5, db_imported_tickers.index(z).provider_name.to_string(), -1);
+                list_store_providers.set (add_iter_ticker, 0, db_imported_tickers.index (z).ticker_name, 1, "1.12352", 2, "21", 3, db_imported_tickers.index (z).provider_id.to_string (), 4, db_imported_tickers.index (z).ticker_id.to_string (), 5, db_imported_tickers.index (z).provider_name.to_string (), -1);
 
             }
 
@@ -85,9 +85,9 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
 
     }
 
-    public void refresh_providers(){
-        tree_view_providers.get_selection().unselect_all();
-        load_providers();
+    public void refresh_providers () {
+        tree_view_providers.get_selection ().unselect_all ();
+        load_providers ();
         tree_view_providers.expand_all ();
     }
 
@@ -96,9 +96,9 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
         scroll_prviders = new Gtk.ScrolledWindow (null, null);
         scroll_prviders.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
 
-        list_store_providers = new Gtk.TreeStore (6, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof(string));
+        list_store_providers = new Gtk.TreeStore (6, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string));
 
-        load_providers();
+        load_providers ();
 
         tree_view_providers = new Gtk.TreeView ();
 
@@ -113,7 +113,7 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
 
         tree_view_providers.get_selection ().changed.connect ((sel) => {
 
-            if(sel.count_selected_rows() < 1){
+            if (sel.count_selected_rows () < 1) {
                 return;
             }
 
@@ -126,10 +126,10 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
 
             model.get_value (edited_iter, 5, out nombre);
             model.get_value (edited_iter, 0, out ticker_nombre);
-            
-            main_window.main_layout.add_canvas(nombre.get_string(), ticker_nombre.get_string(), "H1");
 
-            tree_view_providers.get_selection().unselect_all();
+            main_window.main_layout.add_canvas (nombre.get_string (), ticker_nombre.get_string (), "H1");
+
+            tree_view_providers.get_selection ().unselect_all ();
 
         });
 
@@ -140,11 +140,11 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
         tree_view_providers.insert_column_with_attributes (-1, "TickerId", ticker_price, "text", 4, null);
         tree_view_providers.insert_column_with_attributes (-1, "Provider", ticker_provider_name, "text", 5, null);
 
-        tree_view_providers.get_column(0).set_expand(true);
+        tree_view_providers.get_column (0).set_expand (true);
 
-        tree_view_providers.get_column(3).set_visible(false);
-        tree_view_providers.get_column(4).set_visible(false);
-        tree_view_providers.get_column(5).set_visible(false);
+        tree_view_providers.get_column (3).set_visible (false);
+        tree_view_providers.get_column (4).set_visible (false);
+        tree_view_providers.get_column (5).set_visible (false);
 
         tree_view_providers.expand_all ();
 
