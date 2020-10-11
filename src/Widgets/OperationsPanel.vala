@@ -238,7 +238,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         label_initial_balance_value.set_text("$" + get_money(inicial_balance * 1.00));
         label_current_balance_value.set_text("$" + get_money(balance * 1.00));
         label_profit_value.set_text("$" + get_money(global_profit * 1.00));
-        
+
     }
 
     public void update_operation_by_id(int _id){
@@ -265,11 +265,11 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         while (seguir) {
 
             var op_id = int.parse (cell_op_id.get_string ());
-            
+
             if(op_id == _id){
                 cell_tp_price.set_string(get_money(operation_data.tp, 5));
                 cell_sl_price.set_string(get_money(operation_data.sl, 5));
-    
+
                 list_store_operations.set_value (row, OperationColumns.TP_PRICE, cell_tp_price);
                 list_store_operations.set_value (row, OperationColumns.SL_PRICE, cell_sl_price);
 
