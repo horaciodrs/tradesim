@@ -72,8 +72,12 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
 
     public override void render (Cairo.Context ctext) {
 
+        if(!operation_data.visible){
+            return;
+        }
+
         //Dibujar un circulo en la vela donde se abrio la operación.
-        
+
         int open_op_x = ref_canvas.get_pos_x_by_date(operation_data.operation_date);
         int open_op_y = -1;
         double aux_price = -1.0;
@@ -104,7 +108,7 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
         ctext.set_line_width (1.0);
         ctext.arc (xc, yc, radius, 0, 2*Math.PI);
         ctext.fill ();
-        
+
 
         if (!visible) {
             return;

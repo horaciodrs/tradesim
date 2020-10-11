@@ -6,6 +6,8 @@ public class TradeSim.Widgets.CanvasContainer : Gtk.Box {
     string ticker_name;
     string time_frame;
 
+    private int page;
+
     //public Gtk.Scrollbar hscollbar;
 
     public TradeSim.Widgets.Canvas chart_canvas;
@@ -28,13 +30,18 @@ public class TradeSim.Widgets.CanvasContainer : Gtk.Box {
 
         var ajuste = new Gtk.Adjustment(0, 0, 100, 1, 1, 50);
 
-        //chart_canvas = new TradeSim.Widgets.Canvas (main_window, "TRADESIM", "EURUSD", "H1");
         chart_canvas = new TradeSim.Widgets.Canvas (main_window, provider_name, ticker_name, time_frame, simulation_name, simulation_initial_balance);
-
-        //hscollbar = new Gtk.Scrollbar (Gtk.Orientation.HORIZONTAL, ajuste);
 
         pack_start (chart_canvas, true, true, 0);
 
+    }
+
+    public void set_page(int p) {
+        page = p;
+    }
+
+    public int get_page() {
+        return page;
     }
 
 }

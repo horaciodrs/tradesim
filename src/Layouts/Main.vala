@@ -34,7 +34,6 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
     public Gtk.Notebook nb_chart_container;
 
-    public TradeSim.Widgets.CanvasContainer canvas_container;
     public TradeSim.Widgets.ProvidersPanel providers_panel;
     public TradeSim.Widgets.OperationsPanel operations_panel;
     public TradeSim.Widgets.DrawingsPanel drawings_panel;
@@ -48,7 +47,6 @@ public class TradeSim.Layouts.Main : Gtk.Box {
             main_window: window
             );
 
-
     }
 
     construct {
@@ -58,8 +56,6 @@ public class TradeSim.Layouts.Main : Gtk.Box {
         drawings_panel = new TradeSim.Widgets.DrawingsPanel (main_window);
         welcome_widget = new TradeSim.Layouts.Welcome (main_window);
 
-        // canvas_container = new TradeSim.Widgets.CanvasContainer(main_window);
-
         nb_chart_container = new Gtk.Notebook ();
 
         nb_chart_container.set_show_border (false);
@@ -67,6 +63,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
         nb_chart_container.append_page (welcome_widget, new Gtk.Label ("Welcome to TradeSim"));
 
         nb_chart_container.switch_page.connect (on_change_canvas_focus);
+        nb_chart_container.page_removed.connect (on_page_removed);
 
         pane_top = new Gtk.Paned (Gtk.Orientation.VERTICAL);
         pane_left = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
@@ -139,9 +136,26 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
         int position = nb_chart_container.get_n_pages ();
 
-        canvas_container = new TradeSim.Widgets.CanvasContainer (main_window, provider_name, ticker_name, time_frame_name, _simulation_name, _simulation_initial_balance);
+        var grid_tab = new Gtk.Grid();
+        var label_title = new Gtk.Label (provider_name + " - " + ticker_name + ", " + time_frame_name);
+        var button_close = new Gtk.Button.from_icon_name ("window-close", Gtk.IconSize.SMALL_TOOLBAR);
 
-        nb_chart_container.insert_page (canvas_container, new Gtk.Label (provider_name + " - " + ticker_name + ", " + time_frame_name), position);
+        button_close.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
+
+        grid_tab.attach(label_title, 0, 0);
+        grid_tab.attach(button_close, 1, 0);
+
+        grid_tab.show_all();
+
+        var canvas_container = new TradeSim.Widgets.CanvasContainer (main_window, provider_name, ticker_name, time_frame_name, _simulation_name, _simulation_initial_balance);
+
+        canvas_container.set_page(position);
+
+        button_close.clicked.connect(()=>{
+            close_tab(canvas_container);
+        });
+
+        nb_chart_container.insert_page (canvas_container, grid_tab, position);
 
         nb_chart_container.show_all ();
 
@@ -149,6 +163,22 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
         current_canvas = canvas_container.chart_canvas;
 
+    }
+
+    public void close_tab(TradeSim.Widgets.CanvasContainer cc){
+
+        nb_chart_container.remove_page(cc.get_page());
+
+    }
+
+    public void on_page_removed(Gtk.Widget child, uint page_num) {
+
+        for(int i = 0; i < nb_chart_container.get_n_pages (); i++) {
+            if(i > 0) {
+                var item = (TradeSim.Widgets.CanvasContainer) nb_chart_container.get_nth_page(i);
+                item.set_page(i);
+            }
+        }
     }
 
     public void add_operation (int _id, string _provider_name, string _ticker_name

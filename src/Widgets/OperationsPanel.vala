@@ -45,6 +45,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
     public enum OperationColumns {
           ID
         , ICON_STATE
+        , ICON_VIEW
         , PROVIDER
         , TICKER
         , DATE
@@ -105,6 +106,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
                                                    , typeof (string)
                                                    , typeof (string)
                                                    , typeof (string)
+                                                   , typeof (string)
                                                    , typeof (string));
         add_iter_operations = Gtk.TreeIter ();
 
@@ -113,6 +115,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         tree_view_operations.set_model (list_store_operations);
 
         Gtk.CellRendererPixbuf icon_cell = new Gtk.CellRendererPixbuf ();
+        Gtk.CellRendererPixbuf icon_view_cell = new Gtk.CellRendererPixbuf ();
         Gtk.CellRendererText id_cell = new Gtk.CellRendererText ();
         Gtk.CellRendererText provider_cell = new Gtk.CellRendererText ();
         Gtk.CellRendererText ticker_cell = new Gtk.CellRendererText ();
@@ -149,6 +152,21 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
 
                 update_operations();
 
+            }else if(column.get_title() == "  "){
+
+                Gtk.TreeIter iter;
+                GLib.Value code;
+                list_store_operations.get_iter(out iter, path);
+                list_store_operations.get_value (iter, TradeSim.Widgets.OperationsPanel.OperationColumns.ID, out code);
+
+                var canvas = main_window.main_layout.current_canvas;
+                var price = canvas.last_candle_price;
+                var ops = canvas.operations_manager;
+
+                ops.hide_operation_by_id(int.parse(code.get_string()));
+
+                update_operations(); //TODO: actualizar el icono visible.
+
             }
 
         });
@@ -162,6 +180,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         icon_cell.xalign = (float) 0;
 
         tree_view_operations.insert_column_with_attributes (-1, "", icon_cell, "icon_name", OperationColumns.ICON_STATE, null);
+        tree_view_operations.insert_column_with_attributes (-1, "  ", icon_cell, "icon_name", OperationColumns.ICON_VIEW, null);
         tree_view_operations.insert_column_with_attributes (-1, "Code", id_cell, "text", OperationColumns.ID, "foreground", OperationColumns.FOREGROUND, null);
         tree_view_operations.insert_column_with_attributes (-1, "Provider", provider_cell, "text", OperationColumns.PROVIDER, "foreground", OperationColumns.FOREGROUND, null);
         tree_view_operations.insert_column_with_attributes (-1, "Ticker", ticker_cell, "text", OperationColumns.TICKER, "foreground", OperationColumns.FOREGROUND, null);
@@ -385,6 +404,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
                 list_store_operations.append (out add_iter_operations, null);
                 list_store_operations.set (add_iter_operations
                                            , OperationColumns.ICON_STATE, "list-add"
+                                           , OperationColumns.ICON_VIEW, ops.index (i).visible ? "draw-item-visible-symbolic" : "draw-item-visible-no-symbolic"
                                            , OperationColumns.ID, ops.index (i).id.to_string ()
                                            , OperationColumns.PROVIDER, ops.index (i).provider_name
                                            , OperationColumns.TICKER, ops.index (i).ticker_name

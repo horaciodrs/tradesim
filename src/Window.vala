@@ -69,7 +69,7 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
         }catch(Error e){
             warning("fail to load css styles for main window.");
         }
-        
+
         add (main_layout);
 
         settings = new GLib.Settings ("com.github.horaciodrs.tradesim");
@@ -85,7 +85,7 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
         /* ****************************** */
         /* CLICK: Boton de Preferencias   */
         /* ****************************** */
-        
+
 
         delete_event.connect (e => {
             return before_destroy ();
@@ -110,7 +110,7 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
             operations_dialog.present();
 
         }
-        
+
     }
 
     public void open_dialog_preferences(int show_item = SettingsActions.APARENCE){
@@ -124,8 +124,9 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
     public void change_zoom_level(double factor){
 
-        main_layout.canvas_container.chart_canvas.change_zoom_level(factor);
-     
+        //main_layout.canvas_container.chart_canvas.change_zoom_level(factor);
+        main_layout.current_canvas.change_zoom_level(factor);
+
         //print("cambiando nivel de zoom: " + factor.to_string() + "\n");
 
     }

@@ -24,7 +24,7 @@ public class TradeSim.Services.OperationsManager{
     public Array<TradeSim.Objects.OperationItem> operations;
 
     public double DefaultLote;
-    
+
     public OperationsManager(){
 
         DefaultLote = 100000.00;
@@ -111,7 +111,25 @@ public class TradeSim.Services.OperationsManager{
 
         _operation.profit = get_operation_profit_by_price(_operation, price);
         _operation.state = TradeSim.Objects.OperationItem.State.CLOSED;
-        
+
+    }
+
+    public void hide_operation_by_id(int _id){
+
+       TradeSim.Objects.OperationItem _operation = get_operation_by_id(_id);
+
+       if(_operation != null){
+           hide_operation(_operation);
+       }
+
+    }
+
+    public void hide_operation(TradeSim.Objects.OperationItem _operation){
+
+        bool new_visibility = !_operation.visible;
+
+        _operation.visible = new_visibility;
+
     }
 
 }

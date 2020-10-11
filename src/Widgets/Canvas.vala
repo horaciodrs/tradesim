@@ -305,6 +305,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         // Se encarga de cerrar una las operaciones que hallan tocado SL o TP.
 
+        bool need_update = false;
+
         for (int i = 0 ; i < operations_manager.operations.length ; i++) {
 
             var item = operations_manager.operations.index (i);
@@ -313,24 +315,32 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
                 if (item.tp < last_candle_max_price) {
                     operations_manager.close_operation_by_id (item.id, item.tp);
+                    need_update = true;
                 }
 
                 if (item.sl > last_candle_min_price) {
                     operations_manager.close_operation_by_id (item.id, item.sl);
+                    need_update = true;
                 }
 
             }else if (item.type_op == TradeSim.Objects.OperationItem.Type.SELL) {
 
                 if (item.tp > last_candle_min_price) {
                     operations_manager.close_operation_by_id (item.id, item.tp);
+                    need_update = true;
                 }
 
                 if (item.sl < last_candle_max_price) {
                     operations_manager.close_operation_by_id (item.id, item.sl);
+                    need_update = true;
                 }
 
             }
 
+        }
+
+        if(need_update){
+            main_window.main_layout.operations_panel.update_operations();
         }
 
     }

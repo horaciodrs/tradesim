@@ -33,6 +33,7 @@ public class TradeSim.Objects.OperationItem {
     public double tp { get; set; }
     public double sl { get; set; }
     public double profit { get; set; }
+    public bool visible { get; set; }
 
     private double default_lote;
 
@@ -63,6 +64,8 @@ public class TradeSim.Objects.OperationItem {
         type_op = _type;
 
         default_lote = 100000.00;
+
+        visible = true;
 
     }
 
