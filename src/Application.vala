@@ -19,6 +19,7 @@
  * Authored by: Horacio Daniel Ros <horaciodrs@gmail.com>
  */
 
+
 public class TradeSim.Application : Gtk.Application {
 
     public Application () {
