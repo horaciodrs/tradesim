@@ -97,19 +97,21 @@ public class TradeSim.Services.OperationsManager{
 
     }
 
-    public void close_operation_by_id(int _id, double price){
+    public void close_operation_by_id(int _id, double price, DateTime _date){
 
         TradeSim.Objects.OperationItem _operation = get_operation_by_id(_id);
 
         if(_operation != null){
-            close_operation(_operation, price);
+            close_operation(_operation, price, _date);
         }
 
     }
 
-    public void close_operation(TradeSim.Objects.OperationItem _operation, double price){
+    public void close_operation(TradeSim.Objects.OperationItem _operation, double price, DateTime _date){
 
         _operation.profit = get_operation_profit_by_price(_operation, price);
+        _operation.close_price = price;
+        _operation.close_date = _date;
         _operation.state = TradeSim.Objects.OperationItem.State.CLOSED;
 
     }

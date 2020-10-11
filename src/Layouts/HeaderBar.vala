@@ -53,19 +53,19 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         title = "TradeSim";
         subtitle = "Simulación sin nombre";
 
-        new_button = new TradeSim.Widgets.HeaderBarButton (main_window, "document-new", "Nuevo", { "<Ctrl>p" });
-        open = new TradeSim.Widgets.HeaderBarButton (main_window, "document-open", "Abrir", { "<Ctrl>p" });
-        save = new TradeSim.Widgets.HeaderBarButton (main_window, "document-save", "Guardar", { "<Ctrl>p" });
+        new_button = new TradeSim.Widgets.HeaderBarButton (main_window, "document-new", "New", { "<Ctrl>p" });
+        open = new TradeSim.Widgets.HeaderBarButton (main_window, "document-open", "Open", { "<Ctrl>p" });
+        save = new TradeSim.Widgets.HeaderBarButton (main_window, "document-save", "Save", { "<Ctrl>p" });
 
         zoom = new TradeSim.Widgets.ZoomButton (main_window);
 
         backward = new TradeSim.Widgets.HeaderBarButton (main_window, "media-seek-backward-symbolic", "", { "<Ctrl>p" });
         play = new TradeSim.Widgets.HeaderBarButton (main_window, "media-playback-start", "Play", { "<Ctrl>p" });
         forward = new TradeSim.Widgets.HeaderBarButton (main_window, "media-seek-forward-symbolic", "", { "<Ctrl>p" });
-        buy = new TradeSim.Widgets.HeaderBarButton (main_window, "go-up", "Comprar", { "<Ctrl>p" });
-        sell = new TradeSim.Widgets.HeaderBarButton (main_window, "go-down", "Vender", { "<Ctrl>p" });
-        insert = new TradeSim.Widgets.MenuButton ("insert-object", "Insertar", { "<Ctrl>p" });
-        reporte = new TradeSim.Widgets.HeaderBarButton (main_window, "x-office-presentation", "Reporte", { "<Ctrl>p" });
+        buy = new TradeSim.Widgets.HeaderBarButton (main_window, "go-up", "Buy", { "<Ctrl>p" });
+        sell = new TradeSim.Widgets.HeaderBarButton (main_window, "go-down", "Sell", { "<Ctrl>p" });
+        insert = new TradeSim.Widgets.MenuButton ("insert-object", "Insert", { "<Ctrl>p" });
+        reporte = new TradeSim.Widgets.HeaderBarButton (main_window, "x-office-presentation", "Report", { "<Ctrl>p" });
         preferencias = new TradeSim.Widgets.HeaderBarButton (main_window, "open-menu", "Settings", { "<Ctrl>p" });
 
         time_button = new TradeSim.Widgets.TimeButton (main_window);
@@ -134,7 +134,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
             if(canvas != null){
                 canvas.stop_simulation ();
             }
-            
+
             main_window.open_dialog_operations(TradeSim.Objects.OperationItem.Type.BUY);
 
         });
@@ -251,7 +251,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         grid.add (separator3);
 
         grid.add (draw_fibo_button);
-        
+
         grid.show_all ();
 
         var popover = new Gtk.PopoverMenu ();

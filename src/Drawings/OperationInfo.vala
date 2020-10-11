@@ -76,6 +76,10 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
             return;
         }
 
+        //Dibujar el historial.
+
+        draw_operation_history_line(ctext);
+
         //Dibujar un circulo en la vela donde se abrio la operación.
 
         int open_op_x = ref_canvas.get_pos_x_by_date(operation_data.operation_date);
@@ -170,6 +174,27 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
 
         draw_price_label (ctext, operation_data.sl, 100, 0, 0);
         box_sl.draw (ref_canvas, ctext, y_sl, sl_color);
+
+    }
+
+    public void draw_operation_history_line(Cairo.Context ctext){
+
+        if(operation_data.state == TradeSim.Objects.OperationItem.State.CLOSED) {
+
+            int xi = ref_canvas.get_pos_x_by_date (operation_data.operation_date);
+            int xf = ref_canvas.get_pos_x_by_date (operation_data.close_date);
+            int yi = ref_canvas.get_pos_y_by_price(operation_data.price);
+            int yf = ref_canvas.get_pos_y_by_price(operation_data.close_price);
+            TradeSim.Utils.Color aux_color = new TradeSim.Utils.Color(204, 59, 2);
+
+            ctext.set_dash ({5.0}, 0);
+            ctext.set_line_width (2);
+            aux_color.apply_to(ctext);
+            ctext.move_to (xi, yi);
+            ctext.line_to (xf, yf);
+            ctext.stroke ();
+
+        }
 
     }
 

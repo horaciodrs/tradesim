@@ -35,6 +35,9 @@ public class TradeSim.Objects.OperationItem {
     public double profit { get; set; }
     public bool visible { get; set; }
 
+    public double close_price;
+    public DateTime close_date;
+
     private double default_lote;
 
     public enum State {

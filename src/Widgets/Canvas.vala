@@ -311,27 +311,31 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
             var item = operations_manager.operations.index (i);
 
+            if(item.state == TradeSim.Objects.OperationItem.State.CLOSED) {
+                continue;
+            }
+
             if (item.type_op == TradeSim.Objects.OperationItem.Type.BUY) {
 
                 if (item.tp < last_candle_max_price) {
-                    operations_manager.close_operation_by_id (item.id, item.tp);
+                    operations_manager.close_operation_by_id (item.id, item.tp, last_candle_date);
                     need_update = true;
                 }
 
                 if (item.sl > last_candle_min_price) {
-                    operations_manager.close_operation_by_id (item.id, item.sl);
+                    operations_manager.close_operation_by_id (item.id, item.sl, last_candle_date);
                     need_update = true;
                 }
 
             }else if (item.type_op == TradeSim.Objects.OperationItem.Type.SELL) {
 
                 if (item.tp > last_candle_min_price) {
-                    operations_manager.close_operation_by_id (item.id, item.tp);
+                    operations_manager.close_operation_by_id (item.id, item.tp, last_candle_date);
                     need_update = true;
                 }
 
                 if (item.sl < last_candle_max_price) {
-                    operations_manager.close_operation_by_id (item.id, item.sl);
+                    operations_manager.close_operation_by_id (item.id, item.sl, last_candle_date);
                     need_update = true;
                 }
 

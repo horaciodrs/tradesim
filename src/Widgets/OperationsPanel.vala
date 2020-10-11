@@ -148,7 +148,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
                 var price = canvas.last_candle_price;
                 var ops = canvas.operations_manager;
 
-                ops.close_operation_by_id(int.parse(code.get_string()), price);
+                ops.close_operation_by_id(int.parse(code.get_string()), price, canvas.last_candle_date);
 
                 update_operations();
 
