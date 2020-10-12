@@ -51,6 +51,22 @@ public class TradeSim.Drawings.Line {
         enabled = true;
     }
 
+    public Line.default () {
+
+    }
+
+    public void print_data () {
+        print ("id:" + id + "\n");
+        print ("date1:" + date1.to_string () + "\n");
+        print ("date2:" + date2.to_string () + "\n");
+        print ("price1:" + price1.to_string () + "\n");
+        print ("price2:" + price2.to_string () + "\n");
+        print ("color:" + color.to_string () + "\n");
+        print ("thickness:" + thickness.to_string () + "\n");
+        print ("visible:" + visible.to_string () + "\n");
+        print ("enabled:" + enabled.to_string () + "\n");
+    }
+
     protected void update_data () {
 
         x1 = ref_canvas.get_pos_x_by_date (date1);
@@ -101,6 +117,14 @@ public class TradeSim.Drawings.Line {
         price2 = price;
     }
 
+    public void set_date1 (DateTime d) {
+        date1 = d;
+    }
+
+    public void set_date2 (DateTime d) {
+        date2 = d;
+    }
+
     public int ? get_x1 () {
         return x1;
     }
@@ -148,11 +172,11 @@ public class TradeSim.Drawings.Line {
         }
 
         writer.start_element ("date1");
-        writer.write_string (date1.to_unix().to_string ());
+        writer.write_string (date1.to_unix ().to_string ());
         writer.end_element ();
 
         writer.start_element ("date2");
-        writer.write_string (date2.to_unix().to_string ());
+        writer.write_string (date2.to_unix ().to_string ());
         writer.end_element ();
 
         writer.start_element ("price1");
@@ -183,21 +207,21 @@ public class TradeSim.Drawings.Line {
         writer.write_string (enabled.to_string ());
         writer.end_element ();
 
-        writer.start_element ("x1");
-        writer.write_string (x1.to_string ());
-        writer.end_element ();
+        /*writer.start_element ("x1");
+           writer.write_string (x1.to_string ());
+           writer.end_element ();
 
-        writer.start_element ("x2");
-        writer.write_string (x2.to_string ());
-        writer.end_element ();
+           writer.start_element ("x2");
+           writer.write_string (x2.to_string ());
+           writer.end_element ();
 
-        writer.start_element ("y1");
-        writer.write_string (y1.to_string ());
-        writer.end_element ();
+           writer.start_element ("y1");
+           writer.write_string (y1.to_string ());
+           writer.end_element ();
 
-        writer.start_element ("y2");
-        writer.write_string (y2.to_string ());
-        writer.end_element ();
+           writer.start_element ("y2");
+           writer.write_string (y2.to_string ());
+           writer.end_element ();*/
 
         if (write_header) {
             writer.end_element ();

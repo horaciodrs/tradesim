@@ -29,6 +29,10 @@ public class TradeSim.Drawings.Rectangle : TradeSim.Drawings.Line {
 
     }
 
+    public Rectangle.default () {
+        base.default ();
+    }
+
     public override void render (Cairo.Context ctext) {
 
         if (!visible) {
@@ -47,7 +51,7 @@ public class TradeSim.Drawings.Rectangle : TradeSim.Drawings.Line {
     public override void write_file (Xml.TextWriter writer, bool unused) throws FileError {
 
         writer.start_element ("rectangle");
-        base.write_file (writer, true);
+        base.write_file (writer, false);
         writer.end_element ();
 
     }

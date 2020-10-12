@@ -6,6 +6,7 @@ sources = files(
     'Objects/ProviderTicker.vala',
     'Objects/Provider.vala',
     'Objects/Ticker.vala',
+    'Objects/CanvasData.vala',
 
     'Drawings/Line.vala',
     'Drawings/Fibonacci.vala',
@@ -19,6 +20,7 @@ sources = files(
     'Services/QuoteItem.vala',
     'Services/QuotesManager.vala',
     'Services/OperationsManager.vala',
+    'Services/FileReader.vala',
 
     'Layouts/Welcome.vala',
     'Layouts/HeaderBar.vala',
@@ -40,7 +42,7 @@ sources = files(
     'Dialogs/NewOperationDialog.vala',
     'Dialogs/NewChartDialog.vala',
     'Dialogs/SettingsDialog.vala',
-    
+
     'Window.vala',
     'Application.vala',
     'Main.vala'

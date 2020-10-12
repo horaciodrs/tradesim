@@ -72,6 +72,28 @@ public class TradeSim.Objects.OperationItem {
 
     }
 
+    public OperationItem.default () {
+
+    }
+
+    public void print_data () {
+        print ("id:" + id.to_string () + "\n");
+        print ("provider_name:" + provider_name + "\n");
+        print ("ticker_name:" + ticker_name + "\n");
+        print ("operation_date:" + operation_date.to_string () + "\n");
+        print ("state:" + state.to_string () + "\n");
+        print ("type_op:" + type_op.to_string () + "\n");
+        print ("observations:" + observations + "\n");
+        print ("volume:" + volume.to_string () + "\n");
+        print ("price:" + price.to_string () + "\n");
+        print ("tp:" + tp.to_string () + "\n");
+        print ("sl:" + sl.to_string () + "\n");
+        print ("profit:" + profit.to_string () + "\n");
+        print ("visible:" + visible.to_string () + "\n");
+        print ("close_price:" + close_price.to_string () + "\n");
+        print ("close_date:" + close_date.to_string () + "\n");
+    }
+
     public string get_str_tp_amount () {
         return get_money (get_tp_amount ());
     }
@@ -134,7 +156,7 @@ public class TradeSim.Objects.OperationItem {
         writer.end_element ();
 
         writer.start_element ("operationdate");
-        writer.write_string (operation_date.to_unix().to_string ());
+        writer.write_string (operation_date.to_unix ().to_string ());
         writer.end_element ();
 
         writer.start_element ("state");
@@ -178,7 +200,7 @@ public class TradeSim.Objects.OperationItem {
         writer.end_element ();
 
         writer.start_element ("closedate");
-        writer.write_string (close_date.to_unix().to_string ());
+        writer.write_string (close_date.to_unix ().to_string ());
         writer.end_element ();
 
         writer.end_element ();

@@ -29,6 +29,10 @@ public class TradeSim.Drawings.HLine : TradeSim.Drawings.Line {
 
     }
 
+    public HLine.default () {
+        base.default ();
+    }
+
     public override void render (Cairo.Context ctext) {
 
         if (!visible) {

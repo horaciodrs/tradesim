@@ -56,6 +56,24 @@ public class TradeSim.Utils.Color {
 
     }
 
+    public string to_string () {
+
+        string return_value = "";
+
+        return_value += "color(";
+        return_value += red.to_string ();
+        return_value += ", ";
+        return_value += green.to_string ();
+        return_value += ", ";
+        return_value += blue.to_string ();
+        return_value += ", ";
+        return_value += alpha.to_string ();
+        return_value += ")";
+
+        return return_value;
+
+    }
+
     public void apply_to (Cairo.Context ctext) {
         ctext.set_source_rgba (_r (red), _g (green), _b (blue), alpha);
     }

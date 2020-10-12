@@ -6,6 +6,10 @@ public class TradeSim.Drawings.Fibonacci : TradeSim.Drawings.Line {
 
     }
 
+    public Fibonacci.default () {
+        base.default ();
+    }
+
     public override void render (Cairo.Context ctext) {
 
         if (!visible) {
