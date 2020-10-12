@@ -24,12 +24,12 @@ public class TradeSim.Services.FileReader {
     private Xml.Doc * doc;
     private unowned string filename;
 
-    private TradeSim.Objects.CanvasData canvas_data;
-    private Array<TradeSim.Objects.OperationItem> operations;
-    private Array<TradeSim.Drawings.Line> lines;
-    private Array<TradeSim.Drawings.HLine> hlines;
-    private Array<TradeSim.Drawings.Rectangle> rectangles;
-    private Array<TradeSim.Drawings.Fibonacci> fibonaccies;
+    public TradeSim.Objects.CanvasData canvas_data;
+    public Array<TradeSim.Objects.OperationItem> operations;
+    public Array<TradeSim.Drawings.Line> lines;
+    public Array<TradeSim.Drawings.HLine> hlines;
+    public Array<TradeSim.Drawings.Rectangle> rectangles;
+    public Array<TradeSim.Drawings.Fibonacci> fibonaccies;
 
     public FileReader (string file) throws FileError, MarkupError {
 
@@ -388,6 +388,7 @@ public class TradeSim.Services.FileReader {
             }
         }
 
+        /*
         canvas_data.print_data ();
 
         print ("----------OPERATIONS-----------\n");
@@ -419,7 +420,7 @@ public class TradeSim.Services.FileReader {
             fibonaccies.index (i).print_data ();
             print ("---------------------\n");
         }
-
+        */
     }
 
 }

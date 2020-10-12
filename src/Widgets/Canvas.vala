@@ -94,7 +94,9 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     private bool draw_mode_hline;
     private bool draw_mode;
 
-    public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame, string _simulation_name = "Unnamed Simulation", double _simulation_initial_balance = 500.000) {
+    public string ? file_url;
+
+    public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame, string _simulation_name = "Unnamed Simulation", double _simulation_initial_balance = 500.000, string  load_file = null) {
 
         main_window = window;
 
@@ -131,7 +133,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         init ();
 
-        init_from_file ("/home/horacio/Desktop/completo.tradesim");
+        if(load_file != null){
+            file_url = load_file;
+            init_from_file (file_url);
+        }
 
     }
 
@@ -139,8 +144,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         try{
 
-            var read_file = new TradeSim.Services.FileReader (file_path);
-            read_file.read ();
+            var simulation_file = new TradeSim.Services.FileReader (file_path);
+            simulation_file.read ();
 
         }catch(Error e){
             return;
@@ -185,6 +190,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         _horizontal_scale_height = 24;
         _horizontal_scroll_height = 12;
 
+        file_url = null;
 
         vertical_scale_calculation ();
         horizontal_scale_calculation ();
