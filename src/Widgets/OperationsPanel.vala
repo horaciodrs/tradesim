@@ -160,7 +160,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
                 list_store_operations.get_value (iter, TradeSim.Widgets.OperationsPanel.OperationColumns.ID, out code);
 
                 var canvas = main_window.main_layout.current_canvas;
-                var price = canvas.last_candle_price;
+                //var price = canvas.last_candle_price;
                 var ops = canvas.operations_manager;
 
                 ops.hide_operation_by_id (int.parse (code.get_string ()));
@@ -180,7 +180,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         icon_cell.xalign = (float) 0;
 
         tree_view_operations.insert_column_with_attributes (-1, "", icon_cell, "icon_name", OperationColumns.ICON_STATE, null);
-        tree_view_operations.insert_column_with_attributes (-1, "  ", icon_cell, "icon_name", OperationColumns.ICON_VIEW, null);
+        tree_view_operations.insert_column_with_attributes (-1, "  ", icon_view_cell, "icon_name", OperationColumns.ICON_VIEW, null);
         tree_view_operations.insert_column_with_attributes (-1, "Code", id_cell, "text", OperationColumns.ID, "foreground", OperationColumns.FOREGROUND, null);
         tree_view_operations.insert_column_with_attributes (-1, "Provider", provider_cell, "text", OperationColumns.PROVIDER, "foreground", OperationColumns.FOREGROUND, null);
         tree_view_operations.insert_column_with_attributes (-1, "Ticker", ticker_cell, "text", OperationColumns.TICKER, "foreground", OperationColumns.FOREGROUND, null);

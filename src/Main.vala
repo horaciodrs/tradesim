@@ -28,7 +28,7 @@
 
 
         vscode theme: noctis high contrast
-        vsfont theme: AcPlus IBM VGA 8x16-2x
+        vsfont theme: AcPlus IBM VGA 8x16-2x    dfsdfsdf
 
  */
 

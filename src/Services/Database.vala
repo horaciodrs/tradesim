@@ -641,7 +641,7 @@ public class TradeSim.Services.Database : GLib.Object {
         string sql;
         int res;
 
-        sql = """ 
+        sql = """
             SELECT providers.id, providers.name, providers.folder_name
               FROM imported_data
               INNER JOIN providers ON imported_data.provider_id = providers.id
@@ -668,7 +668,7 @@ public class TradeSim.Services.Database : GLib.Object {
         string sql;
         int res;
 
-        sql = """ 
+        sql = """
             SELECT time_frames.id, time_frames.name
               FROM imported_data
               INNER JOIN providers ON imported_data.provider_id = providers.id
@@ -700,7 +700,7 @@ public class TradeSim.Services.Database : GLib.Object {
         string sql;
         int res;
 
-        sql = """ 
+        sql = """
             SELECT tickers.id, tickers.name
               FROM imported_data
               INNER JOIN providers ON imported_data.provider_id = providers.id
@@ -759,7 +759,7 @@ public class TradeSim.Services.Database : GLib.Object {
                     WHERE imported_data.provider_id = ?
                     GROUP BY imported_data.provider_id, imported_data.ticker_id
                     ORDER BY imported_data.provider_id, imported_data.ticker_id;
-                    
+
         """;
 
         res = db.prepare_v2 (sql, -1, out stmt);
@@ -927,7 +927,7 @@ public class TradeSim.Services.Database : GLib.Object {
 
     /************************************************** */
 
-    public TradeSim.Services.QuoteItem get_next_quotes (string _provider_name, string _ticker_name, string _time_frame, DateTime _date) {
+    public TradeSim.Services.QuoteItem ? get_next_quotes (string _provider_name, string _ticker_name, string _time_frame, DateTime _date) {
 
         int provider_id = get_db_id_by_table_and_field ("providers", "name", _provider_name);
         int market_id = get_db_id_by_name ("markets", "Forex");

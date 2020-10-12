@@ -25,7 +25,7 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
 
     private int type;
     private bool hidden;
-    private bool enabled;
+    //private bool enabled;
     public string desc;
     private string ? css;
     private string icon_name;

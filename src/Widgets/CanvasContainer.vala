@@ -28,7 +28,7 @@ public class TradeSim.Widgets.CanvasContainer : Gtk.Box {
 
     public void init (string simulation_name, double simulation_initial_balance) {
 
-        var ajuste = new Gtk.Adjustment (0, 0, 100, 1, 1, 50);
+        //var ajuste = new Gtk.Adjustment (0, 0, 100, 1, 1, 50);
 
         chart_canvas = new TradeSim.Widgets.Canvas (main_window, provider_name, ticker_name, time_frame, simulation_name, simulation_initial_balance);
 

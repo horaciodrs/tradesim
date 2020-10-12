@@ -25,7 +25,7 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
     public weak TradeSim.Widgets.DrawingsPanelItem item_to_update { get; construct; }
 
     private string object_id;
-    private int type;
+    private int wtype;
     private int selected_thicness;
 
     public Gtk.Button acept_button;
@@ -64,7 +64,7 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
             );
 
         object_id = _id;
-        type = _type;
+        wtype = _type;
 
         init ();
 
@@ -120,7 +120,7 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
 
         // Color.
 
-        Gdk.RGBA aux_color = draw_manager.get_draw_color (object_id, type).get_rgba ();
+        Gdk.RGBA aux_color = draw_manager.get_draw_color (object_id, wtype).get_rgba ();
 
         label_color = new Gtk.Label ("Color:");
         button_color = new Gtk.ColorButton.with_rgba (aux_color);
@@ -190,10 +190,7 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
         button_thickness3.hexpand = true;
         button_thickness4.hexpand = true;
 
-        selected_thicness = draw_manager.get_draw_thicness (object_id, type);
-
-        // print("type:" + type.to_string() + "\n");
-        // print(selected_thicness.to_string() + "\n");
+        selected_thicness = draw_manager.get_draw_thicness (object_id, wtype);
 
         if (selected_thicness == TradeSim.Services.Drawings.Thickness.VERY_FINE) {
             button_thickness1.get_style_context ().add_class ("btn-thicness-selected");
@@ -294,10 +291,10 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
             var objetivo = dialogo.main_window.main_layout;
             var target = objetivo.current_canvas.draw_manager;
 
-            target.set_draw_color (object_id, type, button_color.get_rgba ());
-            target.set_draw_thickness (object_id, type, selected_thicness);
-            target.set_draw_name (object_id, type, txt_name.get_text ());
-            target.set_draw_alpha (object_id, type, scale_alpha.get_value () / 100.00);
+            target.set_draw_color (object_id, wtype, button_color.get_rgba ());
+            target.set_draw_thickness (object_id, wtype, selected_thicness);
+            target.set_draw_name (object_id, wtype, txt_name.get_text ());
+            target.set_draw_alpha (object_id, wtype, scale_alpha.get_value () / 100.00);
 
             dialogo.item_to_update.refresh (txt_name.get_text ());
 
