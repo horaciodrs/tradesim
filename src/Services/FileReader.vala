@@ -23,7 +23,6 @@ public class TradeSim.Services.FileReader {
 
     private Xml.Doc * doc;
     private unowned string filename;
-    private int status;
 
     private TradeSim.Objects.CanvasData canvas_data;
     private Array<TradeSim.Objects.OperationItem> operations;

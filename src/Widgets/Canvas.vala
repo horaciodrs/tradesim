@@ -137,9 +137,14 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public void init_from_file (string file_path) {
 
-        var read_file = new TradeSim.Services.FileReader (file_path);
+        try{
 
-        read_file.read ();
+            var read_file = new TradeSim.Services.FileReader (file_path);
+            read_file.read ();
+
+        }catch(Error e){
+            return;
+        }
 
     }
 
