@@ -113,9 +113,11 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
     }
 
-    public void write_file () {
+    public void write_file (string path) {
 
-        Xml.TextWriter writer = new Xml.TextWriter.filename ("/home/horacio/Desktop/text.xml", false);
+        print ("path:" + path + "\n");
+
+        Xml.TextWriter writer = new Xml.TextWriter.filename (path, false);
 
         if (writer == null) {
             print ("Error: Xml.TextWriter.filename () == null\n");

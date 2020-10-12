@@ -75,7 +75,56 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         insert.sensitive = true;
 
         save.button.clicked.connect (() => {
-            main_window.main_layout.write_file ();
+
+            if (main_window.main_layout.current_canvas == null) {
+                return;
+            }
+
+            var dialog = new Gtk.FileChooserDialog ("Save TradeSim file", main_window,
+                                                    Gtk.FileChooserAction.SAVE,
+                                                    "Save",
+                                                    Gtk.ResponseType.OK,
+                                                    "Cancel",
+                                                    Gtk.ResponseType.CANCEL
+                                                    );
+
+            dialog.set_do_overwrite_confirmation (true);
+            dialog.set_modal (true);
+
+            Gtk.FileFilter filter = new Gtk.FileFilter ();
+            filter.add_pattern ("*.tradesim");
+            filter.set_filter_name ("TradeSim files");
+            dialog.add_filter (filter);
+
+            filter = new Gtk.FileFilter ();
+            filter.add_pattern ("*");
+            filter.set_filter_name ("All files");
+
+            dialog.add_filter (filter);
+
+            dialog.response.connect ((dialog, response_id) => {
+
+                var dlg = (Gtk.FileChooserDialog)dialog;
+
+                switch (response_id) {
+                case Gtk.ResponseType.OK:
+                    string file_path = dlg.get_filename ();
+                    if (file_path.index_of (".tradesim") < 0) {
+                        file_path += ".tradesim";
+                    }
+                    main_window.main_layout.write_file (file_path);
+                    break;
+                case Gtk.ResponseType.CANCEL:
+                    print ("Cancel\n");
+                    break;
+                }
+
+                dlg.destroy ();
+
+            });
+
+            dialog.show ();
+
         });
 
         play.button.clicked.connect (() => {
