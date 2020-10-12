@@ -148,11 +148,11 @@ public class TradeSim.Drawings.Line {
         }
 
         writer.start_element ("date1");
-        writer.write_string (date1.to_string ());
+        writer.write_string (date1.to_unix().to_string ());
         writer.end_element ();
 
         writer.start_element ("date2");
-        writer.write_string (date2.to_string ());
+        writer.write_string (date2.to_unix().to_string ());
         writer.end_element ();
 
         writer.start_element ("price1");

@@ -134,7 +134,7 @@ public class TradeSim.Objects.OperationItem {
         writer.end_element ();
 
         writer.start_element ("operationdate");
-        writer.write_string (operation_date.to_string ());
+        writer.write_string (operation_date.to_unix().to_string ());
         writer.end_element ();
 
         writer.start_element ("state");
@@ -178,7 +178,7 @@ public class TradeSim.Objects.OperationItem {
         writer.end_element ();
 
         writer.start_element ("closedate");
-        writer.write_string (close_date.to_string ());
+        writer.write_string (close_date.to_unix().to_string ());
         writer.end_element ();
 
         writer.end_element ();

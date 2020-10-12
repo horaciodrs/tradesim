@@ -192,19 +192,19 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         writer.end_element ();
 
         writer.start_element ("dateinicial");
-        writer.write_string (date_inicial.to_string ());
+        writer.write_string (date_inicial.to_unix().to_string ());
         writer.end_element ();
 
         writer.start_element ("datefrom");
-        writer.write_string (date_from.to_string ());
+        writer.write_string (date_from.to_unix().to_string ());
         writer.end_element ();
 
         writer.start_element ("dateto");
-        writer.write_string (date_to.to_string ());
+        writer.write_string (date_to.to_unix().to_string ());
         writer.end_element ();
 
         writer.start_element ("lastcandledate");
-        writer.write_string (last_candle_date.to_string ());
+        writer.write_string (last_candle_date.to_unix().to_string ());
         writer.end_element ();
 
         writer.start_element ("lastcandleprice");
