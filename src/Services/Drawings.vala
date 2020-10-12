@@ -671,4 +671,36 @@ public class TradeSim.Services.Drawings {
         }
     }
 
+    public void write_file (Xml.TextWriter writer) throws FileError {
+
+        writer.start_element ("drawings");
+
+        writer.start_element ("fibonaccies");
+        for (int i = 0 ; i < fibonacci.length ; i++) {
+            fibonacci.index (i).write_file (writer);
+        }
+        writer.end_element ();
+
+        writer.start_element ("hlines");
+        for (int i = 0 ; i < hlines.length ; i++) {
+            hlines.index (i).write_file (writer);
+        }
+        writer.end_element ();
+
+        writer.start_element ("lines");
+        for (int i = 0 ; i < lines.length ; i++) {
+            lines.index (i).write_file (writer, true);
+        }
+        writer.end_element ();
+
+        writer.start_element ("rectangles");
+        for (int i = 0 ; i < rectangles.length ; i++) {
+            rectangles.index (i).write_file (writer);
+        }
+        writer.end_element ();
+
+        writer.end_element ();
+
+    }
+
 }

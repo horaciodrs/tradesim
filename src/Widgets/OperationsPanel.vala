@@ -160,7 +160,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
                 list_store_operations.get_value (iter, TradeSim.Widgets.OperationsPanel.OperationColumns.ID, out code);
 
                 var canvas = main_window.main_layout.current_canvas;
-                //var price = canvas.last_candle_price;
+                // var price = canvas.last_candle_price;
                 var ops = canvas.operations_manager;
 
                 ops.hide_operation_by_id (int.parse (code.get_string ()));

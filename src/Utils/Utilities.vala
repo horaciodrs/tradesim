@@ -170,7 +170,7 @@ int get_dist_to_viernes (DateTime fecha) {
     var mes = fecha.get_month ();
     var dia = fecha.get_day_of_month ();
     var hora = fecha.get_hour ();
-    //var minutos = fecha.get_minute ();
+    // var minutos = fecha.get_minute ();
 
 
     if (dia_posicion < 5) {
@@ -197,8 +197,8 @@ DateTime get_next_market_date (DateTime fecha) {
     var anio = fecha.get_year ();
     var mes = fecha.get_month ();
     var dia = fecha.get_day_of_month ();
-    //var hora = fecha.get_hour ();
-    //var minutos = fecha.get_minute ();
+    // var hora = fecha.get_hour ();
+    // var minutos = fecha.get_minute ();
 
     int distancia = 5 - dia_posicion;
 

@@ -135,7 +135,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     /*private void print_fechas () {
         print ("from:" + date_from.to_string () + " to:" + date_to.to_string () + "candles:" + get_candle_count_betwen_dates (date_from, date_to).to_string () + "\n");
-    }*/
+       }*/
 
     private void init () {
 
@@ -177,6 +177,65 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         vertical_scale_calculation ();
         horizontal_scale_calculation ();
+    }
+
+    public void write_file (Xml.TextWriter writer) throws FileError {
+
+        writer.start_element ("simulation");
+
+        writer.start_element ("name");
+        writer.write_string (simulation_name);
+        writer.end_element ();
+
+        writer.start_element ("initialbalance");
+        writer.write_string (simulation_initial_balance.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("dateinicial");
+        writer.write_string (date_inicial.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("datefrom");
+        writer.write_string (date_from.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("dateto");
+        writer.write_string (date_to.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("lastcandledate");
+        writer.write_string (last_candle_date.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("lastcandleprice");
+        writer.write_string (last_candle_price.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("lastcandlemaxprice");
+        writer.write_string (last_candle_max_price.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("lastcandleminprice");
+        writer.write_string (last_candle_min_price.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("providername");
+        writer.write_string (provider_name.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("timeframe");
+        writer.write_string (time_frame.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("ticker");
+        writer.write_string (ticker);
+        writer.end_element ();
+
+        operations_manager.write_file (writer);
+        draw_manager.write_file (writer);
+
+        writer.end_element ();
+
     }
 
     public string simulate_fast () {
@@ -555,12 +614,12 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             show_cross_lines = false;
             show_horizontal_scale_label = false;
             show_vertical_scale_label = false;
-            get_window ().set_cursor (new Gdk.Cursor.for_display (Gdk.Display.get_default(), Gdk.CursorType.ARROW));
+            get_window ().set_cursor (new Gdk.Cursor.for_display (Gdk.Display.get_default (), Gdk.CursorType.ARROW));
         } else {
             show_cross_lines = true;
             show_horizontal_scale_label = true;
             show_vertical_scale_label = true;
-            get_window ().set_cursor (new Gdk.Cursor.for_display (Gdk.Display.get_default(), Gdk.CursorType.CROSS));
+            get_window ().set_cursor (new Gdk.Cursor.for_display (Gdk.Display.get_default (), Gdk.CursorType.CROSS));
         }
 
         if ((_horizontal_scroll_moving) && (_horizontal_scroll_active)) {

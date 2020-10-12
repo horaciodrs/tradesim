@@ -113,6 +113,26 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
     }
 
+    public void write_file () {
+
+        Xml.TextWriter writer = new Xml.TextWriter.filename ("/home/horacio/Desktop/text.xml", false);
+
+        if (writer == null) {
+            print ("Error: Xml.TextWriter.filename () == null\n");
+            return;
+        }
+
+        try {
+            writer.start_document ("1.0", "utf-8");
+            writer.set_indent (true);
+            current_canvas.write_file (writer);
+            writer.flush ();
+        } catch (Error e) {
+            print ("Error: %s\n", e.message);
+        }
+
+    }
+
     public void add_canvas (string ? provider_name, string ? ticker_name, string time_frame) {
 
         if (provider_name == null) {

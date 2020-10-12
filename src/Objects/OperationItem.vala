@@ -120,4 +120,68 @@ public class TradeSim.Objects.OperationItem {
 
     }
 
+    public void write_file (Xml.TextWriter writer) throws FileError {
+
+        writer.start_element ("operation");
+        writer.write_attribute ("id", id.to_string ());
+
+        writer.start_element ("providername");
+        writer.write_string (provider_name);
+        writer.end_element ();
+
+        writer.start_element ("tickername");
+        writer.write_string (ticker_name);
+        writer.end_element ();
+
+        writer.start_element ("operationdate");
+        writer.write_string (operation_date.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("state");
+        writer.write_string (state.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("type");
+        writer.write_string (type_op.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("observations");
+        writer.write_string (observations);
+        writer.end_element ();
+
+        writer.start_element ("volume");
+        writer.write_string (volume.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("price");
+        writer.write_string (price.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("tp");
+        writer.write_string (tp.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("sl");
+        writer.write_string (sl.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("profit");
+        writer.write_string (profit.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("visible");
+        writer.write_string (visible.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("closeprice");
+        writer.write_string (close_price.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("closedate");
+        writer.write_string (close_date.to_string ());
+        writer.end_element ();
+
+        writer.end_element ();
+    }
+
 }

@@ -134,4 +134,16 @@ public class TradeSim.Services.OperationsManager {
 
     }
 
+    public void write_file (Xml.TextWriter writer) throws FileError {
+
+        writer.start_element ("operations");
+
+        for (int i = 0 ; i < operations.length ; i++) {
+            operations.index (i).write_file (writer);
+        }
+
+        writer.end_element ();
+
+    }
+
 }

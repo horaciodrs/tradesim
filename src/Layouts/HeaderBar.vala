@@ -74,6 +74,10 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         insert.button.popover = insert_popover;
         insert.sensitive = true;
 
+        save.button.clicked.connect (() => {
+            main_window.main_layout.write_file ();
+        });
+
         play.button.clicked.connect (() => {
 
             if (play.label_btn.get_text () == "Play") {

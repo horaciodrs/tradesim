@@ -26,7 +26,6 @@
 
         uncrustify --no-backup -c uncrustify.cfg src/*.vala src/Drawings/*.vala src/Objects/*.vala src/Utils/*.vala src/Dialogs/*.vala src/Layouts/*.vala src/Services/*.vala src/Widgets/*.vala
 
-
         vscode theme: noctis high contrast
         vsfont theme: AcPlus IBM VGA 8x16-2x    dfsdfsdf
 

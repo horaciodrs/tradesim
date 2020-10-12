@@ -44,4 +44,12 @@ public class TradeSim.Drawings.Rectangle : TradeSim.Drawings.Line {
 
     }
 
+    public override void write_file (Xml.TextWriter writer, bool unused) throws FileError {
+
+        writer.start_element ("rectangle");
+        base.write_file (writer, true);
+        writer.end_element ();
+
+    }
+
 }

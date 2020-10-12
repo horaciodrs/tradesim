@@ -1037,7 +1037,7 @@ public class TradeSim.Services.Database : GLib.Object {
 
         } // else{
           // print("no hay quote.........................");
-        // }
+          // }
 
         return null;
     }

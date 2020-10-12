@@ -106,9 +106,9 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
 
         Gtk.CellRendererText ticker_cell = new Gtk.CellRendererText ();
         Gtk.CellRendererText ticker_price = new Gtk.CellRendererText ();
-        //Gtk.CellRendererText ticker_spread = new Gtk.CellRendererText ();
-        //Gtk.CellRendererText ticker_provider_id = new Gtk.CellRendererText ();
-        //Gtk.CellRendererText ticker_ticker_id = new Gtk.CellRendererText ();
+        // Gtk.CellRendererText ticker_spread = new Gtk.CellRendererText ();
+        // Gtk.CellRendererText ticker_provider_id = new Gtk.CellRendererText ();
+        // Gtk.CellRendererText ticker_ticker_id = new Gtk.CellRendererText ();
         Gtk.CellRendererText ticker_provider_name = new Gtk.CellRendererText ();
 
         tree_view_providers.get_selection ().changed.connect ((sel) => {

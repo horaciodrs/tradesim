@@ -141,4 +141,68 @@ public class TradeSim.Drawings.Line {
         enabled = _enabled;
     }
 
+    public virtual void write_file (Xml.TextWriter writer, bool write_header = false) throws FileError {
+
+        if (write_header) {
+            writer.start_element ("line");
+        }
+
+        writer.start_element ("date1");
+        writer.write_string (date1.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("date2");
+        writer.write_string (date2.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("price1");
+        writer.write_string (price1.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("price2");
+        writer.write_string (price2.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("color");
+        writer.write_attribute ("red", color.red.to_string ());
+        writer.write_attribute ("green", color.green.to_string ());
+        writer.write_attribute ("blue", color.blue.to_string ());
+        writer.write_attribute ("alpha", color.alpha.to_string ());
+        writer.write_string ("#ff9900");
+        writer.end_element ();
+
+        writer.start_element ("thickness");
+        writer.write_string (thickness.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("visible");
+        writer.write_string (visible.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("enabled");
+        writer.write_string (enabled.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("x1");
+        writer.write_string (x1.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("x2");
+        writer.write_string (x2.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("y1");
+        writer.write_string (y1.to_string ());
+        writer.end_element ();
+
+        writer.start_element ("y2");
+        writer.write_string (y2.to_string ());
+        writer.end_element ();
+
+        if (write_header) {
+            writer.end_element ();
+        }
+
+    }
+
 }

@@ -89,4 +89,12 @@ public class TradeSim.Drawings.Fibonacci : TradeSim.Drawings.Line {
 
     }
 
+    public override void write_file (Xml.TextWriter writer, bool unused) throws FileError {
+
+        writer.start_element ("fibonacci");
+        base.write_file (writer, false);
+        writer.end_element ();
+
+    }
+
 }

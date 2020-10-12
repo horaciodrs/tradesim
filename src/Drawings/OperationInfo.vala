@@ -33,6 +33,11 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
      * las caracteristicas de cada operación.
      */
 
+    // IMPORTANTE:
+    // ===========
+    // Las funciones de write_file no las implemento aquí ya que los dibujos
+    // se generan leyendo las operaciones cargadas...
+
     public OperationInfo (TradeSim.Widgets.Canvas _canvas, string _id) {
 
         base (_canvas, _id);
