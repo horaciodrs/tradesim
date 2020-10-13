@@ -31,11 +31,17 @@ public class TradeSim.Services.FileReader {
     public Array<TradeSim.Drawings.Rectangle> rectangles;
     public Array<TradeSim.Drawings.Fibonacci> fibonaccies;
 
-    public FileReader (string file) throws FileError, MarkupError {
+    public weak TradeSim.Widgets.Canvas ? ref_canvas;
+    public weak TradeSim.Services.OperationsManager ? operations_manager;
+    public weak TradeSim.Services.Drawings ? draw_manager;
+
+    public FileReader (string file, TradeSim.Widgets.Canvas ? _canvas = null) throws FileError, MarkupError {
 
         filename = file;
 
         doc = Xml.Parser.parse_file (filename);
+
+        ref_canvas = _canvas;
 
         canvas_data = new TradeSim.Objects.CanvasData ();
 
@@ -46,6 +52,17 @@ public class TradeSim.Services.FileReader {
         rectangles = new Array<TradeSim.Drawings.Rectangle> ();
         fibonaccies = new Array<TradeSim.Drawings.Fibonacci> ();
 
+        operations_manager = null;
+        draw_manager = null;
+
+    }
+
+    public void set_operations_manager( TradeSim.Services.OperationsManager om){
+        operations_manager = om;
+    }
+
+    public void set_draw_manager( TradeSim.Services.Drawings dm){
+        draw_manager = dm;
     }
 
     public void read () {
@@ -166,7 +183,9 @@ public class TradeSim.Services.FileReader {
                             }
 
                             operations.append_val (new_operation);
-
+                            if(operations_manager != null){
+                                operations_manager.add_operation(new_operation);
+                            }
                         }
                     }
                     break;
@@ -184,6 +203,9 @@ public class TradeSim.Services.FileReader {
                                         for (Xml.Node * iter_fibonaccies_item = iter_fibonaccies->children ; iter_fibonaccies_item != null ; iter_fibonaccies_item = iter_fibonaccies_item->next) {
                                             if (iter_fibonaccies_item->type == Xml.ElementType.ELEMENT_NODE) {
                                                 switch (iter_fibonaccies_item->name) {
+                                                case "id":
+                                                    new_fibonacci.set_id (iter_fibonaccies_item->get_content ());
+                                                    break;
                                                 case "date1":
                                                     new_fibonacci.set_x1 (new DateTime.from_unix_local (int.parse (iter_fibonaccies_item->get_content ())));
                                                     break;
@@ -220,7 +242,12 @@ public class TradeSim.Services.FileReader {
                                             }
                                         }
 
+                                        new_fibonacci.set_ref_canvas(ref_canvas);
+
                                         fibonaccies.append_val (new_fibonacci);
+                                        if(draw_manager != null){
+                                            draw_manager.fibonacci.append_val(new_fibonacci);
+                                        }
                                     }
                                 }
                                 break;
@@ -234,6 +261,9 @@ public class TradeSim.Services.FileReader {
                                         for (Xml.Node * iter_hlines_item = iter_hlines->children ; iter_hlines_item != null ; iter_hlines_item = iter_hlines_item->next) {
                                             if (iter_hlines_item->type == Xml.ElementType.ELEMENT_NODE) {
                                                 switch (iter_hlines_item->name) {
+                                                case "id":
+                                                    new_hline.set_id (iter_hlines_item->get_content ());
+                                                    break;
                                                 case "date1":
                                                     new_hline.set_x1 (new DateTime.from_unix_local (int.parse (iter_hlines_item->get_content ())));
                                                     break;
@@ -270,7 +300,12 @@ public class TradeSim.Services.FileReader {
                                             }
                                         }
 
+                                        new_hline.set_ref_canvas(ref_canvas);
+
                                         hlines.append_val (new_hline);
+                                        if(draw_manager != null){
+                                            draw_manager.hlines.append_val(new_hline);
+                                        }
                                     }
                                 }
                                 break;
@@ -284,6 +319,9 @@ public class TradeSim.Services.FileReader {
                                         for (Xml.Node * iter_lines_item = iter_lines->children ; iter_lines_item != null ; iter_lines_item = iter_lines_item->next) {
                                             if (iter_lines_item->type == Xml.ElementType.ELEMENT_NODE) {
                                                 switch (iter_lines_item->name) {
+                                                case "id":
+                                                    new_line.set_id (iter_lines_item->get_content ());
+                                                    break;
                                                 case "date1":
                                                     new_line.set_x1 (new DateTime.from_unix_local (int.parse (iter_lines_item->get_content ())));
                                                     break;
@@ -320,7 +358,12 @@ public class TradeSim.Services.FileReader {
                                             }
                                         }
 
+                                        new_line.set_ref_canvas(ref_canvas);
+
                                         lines.append_val (new_line);
+                                        if(draw_manager != null){
+                                            draw_manager.lines.append_val(new_line);
+                                        }
                                     }
                                 }
                                 break;
@@ -334,6 +377,9 @@ public class TradeSim.Services.FileReader {
                                         for (Xml.Node * iter_rectangles_item = iter_rectangles->children ; iter_rectangles_item != null ; iter_rectangles_item = iter_rectangles_item->next) {
                                             if (iter_rectangles_item->type == Xml.ElementType.ELEMENT_NODE) {
                                                 switch (iter_rectangles_item->name) {
+                                                case "id":
+                                                    new_rectangle.set_id (iter_rectangles_item->get_content ());
+                                                    break;
                                                 case "date1":
                                                     new_rectangle.set_x1 (new DateTime.from_unix_local (int.parse (iter_rectangles_item->get_content ())));
                                                     break;
@@ -369,8 +415,12 @@ public class TradeSim.Services.FileReader {
                                                 }
                                             }
                                         }
+                                        new_rectangle.set_ref_canvas(ref_canvas);
 
                                         rectangles.append_val (new_rectangle);
+                                        if(draw_manager != null){
+                                            draw_manager.rectangles.append_val(new_rectangle);
+                                        }
                                     }
                                 }
                                 break;

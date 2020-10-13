@@ -96,7 +96,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public string ? file_url;
 
-    public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame, string _simulation_name = "Unnamed Simulation", double _simulation_initial_balance = 500.000, string  load_file = null) {
+    public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame, string _simulation_name = "Unnamed Simulation", double _simulation_initial_balance = 500.000, string ? load_file = null) {
 
         main_window = window;
 
@@ -144,8 +144,27 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         try{
 
-            var simulation_file = new TradeSim.Services.FileReader (file_path);
+            var simulation_file = new TradeSim.Services.FileReader (file_path, this);
+
+            simulation_file.set_operations_manager (operations_manager);
+
+            simulation_file.set_draw_manager (draw_manager);
+
             simulation_file.read ();
+
+            simulation_name = simulation_file.canvas_data.simulation_name;
+            simulation_initial_balance = simulation_file.canvas_data.simulation_initial_balance;
+            date_inicial = simulation_file.canvas_data.date_inicial;
+            date_from = simulation_file.canvas_data.date_from;
+            date_to = simulation_file.canvas_data.date_to;
+            last_candle_date = simulation_file.canvas_data.last_candle_date;
+
+            last_candle_price = simulation_file.canvas_data.last_candle_price;
+            last_candle_max_price = simulation_file.canvas_data.last_candle_max_price;
+            last_candle_min_price = simulation_file.canvas_data.last_candle_min_price;
+            provider_name = simulation_file.canvas_data.provider_name;
+            time_frame = simulation_file.canvas_data.time_frame;
+            ticker = simulation_file.canvas_data.ticker;
 
         }catch(Error e){
             return;

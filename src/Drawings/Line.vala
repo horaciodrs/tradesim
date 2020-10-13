@@ -21,7 +21,7 @@
 
 public class TradeSim.Drawings.Line {
 
-    public weak TradeSim.Widgets.Canvas ref_canvas;
+    public weak TradeSim.Widgets.Canvas ? ref_canvas;
 
     public string id;
 
@@ -91,6 +91,14 @@ public class TradeSim.Drawings.Line {
         ctext.line_to (x2, y2);
         ctext.stroke ();
 
+    }
+
+    public void set_ref_canvas (TradeSim.Widgets.Canvas _canvas){
+        ref_canvas = _canvas;
+    }
+
+    public void set_id (string _id) {
+        id = _id;
     }
 
     public void set_thickness (int _thicness) {
@@ -170,6 +178,10 @@ public class TradeSim.Drawings.Line {
         if (write_header) {
             writer.start_element ("line");
         }
+
+        writer.start_element ("id");
+        writer.write_string (id);
+        writer.end_element ();
 
         writer.start_element ("date1");
         writer.write_string (date1.to_unix ().to_string ());
