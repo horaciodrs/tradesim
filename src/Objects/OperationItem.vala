@@ -35,8 +35,8 @@ public class TradeSim.Objects.OperationItem {
     public double profit { get; set; }
     public bool visible { get; set; }
 
-    public double close_price;
-    public DateTime close_date;
+    public double ? close_price;
+    public DateTime ? close_date;
 
     private double default_lote;
 
@@ -65,6 +65,9 @@ public class TradeSim.Objects.OperationItem {
         tp = _tp;
         sl = _sl;
         type_op = _type;
+
+        close_price = null;
+        close_date = null;
 
         default_lote = 100000.00;
 
@@ -145,7 +148,10 @@ public class TradeSim.Objects.OperationItem {
     public void write_file (Xml.TextWriter writer) throws FileError {
 
         writer.start_element ("operation");
-        writer.write_attribute ("id", id.to_string ());
+
+        writer.start_element ("id");
+        writer.write_string (id.to_string());
+        writer.end_element ();
 
         writer.start_element ("providername");
         writer.write_string (provider_name);
@@ -195,13 +201,18 @@ public class TradeSim.Objects.OperationItem {
         writer.write_string (visible.to_string ());
         writer.end_element ();
 
-        writer.start_element ("closeprice");
-        writer.write_string (close_price.to_string ());
-        writer.end_element ();
 
-        writer.start_element ("closedate");
-        writer.write_string (close_date.to_unix ().to_string ());
-        writer.end_element ();
+        if(close_price != null){
+            writer.start_element ("closeprice");
+            writer.write_string (close_price.to_string ());
+            writer.end_element ();
+        }
+
+        if(close_date != null){
+            writer.start_element ("closedate");
+            writer.write_string (close_date.to_unix ().to_string ());
+            writer.end_element ();
+        }
 
         writer.end_element ();
     }

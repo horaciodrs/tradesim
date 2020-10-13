@@ -172,12 +172,6 @@ public class TradeSim.Layouts.Main : Gtk.Box {
             _simulation_name = simulation_file.canvas_data.simulation_name;
             _simulation_initial_balance = simulation_file.canvas_data.simulation_initial_balance;
 
-            print("provider_name:" + provider_name + "\n");
-            print("ticker_name:" + ticker_name + "\n");
-            print("time_frame_name:" + time_frame_name + "\n");
-            print("_simulation_name:" + _simulation_name + "\n");
-            print("_simulation_initial_balance:" + _simulation_initial_balance.to_string() + "\n");
-
             new_chart (provider_name, ticker_name, time_frame_name, _simulation_name, _simulation_initial_balance, file_name);
 
         }catch(Error e){

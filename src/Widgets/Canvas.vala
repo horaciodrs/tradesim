@@ -166,6 +166,11 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             time_frame = simulation_file.canvas_data.time_frame;
             ticker = simulation_file.canvas_data.ticker;
 
+            data.init (provider_name, ticker, time_frame, date_inicial, date_to);
+
+            vertical_scale_calculation ();
+            horizontal_scale_calculation ();
+
         }catch(Error e){
             return;
         }
@@ -1332,8 +1337,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         draw_chart (cr);
 
-        // --->
-
         draw_cross_lines (cr);
 
         draw_cursor_price_label (cr);
@@ -1348,8 +1351,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         cr.restore ();
         cr.save ();
-
-        // print_fechas();
 
         return true;
 

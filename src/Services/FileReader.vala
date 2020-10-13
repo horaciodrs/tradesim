@@ -133,6 +133,9 @@ public class TradeSim.Services.FileReader {
                             for (Xml.Node * iter_operations_item = iter_operations->children ; iter_operations_item != null ; iter_operations_item = iter_operations_item->next) {
                                 if (iter_operations_item->type == Xml.ElementType.ELEMENT_NODE) {
                                     switch (iter_operations_item->name) {
+                                    case "id":
+                                        new_operation.id = int.parse(iter_operations_item->get_content ());
+                                        break;
                                     case "providername":
                                         new_operation.provider_name = iter_operations_item->get_content ();
                                         break;
