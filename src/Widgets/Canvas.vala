@@ -96,6 +96,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public string ? file_url;
 
+    public bool scroll_from_file_setted; //Indica si luego de cargar un archivo se movio el scroll al final.
+
     public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame, string _simulation_name = "Unnamed Simulation", double _simulation_initial_balance = 500.000, string ? load_file = null) {
 
         main_window = window;
@@ -138,6 +140,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             init_from_file (file_url);
         }
 
+        scroll_from_file_setted = false;
+
     }
 
     public void init_from_file (string file_path) {
@@ -170,6 +174,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
             vertical_scale_calculation ();
             horizontal_scale_calculation ();
+            horizontal_scroll_position_end (); //Intento posicionar el scroll en el final.
 
         }catch(Error e){
             return;
@@ -383,7 +388,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
             // print("date_from:" + date_from.to_string() + " date_to:" + date_to.to_string() + "\n");
 
-            _horizontal_scroll_x = _width - vertical_scale_width - _horizontal_scroll_width;
+            horizontal_scroll_position_end (); //_horizontal_scroll_x = _width - vertical_scale_width - _horizontal_scroll_width;
 
             check_operations_tp_and_sl ();
             main_window.main_layout.operations_panel.update_operations_profit ();
@@ -399,6 +404,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         return false;
 
+    }
+
+    public void horizontal_scroll_position_end (){
+        _horizontal_scroll_x = _width - vertical_scale_width - _horizontal_scroll_width;
     }
 
     private void check_operations_tp_and_sl () {
@@ -1343,6 +1352,12 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         draw_cursor_datetime_label (cr);
 
         draw_horizontal_scrollbar (cr);
+
+        //Lleva el scroll al final cuando se carga un archivo.
+        if(!scroll_from_file_setted){
+            horizontal_scroll_position_end();
+            scroll_from_file_setted = true;
+        }
 
         draw_manager.show_all (cr); // Dibuja todos los objetos creados por el usuario.
 

@@ -52,7 +52,7 @@ public class TradeSim.Layouts.Welcome : Granite.Widgets.Welcome {
                 main_window.main_layout.add_canvas ("", "", "");
                 break;
             case WelcomeActions.OPEN_DOCUMENT:
-                print ("open saved document");
+                main_window.open_dialog_open ();
                 break;
             case WelcomeActions.FOLDER_DOWNLOAD:
                 main_window.open_dialog_preferences (TradeSim.MainWindow.SettingsActions.DATA_SOURCE);

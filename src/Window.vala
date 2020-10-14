@@ -113,6 +113,54 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
     }
 
+    public void open_dialog_open () {
+
+        var dialog = new Gtk.FileChooserDialog ("Open TradeSim file", this,
+                                                Gtk.FileChooserAction.OPEN,
+                                                "Open",
+                                                Gtk.ResponseType.OK,
+                                                "Cancel",
+                                                Gtk.ResponseType.CANCEL
+                                                );
+
+        dialog.set_modal (true);
+
+        Gtk.FileFilter filter = new Gtk.FileFilter ();
+        filter.add_pattern ("*.tradesim");
+        filter.set_filter_name ("TradeSim files");
+        dialog.add_filter (filter);
+
+        filter = new Gtk.FileFilter ();
+        filter.add_pattern ("*");
+        filter.set_filter_name ("All files");
+
+        dialog.add_filter (filter);
+
+        dialog.response.connect ((dialog, response_id) => {
+
+            var dlg = (Gtk.FileChooserDialog)dialog;
+
+            switch (response_id) {
+            case Gtk.ResponseType.OK:
+                string file_path = dlg.get_filename ();
+                if (file_path.index_of (".tradesim") < 0) {
+                    file_path += ".tradesim";
+                }
+                main_layout.new_chart_from_file (file_path);
+                break;
+            case Gtk.ResponseType.CANCEL:
+                print ("Cancel\n");
+                break;
+            }
+
+            dlg.destroy ();
+
+        });
+
+        dialog.show ();
+
+    }
+
     public void open_dialog_preferences (int show_item = SettingsActions.APARENCE) {
         var settings_dialog = new TradeSim.Dialogs.SettingsDialog (this, show_item);
         settings_dialog.show_all ();

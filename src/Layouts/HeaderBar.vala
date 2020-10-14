@@ -76,49 +76,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
         open.button.clicked.connect (() => {
 
-            var dialog = new Gtk.FileChooserDialog ("Open TradeSim file", main_window,
-                                                    Gtk.FileChooserAction.OPEN,
-                                                    "Open",
-                                                    Gtk.ResponseType.OK,
-                                                    "Cancel",
-                                                    Gtk.ResponseType.CANCEL
-                                                    );
-
-            dialog.set_modal (true);
-
-            Gtk.FileFilter filter = new Gtk.FileFilter ();
-            filter.add_pattern ("*.tradesim");
-            filter.set_filter_name ("TradeSim files");
-            dialog.add_filter (filter);
-
-            filter = new Gtk.FileFilter ();
-            filter.add_pattern ("*");
-            filter.set_filter_name ("All files");
-
-            dialog.add_filter (filter);
-
-            dialog.response.connect ((dialog, response_id) => {
-
-                var dlg = (Gtk.FileChooserDialog)dialog;
-
-                switch (response_id) {
-                case Gtk.ResponseType.OK:
-                    string file_path = dlg.get_filename ();
-                    if (file_path.index_of (".tradesim") < 0) {
-                        file_path += ".tradesim";
-                    }
-                    main_window.main_layout.new_chart_from_file (file_path);
-                    break;
-                case Gtk.ResponseType.CANCEL:
-                    print ("Cancel\n");
-                    break;
-                }
-
-                dlg.destroy ();
-
-            });
-
-            dialog.show ();
+            main_window.open_dialog_open ();
 
         });
 
