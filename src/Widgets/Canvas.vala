@@ -176,6 +176,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             horizontal_scale_calculation ();
             horizontal_scroll_position_end (); //Intento posicionar el scroll en el final.
 
+            //main_window.main_layout.drawings_panel.reload_objects ();
+
         }catch(Error e){
             return;
         }

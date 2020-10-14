@@ -245,7 +245,10 @@ public class TradeSim.Services.FileReader {
                                             }
                                         }
 
-                                        new_fibonacci.set_ref_canvas(ref_canvas);
+                                        if(ref_canvas != null){
+                                            new_fibonacci.set_ref_canvas(ref_canvas);
+                                        }
+
 
                                         fibonaccies.append_val (new_fibonacci);
                                         if(draw_manager != null){
@@ -303,7 +306,9 @@ public class TradeSim.Services.FileReader {
                                             }
                                         }
 
-                                        new_hline.set_ref_canvas(ref_canvas);
+                                        if(ref_canvas != null){
+                                            new_hline.set_ref_canvas(ref_canvas);
+                                        }
 
                                         hlines.append_val (new_hline);
                                         if(draw_manager != null){
@@ -361,7 +366,9 @@ public class TradeSim.Services.FileReader {
                                             }
                                         }
 
-                                        new_line.set_ref_canvas(ref_canvas);
+                                        if(ref_canvas != null){
+                                            new_line.set_ref_canvas(ref_canvas);
+                                        }
 
                                         lines.append_val (new_line);
                                         if(draw_manager != null){
@@ -418,7 +425,10 @@ public class TradeSim.Services.FileReader {
                                                 }
                                             }
                                         }
-                                        new_rectangle.set_ref_canvas(ref_canvas);
+
+                                        if(ref_canvas != null){
+                                            new_rectangle.set_ref_canvas(ref_canvas);
+                                        }
 
                                         rectangles.append_val (new_rectangle);
                                         if(draw_manager != null){

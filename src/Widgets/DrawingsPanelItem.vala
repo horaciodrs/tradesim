@@ -48,8 +48,16 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
         css = _css;
 
         if (_color == null) {
-            var default_color = new TradeSim.Utils.Color.default ();
+
+            var dm = main_window.main_layout.current_canvas.draw_manager;
+            var default_color = dm.get_draw_color(_name, _type);
+
+            if(default_color == null){
+                default_color = new TradeSim.Utils.Color.default();
+            }
+
             original_color = default_color.get_rgba ();
+
         } else {
             original_color = _color;
         }
