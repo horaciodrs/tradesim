@@ -208,7 +208,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
         });
 
-        info_label = new Gtk.Label("msg...");
+        info_label = new Gtk.Label("");
 
         info_alert = new Gtk.InfoBar();
         info_alert.set_message_type(Gtk.MessageType.WARNING);
@@ -232,6 +232,8 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         form_grid.attach (entry_date, 1, 5, 1, 1);
 
         form_grid.attach (info_alert, 0, 6, 2, 1);
+
+        info_alert.set_revealed(false);
 
         body.add (form_grid);
 
