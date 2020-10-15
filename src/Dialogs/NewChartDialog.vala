@@ -62,7 +62,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         Object (
             border_width: 5,
             deletable: false,
-            resizable: true,
+            resizable: false,
             title: "New Simulation",
             transient_for: parent,
             main_window: parent
@@ -231,10 +231,13 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         form_grid.attach (label_date, 0, 5, 1, 1);
         form_grid.attach (entry_date, 1, 5, 1, 1);
 
-        form_grid.attach (info_alert, 0, 6, 2, 1);
+        //form_grid.attach (info_alert, 0, 6, 2, 1);
 
         info_alert.set_revealed(false);
 
+        form_grid.set_baseline_row(6);
+
+        body.add (info_alert);
         body.add (form_grid);
 
         acept_button = new Gtk.Button.with_label ("Ok");
