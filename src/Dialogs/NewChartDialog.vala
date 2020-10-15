@@ -47,6 +47,10 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
     private Granite.Widgets.DatePicker entry_date;
 
+    private Gtk.InfoBar info_alert;
+    private Gtk.Label info_label;
+    private bool validation_date;
+
     private TradeSim.Services.Database db;
 
     enum Action {
@@ -66,6 +70,8 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
         aux_provider_name = _provider_name;
         aux_ticker_name = _ticker_name;
+
+        validation_date = false;
 
         init ();
 
@@ -187,13 +193,28 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
             int count = db.get_available_quotes(aux_provider_name, aux_ticker_name, aux_time_frame_name, entry_date.date);
             const uint MIN_ALERT_QUOTES = 100;
 
+            validation_date = false;
+
             if(count == 0){
-                print("No hay datos importados para la fecha seleccionada.");
+                info_alert.set_revealed(true);
+                info_label.set_text("There is not imported data to the selected date.");
             }else if ((count > 0) && (count < MIN_ALERT_QUOTES)){
-                print("No hay datos suficientes para la fecha seleccionada.");
+                info_alert.set_revealed(true);
+                info_label.set_text("There are not engouth imported data to run a simulation.");
+            }else{
+                info_alert.set_revealed(false);
+                validation_date = true;
             }
 
         });
+
+        info_label = new Gtk.Label("msg...");
+
+        info_alert = new Gtk.InfoBar();
+        info_alert.set_message_type(Gtk.MessageType.WARNING);
+        info_alert.get_content_area().add(info_label);
+
+
 
         form_grid.attach (label_provider, 0, 1, 1, 1);
         form_grid.attach (cbo_provider, 1, 1, 1, 1);
@@ -209,6 +230,8 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
         form_grid.attach (label_date, 0, 5, 1, 1);
         form_grid.attach (entry_date, 1, 5, 1, 1);
+
+        form_grid.attach (info_alert, 0, 6, 2, 1);
 
         body.add (form_grid);
 
@@ -465,6 +488,10 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
                 dialog.destroy ();
                 return;
 
+            }
+
+            if(validation_date == false){
+                return;
             }
 
         }
