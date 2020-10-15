@@ -508,7 +508,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
             var objetivo = dialogo.main_window.main_layout;
 
-            objetivo.new_chart (aux_provider_name, aux_ticker_name, aux_time_frame_name, txt_name.get_text (), double.parse (txt_amount.get_text ()));
+            objetivo.new_chart (aux_provider_name, aux_ticker_name, aux_time_frame_name, txt_name.get_text (), double.parse (txt_amount.get_text ()), entry_date.date);
 
             destroy ();
 

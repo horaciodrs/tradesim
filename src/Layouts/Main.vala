@@ -160,6 +160,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
         string time_frame_name = "";
         string _simulation_name = "";
         double _simulation_initial_balance = 0.00;
+        DateTime _initial_date;
 
         try{
 
@@ -172,8 +173,9 @@ public class TradeSim.Layouts.Main : Gtk.Box {
             time_frame_name = simulation_file.canvas_data.time_frame;
             _simulation_name = simulation_file.canvas_data.simulation_name;
             _simulation_initial_balance = simulation_file.canvas_data.simulation_initial_balance;
+            _initial_date = simulation_file.canvas_data.date_inicial;
 
-            new_chart (provider_name, ticker_name, time_frame_name, _simulation_name, _simulation_initial_balance, file_name);
+            new_chart (provider_name, ticker_name, time_frame_name, _simulation_name, _simulation_initial_balance, _initial_date, file_name);
 
         }catch(Error e){
             return;
@@ -181,7 +183,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
     }
 
-    public void new_chart (string provider_name, string ticker_name, string time_frame_name, string _simulation_name, double _simulation_initial_balance, string ? file_name = null) {
+    public void new_chart (string provider_name, string ticker_name, string time_frame_name, string _simulation_name, double _simulation_initial_balance, DateTime _initial_date, string ? file_name = null) {
 
         int position = nb_chart_container.get_n_pages ();
 
@@ -196,7 +198,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
         grid_tab.show_all ();
 
-        var canvas_container = new TradeSim.Widgets.CanvasContainer (main_window, provider_name, ticker_name, time_frame_name, _simulation_name, _simulation_initial_balance, file_name);
+        var canvas_container = new TradeSim.Widgets.CanvasContainer (main_window, provider_name, ticker_name, time_frame_name, _simulation_name, _simulation_initial_balance, _initial_date, file_name);
 
         canvas_container.set_page (position);
 

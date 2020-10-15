@@ -98,7 +98,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public bool scroll_from_file_setted; //Indica si luego de cargar un archivo se movio el scroll al final.
 
-    public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame, string _simulation_name = "Unnamed Simulation", double _simulation_initial_balance = 500.000, string ? load_file = null) {
+    public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame, string _simulation_name = "Unnamed Simulation", double _simulation_initial_balance = 500.000, DateTime _initial_date, string ? load_file = null) {
 
         main_window = window;
 
@@ -115,6 +115,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         simulation_name = _simulation_name;
         simulation_initial_balance = _simulation_initial_balance;
+        date_inicial = _initial_date;
 
         draw_mode_objects = 0;
         draw_mode_line = false;
@@ -205,8 +206,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         data = new TradeSim.Services.QuotesManager ();
 
-        date_from = data.db.get_min_date (provider_name, ticker, time_frame);
-        date_inicial = date_from;
+        date_from = date_inicial; //data.db.get_min_date (provider_name, ticker, time_frame);
+        //date_inicial = date_from;
 
         change_zoom_level (1.000);
 
