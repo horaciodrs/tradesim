@@ -32,6 +32,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
     private Gtk.Label label_ticker;
     private Gtk.Label label_time_frame;
     private Gtk.Label label_amount;
+    private Gtk.Label label_date;
 
     private Gtk.Entry txt_name;
     private Gtk.Entry txt_amount;
@@ -43,6 +44,8 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
     private string aux_provider_name;
     private string aux_time_frame_name;
     private string aux_ticker_name;
+
+    private Granite.Widgets.DatePicker entry_date;
 
     private TradeSim.Services.Database db;
 
@@ -75,6 +78,46 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         build_content ();
 
         response.connect (on_response);
+
+    }
+
+    private bool validate_time_frame(string ? v){
+
+        if(v == null) {
+            return false;
+        }
+
+        if(v == "") {
+            return false;
+        }
+
+        string[] valid_time_frames = {"M1", "M5", "M15", "M30", "H1", "H4", "D1", "M1"};
+
+        for(int i=0; i< valid_time_frames.length; i++){
+            if(valid_time_frames[i] == v){
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    private void refresh_date (){
+
+        if(aux_provider_name == "") {
+            return;
+        }
+
+        if(aux_ticker_name == "") {
+            return;
+        }
+
+        if(validate_time_frame(aux_time_frame_name) == false) {
+            return;
+        }
+
+        entry_date.date = db.get_min_date (aux_provider_name, aux_ticker_name, aux_time_frame_name);
 
     }
 
@@ -133,6 +176,25 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         txt_amount.set_text ("1000");
         label_amount.halign = Gtk.Align.END;
 
+        label_date = new Gtk.Label ("Date:");
+        entry_date = new Granite.Widgets.DatePicker();
+        label_date.halign = Gtk.Align.END;
+
+        entry_date.date_changed.connect(() => {
+            //La fecha elegida ha cambiado...
+            //validar que sea una fecha que contenga datos importados
+            //get_available_quotes
+            int count = db.get_available_quotes(aux_provider_name, aux_ticker_name, aux_time_frame_name, entry_date.date);
+            const uint MIN_ALERT_QUOTES = 100;
+
+            if(count == 0){
+                print("No hay datos importados para la fecha seleccionada.");
+            }else if ((count > 0) && (count < MIN_ALERT_QUOTES)){
+                print("No hay datos suficientes para la fecha seleccionada.");
+            }
+
+        });
+
         form_grid.attach (label_provider, 0, 1, 1, 1);
         form_grid.attach (cbo_provider, 1, 1, 1, 1);
 
@@ -145,6 +207,8 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         form_grid.attach (label_amount, 0, 4, 1, 1);
         form_grid.attach (txt_amount, 1, 4, 1, 1);
 
+        form_grid.attach (label_date, 0, 5, 1, 1);
+        form_grid.attach (entry_date, 1, 5, 1, 1);
 
         body.add (form_grid);
 
@@ -205,6 +269,8 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         reload_cbo_ticker ();
         reload_cbo_time_frame ();
 
+        refresh_date ();
+
     }
 
     private void build_cbo_ticker () {
@@ -245,6 +311,8 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         modelo.get_value (selected_item, 0, out selected_ticker);
 
         aux_ticker_name = selected_ticker.get_string ();
+
+        refresh_date ();
 
     }
 
@@ -319,6 +387,8 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         modelo.get_value (selected_item, 0, out selected_time_frame);
 
         aux_time_frame_name = selected_time_frame.get_string ();
+
+        refresh_date ();
 
     }
 
