@@ -188,6 +188,7 @@ public class TradeSim.Services.FileReader {
                             operations.append_val (new_operation);
                             if(operations_manager != null){
                                 operations_manager.add_operation(new_operation);
+                                ref_canvas.draw_operation_info (new_operation);
                             }
                         }
                     }

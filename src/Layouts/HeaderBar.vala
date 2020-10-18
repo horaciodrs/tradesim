@@ -163,6 +163,10 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
         });
 
+        reporte.button.clicked.connect (() => {
+            alert("Please support this project to help me to implement this feature. Visit http://www.github.com/horaciodrs/TradeSim", (Gtk.Window) main_window);
+        });
+
         preferencias.button.clicked.connect (e => {
 
             var canvas = main_window.main_layout.current_canvas;
