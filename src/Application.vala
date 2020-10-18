@@ -22,16 +22,48 @@
 
 public class TradeSim.Application : Gtk.Application {
 
+    TradeSim.MainWindow WindowTradeSim;
+
     public Application () {
         Object (
             application_id: "com.github.horaciodrs.tradesim",
-            flags : GLib.ApplicationFlags.FLAGS_NONE
+            flags : ApplicationFlags.HANDLES_OPEN
             );
+
+            //GLib.ApplicationFlags.HANDLES_COMMAND_LINE |
+
+    }
+
+    /*protected override int command_line (GLib.ApplicationCommandLine command_line){
+
+        hold ();
+
+        string[] args = command_line.get_arguments ();
+
+        for(int i=0; i < args.length; i++){
+            print("argumento:" + args[i] + "\n");
+        }
+
+        release ();
+        //command_line.
+
+        return 0;
+    }*/
+
+    public override void open (GLib.File[] open_files, string hint) {
+
+        activate ();
+
+        foreach (var file in open_files) {
+            string file_path = file.get_path();
+            WindowTradeSim.main_layout.new_chart_from_file (file_path);
+        }
+
     }
 
     protected override void activate () {
 
-        var WindowTradeSim = new TradeSim.MainWindow (this);
+        WindowTradeSim = new TradeSim.MainWindow (this);
 
         Gtk.Settings.get_default ().set_property ("gtk-icon-theme-name", "elementary");
         Gtk.Settings.get_default ().set_property ("gtk-theme-name", "elementary");
