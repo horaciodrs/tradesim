@@ -767,7 +767,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         var app_description = new Gtk.Label ("The Linux Trading Simulator");
         app_description.get_style_context ().add_class ("h3");
 
-        var app_version = new Gtk.Label ("v0 - alpha");
+        var app_version = new Gtk.Label (TradeSim.Data.APP_VERSION);
         app_version.get_style_context ().add_class ("dim-label");
         app_version.selectable = true;
 

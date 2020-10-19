@@ -31,6 +31,11 @@
 
  */
 
+namespace TradeSim.Data{
+    public const string APP_VERSION = "2020.10.18";
+}
+
+
 public static int main (string[] args) {
 
     TradeSim.Application AppTradeSim = new TradeSim.Application ();
