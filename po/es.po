@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: none\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ASCII\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -28,6 +28,7 @@ msgstr "Simulador de Trading"
 
 #: data/com.github.horaciodrs.TradeSim.desktop.in:5
 #: data/com.github.horaciodrs.TradeSim.appdata.xml.in:8
+#: src/Dialogs/SettingsDialog.vala:695
 msgid "The Linux Trading Simulator"
 msgstr "El Simulador de Trading para Linux"
 
@@ -41,7 +42,7 @@ msgstr "Pruebe sus estrategias en el simulador de Trading para Linux, cree repor
 
 #: data/com.github.horaciodrs.TradeSim.appdata.xml.in:11
 msgid "Features:"
-msgstr "Caracteristicas"
+msgstr "Características"
 
 #: data/com.github.horaciodrs.TradeSim.appdata.xml.in:13
 msgid "Multiple instruments."
@@ -102,11 +103,11 @@ msgstr "Reporte"
 
 #: src/Layouts/HeaderBar.vala:67
 msgid "Settings"
-msgstr "Configuracion"
+msgstr "Configuración"
 
 #: src/Layouts/HeaderBar.vala:85
 msgid "Save TradeSim file"
-msgstr "Guardar archivo de simulacion"
+msgstr "Guardar archivo de simulación"
 
 #: src/Layouts/HeaderBar.vala:89
 msgid "Cancel"
@@ -126,7 +127,7 @@ msgstr "Detener"
 
 #: src/Layouts/HeaderBar.vala:163
 msgid "Please support this project to help me to implement this feature. Visit http://www.github.com/horaciodrs/TradeSim"
-msgstr "Por favor apoye este proyecto para ayudarme a implementar esta caracteristica visitando http://www.github.com/horaciodrs/TradeSim"
+msgstr "Por favor apoye este proyecto para ayudarme a implementar esta característica visitando http://www.github.com/horaciodrs/TradeSim"
 
 #: src/Layouts/HeaderBar.vala:248
 msgid "Line"
@@ -138,8 +139,117 @@ msgstr "Linea Horizontal"
 
 #: src/Layouts/HeaderBar.vala:250
 msgid "Rectangle"
-msgstr "Rectangulo"
+msgstr "Rectángulo"
 
 #: src/Layouts/HeaderBar.vala:251
 msgid "Fibonacci Retracement"
 msgstr "Retroceso de Fibonacci"
+
+#: src/Dialogs/SettingsDialog.vala:76
+msgid "Preferences"
+msgstr "Preferencias"
+
+#: src/Dialogs/SettingsDialog.vala:103
+msgid "Interface"
+msgstr "Interfaz"
+
+#: src/Dialogs/SettingsDialog.vala:104
+#: src/Dialogs/SettingsDialog.vala:669
+msgid "Data Source"
+msgstr "Fuente de Datos"
+
+#: src/Dialogs/SettingsDialog.vala:105
+msgid "About"
+msgstr "Acerca de"
+
+#: src/Dialogs/SettingsDialog.vala:105
+msgid "Use Dark Theme:"
+msgstr "Utilizar tema oscuro:"
+
+#: src/Dialogs/SettingsDialog.vala:219
+msgid "Provider"
+msgstr "Proveedor"
+
+#: src/Dialogs/SettingsDialog.vala:274
+msgid "Ticker"
+msgstr "Instrumento"
+
+#: src/Dialogs/SettingsDialog.vala:322
+msgid "Year"
+msgstr "Año"
+
+#: src/Dialogs/SettingsDialog.vala:339
+msgid "Waiting for data..."
+msgstr "Esperando obtener datos..."
+
+#: src/Dialogs/SettingsDialog.vala:353
+msgid "Done! - Has been found "
+msgstr "Completado! - Se han encontrado "
+
+#: src/Dialogs/SettingsDialog.vala:353
+msgid " data files"
+msgstr " archivos de datos"
+
+#: src/Dialogs/SettingsDialog.vala:518
+msgid "Importing data..."
+msgstr "Importando datos..."
+
+#: src/Dialogs/SettingsDialog.vala:525
+msgid "Done!"
+msgstr "Completado!"
+
+#: src/Dialogs/SettingsDialog.vala:539
+msgid "Market"
+msgstr "Mercado"
+
+#: src/Dialogs/SettingsDialog.vala:542
+msgid "Month"
+msgstr "Mes"
+
+#: src/Dialogs/SettingsDialog.vala:543
+msgid "Timeframe"
+msgstr "Temporalidad"
+
+#: src/Dialogs/SettingsDialog.vala:544
+msgid "Imported"
+msgstr "Importado"
+
+#: src/Dialogs/SettingsDialog.vala:571
+msgid "Imported "
+msgstr "Importado "
+
+#: src/Dialogs/SettingsDialog.vala:571
+msgid " of "
+msgstr " de  "
+
+#: src/Dialogs/SettingsDialog.vala:571
+msgid " quotes."
+msgstr " cotizaciones. "
+
+#: src/Dialogs/SettingsDialog.vala:574
+msgid "Import Completed!"
+msgstr "Importacion Completada!"
+
+#: src/Dialogs/SettingsDialog.vala:702
+msgid "Remember!\n TradeSim it's under development and it's on alpha state. Only install for testing."
+msgstr "Recuerde que TradeSim se encuentra bajo desarrollo y en estado alfa. Solo apto para instalaciones de prueba."
+
+#: src/Dialogs/SettingsDialog.vala:710
+msgid "Thanks to our awesome supporters!"
+msgstr "Gracias a quienes nos apoyan con sus donaciones!"
+
+#: src/Dialogs/SettingsDialog.vala:715
+msgid "View the list of supporters"
+msgstr "Ver el listado de personas que apoyan este protecto"
+
+#: src/Dialogs/SettingsDialog.vala:733
+msgid "Make a Donation"
+msgstr "Hacer una donación"
+
+#: src/Dialogs/SettingsDialog.vala:742
+msgid "Suggest Translations"
+msgstr "Sugerir Traducciones"
+
+#: src/Dialogs/SettingsDialog.vala:751
+msgid "Report a Problem"
+msgstr "Reportar un problema"
