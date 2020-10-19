@@ -110,6 +110,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
         } else if (tab.get_type () == typeof (TradeSim.Layouts.Welcome)) {
             main_window.headerbar.set_subtitle ("The Linux trading simulator");
             drawings_panel.delete_all ();
+            operations_panel.delete_operations ();
         }
 
     }

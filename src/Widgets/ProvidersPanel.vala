@@ -32,8 +32,7 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
     public TradeSim.Services.QuotesManager qm;
 
     public enum TreeViewProviderColumns {
-        PROVIDER_ID
-        , PROVIDER_NAME
+          PROVIDER_NAME
         , TICKER_ID
         , TICKER_NAME
         , SPREAD
@@ -77,7 +76,7 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
             for (int z = 0 ; z < db_imported_tickers.length ; z++) {
 
                 list_store_providers.append (out add_iter_ticker, add_iter_providers);
-                list_store_providers.set (add_iter_ticker, 0, db_imported_tickers.index (z).ticker_name, 1, "1.12352", 2, "21", 3, db_imported_tickers.index (z).provider_id.to_string (), 4, db_imported_tickers.index (z).ticker_id.to_string (), 5, db_imported_tickers.index (z).provider_name.to_string (), -1);
+                list_store_providers.set (add_iter_ticker, 0, db_imported_tickers.index (z).ticker_name, 1, "1.12352", 2, db_imported_tickers.index (z).provider_id.to_string (), 3, db_imported_tickers.index (z).ticker_id.to_string (), 4, db_imported_tickers.index (z).provider_name.to_string (), -1);
 
             }
 
@@ -96,7 +95,7 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
         scroll_prviders = new Gtk.ScrolledWindow (null, null);
         scroll_prviders.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
 
-        list_store_providers = new Gtk.TreeStore (6, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string));
+        list_store_providers = new Gtk.TreeStore (5, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string));
 
         load_providers ();
 
@@ -106,9 +105,6 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
 
         Gtk.CellRendererText ticker_cell = new Gtk.CellRendererText ();
         Gtk.CellRendererText ticker_price = new Gtk.CellRendererText ();
-        // Gtk.CellRendererText ticker_spread = new Gtk.CellRendererText ();
-        // Gtk.CellRendererText ticker_provider_id = new Gtk.CellRendererText ();
-        // Gtk.CellRendererText ticker_ticker_id = new Gtk.CellRendererText ();
         Gtk.CellRendererText ticker_provider_name = new Gtk.CellRendererText ();
 
         tree_view_providers.get_selection ().changed.connect ((sel) => {
@@ -124,7 +120,7 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
 
             sel.get_selected (out model, out edited_iter);
 
-            model.get_value (edited_iter, 5, out nombre);
+            model.get_value (edited_iter, 4, out nombre);
             model.get_value (edited_iter, 0, out ticker_nombre);
 
             main_window.main_layout.add_canvas (nombre.get_string (), ticker_nombre.get_string (), "H1");
@@ -135,16 +131,15 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
 
         tree_view_providers.insert_column_with_attributes (-1, "Ticker", ticker_cell, "text", 0, null);
         tree_view_providers.insert_column_with_attributes (-1, "Price", ticker_price, "text", 1, null);
-        tree_view_providers.insert_column_with_attributes (-1, "Sp", ticker_price, "text", 2, null);
-        tree_view_providers.insert_column_with_attributes (-1, "ProviderId", ticker_price, "text", 3, null);
-        tree_view_providers.insert_column_with_attributes (-1, "TickerId", ticker_price, "text", 4, null);
-        tree_view_providers.insert_column_with_attributes (-1, "Provider", ticker_provider_name, "text", 5, null);
+        tree_view_providers.insert_column_with_attributes (-1, "ProviderId", ticker_price, "text", 2, null);
+        tree_view_providers.insert_column_with_attributes (-1, "TickerId", ticker_price, "text", 3, null);
+        tree_view_providers.insert_column_with_attributes (-1, "Provider", ticker_provider_name, "text", 4, null);
 
         tree_view_providers.get_column (0).set_expand (true);
 
+        tree_view_providers.get_column (2).set_visible (false);
         tree_view_providers.get_column (3).set_visible (false);
         tree_view_providers.get_column (4).set_visible (false);
-        tree_view_providers.get_column (5).set_visible (false);
 
         tree_view_providers.expand_all ();
 

@@ -389,6 +389,10 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
 
     }
 
+    public void delete_operations () {
+        list_store_operations.clear ();
+    }
+
     public void update_operations () {
 
         list_store_operations.clear ();
