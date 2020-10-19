@@ -131,6 +131,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
             writer.set_indent (true);
             current_canvas.write_file (writer);
             writer.flush ();
+            current_canvas.need_save = false;
         } catch (Error e) {
             print ("Error: %s\n", e.message);
         }
@@ -219,7 +220,13 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
     public void close_tab (TradeSim.Widgets.CanvasContainer cc) {
 
-        nb_chart_container.remove_page (cc.get_page ());
+        if(current_canvas.need_save == true){
+            if(confirm("Are you sure you want to exit without save changes?", main_window, Gtk.MessageType.QUESTION)){
+                nb_chart_container.remove_page (cc.get_page ());
+            }
+        }else{
+            nb_chart_container.remove_page (cc.get_page ());
+        }
 
     }
 
@@ -254,6 +261,8 @@ public class TradeSim.Layouts.Main : Gtk.Box {
         current_canvas.operations_manager.add_operation (new_operation);
 
         current_canvas.draw_operation_info (new_operation);
+
+        current_canvas.need_save = true;
 
         operations_panel.update_operations ();
 

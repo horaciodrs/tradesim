@@ -98,6 +98,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public bool scroll_from_file_setted; //Indica si luego de cargar un archivo se movio el scroll al final.
 
+    public bool need_save; //Indica si es necesario guardar antes de salir.
+
     public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame, string _simulation_name = "Unnamed Simulation", double _simulation_initial_balance = 500.000, DateTime _initial_date, string ? load_file = null) {
 
         main_window = window;
@@ -123,6 +125,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         draw_mode_rectangle = false;
         draw_mode_hline = false;
         draw_mode = false;
+        need_save = true;
 
         add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK | Gdk.EventMask.POINTER_MOTION_MASK | Gdk.EventMask.LEAVE_NOTIFY_MASK);
 
@@ -176,6 +179,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             vertical_scale_calculation ();
             horizontal_scale_calculation ();
             horizontal_scroll_position_end (); //Intento posicionar el scroll en el final.
+
+            need_save = false;
 
             //main_window.main_layout.drawings_panel.reload_objects ();
 
@@ -378,6 +383,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         // carga una vela y avanza una vela.
 
         if (!end_simulation) {
+
+            need_save = true;
 
             data.load_next_quote ();
 
@@ -768,12 +775,16 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
             if (draw_mode_line == true) {
                 target.insert_object (draw_mode_id, TradeSim.Services.Drawings.Type.LINE);
+                need_save = true;
             } else if (draw_mode_fibo == true) {
                 target.insert_object (draw_mode_id, TradeSim.Services.Drawings.Type.FIBONACCI);
+                need_save = true;
             } else if (draw_mode_rectangle == true) {
                 target.insert_object (draw_mode_id, TradeSim.Services.Drawings.Type.RECTANGLE);
+                need_save = true;
             } else if (draw_mode_hline == true) {
                 target.insert_object (draw_mode_id, TradeSim.Services.Drawings.Type.HLINE);
+                need_save = true;
             }
 
         }
