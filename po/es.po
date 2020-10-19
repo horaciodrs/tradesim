@@ -86,10 +86,12 @@ msgid "Play"
 msgstr "Iniciar"
 
 #: src/Layouts/HeaderBar.vala:63
+#: src/Dialogs/NewOperationDialog.vala:236
 msgid "Buy"
 msgstr "Comprar"
 
 #: src/Layouts/HeaderBar.vala:64
+#: src/Dialogs/NewOperationDialog.vala:243
 msgid "Sell"
 msgstr "Vender"
 
@@ -110,6 +112,7 @@ msgid "Save TradeSim file"
 msgstr "Guardar archivo de simulación"
 
 #: src/Layouts/HeaderBar.vala:89
+#: src/Dialogs/NewOperationDialog.vala:246
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -253,3 +256,47 @@ msgstr "Sugerir Traducciones"
 #: src/Dialogs/SettingsDialog.vala:751
 msgid "Report a Problem"
 msgstr "Reportar un problema"
+
+#: src/Dialogs/NewOperationDialog.vala:66
+msgid "New Operation"
+msgstr "Nueva Operación"
+
+#: src/Dialogs/NewOperationDialog.vala:107
+msgid "Code: "
+msgstr "Código: "
+
+#: src/Dialogs/NewOperationDialog.vala:107
+msgid ", Date: "
+msgstr ", Fecha: "
+
+#: src/Dialogs/NewOperationDialog.vala:133
+msgid "Price:"
+msgstr "Precio:"
+
+#: src/Dialogs/NewOperationDialog.vala:145
+msgid "Volume:"
+msgstr "Volumen:"
+
+#: src/Dialogs/NewOperationDialog.vala:161
+msgid "Take Profit:"
+msgstr "Take Profit:"
+
+#: src/Dialogs/NewOperationDialog.vala:173
+msgid "Take Profit"
+msgstr "Take Profit"
+
+#: src/Dialogs/NewOperationDialog.vala:178
+msgid "Points"
+msgstr "Puntos"
+
+#: src/Dialogs/NewOperationDialog.vala:180
+msgid "Price"
+msgstr "Precio"
+
+#: src/Dialogs/NewOperationDialog.vala:186
+msgid "Stop Loss:"
+msgstr "Stop Loss:"
+
+#: src/Dialogs/NewOperationDialog.vala:198
+msgid "Stop Loss"
+msgstr "Stop Loss"
