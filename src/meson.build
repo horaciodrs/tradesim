@@ -31,7 +31,6 @@ sources = files(
     'Widgets/ButtonImage.vala',
     'Widgets/HeaderBarButton.vala',
     'Widgets/ZoomButton.vala',
-    'Widgets/TimeButton.vala',
     'Widgets/ProvidersPanel.vala',
     'Widgets/OperationsPanel.vala',
     'Widgets/DrawingsPanel.vala',
