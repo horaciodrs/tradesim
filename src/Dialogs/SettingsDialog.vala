@@ -34,11 +34,6 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
     private Gtk.TreeIter add_iter_ticker;
     private Gtk.TreeView tree_view_ticker;
 
-    /*private Gtk.ScrolledWindow scroll_time_frame;
-    private Gtk.ListStore list_store_time_frame;
-    private Gtk.TreeIter add_iter_time_frame;
-    private Gtk.TreeView tree_view_time_frame;*/
-
     private Gtk.ScrolledWindow scroll_year;
     private Gtk.ListStore list_store_year;
     private Gtk.TreeIter add_iter_year;
@@ -333,67 +328,6 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
     }
 
-    /*private void configure_time_frame () {
-
-        scroll_time_frame = new Gtk.ScrolledWindow (null, null);
-        scroll_time_frame.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-
-        list_store_time_frame = new Gtk.ListStore (1, typeof (string));
-        add_iter_time_frame = Gtk.TreeIter ();
-
-        list_store_time_frame.append (out add_iter_time_frame);
-        list_store_time_frame.set (add_iter_time_frame, 0, "D1");
-
-        list_store_time_frame.append (out add_iter_time_frame);
-        list_store_time_frame.set (add_iter_time_frame, 0, "H4");
-
-        list_store_time_frame.append (out add_iter_time_frame);
-        list_store_time_frame.set (add_iter_time_frame, 0, "H1");
-
-        list_store_time_frame.append (out add_iter_time_frame);
-        list_store_time_frame.set (add_iter_time_frame, 0, "M30");
-
-        list_store_time_frame.append (out add_iter_time_frame);
-        list_store_time_frame.set (add_iter_time_frame, 0, "M15");
-
-        list_store_time_frame.append (out add_iter_time_frame);
-        list_store_time_frame.set (add_iter_time_frame, 0, "M5");
-
-        list_store_time_frame.append (out add_iter_time_frame);
-        list_store_time_frame.set (add_iter_time_frame, 0, "M1");
-
-        tree_view_time_frame = new Gtk.TreeView ();
-
-        tree_view_time_frame.set_model (list_store_time_frame);
-
-        Gtk.CellRendererText time_frame_cell = new Gtk.CellRendererText ();
-
-        tree_view_time_frame.get_selection ().changed.connect ((sel) => {
-
-            Gtk.TreeIter edited_iter;
-            Gtk.TreeModel model;
-            GLib.Value nombre;
-
-            sel.get_selected (out model, out edited_iter);
-
-
-            model.get_value (edited_iter, 0, out nombre);
-
-            ds_selected_time_frame = nombre.get_string ();
-
-            start_update_quotes_by_filter ();
-
-        });
-
-        tree_view_time_frame.insert_column_with_attributes (-1, "Time Frame", time_frame_cell, "text", 0);
-
-        scroll_time_frame.add (tree_view_time_frame);
-        scroll_time_frame.set_vexpand (true);
-        scroll_time_frame.set_hexpand (true);
-        scroll_time_frame.get_style_context ().add_class ("scrolled-window-data");
-
-    }*/
-
     private void start_update_quotes_by_filter () {
 
         if (working) {
@@ -410,7 +344,6 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         working = true;
         tree_view_provider.set_sensitive (false);
         tree_view_ticker.set_sensitive (false);
-        //tree_view_time_frame.set_sensitive (false);
         tree_view_year.set_sensitive (false);
         tree_view_quotes.set_sensitive (false);
 
@@ -423,7 +356,6 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             working = false;
             tree_view_provider.set_sensitive (true);
             tree_view_ticker.set_sensitive (true);
-            //tree_view_time_frame.set_sensitive (true);
             tree_view_year.set_sensitive (true);
             tree_view_quotes.set_sensitive (true);
 
@@ -642,7 +574,6 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             label_waiting.set_text ("Import Completed!");
             tree_view_provider.set_sensitive (true);
             tree_view_ticker.set_sensitive (true);
-            //tree_view_time_frame.set_sensitive (true);
             tree_view_year.set_sensitive (true);
             tree_view_quotes.set_sensitive (true);
             qm.db.end_import_quotes ();
@@ -670,7 +601,6 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         tree_view_provider.set_sensitive (false);
         tree_view_ticker.set_sensitive (false);
-        //tree_view_time_frame.set_sensitive (false);
         tree_view_year.set_sensitive (false);
         tree_view_quotes.set_sensitive (false);
 
@@ -715,7 +645,6 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         configure_provider ();
         configure_ticker ();
-        //configure_time_frame ();
         configure_year ();
         configure_quotes ();
 
@@ -741,7 +670,6 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         grid.attach (scroll_provider, 0, 1, 1, 2);
         grid.attach (scroll_ticker, 1, 1, 1, 2);
         grid.attach (scroll_year, 2, 1, 1, 2);
-        //grid.attach (scroll_time_frame, 3, 1, 1, 2);
         grid.attach (scroll_quotes, 0, 3, 3, 3);
         grid.attach (grid_waiting, 0, 7, 3);
         grid.attach (progress_import, 0, 8, 3);
