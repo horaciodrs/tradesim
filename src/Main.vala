@@ -29,6 +29,8 @@
         vscode theme: noctis high contrast
         vsfont theme: AcPlus IBM VGA 8x16-2x    dfsdfsdf
 
+        //Comienza la rama app_translation
+
  */
 
 namespace TradeSim.Data{
