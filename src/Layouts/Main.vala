@@ -60,7 +60,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
         nb_chart_container.set_show_border (false);
 
-        nb_chart_container.append_page (welcome_widget, new Gtk.Label ("Welcome to TradeSim"));
+        nb_chart_container.append_page (welcome_widget, new Gtk.Label (_("Welcome to TradeSim")));
 
         nb_chart_container.switch_page.connect (on_change_canvas_focus);
         nb_chart_container.page_removed.connect (on_page_removed);
@@ -108,7 +108,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
             operations_panel.update_bottom_info ();
 
         } else if (tab.get_type () == typeof (TradeSim.Layouts.Welcome)) {
-            main_window.headerbar.set_subtitle ("The Linux trading simulator");
+            main_window.headerbar.set_subtitle (_("The Linux trading simulator"));
             drawings_panel.delete_all ();
             operations_panel.delete_operations ();
         }
@@ -221,7 +221,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
     public void close_tab (TradeSim.Widgets.CanvasContainer cc) {
 
         if(current_canvas.need_save == true){
-            if(confirm("Are you sure you want to exit without save changes?", main_window, Gtk.MessageType.QUESTION)){
+            if(confirm(_("Are you sure you want to exit without save changes?"), main_window, Gtk.MessageType.QUESTION)){
                 nb_chart_container.remove_page (cc.get_page ());
             }
         }else{

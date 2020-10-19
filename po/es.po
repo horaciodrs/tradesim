@@ -29,6 +29,7 @@ msgstr "Simulador de Trading"
 #: data/com.github.horaciodrs.TradeSim.desktop.in:5
 #: data/com.github.horaciodrs.TradeSim.appdata.xml.in:8
 #: src/Dialogs/SettingsDialog.vala:695
+#: src/Layouts/Main.vala:111
 msgid "The Linux Trading Simulator"
 msgstr "El Simulador de Trading para Linux"
 
@@ -395,6 +396,7 @@ msgid "Please enter the object name"
 msgstr "Por favor ingrese un nombre para el objeto"
 
 #: src/Layouts/Welcome.vala:35
+#: src/Layouts/Main.vala:63
 msgid "Welcome to TradeSim"
 msgstr "Bienvenido a TradeSim"
 
@@ -421,3 +423,7 @@ msgstr "Importar nuevas fuentes de datos"
 #: src/Layouts/Welcome.vala:47
 msgid "Import quotes from internet"
 msgstr "Importar cotizaciones desde internet"
+
+#: src/Layouts/Main.vala:224
+msgid "Are you sure you want to exit without save changes?"
+msgstr "Esta seguro que quiere salir sin guardar los cambios?"
