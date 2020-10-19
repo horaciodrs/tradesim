@@ -39,7 +39,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
     public TradeSim.Widgets.HeaderBarButton reporte;
     public TradeSim.Widgets.HeaderBarButton preferencias;
 
-    public TradeSim.Widgets.TimeButton time_button;
+    //public TradeSim.Widgets.TimeButton time_button;
 
     public HeaderBar (TradeSim.MainWindow window) {
         Object (
@@ -68,7 +68,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         reporte = new TradeSim.Widgets.HeaderBarButton (main_window, "x-office-presentation", "Report", { "<Ctrl>p" });
         preferencias = new TradeSim.Widgets.HeaderBarButton (main_window, "open-menu", "Settings", { "<Ctrl>p" });
 
-        time_button = new TradeSim.Widgets.TimeButton (main_window);
+        //time_button = new TradeSim.Widgets.TimeButton (main_window);
 
         var insert_popover = get_insert_menu ();
         insert.button.popover = insert_popover;
@@ -220,7 +220,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         pack_start (new Gtk.Separator (Gtk.Orientation.VERTICAL));
 
         pack_start (zoom);
-        pack_start (time_button);
+        //pack_start (time_button);
 
         pack_start (new Gtk.Separator (Gtk.Orientation.VERTICAL));
 
