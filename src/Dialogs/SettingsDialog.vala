@@ -34,10 +34,10 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
     private Gtk.TreeIter add_iter_ticker;
     private Gtk.TreeView tree_view_ticker;
 
-    private Gtk.ScrolledWindow scroll_time_frame;
+    /*private Gtk.ScrolledWindow scroll_time_frame;
     private Gtk.ListStore list_store_time_frame;
     private Gtk.TreeIter add_iter_time_frame;
-    private Gtk.TreeView tree_view_time_frame;
+    private Gtk.TreeView tree_view_time_frame;*/
 
     private Gtk.ScrolledWindow scroll_year;
     private Gtk.ListStore list_store_year;
@@ -94,7 +94,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         ds_selected_provider = "";
         ds_selected_ticker = "";
         ds_selected_year = "";
-        ds_selected_time_frame = "";
+        ds_selected_time_frame = "H1";
 
         grid_aparence = get_interface_box ();
         grid_data_source = get_data_source_box ();
@@ -333,7 +333,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
     }
 
-    private void configure_time_frame () {
+    /*private void configure_time_frame () {
 
         scroll_time_frame = new Gtk.ScrolledWindow (null, null);
         scroll_time_frame.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
@@ -392,7 +392,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         scroll_time_frame.set_hexpand (true);
         scroll_time_frame.get_style_context ().add_class ("scrolled-window-data");
 
-    }
+    }*/
 
     private void start_update_quotes_by_filter () {
 
@@ -410,7 +410,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         working = true;
         tree_view_provider.set_sensitive (false);
         tree_view_ticker.set_sensitive (false);
-        tree_view_time_frame.set_sensitive (false);
+        //tree_view_time_frame.set_sensitive (false);
         tree_view_year.set_sensitive (false);
         tree_view_quotes.set_sensitive (false);
 
@@ -423,7 +423,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             working = false;
             tree_view_provider.set_sensitive (true);
             tree_view_ticker.set_sensitive (true);
-            tree_view_time_frame.set_sensitive (true);
+            //tree_view_time_frame.set_sensitive (true);
             tree_view_year.set_sensitive (true);
             tree_view_quotes.set_sensitive (true);
 
@@ -642,7 +642,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             label_waiting.set_text ("Import Completed!");
             tree_view_provider.set_sensitive (true);
             tree_view_ticker.set_sensitive (true);
-            tree_view_time_frame.set_sensitive (true);
+            //tree_view_time_frame.set_sensitive (true);
             tree_view_year.set_sensitive (true);
             tree_view_quotes.set_sensitive (true);
             qm.db.end_import_quotes ();
@@ -670,7 +670,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         tree_view_provider.set_sensitive (false);
         tree_view_ticker.set_sensitive (false);
-        tree_view_time_frame.set_sensitive (false);
+        //tree_view_time_frame.set_sensitive (false);
         tree_view_year.set_sensitive (false);
         tree_view_quotes.set_sensitive (false);
 
@@ -715,7 +715,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         configure_provider ();
         configure_ticker ();
-        configure_time_frame ();
+        //configure_time_frame ();
         configure_year ();
         configure_quotes ();
 
@@ -741,10 +741,10 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         grid.attach (scroll_provider, 0, 1, 1, 2);
         grid.attach (scroll_ticker, 1, 1, 1, 2);
         grid.attach (scroll_year, 2, 1, 1, 2);
-        grid.attach (scroll_time_frame, 3, 1, 1, 2);
-        grid.attach (scroll_quotes, 0, 3, 4, 3);
-        grid.attach (grid_waiting, 0, 7, 4);
-        grid.attach (progress_import, 0, 8, 4);
+        //grid.attach (scroll_time_frame, 3, 1, 1, 2);
+        grid.attach (scroll_quotes, 0, 3, 3, 3);
+        grid.attach (grid_waiting, 0, 7, 3);
+        grid.attach (progress_import, 0, 8, 3);
 
         return grid;
     }
