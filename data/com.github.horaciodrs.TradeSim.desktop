@@ -10,3 +10,4 @@ Type=Application
 X-GNOME-Gettext-Domain=tradesim
 X-GNOME-UsesNotifications=true
 Keywords=TradeSim;Trading;Finances;Currency;
+MimeType=application/x-tradesim;

@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.horaciodrs.TradeSim package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: com.github.horaciodrs.TradeSim\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-10-19 13:38-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: data/com.github.horaciodrs.TradeSim.desktop.in:3
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:7
+msgid "TradeSim"
+msgstr ""
+
+#: data/com.github.horaciodrs.TradeSim.desktop.in:4
+msgid "Trading Simulator"
+msgstr ""
+
+#: data/com.github.horaciodrs.TradeSim.desktop.in:5
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:8
+msgid "The Linux Trading Simulator"
+msgstr ""
+
+#: data/com.github.horaciodrs.TradeSim.desktop.in:8
+msgid "com.github.horaciodrs.TradeSim"
+msgstr ""
+
+#: data/com.github.horaciodrs.TradeSim.desktop.in:13
+msgid "TradeSim;Trading;Finances;Currency;"
+msgstr ""
+
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:10
+msgid ""
+"Test your strategies on the Linux Trading Simulator, create reports, learn, "
+"try or develop new strategies for your trading."
+msgstr ""
+
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:11
+msgid "Features:"
+msgstr ""
+
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:13
+msgid "Multiple instruments."
+msgstr ""
+
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:14
+msgid "Create Reports to display your performance as a virtual trader."
+msgstr ""
+
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:15
+msgid "Dark variant theme."
+msgstr ""
+
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:16
+msgid "Configurable data source."
+msgstr ""
+
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:17
+msgid "Draw Fibonacci analisys tool."
+msgstr ""
+
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:23
+msgid "Initial Release"
+msgstr ""
+
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:59
+msgid "Horacio Daniel Ros"
+msgstr ""

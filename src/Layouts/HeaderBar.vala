@@ -51,20 +51,20 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         title = "TradeSim";
         subtitle = "Simulación sin nombre";
 
-        new_button = new TradeSim.Widgets.HeaderBarButton (main_window, "document-new", "New", { "<Ctrl>p" });
-        open = new TradeSim.Widgets.HeaderBarButton (main_window, "document-open", "Open", { "<Ctrl>p" });
-        save = new TradeSim.Widgets.HeaderBarButton (main_window, "document-save", "Save", { "<Ctrl>p" });
+        new_button = new TradeSim.Widgets.HeaderBarButton (main_window, "document-new", _("New"), { "<Ctrl>p" });
+        open = new TradeSim.Widgets.HeaderBarButton (main_window, "document-open", _("Open"), { "<Ctrl>p" });
+        save = new TradeSim.Widgets.HeaderBarButton (main_window, "document-save", _("Save"), { "<Ctrl>p" });
 
         zoom = new TradeSim.Widgets.ZoomButton (main_window);
 
         backward = new TradeSim.Widgets.HeaderBarButton (main_window, "media-seek-backward-symbolic", "", { "<Ctrl>p" });
-        play = new TradeSim.Widgets.HeaderBarButton (main_window, "media-playback-start", "Play", { "<Ctrl>p" });
+        play = new TradeSim.Widgets.HeaderBarButton (main_window, "media-playback-start", _("Play"), { "<Ctrl>p" });
         forward = new TradeSim.Widgets.HeaderBarButton (main_window, "media-seek-forward-symbolic", "", { "<Ctrl>p" });
-        buy = new TradeSim.Widgets.HeaderBarButton (main_window, "go-up", "Buy", { "<Ctrl>p" });
-        sell = new TradeSim.Widgets.HeaderBarButton (main_window, "go-down", "Sell", { "<Ctrl>p" });
-        insert = new TradeSim.Widgets.MenuButton ("insert-object", "Insert", { "<Ctrl>p" });
-        reporte = new TradeSim.Widgets.HeaderBarButton (main_window, "x-office-presentation", "Report", { "<Ctrl>p" });
-        preferencias = new TradeSim.Widgets.HeaderBarButton (main_window, "open-menu", "Settings", { "<Ctrl>p" });
+        buy = new TradeSim.Widgets.HeaderBarButton (main_window, "go-up", _("Buy"), { "<Ctrl>p" });
+        sell = new TradeSim.Widgets.HeaderBarButton (main_window, "go-down", _("Sell"), { "<Ctrl>p" });
+        insert = new TradeSim.Widgets.MenuButton ("insert-object", _("Insert"), { "<Ctrl>p" });
+        reporte = new TradeSim.Widgets.HeaderBarButton (main_window, "x-office-presentation", _("Report"), { "<Ctrl>p" });
+        preferencias = new TradeSim.Widgets.HeaderBarButton (main_window, "open-menu", _("Settings"), { "<Ctrl>p" });
 
         var insert_popover = get_insert_menu ();
         insert.button.popover = insert_popover;
@@ -82,11 +82,11 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
                 return;
             }
 
-            var dialog = new Gtk.FileChooserDialog ("Save TradeSim file", main_window,
+            var dialog = new Gtk.FileChooserDialog (_("Save TradeSim file"), main_window,
                                                     Gtk.FileChooserAction.SAVE,
-                                                    "Save",
+                                                    _("Save"),
                                                     Gtk.ResponseType.OK,
-                                                    "Cancel",
+                                                    _("Cancel"),
                                                     Gtk.ResponseType.CANCEL
                                                     );
 
@@ -95,12 +95,12 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
             Gtk.FileFilter filter = new Gtk.FileFilter ();
             filter.add_pattern ("*.tradesim");
-            filter.set_filter_name ("TradeSim files");
+            filter.set_filter_name (_("TradeSim files"));
             dialog.add_filter (filter);
 
             filter = new Gtk.FileFilter ();
             filter.add_pattern ("*");
-            filter.set_filter_name ("All files");
+            filter.set_filter_name (_("All files"));
 
             dialog.add_filter (filter);
 
@@ -131,12 +131,12 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
         play.button.clicked.connect (() => {
 
-            if (play.label_btn.get_text () == "Play") {
+            if (play.label_btn.get_text () == _("Play")) {
                 play.change_icon ("media-playback-pause");
-                play.label_btn.set_text ("Stop");
+                play.label_btn.set_text (_("Stop"));
             } else {
                 play.change_icon ("media-playback-start");
-                play.label_btn.set_text ("Play");
+                play.label_btn.set_text (_("Play"));
             }
 
             main_window.main_layout.current_canvas.simulate ();
@@ -160,7 +160,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         });
 
         reporte.button.clicked.connect (() => {
-            alert("Please support this project to help me to implement this feature. Visit http://www.github.com/horaciodrs/TradeSim", (Gtk.Window) main_window);
+            alert(_("Please support this project to help me to implement this feature. Visit http://www.github.com/horaciodrs/TradeSim"), (Gtk.Window) main_window);
         });
 
         preferencias.button.clicked.connect (e => {
@@ -245,10 +245,10 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         grid.width_request = 240;
         grid.name = "main";
 
-        var draw_line_button = create_model_button ("Line", "shape-line-symbolic");
-        var draw_hline_button = create_model_button ("Horizontal Line", "shape-hline-symbolic");
-        var draw_rect_button = create_model_button ("Rectangle", "shape-rectangle-symbolic");
-        var draw_fibo_button = create_model_button ("Fibonacci Retracement", "shape-fibonacci-symbolic");
+        var draw_line_button = create_model_button (_("Line"), "shape-line-symbolic");
+        var draw_hline_button = create_model_button (_("Horizontal Line"), "shape-hline-symbolic");
+        var draw_rect_button = create_model_button (_("Rectangle"), "shape-rectangle-symbolic");
+        var draw_fibo_button = create_model_button (_("Fibonacci Retracement"), "shape-fibonacci-symbolic");
 
         draw_line_button.clicked.connect (e => {
 

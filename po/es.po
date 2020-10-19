@@ -1,0 +1,145 @@
+# Spanish translations for com.github.horaciodrs.TradeSim package.
+# Copyright (C) 2020 THE com.github.horaciodrs.TradeSim'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.horaciodrs.TradeSim package.
+# Automatically generated, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: com.github.horaciodrs.TradeSim\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-10-19 13:38-0300\n"
+"PO-Revision-Date: 2020-10-19 13:33-0300\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: data/com.github.horaciodrs.TradeSim.desktop.in:3
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:7
+msgid "TradeSim"
+msgstr ""
+
+#: data/com.github.horaciodrs.TradeSim.desktop.in:4
+msgid "Trading Simulator"
+msgstr "Simulador de Trading"
+
+#: data/com.github.horaciodrs.TradeSim.desktop.in:5
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:8
+msgid "The Linux Trading Simulator"
+msgstr "El Simulador de Trading para Linux"
+
+#: data/com.github.horaciodrs.TradeSim.desktop.in:13
+msgid "TradeSim;Trading;Finances;Currency;"
+msgstr ""
+
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:10
+msgid "Test your strategies on the Linux Trading Simulator, create reports, learn, try or develop new strategies for your trading."
+msgstr "Pruebe sus estrategias en el simulador de Trading para Linux, cree reportes, aprenda, intente o desarrolle nuevas estrategias para su trading."
+
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:11
+msgid "Features:"
+msgstr "Caracteristicas"
+
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:13
+msgid "Multiple instruments."
+msgstr "Multiples Instrumentos"
+
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:14
+msgid "Create Reports to display your performance as a virtual trader."
+msgstr "Crear Reportes para visualizar tu rendimiento como un trader virtual."
+
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:15
+msgid "Dark variant theme."
+msgstr "Soporta variante de tema oscuro."
+
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:16
+msgid "Configurable data source."
+msgstr "Fuente de datos configurable"
+
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:17
+msgid "Draw Fibonacci analisys tool."
+msgstr "Dibuja retrocesos de Fibonacci"
+
+#: data/com.github.horaciodrs.TradeSim.appdata.xml.in:23
+msgid "Initial Release"
+msgstr ""
+
+#: src/Layouts/HeaderBar.vala:54
+msgid "New"
+msgstr "Nuevo"
+
+#: src/Layouts/HeaderBar.vala:55
+msgid "Open"
+msgstr "Abrir"
+
+#: src/Layouts/HeaderBar.vala:56
+#: src/Layouts/HeaderBar.vala:87
+msgid "Save"
+msgstr "Guardar"
+
+#: src/Layouts/HeaderBar.vala:61
+msgid "Play"
+msgstr "Iniciar"
+
+#: src/Layouts/HeaderBar.vala:63
+msgid "Buy"
+msgstr "Comprar"
+
+#: src/Layouts/HeaderBar.vala:64
+msgid "Sell"
+msgstr "Vender"
+
+#: src/Layouts/HeaderBar.vala:65
+msgid "Insert"
+msgstr "Insertar"
+
+#: src/Layouts/HeaderBar.vala:66
+msgid "Report"
+msgstr "Reporte"
+
+#: src/Layouts/HeaderBar.vala:67
+msgid "Settings"
+msgstr "Configuracion"
+
+#: src/Layouts/HeaderBar.vala:85
+msgid "Save TradeSim file"
+msgstr "Guardar archivo de simulacion"
+
+#: src/Layouts/HeaderBar.vala:89
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: src/Layouts/HeaderBar.vala:98
+msgid "TradeSim files"
+msgstr "Archivo de TradeSim"
+
+#: src/Layouts/HeaderBar.vala:103
+msgid "All files"
+msgstr "Todos los archivos"
+
+#: src/Layouts/HeaderBar.vala:103
+msgid "Stop"
+msgstr "Detener"
+
+#: src/Layouts/HeaderBar.vala:163
+msgid "Please support this project to help me to implement this feature. Visit http://www.github.com/horaciodrs/TradeSim"
+msgstr "Por favor apoye este proyecto para ayudarme a implementar esta caracteristica visitando http://www.github.com/horaciodrs/TradeSim"
+
+#: src/Layouts/HeaderBar.vala:248
+msgid "Line"
+msgstr "Linea"
+
+#: src/Layouts/HeaderBar.vala:249
+msgid "Horizontal Line"
+msgstr "Linea Horizontal"
+
+#: src/Layouts/HeaderBar.vala:250
+msgid "Rectangle"
+msgstr "Rectangulo"
+
+#: src/Layouts/HeaderBar.vala:251
+msgid "Fibonacci Retracement"
+msgstr "Retroceso de Fibonacci"

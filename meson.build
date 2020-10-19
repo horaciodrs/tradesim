@@ -1,6 +1,8 @@
 project('com.github.horaciodrs.TradeSim', 'vala', 'c')
 
 i18n = import('i18n')
+# Set our translation domain
+add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()), language:'c')
 
 # Include the gnome module
 gnome = import('gnome')
@@ -29,5 +31,6 @@ executable(
 )
 
 subdir('data')
+subdir('po')
 
 meson.add_install_script('meson/post_install.py')

@@ -17,38 +17,38 @@ foreach i : icon_sizes
     #)
 endforeach
 
-####################################
-##Estas lineas son para cuando esten implementadas las traducciones
-##i18n.merge_file(
-##    input: meson.project_name() + '.desktop.in',
-##    output: meson.project_name() + '.desktop',
-##    po_dir: join_paths(meson.source_root(), 'po', 'extra'),
-##    type: 'desktop',
-##    install: true,
-##    install_dir: join_paths(get_option('datadir'), 'applications')
-##)
+#Translate and install our .desktop file
+i18n.merge_file(
+    input: meson.project_name() + '.desktop.in',
+    output: meson.project_name() + '.desktop',
+    po_dir: join_paths(meson.source_root(), 'po'),
+    type: 'desktop',
+    install: true,
+    install_dir: join_paths(get_option('datadir'), 'applications')
+)
 
-##i18n.merge_file(
-##    input: meson.project_name() + '.appdata.xml.in',
-##    output: meson.project_name() + '.appdata.xml',
-##    po_dir: join_paths(meson.source_root(), 'po', 'extra'),
-##    install: true,
-##    install_dir: join_paths(get_option('datadir'), 'metainfo')
-##)
+#Translate and install our .appdata file
+i18n.merge_file(
+    input: meson.project_name() + '.appdata.xml.in',
+    output: meson.project_name() + '.appdata.xml',
+    po_dir: join_paths(meson.source_root(), 'po'),
+    install: true,
+    install_dir: join_paths(get_option('datadir'), 'metainfo')
+)
 
 #############################3333
 
 ###--->>>>WARNING FIX IT WHEN TRANSLATIONS ARE DONE<<<----###
 
-install_data(
-    'com.github.horaciodrs.TradeSim.desktop',
-    install_dir: join_paths(get_option('datadir'), 'applications')
-)
+#install_data(
+#    'com.github.horaciodrs.TradeSim.desktop',
+#    install_dir: join_paths(get_option('datadir'), 'applications')
+#)
 
-install_data(
-    'com.github.horaciodrs.TradeSim.appdata.xml',
-    install_dir: join_paths(get_option('datadir'), 'metainfo')
-)
+#install_data(
+#    'com.github.horaciodrs.TradeSim.appdata.xml',
+#    install_dir: join_paths(get_option('datadir'), 'metainfo')
+#)
 
 ###########-->>>fix end<<<----#######################
 
