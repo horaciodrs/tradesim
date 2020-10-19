@@ -393,3 +393,31 @@ msgstr "Grosor:"
 #: src/Dialogs/DrawEditDialog.vala:263
 msgid "Please enter the object name"
 msgstr "Por favor ingrese un nombre para el objeto"
+
+#: src/Layouts/Welcome.vala:35
+msgid "Welcome to TradeSim"
+msgstr "Bienvenido a TradeSim"
+
+#: src/Layouts/Welcome.vala:36
+msgid "Test your strategies on the Linux Trading Simulator."
+msgstr "Pruebe sus estrategias en el Simulador de Trading de Linux."
+
+#: src/Layouts/Welcome.vala:45
+msgid "Create a New Simulation"
+msgstr "Crear una Nueva Simulación"
+
+#: src/Layouts/Welcome.vala:45
+msgid "Try or develop new strategies for your trading."
+msgstr "Pruebe o desarrolle nuevas estrategias para su trading."
+
+#: src/Layouts/Welcome.vala:46
+msgid "Open a previous saved simulation"
+msgstr "Abrir una simulación guardada previamente"
+
+#: src/Layouts/Welcome.vala:47
+msgid "Import Datasources"
+msgstr "Importar nuevas fuentes de datos"
+
+#: src/Layouts/Welcome.vala:47
+msgid "Import quotes from internet"
+msgstr "Importar cotizaciones desde internet"
