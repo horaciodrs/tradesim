@@ -6,6 +6,9 @@ TradeSim is a Trading Simulator application write in Vala for Elementary OS.
 
 Test your strategies on the Linux Trading Simulator, Create reports, learn, try or develop new strategies for your trading.
 
+## A quick look:
+![GitHub Logo](/data/screenshots/tradesim-video1.gif)
+
 ## Support
 If you like TradeSim and you want to support this development, please consider donating via:
 - Bitcoin: bc1q5ucnvqfq2swzgt0vd4kw739sgfj6taepyfm2wm
