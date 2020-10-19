@@ -61,7 +61,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
             border_width: 5,
             deletable: false,
             resizable: false,
-            title: "New Simulation",
+            title: _("New Simulation"),
             transient_for: parent,
             main_window: parent
             );
@@ -138,7 +138,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         var image = new Gtk.Image.from_icon_name ("document-new", Gtk.IconSize.DIALOG);
         image.margin_end = 10;
 
-        header_title = new Gtk.Label ("New Simulation");
+        header_title = new Gtk.Label (_("New Simulation"));
         header_title.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
         header_title.halign = Gtk.Align.START;
         header_title.ellipsize = Pango.EllipsizeMode.END;
@@ -156,28 +156,28 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         form_grid.row_spacing = 12;
         form_grid.column_spacing = 20;
 
-        label_name = new Gtk.Label ("Simulation Name:");
+        label_name = new Gtk.Label (_("Simulation Name:"));
         txt_name = new Gtk.Entry ();
-        txt_name.set_text ("Unnamed Simulation");
+        txt_name.set_text (_("Unnamed Simulation"));
         label_name.halign = Gtk.Align.END;
 
         form_grid.attach (label_name, 0, 0, 1, 1);
         form_grid.attach (txt_name, 1, 0, 1, 1);
 
-        label_provider = new Gtk.Label ("Data Provider:");
+        label_provider = new Gtk.Label (_("Data Provider:"));
         build_cbo_provider ();
         label_provider.halign = Gtk.Align.END;
 
-        label_ticker = new Gtk.Label ("Ticker:");
+        label_ticker = new Gtk.Label (_("Ticker:"));
         build_cbo_ticker ();
         label_ticker.halign = Gtk.Align.END;
 
-        label_amount = new Gtk.Label ("Initial Balance:");
+        label_amount = new Gtk.Label (_("Initial Balance:"));
         txt_amount = new Gtk.Entry ();
         txt_amount.set_text ("1000");
         label_amount.halign = Gtk.Align.END;
 
-        label_date = new Gtk.Label ("Date:");
+        label_date = new Gtk.Label (_("Date:"));
         entry_date = new Granite.Widgets.DatePicker();
         label_date.halign = Gtk.Align.END;
 
@@ -192,10 +192,10 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
             if(count == 0){
                 info_alert.set_revealed(true);
-                info_label.set_text("There is not imported data to the selected date.");
+                info_label.set_text(_("There is not imported data to the selected date."));
             }else if ((count > 0) && (count < MIN_ALERT_QUOTES)){
                 info_alert.set_revealed(true);
-                info_label.set_text("There are not engouth imported data to run a simulation.");
+                info_label.set_text(_("There are not engouth imported data to run a simulation."));
             }else{
                 info_alert.set_revealed(false);
                 validation_date = true;
@@ -233,9 +233,9 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         body.add (info_alert);
         body.add (form_grid);
 
-        acept_button = new Gtk.Button.with_label ("Ok");
+        acept_button = new Gtk.Button.with_label (_("Ok"));
         acept_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-        cancel_button = new Gtk.Button.with_label ("Cancel");
+        cancel_button = new Gtk.Button.with_label (_("Cancel"));
 
         add_action_widget (acept_button, Action.OK);
         add_action_widget (cancel_button, Action.CANCEL);
@@ -372,25 +372,25 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
     private string validate_data () {
 
         if (txt_name.get_text ().length < 1) {
-            return "Please enter the simulation name";
+            return _("Please enter the simulation name");
         }
 
         if (aux_provider_name.length < 1) {
-            return "Please enter the provider";
+            return _("Please enter the provider");
         }
 
         if (aux_ticker_name.length < 1) {
-            return "Please enter the ticker";
+            return _("Please enter the ticker");
         }
 
         if (aux_time_frame_name.length < 1) {
-            return "Please enter the timeframe";
+            return _("Please enter the timeframe");
         }
 
         if (txt_amount.get_text ().length < 1) {
-            return "Please enter the initial balance";
+            return _("Please enter the initial balance");
         } else if (double.parse (txt_amount.get_text ()) == 0) {
-            return "Please enter a valid initial balance";
+            return _("Please enter a valid initial balance");
         }
 
         return "";

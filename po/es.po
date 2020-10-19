@@ -113,6 +113,7 @@ msgstr "Guardar archivo de simulación"
 
 #: src/Layouts/HeaderBar.vala:89
 #: src/Dialogs/NewOperationDialog.vala:246
+#: src/Dialogs/NewChartDialog.vala:238
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -300,3 +301,68 @@ msgstr "Stop Loss:"
 #: src/Dialogs/NewOperationDialog.vala:198
 msgid "Stop Loss"
 msgstr "Stop Loss"
+
+#: src/Dialogs/NewChartDialog.vala:64
+#: src/Dialogs/NewChartDialog.vala:141
+msgid "New Simulation"
+msgstr "Nueva Simulación"
+
+#: src/Dialogs/NewChartDialog.vala:159
+msgid "Simulation Name:"
+msgstr "Nombre de la Simulación:"
+
+#: src/Dialogs/NewChartDialog.vala:161
+msgid "Unnamed Simulation"
+msgstr "Simulación sin nombre"
+
+#: src/Dialogs/NewChartDialog.vala:167
+msgid "Data Provider:"
+msgstr "Proveedor de Datos:"
+
+#: src/Dialogs/NewChartDialog.vala:171
+msgid "Ticker:"
+msgstr "Instrumento:"
+
+#: src/Dialogs/NewChartDialog.vala:175
+msgid "Initial Balance:"
+msgstr "Balance Inicial:"
+
+#: src/Dialogs/NewChartDialog.vala:180
+msgid "Date:"
+msgstr "Fecha:"
+
+#: src/Dialogs/NewChartDialog.vala:195
+msgid "There is not imported data to the selected date."
+msgstr "No hay datos importados para la fecha seleccionada."
+
+#: src/Dialogs/NewChartDialog.vala:198
+msgid "There are not engouth imported data to run a simulation."
+msgstr "No hay suficientes datos para realizar una simulación."
+
+#: src/Dialogs/NewChartDialog.vala:236
+msgid "Ok"
+msgstr "Aceptar"
+
+#: src/Dialogs/NewChartDialog.vala:375
+msgid "Please enter the simulation name"
+msgstr "Por favor ingrese el nombre de la simulación"
+
+#: src/Dialogs/NewChartDialog.vala:379
+msgid "Please enter the provider"
+msgstr "Por favor seleccione un proveedor"
+
+#: src/Dialogs/NewChartDialog.vala:383
+msgid "Please enter the ticker"
+msgstr "Por favor seleccione un instrumento"
+
+#: src/Dialogs/NewChartDialog.vala:387
+msgid "Please enter the timeframe"
+msgstr "Por favor seleccione una temporalidad"
+
+#: src/Dialogs/NewChartDialog.vala:391
+msgid "Please enter the initial balance"
+msgstr "Por favor ingrese el balance inicial"
+
+#: src/Dialogs/NewChartDialog.vala:391
+msgid "Please enter a valid initial balance"
+msgstr "El balance inicial no es válido"
