@@ -484,3 +484,7 @@ msgstr "Beneficio:"
 #: src/Widgets/OperationsPanel.vala:454
 msgid "Undefined"
 msgstr "Indefinido"
+
+#: src/Widgets/DrawingsPanel.vala:44
+msgid "Objects Manager"
+msgstr "Explorador de Objetos"
