@@ -57,11 +57,11 @@ public class TradeSim.Services.FileReader {
 
     }
 
-    public void set_operations_manager( TradeSim.Services.OperationsManager om){
+    public void set_operations_manager (TradeSim.Services.OperationsManager om) {
         operations_manager = om;
     }
 
-    public void set_draw_manager( TradeSim.Services.Drawings dm){
+    public void set_draw_manager (TradeSim.Services.Drawings dm) {
         draw_manager = dm;
     }
 
@@ -83,7 +83,7 @@ public class TradeSim.Services.FileReader {
         for (Xml.Node * iter = simulation->children ; iter != null ; iter = iter->next) {
             if (iter->type == Xml.ElementType.ELEMENT_NODE) {
 
-                //print (iter->name + "\n");
+                // print (iter->name + "\n");
 
                 switch (iter->name) {
                 case "name":
@@ -134,7 +134,7 @@ public class TradeSim.Services.FileReader {
                                 if (iter_operations_item->type == Xml.ElementType.ELEMENT_NODE) {
                                     switch (iter_operations_item->name) {
                                     case "id":
-                                        new_operation.id = int.parse(iter_operations_item->get_content ());
+                                        new_operation.id = int.parse (iter_operations_item->get_content ());
                                         break;
                                     case "providername":
                                         new_operation.provider_name = iter_operations_item->get_content ();
@@ -186,8 +186,8 @@ public class TradeSim.Services.FileReader {
                             }
 
                             operations.append_val (new_operation);
-                            if(operations_manager != null){
-                                operations_manager.add_operation(new_operation);
+                            if (operations_manager != null) {
+                                operations_manager.add_operation (new_operation);
                                 ref_canvas.draw_operation_info (new_operation);
                             }
                         }
@@ -246,14 +246,14 @@ public class TradeSim.Services.FileReader {
                                             }
                                         }
 
-                                        if(ref_canvas != null){
-                                            new_fibonacci.set_ref_canvas(ref_canvas);
+                                        if (ref_canvas != null) {
+                                            new_fibonacci.set_ref_canvas (ref_canvas);
                                         }
 
 
                                         fibonaccies.append_val (new_fibonacci);
-                                        if(draw_manager != null){
-                                            draw_manager.fibonacci.append_val(new_fibonacci);
+                                        if (draw_manager != null) {
+                                            draw_manager.fibonacci.append_val (new_fibonacci);
                                         }
                                     }
                                 }
@@ -307,13 +307,13 @@ public class TradeSim.Services.FileReader {
                                             }
                                         }
 
-                                        if(ref_canvas != null){
-                                            new_hline.set_ref_canvas(ref_canvas);
+                                        if (ref_canvas != null) {
+                                            new_hline.set_ref_canvas (ref_canvas);
                                         }
 
                                         hlines.append_val (new_hline);
-                                        if(draw_manager != null){
-                                            draw_manager.hlines.append_val(new_hline);
+                                        if (draw_manager != null) {
+                                            draw_manager.hlines.append_val (new_hline);
                                         }
                                     }
                                 }
@@ -367,13 +367,13 @@ public class TradeSim.Services.FileReader {
                                             }
                                         }
 
-                                        if(ref_canvas != null){
-                                            new_line.set_ref_canvas(ref_canvas);
+                                        if (ref_canvas != null) {
+                                            new_line.set_ref_canvas (ref_canvas);
                                         }
 
                                         lines.append_val (new_line);
-                                        if(draw_manager != null){
-                                            draw_manager.lines.append_val(new_line);
+                                        if (draw_manager != null) {
+                                            draw_manager.lines.append_val (new_line);
                                         }
                                     }
                                 }
@@ -427,13 +427,13 @@ public class TradeSim.Services.FileReader {
                                             }
                                         }
 
-                                        if(ref_canvas != null){
-                                            new_rectangle.set_ref_canvas(ref_canvas);
+                                        if (ref_canvas != null) {
+                                            new_rectangle.set_ref_canvas (ref_canvas);
                                         }
 
                                         rectangles.append_val (new_rectangle);
-                                        if(draw_manager != null){
-                                            draw_manager.rectangles.append_val(new_rectangle);
+                                        if (draw_manager != null) {
+                                            draw_manager.rectangles.append_val (new_rectangle);
                                         }
                                     }
                                 }
@@ -453,38 +453,38 @@ public class TradeSim.Services.FileReader {
         }
 
         /*
-        canvas_data.print_data ();
+           canvas_data.print_data ();
 
-        print ("----------OPERATIONS-----------\n");
-        for (int i = 0 ; i < operations.length ; i++) {
+           print ("----------OPERATIONS-----------\n");
+           for (int i = 0 ; i < operations.length ; i++) {
             operations.index (i).print_data ();
             print ("---------------------\n");
-        }
+           }
 
-        print ("----------LINES-----------\n");
-        for (int i = 0 ; i < lines.length ; i++) {
+           print ("----------LINES-----------\n");
+           for (int i = 0 ; i < lines.length ; i++) {
             lines.index (i).print_data ();
             print ("---------------------\n");
-        }
+           }
 
-        print ("----------HLINES-----------\n");
-        for (int i = 0 ; i < hlines.length ; i++) {
+           print ("----------HLINES-----------\n");
+           for (int i = 0 ; i < hlines.length ; i++) {
             hlines.index (i).print_data ();
             print ("---------------------\n");
-        }
+           }
 
-        print ("----------RECTANGLES-----------\n");
-        for (int i = 0 ; i < rectangles.length ; i++) {
+           print ("----------RECTANGLES-----------\n");
+           for (int i = 0 ; i < rectangles.length ; i++) {
             rectangles.index (i).print_data ();
             print ("---------------------\n");
-        }
+           }
 
-        print ("----------FIBONACCIES-----------\n");
-        for (int i = 0 ; i < fibonaccies.length ; i++) {
+           print ("----------FIBONACCIES-----------\n");
+           for (int i = 0 ; i < fibonaccies.length ; i++) {
             fibonaccies.index (i).print_data ();
             print ("---------------------\n");
-        }
-        */
+           }
+         */
     }
 
 }

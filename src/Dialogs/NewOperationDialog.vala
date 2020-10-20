@@ -63,7 +63,7 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
             border_width: 5,
             deletable: true,
             resizable: false,
-            title: _("New Operation"),
+            title: _ ("New Operation"),
             transient_for: parent,
             main_window: parent
             );
@@ -104,7 +104,7 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
         string simulation_name = main_window.main_layout.current_canvas.simulation_name;
         string operation_code = op_id.to_string ();
         string operation_date = get_fecha (main_window.main_layout.current_canvas.last_candle_date);
-        string operation_data = _("Code: ") + operation_code + _(", Date: ") + operation_date;
+        string operation_data = _ ("Code: ") + operation_code + _ (", Date: ") + operation_date;
 
         var body = get_content_area ();
 
@@ -130,7 +130,7 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
         body.add (header_grid);
 
         var grid_price = new Gtk.Grid ();
-        label_price = new Gtk.Label (_("Price:"));
+        label_price = new Gtk.Label (_ ("Price:"));
         label_price.halign = Gtk.Align.START;
         label_price.margin_bottom = 7;
         spin_price = new Gtk.SpinButton.with_range (0, 9999, 0.00001);
@@ -142,7 +142,7 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
         grid_price.column_spacing = 12;
 
         var grid_volume = new Gtk.Grid ();
-        label_volume = new Gtk.Label (_("Volume:"));
+        label_volume = new Gtk.Label (_ ("Volume:"));
         label_volume.halign = Gtk.Align.START;
         label_volume.margin_bottom = 7;
         spin_volume = new Gtk.SpinButton.with_range (0, 10, 0.01);
@@ -158,7 +158,7 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
         var grid_tp = new Gtk.Grid ();
         grid_tp.row_spacing = 12;
         grid_tp.column_spacing = 20;
-        label_tp = new Gtk.Label (_("Take Profit:"));
+        label_tp = new Gtk.Label (_ ("Take Profit:"));
         label_tp.halign = Gtk.Align.END;
         entry_tp = new Gtk.SpinButton.with_range (0, 99999, 10);
         entry_tp.halign = Gtk.Align.START;
@@ -170,20 +170,20 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
         entry_tp_price = new Gtk.SpinButton.with_range (0, 99999, 0.00001);
         entry_tp_price.halign = Gtk.Align.START;
         entry_tp_price.width_request = spin_width;
-        grid_tp.attach (new Gtk.Label (_("Take Profit")), 0, 0);
+        grid_tp.attach (new Gtk.Label (_ ("Take Profit")), 0, 0);
         grid_tp.attach (entry_tp, 0, 1);
         grid_tp.attach (entry_tp_amount, 0, 2);
         grid_tp.attach (entry_tp_price, 0, 3);
 
-        grid_tp.attach (new Gtk.Label (_("Points")), 1, 1);
+        grid_tp.attach (new Gtk.Label (_ ("Points")), 1, 1);
         grid_tp.attach (new Gtk.Label ("USD"), 1, 2);
-        grid_tp.attach (new Gtk.Label (_("Price")), 1, 3);
+        grid_tp.attach (new Gtk.Label (_ ("Price")), 1, 3);
 
 
         var grid_sl = new Gtk.Grid ();
         grid_sl.row_spacing = 12;
         grid_sl.column_spacing = 20;
-        label_sl = new Gtk.Label (_("Stop Loss:"));
+        label_sl = new Gtk.Label (_ ("Stop Loss:"));
         label_sl.halign = Gtk.Align.END;
         entry_sl = new Gtk.SpinButton.with_range (0, 99999, 10);
         entry_sl.halign = Gtk.Align.START;
@@ -195,7 +195,7 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
         entry_sl_price = new Gtk.SpinButton.with_range (0, 9999, 0.00001);
         entry_sl_price.halign = Gtk.Align.START;
         entry_sl_price.width_request = spin_width;
-        grid_sl.attach (new Gtk.Label (_("Stop Loss")), 0, 0);
+        grid_sl.attach (new Gtk.Label (_ ("Stop Loss")), 0, 0);
         grid_sl.attach (entry_sl, 0, 1);
         grid_sl.attach (entry_sl_amount, 0, 2);
         grid_sl.attach (entry_sl_price, 0, 3);
@@ -233,17 +233,17 @@ public class TradeSim.Dialogs.NewOperationDialog : Gtk.Dialog {
 
         body.add (form_grid);
 
-        acept_button = new Gtk.Button.with_label (_("Buy"));
+        acept_button = new Gtk.Button.with_label (_ ("Buy"));
 
         if (operation_type == TradeSim.Objects.OperationItem.Type.BUY) {
             acept_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-            acept_button.set_label (_("Buy"));
+            acept_button.set_label (_ ("Buy"));
         } else if (operation_type == TradeSim.Objects.OperationItem.Type.SELL) {
             acept_button.get_style_context ().add_class (Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION);
-            acept_button.set_label (_("Sell"));
+            acept_button.set_label (_ ("Sell"));
         }
 
-        cancel_button = new Gtk.Button.with_label (_("Cancel"));
+        cancel_button = new Gtk.Button.with_label (_ ("Cancel"));
 
         add_action_widget (acept_button, Action.OK);
         add_action_widget (cancel_button, Action.CANCEL);

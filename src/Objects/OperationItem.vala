@@ -150,7 +150,7 @@ public class TradeSim.Objects.OperationItem {
         writer.start_element ("operation");
 
         writer.start_element ("id");
-        writer.write_string (id.to_string());
+        writer.write_string (id.to_string ());
         writer.end_element ();
 
         writer.start_element ("providername");
@@ -202,13 +202,13 @@ public class TradeSim.Objects.OperationItem {
         writer.end_element ();
 
 
-        if(close_price != null){
+        if (close_price != null) {
             writer.start_element ("closeprice");
             writer.write_string (close_price.to_string ());
             writer.end_element ();
         }
 
-        if(close_date != null){
+        if (close_date != null) {
             writer.start_element ("closedate");
             writer.write_string (close_date.to_unix ().to_string ());
             writer.end_element ();

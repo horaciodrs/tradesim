@@ -60,7 +60,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
         nb_chart_container.set_show_border (false);
 
-        nb_chart_container.append_page (welcome_widget, new Gtk.Label (_("Welcome to TradeSim")));
+        nb_chart_container.append_page (welcome_widget, new Gtk.Label (_ ("Welcome to TradeSim")));
 
         nb_chart_container.switch_page.connect (on_change_canvas_focus);
         nb_chart_container.page_removed.connect (on_page_removed);
@@ -107,10 +107,10 @@ public class TradeSim.Layouts.Main : Gtk.Box {
             operations_panel.update_operations ();
             operations_panel.update_bottom_info ();
 
-            main_window.headerbar.zoom.zoom_set(current_canvas.get_zoom_factor ());
+            main_window.headerbar.zoom.zoom_set (current_canvas.get_zoom_factor ());
 
         } else if (tab.get_type () == typeof (TradeSim.Layouts.Welcome)) {
-            main_window.headerbar.set_subtitle (_("The Linux Trading Simulator"));
+            main_window.headerbar.set_subtitle (_ ("The Linux Trading Simulator"));
             drawings_panel.delete_all ();
             operations_panel.delete_operations ();
         }
@@ -166,7 +166,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
         double _simulation_initial_balance = 0.00;
         DateTime _initial_date;
 
-        try{
+        try {
 
             var simulation_file = new TradeSim.Services.FileReader (file_name);
 
@@ -181,7 +181,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
             new_chart (provider_name, ticker_name, time_frame_name, _simulation_name, _simulation_initial_balance, _initial_date, file_name);
 
-        }catch(Error e){
+        } catch (Error e) {
             return;
         }
 
@@ -222,11 +222,11 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
     public void close_tab (TradeSim.Widgets.CanvasContainer cc) {
 
-        if(current_canvas.need_save == true){
-            if(confirm(_("Are you sure you want to exit without save changes?"), main_window, Gtk.MessageType.QUESTION)){
+        if (current_canvas.need_save == true) {
+            if (confirm (_ ("Are you sure you want to exit without save changes?"), main_window, Gtk.MessageType.QUESTION)) {
                 nb_chart_container.remove_page (cc.get_page ());
             }
-        }else{
+        } else {
             nb_chart_container.remove_page (cc.get_page ());
         }
 

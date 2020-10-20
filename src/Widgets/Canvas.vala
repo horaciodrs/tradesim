@@ -96,9 +96,9 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public string ? file_url;
 
-    public bool scroll_from_file_setted; //Indica si luego de cargar un archivo se movio el scroll al final.
+    public bool scroll_from_file_setted; // Indica si luego de cargar un archivo se movio el scroll al final.
 
-    public bool need_save; //Indica si es necesario guardar antes de salir.
+    public bool need_save; // Indica si es necesario guardar antes de salir.
 
     public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame, string _simulation_name = "Unnamed Simulation", double _simulation_initial_balance = 500.000, DateTime _initial_date, string ? load_file = null) {
 
@@ -139,7 +139,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         init ();
 
-        if(load_file != null){
+        if (load_file != null) {
             file_url = load_file;
             init_from_file (file_url);
         }
@@ -150,7 +150,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public void init_from_file (string file_path) {
 
-        try{
+        try {
 
             var simulation_file = new TradeSim.Services.FileReader (file_path, this);
 
@@ -178,13 +178,13 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
             vertical_scale_calculation ();
             horizontal_scale_calculation ();
-            horizontal_scroll_position_end (); //Intento posicionar el scroll en el final.
+            horizontal_scroll_position_end (); // Intento posicionar el scroll en el final.
 
             need_save = false;
 
-            //main_window.main_layout.drawings_panel.reload_objects ();
+            // main_window.main_layout.drawings_panel.reload_objects ();
 
-        }catch(Error e){
+        } catch (Error e) {
             return;
         }
 
@@ -211,8 +211,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         data = new TradeSim.Services.QuotesManager ();
 
-        date_from = date_inicial; //data.db.get_min_date (provider_name, ticker, time_frame);
-        //date_inicial = date_from;
+        date_from = date_inicial; // data.db.get_min_date (provider_name, ticker, time_frame);
+        // date_inicial = date_from;
 
         change_zoom_level (1.000);
 
@@ -398,7 +398,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
             // print("date_from:" + date_from.to_string() + " date_to:" + date_to.to_string() + "\n");
 
-            horizontal_scroll_position_end (); //_horizontal_scroll_x = _width - vertical_scale_width - _horizontal_scroll_width;
+            horizontal_scroll_position_end (); // _horizontal_scroll_x = _width - vertical_scale_width - _horizontal_scroll_width;
 
             check_operations_tp_and_sl ();
             main_window.main_layout.operations_panel.update_operations_profit ();
@@ -416,7 +416,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
-    public void horizontal_scroll_position_end (){
+    public void horizontal_scroll_position_end () {
         _horizontal_scroll_x = _width - vertical_scale_width - _horizontal_scroll_width;
     }
 
@@ -479,7 +479,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
-    public double get_zoom_factor (){
+    public double get_zoom_factor () {
         return zoom_factor * 100;
     }
 
@@ -1371,9 +1371,9 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         draw_horizontal_scrollbar (cr);
 
-        //Lleva el scroll al final cuando se carga un archivo.
-        if(!scroll_from_file_setted){
-            horizontal_scroll_position_end();
+        // Lleva el scroll al final cuando se carga un archivo.
+        if (!scroll_from_file_setted) {
+            horizontal_scroll_position_end ();
             scroll_from_file_setted = true;
         }
 

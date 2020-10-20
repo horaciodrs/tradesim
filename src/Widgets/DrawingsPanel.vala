@@ -41,7 +41,7 @@ public class TradeSim.Widgets.DrawingsPanel : Gtk.Grid {
 
     public void init () {
 
-        label_title = new Gtk.Label (_("Objects Manager"));
+        label_title = new Gtk.Label (_ ("Objects Manager"));
         scroll_drawings = new Gtk.ScrolledWindow (null, null);
         scroll_drawings.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
         scroll_drawings.get_style_context ().add_class ("scrolled-window-drawings");

@@ -67,7 +67,7 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
                 );
 
         } catch (Error e) {
-            warning (_("fail to load css styles for main window."));
+            warning (_ ("fail to load css styles for main window."));
         }
 
         add (main_layout);
@@ -115,11 +115,11 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
     public void open_dialog_open () {
 
-        var dialog = new Gtk.FileChooserDialog (_("Open TradeSim file"), this,
+        var dialog = new Gtk.FileChooserDialog (_ ("Open TradeSim file"), this,
                                                 Gtk.FileChooserAction.OPEN,
-                                                _("Open"),
+                                                _ ("Open"),
                                                 Gtk.ResponseType.OK,
-                                                _("Cancel"),
+                                                _ ("Cancel"),
                                                 Gtk.ResponseType.CANCEL
                                                 );
 
@@ -127,12 +127,12 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
         Gtk.FileFilter filter = new Gtk.FileFilter ();
         filter.add_pattern ("*.tradesim");
-        filter.set_filter_name (_("TradeSim files"));
+        filter.set_filter_name (_ ("TradeSim files"));
         dialog.add_filter (filter);
 
         filter = new Gtk.FileFilter ();
         filter.add_pattern ("*");
-        filter.set_filter_name (_("All files"));
+        filter.set_filter_name (_ ("All files"));
 
         dialog.add_filter (filter);
 

@@ -93,7 +93,7 @@ public class TradeSim.Drawings.Line {
 
     }
 
-    public void set_ref_canvas (TradeSim.Widgets.Canvas _canvas){
+    public void set_ref_canvas (TradeSim.Widgets.Canvas _canvas) {
         ref_canvas = _canvas;
     }
 

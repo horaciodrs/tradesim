@@ -732,7 +732,7 @@ public class TradeSim.Services.Drawings {
         }
 
         return false;
-        
+
     }
 
 }

@@ -32,8 +32,8 @@ public class TradeSim.Layouts.Welcome : Granite.Widgets.Welcome {
     public Welcome (TradeSim.MainWindow _main_window) {
         Object (
             main_window: _main_window,
-            title: _("Welcome to TradeSim"),
-            subtitle: _("Test your strategies on the Linux Trading Simulator.")
+            title: _ ("Welcome to TradeSim"),
+            subtitle: _ ("Test your strategies on the Linux Trading Simulator.")
             );
     }
 
@@ -42,9 +42,9 @@ public class TradeSim.Layouts.Welcome : Granite.Widgets.Welcome {
         halign = Gtk.Align.FILL;
         vexpand = true;
 
-        append ("document-new", _("Create a New Simulation"), _("Try or develop new strategies for your trading."));
-        append ("document-open", _("Open a previous saved simulation"), _("Open a previous saved simulation"));
-        append ("folder-download", _("Import Datasources"), _("Import quotes from internet"));
+        append ("document-new", _ ("Create a New Simulation"), _ ("Try or develop new strategies for your trading."));
+        append ("document-open", _ ("Open a previous saved simulation"), _ ("Open a previous saved simulation"));
+        append ("folder-download", _ ("Import Datasources"), _ ("Import quotes from internet"));
 
         activated.connect (index => {
             switch (index) {

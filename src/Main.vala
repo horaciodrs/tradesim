@@ -33,7 +33,7 @@
 
  */
 
-namespace TradeSim.Data{
+namespace TradeSim.Data {
     public const string APP_VERSION = "2020.10.20";
 }
 

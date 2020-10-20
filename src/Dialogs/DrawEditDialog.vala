@@ -58,7 +58,7 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
             border_width: 5,
             deletable: false,
             resizable: true,
-            title: _("Edit Object"),
+            title: _ ("Edit Object"),
             transient_for: parent,
             main_window: parent,
             item_to_update: _item_to_update
@@ -94,7 +94,7 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
         var image = new Gtk.Image.from_icon_name ("document-page-setup", Gtk.IconSize.DIALOG);
         image.margin_end = 10;
 
-        header_title = new Gtk.Label (_("Edit Object"));
+        header_title = new Gtk.Label (_ ("Edit Object"));
         header_title.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
         header_title.halign = Gtk.Align.START;
         header_title.ellipsize = Pango.EllipsizeMode.END;
@@ -112,7 +112,7 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
         form_grid.row_spacing = 12;
         form_grid.column_spacing = 20;
 
-        label_name = new Gtk.Label (_("Object Name:"));
+        label_name = new Gtk.Label (_ ("Object Name:"));
         txt_name = new Gtk.Entry ();
         txt_name.set_text (object_id);
         label_name.halign = Gtk.Align.END;
@@ -124,7 +124,7 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
 
         Gdk.RGBA aux_color = draw_manager.get_draw_color (object_id, wtype).get_rgba ();
 
-        label_color = new Gtk.Label (_("Color:"));
+        label_color = new Gtk.Label (_ ("Color:"));
         button_color = new Gtk.ColorButton.with_rgba (aux_color);
         label_color.halign = Gtk.Align.END;
 
@@ -133,7 +133,7 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
 
         // Alpha
 
-        label_alpha = new Gtk.Label (_("Opacity:"));
+        label_alpha = new Gtk.Label (_ ("Opacity:"));
         scale_alpha = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 0, 100, 0.1);
         label_alpha.halign = Gtk.Align.END;
 
@@ -154,7 +154,7 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
 
         // Thickness
 
-        label_thickness = new Gtk.Label (_("Thickness:"));
+        label_thickness = new Gtk.Label (_ ("Thickness:"));
         label_thickness.halign = Gtk.Align.END;
 
         form_grid.attach (label_thickness, 0, 3);
@@ -162,9 +162,9 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
 
         body.add (form_grid);
 
-        acept_button = new Gtk.Button.with_label (_("Ok"));
+        acept_button = new Gtk.Button.with_label (_ ("Ok"));
         acept_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-        cancel_button = new Gtk.Button.with_label (_("Cancel"));
+        cancel_button = new Gtk.Button.with_label (_ ("Cancel"));
 
         add_action_widget (acept_button, Action.OK);
         add_action_widget (cancel_button, Action.CANCEL);
@@ -264,9 +264,9 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
         var dm = main_window.main_layout.current_canvas.draw_manager;
 
         if (txt_name.get_text ().length < 1) {
-            return _("Please enter the object name");
-        }else if((txt_name.get_text () != original_object_id) && (dm.exists (txt_name.get_text (), wtype) ) ){
-            return _("The object name allready exists.");
+            return _ ("Please enter the object name");
+        } else if ((txt_name.get_text () != original_object_id) && (dm.exists (txt_name.get_text (), wtype))) {
+            return _ ("The object name allready exists.");
         }
 
         return "";

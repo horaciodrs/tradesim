@@ -73,7 +73,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             deletable: true,
             resizable: true,
             modal: true,
-            title: _("Preferences")
+            title: _ ("Preferences")
             );
 
         delete_event.connect ((e) => {
@@ -100,9 +100,9 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         stack.margin = 6;
         stack.margin_bottom = 15;
         stack.margin_top = 15;
-        stack.add_titled (grid_aparence, "interface", _("Interface"));
-        stack.add_titled (grid_data_source, "datasource", _("Data Source"));
-        stack.add_titled (grid_about_us, "about", _("About"));
+        stack.add_titled (grid_aparence, "interface", _ ("Interface"));
+        stack.add_titled (grid_data_source, "datasource", _ ("Data Source"));
+        stack.add_titled (grid_about_us, "about", _ ("About"));
         stack.set_hexpand (true);
         stack.halign = Gtk.Align.FILL;
 
@@ -153,9 +153,9 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         grid.column_spacing = 12;
         grid.column_homogeneous = true;
 
-        grid.attach (new SettingsHeader (_("Interface")), 0, 0, 2, 1);
+        grid.attach (new SettingsHeader (_ ("Interface")), 0, 0, 2, 1);
 
-        grid.attach (new SettingsLabel (_("Use Dark Theme:")), 0, 1, 1, 1);
+        grid.attach (new SettingsLabel (_ ("Use Dark Theme:")), 0, 1, 1, 1);
         dark_theme_switch = new SettingsSwitch ("dark-theme");
         grid.attach (dark_theme_switch, 1, 1, 1, 1);
 
@@ -216,7 +216,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         });
 
-        tree_view_provider.insert_column_with_attributes (-1, _("Provider"), provider_cell, "text", 0);
+        tree_view_provider.insert_column_with_attributes (-1, _ ("Provider"), provider_cell, "text", 0);
         tree_view_provider.insert_column_with_attributes (-1, "ProviderFolderName", provider_folder_cell, "text", 1);
 
         tree_view_provider.get_column (1).set_visible (false); // oculto la columna con la url.
@@ -271,7 +271,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         });
 
-        tree_view_ticker.insert_column_with_attributes (-1, _("Ticker"), ticker_cell, "text", 0);
+        tree_view_ticker.insert_column_with_attributes (-1, _ ("Ticker"), ticker_cell, "text", 0);
 
         scroll_ticker.add (tree_view_ticker);
         scroll_ticker.set_vexpand (true);
@@ -319,7 +319,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         });
 
-        tree_view_year.insert_column_with_attributes (-1, _("Year"), year_cell, "text", 0);
+        tree_view_year.insert_column_with_attributes (-1, _ ("Year"), year_cell, "text", 0);
 
         scroll_year.add (tree_view_year);
         scroll_year.set_vexpand (true);
@@ -336,7 +336,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         spiner_data_source.set_visible (true);
         spiner_data_source.start ();
-        label_waiting.set_text (_("Waiting for data..."));
+        label_waiting.set_text (_ ("Waiting for data..."));
         progress_import.set_fraction (0.00);
 
         var loop = new MainLoop ();
@@ -350,7 +350,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         update_quotes_by_filter.begin ((obj, res) => {
 
             update_quotes_by_filter.end (res);
-            label_waiting.set_text (_("Done! - Has been found ") + data_files_found.to_string () + _(" data files"));
+            label_waiting.set_text (_ ("Done! - Has been found ") + data_files_found.to_string () + _ (" data files"));
             label_waiting.get_style_context ().add_class ("label-status");
             spiner_data_source.stop ();
             working = false;
@@ -515,14 +515,14 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             spiner_data_source.set_visible (true);
             spiner_data_source.start ();
-            label_waiting.set_text (_("Importing data..."));
+            label_waiting.set_text (_ ("Importing data..."));
 
             var loop = new MainLoop ();
 
             import_data_from_internet.begin (url.get_string (), (obj, res) => {
 
                 import_data_from_internet.end (res);
-                label_waiting.set_text (_("Done!"));
+                label_waiting.set_text (_ ("Done!"));
                 label_waiting.get_style_context ().add_class ("label-status");
                 spiner_data_source.stop ();
                 loop.quit ();
@@ -535,13 +535,13 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         });
 
-        tree_view_quotes.insert_column_with_attributes (-1, _("Provider"), quotes_provider_cell, "text", 0);
-        tree_view_quotes.insert_column_with_attributes (-1, _("Market"), quotes_market_cell, "text", 1);
-        tree_view_quotes.insert_column_with_attributes (-1, _("Ticker"), quotes_ticker_cell, "text", 2);
-        tree_view_quotes.insert_column_with_attributes (-1, _("Year"), quotes_year_cell, "text", 3);
-        tree_view_quotes.insert_column_with_attributes (-1, _("Month"), quotes_month_cell, "text", 4);
-        tree_view_quotes.insert_column_with_attributes (-1, _("Timeframe"), quotes_timeframe_cell, "text", 5);
-        tree_view_quotes.insert_column_with_attributes (-1, _("Imported"), quotes_data_toggle, "active", 6);
+        tree_view_quotes.insert_column_with_attributes (-1, _ ("Provider"), quotes_provider_cell, "text", 0);
+        tree_view_quotes.insert_column_with_attributes (-1, _ ("Market"), quotes_market_cell, "text", 1);
+        tree_view_quotes.insert_column_with_attributes (-1, _ ("Ticker"), quotes_ticker_cell, "text", 2);
+        tree_view_quotes.insert_column_with_attributes (-1, _ ("Year"), quotes_year_cell, "text", 3);
+        tree_view_quotes.insert_column_with_attributes (-1, _ ("Month"), quotes_month_cell, "text", 4);
+        tree_view_quotes.insert_column_with_attributes (-1, _ ("Timeframe"), quotes_timeframe_cell, "text", 5);
+        tree_view_quotes.insert_column_with_attributes (-1, _ ("Imported"), quotes_data_toggle, "active", 6);
         tree_view_quotes.insert_column_with_attributes (-1, "Url", quotes_url_cell, "text", 7);
 
         tree_view_quotes.get_column (5).set_visible (false); // oculto la columna con el Timeframe.
@@ -569,10 +569,10 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         double completado = 1.00 * qm.db.imported_lines / qm.db.import_total_lines;
 
         progress_import.set_fraction (completado);
-        label_waiting.set_text (_("Imported ") + qm.db.imported_lines.to_string () + " of " + qm.db.import_total_lines.to_string () + _(" quotes."));
+        label_waiting.set_text (_ ("Imported ") + qm.db.imported_lines.to_string () + " of " + qm.db.import_total_lines.to_string () + _ (" quotes."));
 
         if (qm.db.imported_lines == qm.db.import_total_lines) {
-            label_waiting.set_text (_("Import Completed!"));
+            label_waiting.set_text (_ ("Import Completed!"));
             tree_view_provider.set_sensitive (true);
             tree_view_ticker.set_sensitive (true);
             tree_view_year.set_sensitive (true);
@@ -667,7 +667,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         spiner_data_source.halign = Gtk.Align.END;
         label_waiting.halign = Gtk.Align.START;
 
-        grid.attach (new SettingsHeader (_("Data Source")), 0, 0);
+        grid.attach (new SettingsHeader (_ ("Data Source")), 0, 0);
         grid.attach (scroll_provider, 0, 1, 1, 2);
         grid.attach (scroll_ticker, 1, 1, 1, 2);
         grid.attach (scroll_year, 2, 1, 1, 2);
@@ -693,14 +693,14 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         app_name.get_style_context ().add_class ("h2");
         app_name.margin_top = 6;
 
-        var app_description = new Gtk.Label (_("The Linux Trading Simulator"));
+        var app_description = new Gtk.Label (_ ("The Linux Trading Simulator"));
         app_description.get_style_context ().add_class ("h3");
 
         var app_version = new Gtk.Label (TradeSim.Data.APP_VERSION);
         app_version.get_style_context ().add_class ("dim-label");
         app_version.selectable = true;
 
-        var disclaimer = new Gtk.Label (_("Remember!\n TradeSim it's under development and it's on alpha state. Only install for testing."));
+        var disclaimer = new Gtk.Label (_ ("Remember!\n TradeSim it's under development and it's on alpha state. Only install for testing."));
 
         disclaimer.justify = Gtk.Justification.CENTER;
         disclaimer.get_style_context ().add_class ("warning-message");
@@ -708,12 +708,12 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         disclaimer.wrap = true;
         disclaimer.margin_top = disclaimer.margin_bottom = 12;
 
-        var patreons_label = new Gtk.Label (_("Thanks to our awesome supporters!"));
+        var patreons_label = new Gtk.Label (_ ("Thanks to our awesome supporters!"));
         patreons_label.get_style_context ().add_class ("h4");
 
         var patreons_url = new Gtk.LinkButton.with_label (
             "https://github.com/horaciodrs/tradesim/SUPPORTERS.md",
-            _("View the list of supporters")
+            _ ("View the list of supporters")
             );
         patreons_url.halign = Gtk.Align.CENTER;
         patreons_url.margin_bottom = 12;
@@ -731,7 +731,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         button_grid.halign = Gtk.Align.CENTER;
         button_grid.spacing = 6;
 
-        var donate_button = new Gtk.Button.with_label (_("Make a Donation"));
+        var donate_button = new Gtk.Button.with_label (_ ("Make a Donation"));
         donate_button.clicked.connect (() => {
             try {
                 AppInfo.launch_default_for_uri ("https://github.com/horaciodrs/tradesim#-support", null);
@@ -740,7 +740,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             }
         });
 
-        var translate_button = new Gtk.Button.with_label (_("Suggest Translations"));
+        var translate_button = new Gtk.Button.with_label (_ ("Suggest Translations"));
         translate_button.clicked.connect (() => {
             try {
                 AppInfo.launch_default_for_uri ("https://github.com/horaciodrs/tradesim/issues", null);
@@ -749,7 +749,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             }
         });
 
-        var bug_button = new Gtk.Button.with_label (_("Report a Problem"));
+        var bug_button = new Gtk.Button.with_label (_ ("Report a Problem"));
         bug_button.clicked.connect (() => {
             try {
                 AppInfo.launch_default_for_uri ("https://github.com/horaciodrs/tradesim/issues", null);

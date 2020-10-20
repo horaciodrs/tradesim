@@ -30,7 +30,7 @@ public class TradeSim.Application : Gtk.Application {
             flags : ApplicationFlags.HANDLES_OPEN
             );
 
-            //GLib.ApplicationFlags.HANDLES_COMMAND_LINE |
+        // GLib.ApplicationFlags.HANDLES_COMMAND_LINE |
 
     }
 
@@ -48,14 +48,14 @@ public class TradeSim.Application : Gtk.Application {
         //command_line.
 
         return 0;
-    }*/
+       }*/
 
     public override void open (GLib.File[] open_files, string hint) {
 
         activate ();
 
         foreach (var file in open_files) {
-            string file_path = file.get_path();
+            string file_path = file.get_path ();
             WindowTradeSim.main_layout.new_chart_from_file (file_path);
         }
 

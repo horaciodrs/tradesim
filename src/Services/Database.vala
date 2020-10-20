@@ -871,7 +871,7 @@ public class TradeSim.Services.Database : GLib.Object {
         return all;
     }
 
-    public int get_available_quotes (string _provider_name, string _ticker_name, string _time_frame, DateTime _date){
+    public int get_available_quotes (string _provider_name, string _ticker_name, string _time_frame, DateTime _date) {
 
         int provider_id = get_db_id_by_table_and_field ("providers", "name", _provider_name);
         int market_id = get_db_id_by_name ("markets", "Forex");
@@ -896,7 +896,7 @@ public class TradeSim.Services.Database : GLib.Object {
         res = db.prepare_v2 (sql, -1, out stmt);
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_text (1, get_datetime_to_db(_date));
+        res = stmt.bind_text (1, get_datetime_to_db (_date));
         assert (res == Sqlite.OK);
 
         res = stmt.bind_int (2, provider_id);

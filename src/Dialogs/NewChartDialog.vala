@@ -61,7 +61,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
             border_width: 5,
             deletable: false,
             resizable: false,
-            title: _("New Simulation"),
+            title: _ ("New Simulation"),
             transient_for: parent,
             main_window: parent
             );
@@ -86,20 +86,20 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
     }
 
-    private bool validate_time_frame(string ? v){
+    private bool validate_time_frame (string ? v) {
 
-        if(v == null) {
+        if (v == null) {
             return false;
         }
 
-        if(v == "") {
+        if (v == "") {
             return false;
         }
 
-        string[] valid_time_frames = {"M1", "M5", "M15", "M30", "H1", "H4", "D1", "M1"};
+        string[] valid_time_frames = { "M1", "M5", "M15", "M30", "H1", "H4", "D1", "M1" };
 
-        for(int i=0; i< valid_time_frames.length; i++){
-            if(valid_time_frames[i] == v){
+        for (int i = 0 ; i < valid_time_frames.length ; i++) {
+            if (valid_time_frames[i] == v) {
                 return true;
             }
         }
@@ -108,17 +108,17 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
     }
 
-    private void refresh_date (){
+    private void refresh_date () {
 
-        if(aux_provider_name == "") {
+        if (aux_provider_name == "") {
             return;
         }
 
-        if(aux_ticker_name == "") {
+        if (aux_ticker_name == "") {
             return;
         }
 
-        if(validate_time_frame(aux_time_frame_name) == false) {
+        if (validate_time_frame (aux_time_frame_name) == false) {
             return;
         }
 
@@ -138,7 +138,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         var image = new Gtk.Image.from_icon_name ("document-new", Gtk.IconSize.DIALOG);
         image.margin_end = 10;
 
-        header_title = new Gtk.Label (_("New Simulation"));
+        header_title = new Gtk.Label (_ ("New Simulation"));
         header_title.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
         header_title.halign = Gtk.Align.START;
         header_title.ellipsize = Pango.EllipsizeMode.END;
@@ -156,58 +156,58 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         form_grid.row_spacing = 12;
         form_grid.column_spacing = 20;
 
-        label_name = new Gtk.Label (_("Simulation Name:"));
+        label_name = new Gtk.Label (_ ("Simulation Name:"));
         txt_name = new Gtk.Entry ();
-        txt_name.set_text (_("Unnamed Simulation"));
+        txt_name.set_text (_ ("Unnamed Simulation"));
         label_name.halign = Gtk.Align.END;
 
         form_grid.attach (label_name, 0, 0, 1, 1);
         form_grid.attach (txt_name, 1, 0, 1, 1);
 
-        label_provider = new Gtk.Label (_("Data Provider:"));
+        label_provider = new Gtk.Label (_ ("Data Provider:"));
         build_cbo_provider ();
         label_provider.halign = Gtk.Align.END;
 
-        label_ticker = new Gtk.Label (_("Ticker:"));
+        label_ticker = new Gtk.Label (_ ("Ticker:"));
         build_cbo_ticker ();
         label_ticker.halign = Gtk.Align.END;
 
-        label_amount = new Gtk.Label (_("Initial Balance:"));
+        label_amount = new Gtk.Label (_ ("Initial Balance:"));
         txt_amount = new Gtk.Entry ();
         txt_amount.set_text ("1000");
         label_amount.halign = Gtk.Align.END;
 
-        label_date = new Gtk.Label (_("Date:"));
-        entry_date = new Granite.Widgets.DatePicker();
+        label_date = new Gtk.Label (_ ("Date:"));
+        entry_date = new Granite.Widgets.DatePicker ();
         label_date.halign = Gtk.Align.END;
 
-        entry_date.date_changed.connect(() => {
-            //La fecha elegida ha cambiado...
-            //validar que sea una fecha que contenga datos importados
-            //get_available_quotes
-            int count = db.get_available_quotes(aux_provider_name, aux_ticker_name, aux_time_frame_name, entry_date.date);
+        entry_date.date_changed.connect (() => {
+            // La fecha elegida ha cambiado...
+            // validar que sea una fecha que contenga datos importados
+            // get_available_quotes
+            int count = db.get_available_quotes (aux_provider_name, aux_ticker_name, aux_time_frame_name, entry_date.date);
             const uint MIN_ALERT_QUOTES = 100;
 
             validation_date = false;
 
-            if(count == 0){
-                info_alert.set_revealed(true);
-                info_label.set_text(_("There is not imported data to the selected date."));
-            }else if ((count > 0) && (count < MIN_ALERT_QUOTES)){
-                info_alert.set_revealed(true);
-                info_label.set_text(_("There are not engouth imported data to run a simulation."));
-            }else{
-                info_alert.set_revealed(false);
+            if (count == 0) {
+                info_alert.set_revealed (true);
+                info_label.set_text (_ ("There is not imported data to the selected date."));
+            } else if ((count > 0) && (count < MIN_ALERT_QUOTES)) {
+                info_alert.set_revealed (true);
+                info_label.set_text (_ ("There are not engouth imported data to run a simulation."));
+            } else {
+                info_alert.set_revealed (false);
                 validation_date = true;
             }
 
         });
 
-        info_label = new Gtk.Label("");
+        info_label = new Gtk.Label ("");
 
-        info_alert = new Gtk.InfoBar();
-        info_alert.set_message_type(Gtk.MessageType.WARNING);
-        info_alert.get_content_area().add(info_label);
+        info_alert = new Gtk.InfoBar ();
+        info_alert.set_message_type (Gtk.MessageType.WARNING);
+        info_alert.get_content_area ().add (info_label);
 
 
 
@@ -224,18 +224,18 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         form_grid.attach (label_date, 0, 4, 1, 1);
         form_grid.attach (entry_date, 1, 4, 1, 1);
 
-        //form_grid.attach (info_alert, 0, 6, 2, 1);
+        // form_grid.attach (info_alert, 0, 6, 2, 1);
 
-        info_alert.set_revealed(false);
+        info_alert.set_revealed (false);
 
-        //form_grid.set_baseline_row(6);
+        // form_grid.set_baseline_row(6);
 
         body.add (info_alert);
         body.add (form_grid);
 
-        acept_button = new Gtk.Button.with_label (_("Ok"));
+        acept_button = new Gtk.Button.with_label (_ ("Ok"));
         acept_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-        cancel_button = new Gtk.Button.with_label (_("Cancel"));
+        cancel_button = new Gtk.Button.with_label (_ ("Cancel"));
 
         add_action_widget (acept_button, Action.OK);
         add_action_widget (cancel_button, Action.CANCEL);
@@ -372,25 +372,25 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
     private string validate_data () {
 
         if (txt_name.get_text ().length < 1) {
-            return _("Please enter the simulation name");
+            return _ ("Please enter the simulation name");
         }
 
         if (aux_provider_name.length < 1) {
-            return _("Please enter the provider");
+            return _ ("Please enter the provider");
         }
 
         if (aux_ticker_name.length < 1) {
-            return _("Please enter the ticker");
+            return _ ("Please enter the ticker");
         }
 
         if (aux_time_frame_name.length < 1) {
-            return _("Please enter the timeframe");
+            return _ ("Please enter the timeframe");
         }
 
         if (txt_amount.get_text ().length < 1) {
-            return _("Please enter the initial balance");
+            return _ ("Please enter the initial balance");
         } else if (double.parse (txt_amount.get_text ()) == 0) {
-            return _("Please enter a valid initial balance");
+            return _ ("Please enter a valid initial balance");
         }
 
         return "";
@@ -411,7 +411,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
             }
 
-            if(validation_date == false){
+            if (validation_date == false) {
                 return;
             }
 

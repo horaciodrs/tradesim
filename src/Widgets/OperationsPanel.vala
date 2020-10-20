@@ -181,20 +181,20 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
 
         tree_view_operations.insert_column_with_attributes (-1, "", icon_cell, "icon_name", OperationColumns.ICON_STATE, null);
         tree_view_operations.insert_column_with_attributes (-1, "  ", icon_view_cell, "icon_name", OperationColumns.ICON_VIEW, null);
-        tree_view_operations.insert_column_with_attributes (-1, _("Code"), id_cell, "text", OperationColumns.ID, "foreground", OperationColumns.FOREGROUND, null);
-        tree_view_operations.insert_column_with_attributes (-1, _("Provider"), provider_cell, "text", OperationColumns.PROVIDER, "foreground", OperationColumns.FOREGROUND, null);
-        tree_view_operations.insert_column_with_attributes (-1, _("Ticker"), ticker_cell, "text", OperationColumns.TICKER, "foreground", OperationColumns.FOREGROUND, null);
-        tree_view_operations.insert_column_with_attributes (-1, _("Date Time"), date_cell, "text", OperationColumns.DATE, "foreground", OperationColumns.FOREGROUND, null);
-        tree_view_operations.insert_column_with_attributes (-1, _("Type"), type_cell, "text", OperationColumns.TYPE, "foreground", OperationColumns.FOREGROUND, null);
+        tree_view_operations.insert_column_with_attributes (-1, _ ("Code"), id_cell, "text", OperationColumns.ID, "foreground", OperationColumns.FOREGROUND, null);
+        tree_view_operations.insert_column_with_attributes (-1, _ ("Provider"), provider_cell, "text", OperationColumns.PROVIDER, "foreground", OperationColumns.FOREGROUND, null);
+        tree_view_operations.insert_column_with_attributes (-1, _ ("Ticker"), ticker_cell, "text", OperationColumns.TICKER, "foreground", OperationColumns.FOREGROUND, null);
+        tree_view_operations.insert_column_with_attributes (-1, _ ("Date Time"), date_cell, "text", OperationColumns.DATE, "foreground", OperationColumns.FOREGROUND, null);
+        tree_view_operations.insert_column_with_attributes (-1, _ ("Type"), type_cell, "text", OperationColumns.TYPE, "foreground", OperationColumns.FOREGROUND, null);
 
-        tree_view_operations.insert_column_with_attributes (-1, _("State"), state_cell, "text", OperationColumns.STATE, "foreground", OperationColumns.FOREGROUND, null);
-        tree_view_operations.insert_column_with_attributes (-1, _("Observations"), observations_cell, "text", OperationColumns.OBSERVATIONS, "foreground", OperationColumns.FOREGROUND, null);
+        tree_view_operations.insert_column_with_attributes (-1, _ ("State"), state_cell, "text", OperationColumns.STATE, "foreground", OperationColumns.FOREGROUND, null);
+        tree_view_operations.insert_column_with_attributes (-1, _ ("Observations"), observations_cell, "text", OperationColumns.OBSERVATIONS, "foreground", OperationColumns.FOREGROUND, null);
 
-        tree_view_operations.insert_column_with_attributes (-1, _("Volume"), volume_cell, "text", OperationColumns.VOLUME, "foreground", OperationColumns.FOREGROUND, null);
-        tree_view_operations.insert_column_with_attributes (-1, _("Buy/Sell price"), buy_cell, "text", OperationColumns.BUY_PRICE, "foreground", OperationColumns.FOREGROUND, null);
-        tree_view_operations.insert_column_with_attributes (-1, _("Take Proffit"), tp_cell, "text", OperationColumns.TP_PRICE, "foreground", OperationColumns.FOREGROUND, null);
-        tree_view_operations.insert_column_with_attributes (-1, _("Stop Loss"), stop_cell, "text", OperationColumns.SL_PRICE, "foreground", OperationColumns.FOREGROUND, null);
-        tree_view_operations.insert_column_with_attributes (-1, _("Proffit/Loss"), profit_cell, "text", OperationColumns.PROFIT, "foreground", OperationColumns.FOREGROUND, null);
+        tree_view_operations.insert_column_with_attributes (-1, _ ("Volume"), volume_cell, "text", OperationColumns.VOLUME, "foreground", OperationColumns.FOREGROUND, null);
+        tree_view_operations.insert_column_with_attributes (-1, _ ("Buy/Sell price"), buy_cell, "text", OperationColumns.BUY_PRICE, "foreground", OperationColumns.FOREGROUND, null);
+        tree_view_operations.insert_column_with_attributes (-1, _ ("Take Proffit"), tp_cell, "text", OperationColumns.TP_PRICE, "foreground", OperationColumns.FOREGROUND, null);
+        tree_view_operations.insert_column_with_attributes (-1, _ ("Stop Loss"), stop_cell, "text", OperationColumns.SL_PRICE, "foreground", OperationColumns.FOREGROUND, null);
+        tree_view_operations.insert_column_with_attributes (-1, _ ("Proffit/Loss"), profit_cell, "text", OperationColumns.PROFIT, "foreground", OperationColumns.FOREGROUND, null);
         tree_view_operations.insert_column_with_attributes (-1, " ", close_cell, "icon_name", OperationColumns.BTN_CLOSE, null);
         tree_view_operations.insert_column_with_attributes (-1, "", color_cell, "text", OperationColumns.FOREGROUND, null);
 
@@ -208,9 +208,9 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
         scroll_prviders.set_vexpand (true);
         scroll_prviders.set_hexpand (true);
 
-        label_initial_balance = new Gtk.Label (_("Initial Balance:"));
-        label_current_balance = new Gtk.Label (_("Current Balance:"));
-        label_profit = new Gtk.Label (_("Profit:"));
+        label_initial_balance = new Gtk.Label (_ ("Initial Balance:"));
+        label_current_balance = new Gtk.Label (_ ("Current Balance:"));
+        label_profit = new Gtk.Label (_ ("Profit:"));
 
         label_initial_balance_value = new Gtk.Label ("$0.00");
         label_current_balance_value = new Gtk.Label ("$0.00");
@@ -435,12 +435,12 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
     public string get_operation_type_desc (int _type_op) {
 
         if (_type_op == TradeSim.Objects.OperationItem.Type.SELL) {
-            return _("Sell");
+            return _ ("Sell");
         } else if (_type_op == TradeSim.Objects.OperationItem.Type.BUY) {
-            return _("Buy");
+            return _ ("Buy");
         }
 
-        return _("Undefined");
+        return _ ("Undefined");
     }
 
     public string get_operation_state_desc (int _type_op) {
@@ -451,7 +451,7 @@ public class TradeSim.Widgets.OperationsPanel : Gtk.Grid {
             return "Closed";
         }
 
-        return _("Undefined");
+        return _ ("Undefined");
     }
 
 }
