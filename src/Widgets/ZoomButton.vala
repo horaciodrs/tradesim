@@ -62,6 +62,10 @@ public class TradeSim.Widgets.ZoomButton : Gtk.Grid {
         label_btn.no_show_all = !settings.show_label;
        }*/
 
+    public void zoom_set (double zoom_factor) {
+        zoom_default_button.label = "%.0f%%".printf (zoom_factor);
+    }
+
     public void zoom_out () {
         var zoom = int.parse (zoom_default_button.label) - 25;
         zoom_out_button.sensitive = (zoom > 25);
@@ -103,4 +107,3 @@ public class TradeSim.Widgets.ZoomButton : Gtk.Grid {
     }
 
 }
-

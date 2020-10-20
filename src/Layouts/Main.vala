@@ -107,6 +107,8 @@ public class TradeSim.Layouts.Main : Gtk.Box {
             operations_panel.update_operations ();
             operations_panel.update_bottom_info ();
 
+            main_window.headerbar.zoom.zoom_set(current_canvas.get_zoom_factor ());
+
         } else if (tab.get_type () == typeof (TradeSim.Layouts.Welcome)) {
             main_window.headerbar.set_subtitle (_("The Linux Trading Simulator"));
             drawings_panel.delete_all ();

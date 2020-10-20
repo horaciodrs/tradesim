@@ -479,6 +479,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
+    public double get_zoom_factor (){
+        return zoom_factor * 100;
+    }
+
     public void change_zoom_level (double factor) {
 
         // int total_candles_size = 1; //ahora es una propiedad de la clase canvas...
