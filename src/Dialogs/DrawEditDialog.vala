@@ -25,6 +25,7 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
     public weak TradeSim.Widgets.DrawingsPanelItem item_to_update { get; construct; }
 
     private string object_id;
+    private string original_object_id;
     private int wtype;
     private int selected_thicness;
 
@@ -64,6 +65,7 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
             );
 
         object_id = _id;
+        original_object_id = _id;
         wtype = _type;
 
         init ();
@@ -259,8 +261,12 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
 
     private string validate_data () {
 
+        var dm = main_window.main_layout.current_canvas.draw_manager;
+
         if (txt_name.get_text ().length < 1) {
             return _("Please enter the object name");
+        }else if((txt_name.get_text () != original_object_id) && (dm.exists (txt_name.get_text (), wtype) ) ){
+            return _("The object name allready exists.");
         }
 
         return "";

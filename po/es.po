@@ -500,3 +500,7 @@ msgstr "Ha ocurrido un error al cargar los estilos css para la ventana principal
 #: src/Window.vala:118
 msgid "Open TradeSim file"
 msgstr "Abrir archivo de TradeSim"
+
+#: src/Dialogs/DrawEditDialog.vala:269
+msgid "The object name allready exists."
+msgstr "Ya existe un objeto con el nombre elegido."
