@@ -74,6 +74,7 @@ msgid "New"
 msgstr "Nuevo"
 
 #: src/Layouts/HeaderBar.vala:55
+#: src/Window.vala:120
 msgid "Open"
 msgstr "Abrir"
 
@@ -118,14 +119,17 @@ msgstr "Guardar archivo de simulación"
 #: src/Dialogs/NewOperationDialog.vala:246
 #: src/Dialogs/NewChartDialog.vala:238
 #: src/Dialogs/DrawEditDialog.vala:165
+#: src/Window.vala:122
 msgid "Cancel"
 msgstr "Cancelar"
 
 #: src/Layouts/HeaderBar.vala:98
+#: src/Window.vala:130
 msgid "TradeSim files"
 msgstr "Archivo de TradeSim"
 
 #: src/Layouts/HeaderBar.vala:103
+#: src/Window.vala:135
 msgid "All files"
 msgstr "Todos los archivos"
 
@@ -488,3 +492,11 @@ msgstr "Indefinido"
 #: src/Widgets/DrawingsPanel.vala:44
 msgid "Objects Manager"
 msgstr "Explorador de Objetos"
+
+#: src/Window.vala:70
+msgid "fail to load css styles for main window."
+msgstr "Ha ocurrido un error al cargar los estilos css para la ventana principal"
+
+#: src/Window.vala:118
+msgid "Open TradeSim file"
+msgstr "Abrir archivo de TradeSim"
