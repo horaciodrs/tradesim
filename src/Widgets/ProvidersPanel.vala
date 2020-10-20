@@ -129,8 +129,8 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
 
         });
 
-        tree_view_providers.insert_column_with_attributes (-1, "Ticker", ticker_cell, "text", 0, null);
-        tree_view_providers.insert_column_with_attributes (-1, "Price", ticker_price, "text", 1, null);
+        tree_view_providers.insert_column_with_attributes (-1, _("Ticker"), ticker_cell, "text", 0, null);
+        tree_view_providers.insert_column_with_attributes (-1, _("Price"), ticker_price, "text", 1, null);
         tree_view_providers.insert_column_with_attributes (-1, "ProviderId", ticker_price, "text", 2, null);
         tree_view_providers.insert_column_with_attributes (-1, "TickerId", ticker_price, "text", 3, null);
         tree_view_providers.insert_column_with_attributes (-1, "Provider", ticker_provider_name, "text", 4, null);

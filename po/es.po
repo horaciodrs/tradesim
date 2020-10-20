@@ -181,6 +181,7 @@ msgstr "Proveedor"
 
 #: src/Dialogs/SettingsDialog.vala:274
 #: src/Widgets/OperationsPanel.vala:186
+#: src/Widgets/ProvidersPanel.vala:132
 msgid "Ticker"
 msgstr "Instrumento"
 
@@ -297,6 +298,7 @@ msgid "Points"
 msgstr "Puntos"
 
 #: src/Dialogs/NewOperationDialog.vala:180
+#: src/Widgets/ProvidersPanel.vala:133
 msgid "Price"
 msgstr "Precio"
 
