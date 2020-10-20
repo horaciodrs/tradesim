@@ -354,7 +354,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         simulation_velocity_ratio = 1;
 
         main_window.headerbar.play.change_icon ("media-playback-start");
-        main_window.headerbar.play.label_btn.set_text ("Play");
+        main_window.headerbar.play.label_btn.set_text (_("Play"));
 
     }
 
