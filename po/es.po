@@ -88,11 +88,13 @@ msgstr "Iniciar"
 
 #: src/Layouts/HeaderBar.vala:63
 #: src/Dialogs/NewOperationDialog.vala:236
+#: src/Widgets/OperationsPanel.vala:440
 msgid "Buy"
 msgstr "Comprar"
 
 #: src/Layouts/HeaderBar.vala:64
 #: src/Dialogs/NewOperationDialog.vala:243
+#: src/Widgets/OperationsPanel.vala:438
 msgid "Sell"
 msgstr "Vender"
 
@@ -173,10 +175,12 @@ msgid "Use Dark Theme:"
 msgstr "Utilizar tema oscuro:"
 
 #: src/Dialogs/SettingsDialog.vala:219
+#: src/Widgets/OperationsPanel.vala:185
 msgid "Provider"
 msgstr "Proveedor"
 
 #: src/Dialogs/SettingsDialog.vala:274
+#: src/Widgets/OperationsPanel.vala:186
 msgid "Ticker"
 msgstr "Instrumento"
 
@@ -301,6 +305,7 @@ msgid "Stop Loss:"
 msgstr "Stop Loss:"
 
 #: src/Dialogs/NewOperationDialog.vala:198
+#: src/Widgets/OperationsPanel.vala:196
 msgid "Stop Loss"
 msgstr "Stop Loss"
 
@@ -326,6 +331,7 @@ msgid "Ticker:"
 msgstr "Instrumento:"
 
 #: src/Dialogs/NewChartDialog.vala:175
+#: src/Widgets/OperationsPanel.vala:211
 msgid "Initial Balance:"
 msgstr "Balance Inicial:"
 
@@ -427,3 +433,52 @@ msgstr "Importar cotizaciones desde internet"
 #: src/Layouts/Main.vala:224
 msgid "Are you sure you want to exit without save changes?"
 msgstr "Esta seguro que quiere salir sin guardar los cambios?"
+
+#: src/Widgets/OperationsPanel.vala:184
+msgid "Code"
+msgstr "Código"
+
+#: src/Widgets/OperationsPanel.vala:187
+msgid "Date Time"
+msgstr "Fecha/Hora"
+
+#: src/Widgets/OperationsPanel.vala:188
+msgid "Type"
+msgstr "Tipo"
+
+#: src/Widgets/OperationsPanel.vala:190
+msgid "State"
+msgstr "Estado"
+
+#: src/Widgets/OperationsPanel.vala:191
+msgid "Observations"
+msgstr "Observaciones"
+
+#: src/Widgets/OperationsPanel.vala:193
+msgid "Volume"
+msgstr "Volumen"
+
+#: src/Widgets/OperationsPanel.vala:194
+msgid "Buy/Sell price"
+msgstr "Precio Compra/Venta"
+
+#: src/Widgets/OperationsPanel.vala:195
+msgid "Take Proffit"
+msgstr "Take Proffit"
+
+#: src/Widgets/OperationsPanel.vala:197
+msgid "Proffit/Loss"
+msgstr "Beneficio/Perdida"
+
+#: src/Widgets/OperationsPanel.vala:212
+msgid "Current Balance:"
+msgstr "Balance:"
+
+#: src/Widgets/OperationsPanel.vala:213
+msgid "Profit:"
+msgstr "Beneficio:"
+
+#: src/Widgets/OperationsPanel.vala:443
+#: src/Widgets/OperationsPanel.vala:454
+msgid "Undefined"
+msgstr "Indefinido"
