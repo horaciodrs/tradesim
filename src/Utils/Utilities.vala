@@ -161,6 +161,26 @@ public int get_month_number (string month) {
 
 }
 
+bool is_valid_market_date(DateTime fecha){
+    var hora = fecha.get_hour();
+    var dia_posicion = fecha.get_day_of_week ();
+
+    if(dia_posicion == 5){
+        if(hora > 18){
+            return false;
+        }
+    }else if(dia_posicion == 6){
+        return false;
+    }else if(dia_posicion == 7){
+        if(hora <= 18){
+            return false;
+        }
+    }
+
+    return true;
+
+}
+
 DateTime ? get_viernes (DateTime fecha){
 
     int dia_viernes = 5;

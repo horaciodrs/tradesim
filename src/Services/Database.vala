@@ -855,6 +855,10 @@ public class TradeSim.Services.Database : GLib.Object {
 
             DateTime item_date = new DateTime.local (date_year, date_month, date_day, date_hour, date_minute, 0);
 
+            if(!is_valid_market_date(item_date)){
+                continue;
+            }
+
             quote_item.set_provider_name (_provider_name);
             quote_item.set_provider_folder_name (item_folder_name);
             quote_item.set_time_frame_name (_time_frame);

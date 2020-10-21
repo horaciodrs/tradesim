@@ -1089,6 +1089,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         _horizontal_scroll_width = int.parse (aux.to_string ());
 
+        print("\033[2J");
+        print("displayed_size:" + displayed_size.to_string() + "\n");
+        print("display_size:" + display_size.to_string() + "\n");
+
         if (_horizontal_scroll_width < _width - vertical_scale_width - 1.00) {
 
             _horizontal_scroll_active = true;
