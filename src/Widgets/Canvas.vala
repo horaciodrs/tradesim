@@ -1392,8 +1392,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         draw_cross_lines (cr);
 
-        draw_cursor_price_label (cr);
-        draw_cursor_datetime_label (cr);
+
 
         draw_horizontal_scrollbar (cr);
 
@@ -1408,6 +1407,9 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         draw_vertical_scale (cr);//----
 
         draw_manager.show_all_in_vertical_scale (cr);
+
+        draw_cursor_price_label (cr);
+        draw_cursor_datetime_label (cr);
 
         draw_last_candle_price_label (cr); // Muestra el precio de la ultima vela.
 
