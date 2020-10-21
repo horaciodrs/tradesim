@@ -162,6 +162,7 @@ public int get_month_number (string month) {
 }
 
 bool is_valid_market_date(DateTime fecha){
+
     var hora = fecha.get_hour();
     var dia_posicion = fecha.get_day_of_week ();
 
