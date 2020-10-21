@@ -715,6 +715,16 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
             change_zoom_level (zoom_factor);
 
+            /*print("\033[2J");
+            print("Fecha inicial:" + date_inicial.to_string() + "\n");
+            print("Date From:" + date_from.to_string() + "\n");
+            print("Date To:" + date_to.to_string() + "\n");
+            print("Date Final:" + last_candle_date.to_string() + "\n");
+            print("velas totales:" + data.quotes.length.to_string() + "\n");
+            print("total_candles_size:" + total_candles_size.to_string() + "\n");
+            print("velas_step:" + velas_step.to_string() + "\n");*/
+
+
         }
 
         for (int i = 0 ; i < draw_manager.operations.length ; i++) {

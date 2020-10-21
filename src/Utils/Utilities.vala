@@ -161,108 +161,75 @@ public int get_month_number (string month) {
 
 }
 
-int get_dist_to_viernes (DateTime fecha) {
+DateTime ? get_viernes (DateTime fecha){
 
-    // pensada para time H1.
+    int dia_viernes = 5;
 
-    var dia_posicion = fecha.get_day_of_week ();
     var anio = fecha.get_year ();
     var mes = fecha.get_month ();
     var dia = fecha.get_day_of_month ();
-    var hora = fecha.get_hour ();
-    // var minutos = fecha.get_minute ();
+    var dia_posicion = fecha.get_day_of_week ();
 
+    if(dia_posicion < dia_viernes){
 
-    if (dia_posicion < 5) {
+        int distancia = dia_viernes - dia_posicion;
+        DateTime return_value = new DateTime.local(anio, mes, dia, 0, 0, 0);
+        return_value = return_value.add_days(distancia);
+        return_value = return_value.add_hours(18);
+        return return_value;
+    }else if (dia_posicion == dia_viernes){
 
-        int distancia = 5 - dia_posicion;
-        DateTime obj = new DateTime.local (anio, mes, dia, 0, 0, 0);
-        obj = obj.add_days (distancia);
-
-        return (distancia * 24 + 18 - hora);
-
-    } else if (dia_posicion == 5) {
-        return 18 - hora;
+        return new DateTime.local (anio, mes, dia, 18, 0, 0);
+    }else if(dia_posicion > dia_viernes){
+        if(dia_posicion == 6){
+            DateTime return_value = new DateTime.local(anio, mes, dia, 0, 0, 0);
+            return_value = return_value.add_days(6);
+            return_value = return_value.add_hours(18);
+            return return_value;
+        }else if(dia_posicion == 7){
+            DateTime return_value = new DateTime.local(anio, mes, dia, 0, 0, 0);
+            return_value = return_value.add_days(5);
+            return_value = return_value.add_hours(18);
+            return return_value;
+        }
     }
 
-    return 0;
+    return null;
 
+}
+
+int get_dist_to_viernes (DateTime fecha) {
+    var viernes = get_viernes(fecha);
+    return (-1)* (int)(fecha.difference(viernes) / GLib.TimeSpan.HOUR);
 }
 
 DateTime get_next_market_date (DateTime fecha) {
 
-    // pensada para time H1.
+    var viernes = get_viernes(fecha);
+    var anio = viernes.get_year ();
+    var mes = viernes.get_month ();
+    var dia = viernes.get_day_of_month ();
 
-    var dia_posicion = fecha.get_day_of_week ();
-    var anio = fecha.get_year ();
-    var mes = fecha.get_month ();
-    var dia = fecha.get_day_of_month ();
-    // var hora = fecha.get_hour ();
-    // var minutos = fecha.get_minute ();
+    DateTime return_value = new DateTime.local(anio, mes, dia, 0, 0, 0);
+    return_value = return_value.add_days(2);
+    return_value = return_value.add_hours(18);
 
-    int distancia = 5 - dia_posicion;
-
-
-    if (dia_posicion < 5) {
-
-        DateTime obj = new DateTime.local (anio, mes, dia, 0, 0, 0);
-        obj = obj.add_days (distancia);
-        obj = obj.add_hours (18);
-        obj = obj.add_days (2);
-
-        return obj;
-
-    } else if (dia_posicion == 5) {
-
-        DateTime obj = new DateTime.local (anio, mes, dia, 0, 0, 0);
-        obj = obj.add_hours (18);
-        obj = obj.add_days (2);
-
-        return obj;
-    }
-
-    return fecha;
+    return return_value;
 
 }
 
 DateTime date_add_int_by_time_frame (DateTime add_date, string time_frame, int qty) {
 
     int add_value = 1;
+    int distancia = get_dist_to_viernes (add_date);
 
-    if (time_frame == "M1") {
-        add_value = 1;
-        return add_date.add_minutes (add_value * qty);
-    } else if (time_frame == "M5") {
-        add_value = 5;
-        return add_date.add_minutes (add_value * qty);
-    } else if (time_frame == "M15") {
-        add_value = 15;
-        return add_date.add_minutes (add_value * qty);
-    } else if (time_frame == "M30") {
-        add_value = 30;
-        return add_date.add_minutes (add_value * qty);
-    } else if (time_frame == "H1") {
-        int distancia = get_dist_to_viernes (add_date);
-        if (distancia < add_value * qty) {
-            int agregar = qty - distancia;
-            DateTime aux = get_next_market_date (add_date);
-            return aux.add_hours (agregar);
-        } else {
-            add_value = 1;
-            return add_date.add_hours (add_value * qty);
-        }
-        // Lineas originales----->>>>>
-        // add_value = 1;
-        // return add_date.add_hours (add_value * qty);
-        // Lineas originales FIN-----<<<<<
-    } else if (time_frame == "H4") {
-        add_value = 4;
-        return add_date.add_hours (add_value * qty);
-    } else if (time_frame == "D1") {
-        add_value = 24;
-        return add_date.add_hours (add_value * qty);
+    if (distancia < add_value * qty) {
+        int agregar = qty - distancia;
+        DateTime aux = get_next_market_date (add_date);
+        return date_add_int_by_time_frame (aux, time_frame, agregar);
     } else {
-        return add_date.add_minutes (qty);
+        add_value = 1;
+        return add_date.add_hours (add_value * qty);
     }
 
 }
