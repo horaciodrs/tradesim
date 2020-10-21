@@ -83,6 +83,18 @@ public class TradeSim.Services.Drawings {
 
     }
 
+    public void show_all_in_vertical_scale (Cairo.Context ctext) {
+
+        for (int z = 0 ; z < hlines.length ; z++) {
+            hlines.index (z).render_vertical_scale (ctext);
+        }
+
+        for (int z = 0 ; z < operations.length ; z++) {
+            operations.index (z).render_vertical_scale (ctext);
+        }
+
+    }
+
     public void draw_operation (TradeSim.Objects.OperationItem _op) {
 
         // Esta función debe ser llamada cada vez que se crea o modifica

@@ -182,6 +182,30 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
 
     }
 
+    public void render_vertical_scale (Cairo.Context ctext) {
+
+        if (!operation_data.visible) {
+            return;
+        }
+
+        if (!visible) {
+            return;
+        }
+
+        if (operation_data == null) {
+            return;
+        }
+
+        if (operation_data.state == TradeSim.Objects.OperationItem.State.CLOSED) {
+            return;
+        }
+
+        draw_price_label (ctext, operation_data.tp, 0, 100, 0);
+        draw_price_label (ctext, operation_data.price, 0, 0, 0);
+        draw_price_label (ctext, operation_data.sl, 100, 0, 0);
+
+    }
+
     public void draw_operation_history_line (Cairo.Context ctext) {
 
         if (operation_data.state == TradeSim.Objects.OperationItem.State.CLOSED) {

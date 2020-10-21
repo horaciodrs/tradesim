@@ -1225,6 +1225,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         double precio = precio_inicial;
         char[] buf = new char[double.DTOSTR_BUF_SIZE];
 
+        ctext.set_dash ({}, 0);
+
         ctext.set_source_rgba (_r (255), _g (225), _b (107), 1);
         ctext.rectangle (_width - vertical_scale_width, 0, 60, _available_height);
         ctext.fill ();
@@ -1383,7 +1385,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         draw_bg (cr);
 
-        draw_vertical_scale (cr);
+        //----
         draw_horizontal_scale (cr);
 
         draw_chart (cr);
@@ -1403,8 +1405,11 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         draw_manager.show_all (cr); // Dibuja todos los objetos creados por el usuario.
 
-        draw_last_candle_price_label (cr); // Muestra el precio de la ultima vela.
+        draw_vertical_scale (cr);//----
 
+        draw_manager.show_all_in_vertical_scale (cr);
+
+        draw_last_candle_price_label (cr); // Muestra el precio de la ultima vela.
 
         cr.restore ();
         cr.save ();

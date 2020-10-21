@@ -52,6 +52,18 @@ public class TradeSim.Drawings.HLine : TradeSim.Drawings.Line {
 
     }
 
+    public  void render_vertical_scale (Cairo.Context ctext) {
+
+        if (!visible) {
+            return;
+        }
+
+        update_data ();
+
+        draw_price_label (ctext);
+
+    }
+
     public void draw_price_label (Cairo.Context ctext) {
 
         int posy = ref_canvas.get_pos_y_by_price (price2);
