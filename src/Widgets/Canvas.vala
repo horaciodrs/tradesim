@@ -1385,14 +1385,11 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         draw_bg (cr);
 
-        //----
         draw_horizontal_scale (cr);
 
         draw_chart (cr);
 
         draw_cross_lines (cr);
-
-
 
         draw_horizontal_scrollbar (cr);
 
@@ -1404,7 +1401,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         draw_manager.show_all (cr); // Dibuja todos los objetos creados por el usuario.
 
-        draw_vertical_scale (cr);//----
+        draw_vertical_scale (cr);
 
         draw_manager.show_all_in_vertical_scale (cr);
 
