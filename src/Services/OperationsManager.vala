@@ -138,15 +138,9 @@ public class TradeSim.Services.OperationsManager {
 
         writer.start_element ("operations");
 
-        print (">>>>comienzo a guardar\n");
-
         for (int i = 0 ; i < operations.length ; i++) {
-            print (">>comienzo a guardar la operacion " + i.to_string () + "\n");
             operations.index (i).write_file (writer);
-            print ("<<termino de guardar la operacion " + i.to_string () + "\n");
         }
-
-        print ("<<<<termino de guardar\n");
 
         writer.end_element ();
 

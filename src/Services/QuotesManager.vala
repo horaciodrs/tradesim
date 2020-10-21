@@ -215,29 +215,22 @@ public class TradeSim.Services.QuotesManager {
 
         double local_max = -1;
 
-        // calc_max_min_values ();
-        // return (int) (max_price * 100000);
-
         if (quotes.length > 0) {
             local_max = quotes.index (0).max_price;
         } else {
             return (int) (local_max * 100000);
         }
 
-        for (int i = 0 ; i < quotes.length ; i++) {
-            for (int z = 0 ; z < quotes.length ; z++) {
+        for (int z = 0 ; z < quotes.length ; z++) {
 
-                if ((quotes.index (z).date_time.compare (dt1) > 0) && (quotes.index (z).date_time.compare (dt2) < 0)) {
+            if ((quotes.index (z).date_time.compare (dt1) > 0) && (quotes.index (z).date_time.compare (dt2) < 0)) {
 
-                    if (quotes.index (z).max_price > local_max) {
-                        local_max = quotes.index (z).max_price * 1.00000;
-                    }
+                if (quotes.index (z).max_price > local_max) {
+                    local_max = quotes.index (z).max_price * 1.00000;
                 }
-
             }
-        }
 
-        // print ("max:" + local_max.to_string () + "\n");
+        }
 
         return (int) (local_max * 100000);
 
@@ -247,29 +240,22 @@ public class TradeSim.Services.QuotesManager {
 
         double local_min = 0;
 
-        // calc_max_min_values ();
-        // return (int) (min_price * 100000);
-
         if (quotes.length > 0) {
             local_min = quotes.index (0).min_price;
         } else {
             return (int) local_min;
         }
 
-        for (int i = 0 ; i < quotes.length ; i++) {
-            for (int z = 0 ; z < quotes.length ; z++) {
+        for (int z = 0 ; z < quotes.length ; z++) {
 
-                if ((quotes.index (z).date_time.compare (dt1) > 0) && (quotes.index (z).date_time.compare (dt2) < 0)) {
+            if ((quotes.index (z).date_time.compare (dt1) > 0) && (quotes.index (z).date_time.compare (dt2) < 0)) {
 
-                    if (quotes.index (z).min_price < local_min) {
-                        local_min = quotes.index (z).min_price * 1.00000;
-                    }
+                if (quotes.index (z).min_price < local_min) {
+                    local_min = quotes.index (z).min_price * 1.00000;
                 }
-
             }
-        }
 
-        // print("min:" + local_min.to_string() + "\n");
+        }
 
         return (int) (local_min * 100000);
 

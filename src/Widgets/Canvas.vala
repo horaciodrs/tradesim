@@ -473,10 +473,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         min_price = (int) (0.99 * data.get_min_price_by_datetimes (date_from, date_to));
         max_price = (int) (1.002 * data.get_max_price_by_datetimes (date_from, date_to));
 
-        /*print("DateFrom:" + date_from.to_string() + " DateTo:" + date_to.to_string() + "\n");
-           print("Min: " + min_price.to_string() + "\n");
-           print("Max: " + max_price.to_string() + "\n");*/
-
     }
 
     public double get_zoom_factor () {
