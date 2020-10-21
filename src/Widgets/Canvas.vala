@@ -724,7 +724,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             print("total_candles_size:" + total_candles_size.to_string() + "\n");
             print("velas_step:" + velas_step.to_string() + "\n");*/
 
-
         }
 
         for (int i = 0 ; i < draw_manager.operations.length ; i++) {
@@ -856,10 +855,17 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         drawed_candles++;
 
-        last_candle_date = candle_data.date_time;
-        last_candle_price = candle_data.close_price;
-        last_candle_max_price = candle_data.max_price;
-        last_candle_min_price = candle_data.min_price;
+        if(last_candle_date == null){
+            last_candle_date = candle_data.date_time;
+            last_candle_price = candle_data.close_price;
+            last_candle_max_price = candle_data.max_price;
+            last_candle_min_price = candle_data.min_price;
+        }else if(candle_data.date_time.compare(last_candle_date) >= 0){
+            last_candle_date = candle_data.date_time;
+            last_candle_price = candle_data.close_price;
+            last_candle_max_price = candle_data.max_price;
+            last_candle_min_price = candle_data.min_price;
+        }
 
         int posy = get_pos_y_by_price (candle_data.open_price);
         int posy2 = get_pos_y_by_price (candle_data.close_price);
