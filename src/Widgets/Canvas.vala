@@ -470,8 +470,16 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     private void update_extreme_prices () {
 
-        min_price = (int) (0.99 * data.get_min_price_by_datetimes (date_from, date_to));
-        max_price = (int) (1.002 * data.get_max_price_by_datetimes (date_from, date_to));
+        //min_price = (int) (0.99 * data.get_min_price_by_datetimes (date_from, date_to));
+        //max_price = (int) (1.002 * data.get_max_price_by_datetimes (date_from, date_to));
+
+        if(last_candle_date == null){
+            min_price = (int) (0.995 * data.get_min_price_by_datetimes (date_from, date_to));
+            max_price = (int) (1.001 * data.get_max_price_by_datetimes (date_from, date_to));
+        }else{
+            min_price = (int) (0.995 * data.get_min_price_by_datetimes (date_inicial, last_candle_date));
+            max_price = (int) (1.001 * data.get_max_price_by_datetimes (date_inicial, last_candle_date));
+        }
 
     }
 
