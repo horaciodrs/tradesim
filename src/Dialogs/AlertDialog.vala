@@ -22,6 +22,8 @@
 public class TradeSim.Dialogs.AlertDialog : Gtk.Dialog {
     public weak TradeSim.MainWindow main_window { get; construct; }
 
+    private Gtk.ScrolledWindow scroll_licence;
+
     public Gtk.Grid grid_about_us;
 
     public AlertDialog (TradeSim.MainWindow window) {
@@ -35,6 +37,13 @@ public class TradeSim.Dialogs.AlertDialog : Gtk.Dialog {
             title: _ ("Licence Agreement")
         );
 
+        delete_event.connect ((e) => {
+            return true; //Evita que se cierre el dialogo sin aceptar o rechazar la licencia.
+        });
+
+        scroll_licence = new Gtk.ScrolledWindow (null, null);
+        scroll_licence.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+
         grid_about_us = get_about_box ();
 
         transient_for = main_window;
@@ -44,6 +53,7 @@ public class TradeSim.Dialogs.AlertDialog : Gtk.Dialog {
     }
 
     private Gtk.Grid get_about_box () {
+
         var grid = new Gtk.Grid ();
         grid.row_spacing = 6;
         grid.column_spacing = 12;
@@ -51,7 +61,7 @@ public class TradeSim.Dialogs.AlertDialog : Gtk.Dialog {
 
         var app_icon = new Gtk.Image ();
         app_icon.gicon = new ThemedIcon ("com.github.horaciodrs.TradeSim");
-        app_icon.pixel_size = 256;
+        app_icon.pixel_size = 64;
         app_icon.margin_top = 12;
 
         var app_name = new Gtk.Label ("TradeSim");
@@ -61,23 +71,35 @@ public class TradeSim.Dialogs.AlertDialog : Gtk.Dialog {
         var app_description = new Gtk.Label (_ ("The Linux Trading Simulator"));
         app_description.get_style_context ().add_class ("h3");
 
+        var lbl_titulo = new Gtk.Label (_ ("Licence Agreement"));
+        lbl_titulo.get_style_context ().add_class ("h2");
+        lbl_titulo.margin_top = 15;
+        lbl_titulo.margin_bottom = 10;
+
         var app_version = new Gtk.Label (TradeSim.Data.APP_VERSION);
         app_version.get_style_context ().add_class ("dim-label");
         app_version.selectable = true;
 
-        var disclaimer = new Gtk.Label (_ ("Trading currencies with leverage carries a high level of risk and may not be suitable for all types of investors.\nThe high degree of market leverage can play both for and against the investor. We remember that there is the possibility of losing part or all of the initial investment so you should not invest money that you cannot afford to lose.\nTradeSim is an application created in order to test strategies without risk for the user in a simulated market. The results obtained in TradeSim should in no case be taken as advice, or recommendation for investment.\nThe creator of this application will not be held responsible for the losses suffered by the investor. The investor will be solely responsible for his actions in the negotiation in the real market."));
+        var disclaimer = new Gtk.Label (_ ("Trading currencies with leverage carries a high level of risk and may not be suitable for all types of investors.\n\nThe high degree of market leverage can play both for and against the investor. We remember that there is the possibility of losing part or all of the initial investment so you should not invest money that you cannot afford to lose.\n\nTradeSim is an application created in order to test strategies without risk for the user in a simulated market. The results obtained in TradeSim should in no case be taken as advice, or recommendation for investment.\n\nThe creator of this application will not be held responsible for the losses suffered by the investor. The investor will be solely responsible for his actions in the negotiation in the real market."));
 
         disclaimer.justify = Gtk.Justification.LEFT;
-        disclaimer.get_style_context ().add_class ("warning-message");
+        //disclaimer.get_style_context ().add_class ("warning-message");
         disclaimer.max_width_chars = 60;
         disclaimer.wrap = true;
         disclaimer.margin_top = disclaimer.margin_bottom = 12;
+
+        scroll_licence.add (disclaimer);
+        scroll_licence.set_size_request(400, 200);
+        scroll_licence.set_vexpand (true);
+        scroll_licence.set_hexpand (true);
+        scroll_licence.get_style_context ().add_class ("scrolled-window-data");
 
         grid.attach (app_icon, 0, 0);
         grid.attach (app_name, 0, 1);
         grid.attach (app_description, 0, 2);
         grid.attach (app_version, 0, 3);
-        grid.attach (disclaimer, 0, 4);
+        grid.attach (lbl_titulo, 0, 4);
+        grid.attach (scroll_licence, 0, 5);
 
 
         // Button grid at the bottom of the About page.
@@ -103,7 +125,7 @@ public class TradeSim.Dialogs.AlertDialog : Gtk.Dialog {
         button_grid.add (aceptar_button);
         button_grid.add (cancel_button);
 
-        grid.attach (button_grid, 0, 5);
+        grid.attach (button_grid, 0, 6);
 
         return grid;
     }
