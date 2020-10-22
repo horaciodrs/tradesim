@@ -669,10 +669,21 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         var cont_value = (int)(1000 * zoom_factor);
         var aux_max_price = get_media_figura_up (max_price);
         var aux_min_price = get_media_figura (min_price);
+        var resta = aux_max_price - aux_min_price;
 
-        var cantidad = (int) ((aux_max_price - aux_min_price) / cont_value);
+        var cantidad = (aux_max_price - aux_min_price) / cont_value;
 
-        vertical_scale = _available_height / cantidad;
+        print("\033[2J");
+        print("cont_value:" + cont_value.to_string() + "\n");
+        print("resta:" + resta.to_string() + "\n");
+        print("cantidad:" + cantidad.to_string() + "\n");
+        print("vertical_scale:" + vertical_scale.to_string() + "\n");
+
+        if(cantidad == 0){
+            cantidad = 1;
+        }
+
+        vertical_scale = (int)(_available_height / cantidad);
 
         scale_step = cont_value;
         scale_label_step = vertical_scale;
@@ -686,7 +697,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         int available_width = _width - vertical_scale_width;
 
         if (candles != 0) {
-            candle_width = (int) (available_width / (candles + 2)) - candle_spacing;
+            candle_width = (int) (available_width / candles) - candle_spacing;
         } else {
             candle_width = 10;
         }
@@ -720,15 +731,26 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             var cont_value = (int)(1000 * zoom_factor);
             var aux_max_price = get_media_figura_up (max_price);
             var aux_min_price = get_media_figura (min_price);
-
             var cantidad = (int) ((aux_max_price - aux_min_price) / cont_value);
-
             var cambio = mouse_y - _vertical_scroll_distancia;
 
             if(mouse_x > _width - vertical_scale_width){
                 //Permite el cambio de escala vertical...
-                min_price = min_price - cambio*cantidad;
-                max_price = max_price + cambio*cantidad;
+                var test_min = min_price - cambio*cantidad;
+                var test_max = max_price + cambio*cantidad;
+                var test_cont_value = (int)(1000 * zoom_factor);
+                var test_aux_max_price = get_media_figura_up (test_max);
+                var test_aux_min_price = get_media_figura (test_min);
+                var resta = test_aux_max_price - test_aux_min_price;
+
+                if(resta > test_cont_value){
+                    //mediante las variables test_* se asegura de que los valores
+                    //de max_price y min_price no rompan el calculo de la
+                    //escala vertical.
+                    min_price = min_price - cambio*cantidad;
+                    max_price = max_price + cambio*cantidad;
+                }
+
             }else{
                 //Permite el scroll vertical...
                 min_price_visible = _vertical_scroll_current_min_visible - cambio*cantidad;
