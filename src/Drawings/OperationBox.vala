@@ -56,8 +56,10 @@ public class TradeSim.Drawings.OperationBox {
     public void drag_start (int mouse_x, int mouse_y) {
         if ((mouse_x >= left) && (mouse_x <= left + width)) {
             if ((mouse_y >= top) && (mouse_y <= top + height)) {
+                parent.ref_canvas._vertical_scroll_active = false;
                 draging = true;
                 mouse_dist_y = null;
+
             }
         }
     }

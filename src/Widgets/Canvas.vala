@@ -43,7 +43,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public bool _horizontal_scroll_active;
 
     private bool _vertical_scroll_moving;
-    private bool _vertical_scroll_active;
+    public bool _vertical_scroll_active;
     private int _vertical_scroll_distancia;
     private int _vertical_scroll_current_max;
     private int _vertical_scroll_current_min;
@@ -798,13 +798,15 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         }
 
         if(mouse_y < _height - _horizontal_scale_height){
-            _vertical_scroll_current_max = max_price;
-            _vertical_scroll_current_min = min_price;
-            _vertical_scroll_current_max_visible = max_price_visible;
-            _vertical_scroll_current_min_visible = min_price_visible;
-            _vertical_scroll_moving = true;
-            _vertical_scroll_active = true;
-            _vertical_scroll_distancia = mouse_y;
+            if((!draw_mode_line) && (!draw_mode_fibo) && (!draw_mode_hline) && (!draw_mode_rectangle)){
+                _vertical_scroll_current_max = max_price;
+                _vertical_scroll_current_min = min_price;
+                _vertical_scroll_current_max_visible = max_price_visible;
+                _vertical_scroll_current_min_visible = min_price_visible;
+                _vertical_scroll_moving = true;
+                _vertical_scroll_active = true;
+                _vertical_scroll_distancia = mouse_y;
+            }
         }
 
         if (draw_mode_line == true) {
@@ -834,6 +836,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         for (int i = 0 ; i < draw_manager.operations.length ; i++) {
             draw_manager.operations.index (i).drag_start (mouse_x, mouse_y);
         }
+
+
 
         return true;
     }
