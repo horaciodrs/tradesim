@@ -246,8 +246,8 @@ msgid "Import Completed!"
 msgstr "Importacion Completada!"
 
 #: src/Dialogs/SettingsDialog.vala:702
-msgid "Remember!\n TradeSim it's under development and it's on alpha state. Only install for testing."
-msgstr "Recuerde que TradeSim se encuentra bajo desarrollo y en estado alfa. Solo apto para instalaciones de prueba."
+msgid "Remember!\n TradeSim it's under development and it's on beta state. Only install for testing."
+msgstr "Recuerde que TradeSim se encuentra bajo desarrollo y en estado beta. Solo apto para instalaciones de prueba."
 
 #: src/Dialogs/SettingsDialog.vala:710
 msgid "Thanks to our awesome supporters!"

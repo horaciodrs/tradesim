@@ -701,7 +701,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         app_version.get_style_context ().add_class ("dim-label");
         app_version.selectable = true;
 
-        var disclaimer = new Gtk.Label (_ ("Remember!\n TradeSim it's under development and it's on alpha state. Only install for testing."));
+        var disclaimer = new Gtk.Label (_ ("Remember!\n TradeSim it's under development and it's on beta state. Only install for testing."));
 
         disclaimer.justify = Gtk.Justification.CENTER;
         disclaimer.get_style_context ().add_class ("warning-message");
