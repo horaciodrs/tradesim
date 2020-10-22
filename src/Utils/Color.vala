@@ -30,7 +30,7 @@ public class TradeSim.Utils.Color {
         red = _red;
         green = _green;
         blue = _blue;
-        alpha = 1.0;
+        alpha = 1;
     }
 
     public Color.with_alpha (int _red, int _green, int _blue, double _alpha) {
@@ -44,7 +44,7 @@ public class TradeSim.Utils.Color {
         red = 13;
         green = 82;
         blue = 191;
-        alpha = 1.0;
+        alpha = 1;
     }
 
     public Color.with_rgba (Gdk.RGBA _aux) {

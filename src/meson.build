@@ -1,6 +1,7 @@
 sources = files(
     'Utils/Utilities.vala',
     'Utils/Color.vala',
+    'Utils/ColorPalette.vala',
 
     'Objects/OperationItem.vala',
     'Objects/ProviderTicker.vala',
