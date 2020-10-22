@@ -1277,8 +1277,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public void draw_vertical_scale (Cairo.Context ctext) {
 
-        int precio_inicial = get_media_figura_up (max_price);
-        int precio_final = get_media_figura (min_price);
+        int precio_inicial = get_media_figura_up (max_price_visible);
+        int precio_final = get_media_figura (min_price_visible);
 
         int pos_y = 0;
         double precio = precio_inicial;
