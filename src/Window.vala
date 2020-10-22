@@ -188,6 +188,16 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
             settings.set_boolean ("window-dark-theme", value);
         }
 
+        if(main_layout != null){
+            if(main_layout.current_canvas != null){
+                if(value){
+                    main_layout.current_canvas.color_palette.set_dark_mode();
+                }else{
+                    main_layout.current_canvas.color_palette.set_light_mode();
+                }
+            }
+        }
+        
     }
 
     public bool before_destroy () {

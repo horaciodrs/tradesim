@@ -229,6 +229,12 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         color_palette = new TradeSim.Utils.ColorPalette ();
 
+        if(main_window.settings.get_boolean ("window-dark-theme") == true){
+            color_palette.set_dark_mode();
+        }else {
+            color_palette.set_light_mode();
+        }
+
         date_from = date_inicial;
 
         change_zoom_level (1.000);
