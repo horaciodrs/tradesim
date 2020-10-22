@@ -92,6 +92,9 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
         });
 
         show_all ();
+
+        open_dialog_licence();
+
     }
 
     public void open_dialog_operations (int otype) {
@@ -109,6 +112,17 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
             operations_dialog.show_all ();
             operations_dialog.present ();
 
+        }
+
+    }
+
+    public void open_dialog_licence () {
+
+        if(!settings.get_boolean ("tradesim-licence-agreement")){
+            var licence_dialog = new TradeSim.Dialogs.AlertDialog (this);
+
+            licence_dialog.show_all ();
+            licence_dialog.present ();
         }
 
     }
@@ -197,7 +211,7 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
                 }
             }
         }
-        
+
     }
 
     public bool before_destroy () {

@@ -42,6 +42,7 @@ sources = files(
     'Dialogs/NewOperationDialog.vala',
     'Dialogs/NewChartDialog.vala',
     'Dialogs/SettingsDialog.vala',
+    'Dialogs/AlertDialog.vala',
 
     'Window.vala',
     'Application.vala',

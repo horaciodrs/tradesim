@@ -36,5 +36,10 @@
             <summary>User Dark theme</summary>
             <description>Switch between Light and Dark theme.</description>
         </key>
+        <key name="tradesim-licence-agreement" type="b">
+            <default>false</default>
+            <summary>Licence Agreement</summary>
+            <description>Licence Agreement.</description>
+        </key>
     </schema>
 </schemalist>
