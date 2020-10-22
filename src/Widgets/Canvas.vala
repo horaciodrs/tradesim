@@ -433,6 +433,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     }
 
     public void horizontal_scroll_position_end () {
+        horizontal_scrollbar_width_calc ();
         _horizontal_scroll_x = _width - vertical_scale_width - _horizontal_scroll_width;
     }
 
@@ -1149,20 +1150,26 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
+    public void horizontal_scrollbar_width_calc () {
+        int displayed_size = get_candle_count_betwen_dates (date_from, date_to);
+        uint display_size = data.quotes.length;
+        double scrollbar_size_factor = displayed_size * 1.00 / display_size; // por ejemplo si es 0.5 la barra tiene la mitad de available_width;
+        double aux = (_width - vertical_scale_width - 1.00) * scrollbar_size_factor;
+
+        _horizontal_scroll_width = int.parse (aux.to_string ());
+    }
+
     public void draw_horizontal_scrollbar (Cairo.Context ctext) {
 
-        int displayed_size = get_candle_count_betwen_dates (date_from, date_to);
+        /*int displayed_size = get_candle_count_betwen_dates (date_from, date_to);
         uint display_size = data.quotes.length;
         double scrollbar_size_factor = displayed_size * 1.00 / display_size; // por ejemplo si es 0.5 la barra tiene la mitad de available_width;
         double aux = (_width - vertical_scale_width - 1.00) * scrollbar_size_factor;
 
         // print("displayed:" + displayed_size.to_string() + "display:" + display_size.to_string() + "\n");
 
-        _horizontal_scroll_width = int.parse (aux.to_string ());
-
-        /*print("\033[2J");
-        print("displayed_size:" + displayed_size.to_string() + "\n");
-        print("display_size:" + display_size.to_string() + "\n");*/
+        _horizontal_scroll_width = int.parse (aux.to_string ());*/
+        horizontal_scrollbar_width_calc ();
 
         if (_horizontal_scroll_width < _width - vertical_scale_width - 1.00) {
 
