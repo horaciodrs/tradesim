@@ -1248,10 +1248,26 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             return;
         }
 
+        /*********************************************/
+        /***********TEXT WIDTH CALCULATION************/
+        /*********************************************/
+        string txt_to_write = get_date_time_by_pos_x (mouse_x);
+        int txt_width;
+        int txt_height;
+        int padding = 12;
+
+        var aux_canvas = new Gtk.DrawingArea ();
+        var layout = aux_canvas.create_pango_layout (txt_to_write);
+        layout.get_pixel_size (out txt_width, out txt_height);
+
+        int label_width = txt_width + padding*2;
+        /***********************************************/
+        /***********************************************/
+
         ctext.set_dash ({}, 0);
 
         color_palette.canvas_horizontal_scale_label_bg.apply_to(ctext);
-        ctext.rectangle (mouse_x - 70, _available_height, 140, _horizontal_scale_height);
+        ctext.rectangle (mouse_x - label_width/2, _available_height, label_width, _horizontal_scale_height);
         ctext.fill ();
 
         ctext.move_to (mouse_x, _available_height);
@@ -1265,7 +1281,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         ctext.fill_preserve ();
         ctext.stroke ();
 
-        write_text_color (ctext, mouse_x - 56, _available_height + 4, get_date_time_by_pos_x (mouse_x), color_palette.canvas_horizontal_scale_label_fg);
+        write_text_color (ctext, mouse_x - label_width/2 + padding, _available_height + 4, txt_to_write, color_palette.canvas_horizontal_scale_label_fg);
 
     }
 
