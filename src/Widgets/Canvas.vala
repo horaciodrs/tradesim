@@ -151,6 +151,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         button_release_event.connect (this.on_mouse_up);
 
+        size_allocate.connect (this.on_screen_changed);
+
         init ();
 
         if (load_file != null) {
@@ -710,6 +712,19 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
+    public void on_screen_changed(){
+
+        var velas_totales = data.quotes.length;
+        var velas_left = get_candle_count_betwen_dates(date_inicial, date_from);
+        var velas_left_total = velas_totales - total_candles_size;
+        var porcentaje = velas_left / velas_left_total;
+
+        horizontal_scrollbar_width_calc ();
+
+        _horizontal_scroll_x = (int) ((_width - vertical_scale_width - _horizontal_scroll_width) * porcentaje);
+
+    }
+
     public bool on_mouse_over (Gdk.EventMotion event) {
 
         mouse_x = (int) event.x;
@@ -978,7 +993,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             ctext.set_dash ({}, 0);
             ctext.set_line_width (candles_cola_size);
             //ctext.set_source_rgba (0, 0, 0, 1);
-            color_palette.candle_border.apply_to(ctext);
+            color_palette.candle_border_up.apply_to(ctext);
             ctext.move_to (cola_x, cola_up_posy2);
             ctext.line_to (cola_x, posy2);
             ctext.stroke ();
@@ -990,7 +1005,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             ctext.set_dash ({}, 0);
             ctext.set_line_width (candles_cola_size);
             //ctext.set_source_rgba (0, 0, 0, 1);
-            color_palette.candle_border.apply_to(ctext);
+            color_palette.candle_border_up.apply_to(ctext);
             ctext.move_to (cola_x, cola_down_posy);
             ctext.line_to (cola_x, cola_down_posy2);
             ctext.stroke ();
@@ -1007,7 +1022,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             ctext.set_dash ({}, 0);
             ctext.set_line_width (candles_cola_size);
             //ctext.set_source_rgba (0, 0, 0, 1);
-            color_palette.candle_border.apply_to(ctext);
+            color_palette.candle_border_down.apply_to(ctext);
             ctext.move_to (cola_x, cola_up_posy2);
             ctext.line_to (cola_x, cola_up_posy);
             ctext.stroke ();
@@ -1019,7 +1034,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             ctext.set_dash ({}, 0);
             ctext.set_line_width (candles_cola_size);
             //ctext.set_source_rgba (0, 0, 0, 1);
-            color_palette.candle_border.apply_to(ctext);
+            color_palette.candle_border_down.apply_to(ctext);
             ctext.move_to (cola_x, cola_down_posy);
             ctext.line_to (cola_x, cola_down_posy2);
             ctext.stroke ();
@@ -1033,7 +1048,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         int ancho = candle_width;
         int alto = sizev;
 
-        draw_candle_border (ctext, x, y, sizev);
+        draw_candle_border (ctext, x, y, sizev, color_palette.candle_border_up);
 
         //ctext.set_source_rgba (_r (104), _g (183), _b (35), 1);
         color_palette.candle_up.apply_to(ctext);
@@ -1047,7 +1062,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         int ancho = candle_width;
         int alto = sizev;
 
-        draw_candle_border (ctext, x, y, sizev);
+        draw_candle_border (ctext, x, y, sizev, color_palette.candle_border_down);
 
         //ctext.set_source_rgba (_r (192), _g (38), _b (46), 1);
         color_palette.candle_down.apply_to(ctext);
@@ -1056,7 +1071,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
-    public void draw_candle_border (Cairo.Context ctext, int x, int y, int sizev) {
+    public void draw_candle_border (Cairo.Context ctext, int x, int y, int sizev, TradeSim.Utils.Color brd_color) {
 
         int ancho = candle_width;
         int alto = sizev;
@@ -1066,14 +1081,14 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         // left_border
         ctext.set_line_width (1);
         //ctext.set_source_rgba (0, 0, 0, 1);
-        color_palette.candle_border.apply_to(ctext);
+        brd_color.apply_to(ctext);
         ctext.move_to (x, y);
         ctext.line_to (x, y + alto);
         ctext.stroke ();
 
         // right_border
         ctext.set_line_width (1);
-        color_palette.candle_border.apply_to(ctext);
+        brd_color.apply_to(ctext);
         //ctext.set_source_rgba (0, 0, 0, 1);
         ctext.move_to (x + ancho, y);
         ctext.line_to (x + ancho, y + alto);
@@ -1082,7 +1097,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         // top_border
         ctext.set_line_width (1);
         //ctext.set_source_rgba (0, 0, 0, 1);
-        color_palette.candle_border.apply_to(ctext);
+        brd_color.apply_to(ctext);
         ctext.move_to (x - 1, y);
         ctext.line_to (x + ancho + 1, y);
         ctext.stroke ();
@@ -1090,7 +1105,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         // bottom_border
         ctext.set_line_width (1);
         //ctext.set_source_rgba (0, 0, 0, 1);
-        color_palette.candle_border.apply_to(ctext);
+        brd_color.apply_to(ctext);
         ctext.move_to (x - 1, y + alto);
         ctext.line_to (x + ancho + 1, y + alto);
         ctext.stroke ();

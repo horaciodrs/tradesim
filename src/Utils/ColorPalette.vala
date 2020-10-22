@@ -39,7 +39,8 @@ public class TradeSim.Utils.ColorPalette {
 
     public TradeSim.Utils.Color candle_up;
     public TradeSim.Utils.Color candle_down;
-    public TradeSim.Utils.Color candle_border;
+    public TradeSim.Utils.Color candle_border_up;
+    public TradeSim.Utils.Color candle_border_down;
 
     public ColorPalette(){
         //set_light_mode ();
@@ -64,7 +65,8 @@ public class TradeSim.Utils.ColorPalette {
         canvas_horizontal_scale_bg = new TradeSim.Utils.Color(255, 226, 107);
         candle_up = new TradeSim.Utils.Color(104, 183, 35);
         candle_down = new TradeSim.Utils.Color(192, 38, 46);
-        candle_border = new TradeSim.Utils.Color(0, 0, 0);
+        candle_border_up = new TradeSim.Utils.Color(0, 0, 0);
+        candle_border_down = new TradeSim.Utils.Color(0, 0, 0);
 
     }
 
@@ -86,7 +88,8 @@ public class TradeSim.Utils.ColorPalette {
         canvas_horizontal_scale_bg = new TradeSim.Utils.Color(20, 20, 20);
         candle_up = new TradeSim.Utils.Color(38, 166, 154);
         candle_down = new TradeSim.Utils.Color(239, 83, 80);
-        candle_border = new TradeSim.Utils.Color(128, 128, 128);
+        candle_border_up = new TradeSim.Utils.Color(38, 166, 154);
+        candle_border_down = new TradeSim.Utils.Color(239, 83, 80);
 
     }
 
