@@ -52,7 +52,7 @@ public class TradeSim.Drawings.HLine : TradeSim.Drawings.Line {
 
     }
 
-    public  void render_vertical_scale (Cairo.Context ctext) {
+    public void render_vertical_scale (Cairo.Context ctext) {
 
         if (!visible) {
             return;

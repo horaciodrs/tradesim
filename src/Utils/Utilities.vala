@@ -161,19 +161,19 @@ public int get_month_number (string month) {
 
 }
 
-bool is_valid_market_date(DateTime fecha){
+bool is_valid_market_date (DateTime fecha) {
 
-    var hora = fecha.get_hour();
+    var hora = fecha.get_hour ();
     var dia_posicion = fecha.get_day_of_week ();
 
-    if(dia_posicion == 5){
-        if(hora > 18){
+    if (dia_posicion == 5) {
+        if (hora > 18) {
             return false;
         }
-    }else if(dia_posicion == 6){
+    } else if (dia_posicion == 6) {
         return false;
-    }else if(dia_posicion == 7){
-        if(hora <= 18){
+    } else if (dia_posicion == 7) {
+        if (hora <= 18) {
             return false;
         }
     }
@@ -182,7 +182,7 @@ bool is_valid_market_date(DateTime fecha){
 
 }
 
-DateTime ? get_viernes (DateTime fecha){
+DateTime ? get_viernes (DateTime fecha) {
 
     int dia_viernes = 5;
 
@@ -191,26 +191,26 @@ DateTime ? get_viernes (DateTime fecha){
     var dia = fecha.get_day_of_month ();
     var dia_posicion = fecha.get_day_of_week ();
 
-    if(dia_posicion < dia_viernes){
+    if (dia_posicion < dia_viernes) {
 
         int distancia = dia_viernes - dia_posicion;
-        DateTime return_value = new DateTime.local(anio, mes, dia, 0, 0, 0);
-        return_value = return_value.add_days(distancia);
-        return_value = return_value.add_hours(18);
+        DateTime return_value = new DateTime.local (anio, mes, dia, 0, 0, 0);
+        return_value = return_value.add_days (distancia);
+        return_value = return_value.add_hours (18);
         return return_value;
-    }else if (dia_posicion == dia_viernes){
+    } else if (dia_posicion == dia_viernes) {
 
         return new DateTime.local (anio, mes, dia, 18, 0, 0);
-    }else if(dia_posicion > dia_viernes){
-        if(dia_posicion == 6){
-            DateTime return_value = new DateTime.local(anio, mes, dia, 0, 0, 0);
-            return_value = return_value.add_days(6);
-            return_value = return_value.add_hours(18);
+    } else if (dia_posicion > dia_viernes) {
+        if (dia_posicion == 6) {
+            DateTime return_value = new DateTime.local (anio, mes, dia, 0, 0, 0);
+            return_value = return_value.add_days (6);
+            return_value = return_value.add_hours (18);
             return return_value;
-        }else if(dia_posicion == 7){
-            DateTime return_value = new DateTime.local(anio, mes, dia, 0, 0, 0);
-            return_value = return_value.add_days(5);
-            return_value = return_value.add_hours(18);
+        } else if (dia_posicion == 7) {
+            DateTime return_value = new DateTime.local (anio, mes, dia, 0, 0, 0);
+            return_value = return_value.add_days (5);
+            return_value = return_value.add_hours (18);
             return return_value;
         }
     }
@@ -220,20 +220,20 @@ DateTime ? get_viernes (DateTime fecha){
 }
 
 int get_dist_to_viernes (DateTime fecha) {
-    var viernes = get_viernes(fecha);
-    return (-1)* (int)(fecha.difference(viernes) / GLib.TimeSpan.HOUR);
+    var viernes = get_viernes (fecha);
+    return (-1) * (int) (fecha.difference (viernes) / GLib.TimeSpan.HOUR);
 }
 
 DateTime get_next_market_date (DateTime fecha) {
 
-    var viernes = get_viernes(fecha);
+    var viernes = get_viernes (fecha);
     var anio = viernes.get_year ();
     var mes = viernes.get_month ();
     var dia = viernes.get_day_of_month ();
 
-    DateTime return_value = new DateTime.local(anio, mes, dia, 0, 0, 0);
-    return_value = return_value.add_days(2);
-    return_value = return_value.add_hours(18);
+    DateTime return_value = new DateTime.local (anio, mes, dia, 0, 0, 0);
+    return_value = return_value.add_days (2);
+    return_value = return_value.add_hours (18);
 
     return return_value;
 

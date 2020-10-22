@@ -93,7 +93,7 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
         show_all ();
 
-        open_dialog_licence();
+        open_dialog_licence ();
 
     }
 
@@ -118,7 +118,7 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
     public void open_dialog_licence () {
 
-        if(!settings.get_boolean ("tradesim-licence-agreement")){
+        if (!settings.get_boolean ("tradesim-licence-agreement")) {
             var licence_dialog = new TradeSim.Dialogs.AlertDialog (this);
 
             licence_dialog.show_all ();
@@ -202,12 +202,12 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
             settings.set_boolean ("window-dark-theme", value);
         }
 
-        if(main_layout != null){
-            if(main_layout.current_canvas != null){
-                if(value){
-                    main_layout.current_canvas.color_palette.set_dark_mode();
-                }else{
-                    main_layout.current_canvas.color_palette.set_light_mode();
+        if (main_layout != null) {
+            if (main_layout.current_canvas != null) {
+                if (value) {
+                    main_layout.current_canvas.color_palette.set_dark_mode ();
+                } else {
+                    main_layout.current_canvas.color_palette.set_light_mode ();
                 }
             }
         }

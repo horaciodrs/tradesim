@@ -855,7 +855,7 @@ public class TradeSim.Services.Database : GLib.Object {
 
             DateTime item_date = new DateTime.local (date_year, date_month, date_day, date_hour, date_minute, 0);
 
-            if(!is_valid_market_date(item_date)){
+            if (!is_valid_market_date (item_date)) {
                 continue;
             }
 

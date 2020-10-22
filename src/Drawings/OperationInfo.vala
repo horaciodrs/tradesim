@@ -210,8 +210,8 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
 
         if (operation_data.state == TradeSim.Objects.OperationItem.State.CLOSED) {
 
-            if(operation_data.operation_date.compare(ref_canvas.date_from) < 0){
-                if(operation_data.close_date.compare(ref_canvas.date_from) < 0){
+            if (operation_data.operation_date.compare (ref_canvas.date_from) < 0) {
+                if (operation_data.close_date.compare (ref_canvas.date_from) < 0) {
                     return;
                 }
             }

@@ -35,10 +35,10 @@ public class TradeSim.Dialogs.AlertDialog : Gtk.Dialog {
             resizable: false,
             modal: true,
             title: _ ("Licence Agreement")
-        );
+            );
 
         delete_event.connect ((e) => {
-            return true; //Evita que se cierre el dialogo sin aceptar o rechazar la licencia.
+            return true; // Evita que se cierre el dialogo sin aceptar o rechazar la licencia.
         });
 
         scroll_licence = new Gtk.ScrolledWindow (null, null);
@@ -83,13 +83,13 @@ public class TradeSim.Dialogs.AlertDialog : Gtk.Dialog {
         var disclaimer = new Gtk.Label (_ ("Trading currencies with leverage carries a high level of risk and may not be suitable for all types of investors.\n\nThe high degree of market leverage can play both for and against the investor. We remember that there is the possibility of losing part or all of the initial investment so you should not invest money that you cannot afford to lose.\n\nTradeSim is an application created in order to test strategies without risk for the user in a simulated market. The results obtained in TradeSim should in no case be taken as advice, or recommendation for investment.\n\nThe creator of this application will not be held responsible for the losses suffered by the investor. The investor will be solely responsible for his actions in the negotiation in the real market."));
 
         disclaimer.justify = Gtk.Justification.LEFT;
-        //disclaimer.get_style_context ().add_class ("warning-message");
+        // disclaimer.get_style_context ().add_class ("warning-message");
         disclaimer.max_width_chars = 60;
         disclaimer.wrap = true;
         disclaimer.margin_top = disclaimer.margin_bottom = 12;
 
         scroll_licence.add (disclaimer);
-        scroll_licence.set_size_request(400, 200);
+        scroll_licence.set_size_request (400, 200);
         scroll_licence.set_vexpand (true);
         scroll_licence.set_hexpand (true);
         scroll_licence.get_style_context ().add_class ("scrolled-window-data");
@@ -109,7 +109,7 @@ public class TradeSim.Dialogs.AlertDialog : Gtk.Dialog {
 
         var aceptar_button = new Gtk.Button.with_label (_ ("Ok"));
         aceptar_button.clicked.connect (() => {
-            //acepto el acuerdo...
+            // acepto el acuerdo...
             main_window.settings.set_boolean ("tradesim-licence-agreement", true);
             destroy ();
             //
@@ -117,9 +117,9 @@ public class TradeSim.Dialogs.AlertDialog : Gtk.Dialog {
 
         var cancel_button = new Gtk.Button.with_label (_ ("Cancel"));
         cancel_button.clicked.connect (() => {
-            //no acepto...
+            // no acepto...
             main_window.settings.set_boolean ("tradesim-licence-agreement", false);
-            main_window.destroy();
+            main_window.destroy ();
         });
 
         button_grid.add (aceptar_button);

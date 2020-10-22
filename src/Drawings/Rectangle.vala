@@ -41,8 +41,8 @@ public class TradeSim.Drawings.Rectangle : TradeSim.Drawings.Line {
 
         update_data ();
 
-        if(date1.compare(ref_canvas.date_from) < 0){
-            if(date2.compare(ref_canvas.date_from) < 0){
+        if (date1.compare (ref_canvas.date_from) < 0) {
+            if (date2.compare (ref_canvas.date_from) < 0) {
                 return;
             }
         }
