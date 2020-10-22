@@ -1267,6 +1267,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public void draw_horizontal_scale (Cairo.Context ctext) {
 
+        ctext.set_dash ({}, 0);
+
         ctext.set_source_rgba (_r (255), _g (225), _b (107), 1);
         ctext.rectangle (0, _available_height, _width, _available_height);
         ctext.fill ();
@@ -1281,11 +1283,9 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public void draw_vertical_scale (Cairo.Context ctext) {
 
-        int precio_inicial = get_media_figura_up (max_price_visible);
-        int precio_final = get_media_figura (min_price_visible);
-
         int pos_y = 0;
-        double precio = precio_inicial;
+        int scale_label_dist = (int) (_available_height / 6);
+        double precio = get_price_by_pos_y(pos_y);
         char[] buf = new char[double.DTOSTR_BUF_SIZE];
 
         ctext.set_dash ({}, 0);
@@ -1301,7 +1301,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         ctext.line_to (_width - vertical_scale_width, _available_height);
         ctext.stroke ();
 
-        while (precio >= precio_final) {
+        while (pos_y < _available_height) {
 
             double show_price = precio / 100000;
 
@@ -1309,8 +1309,9 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
             write_text (ctext, _width - (vertical_scale_width - 5), pos_y, show_price.format (buf, "%g").concat ("0000").substring (0, 7));
 
-            precio -= scale_step;
-            pos_y += scale_label_step;
+            pos_y += scale_label_dist;
+
+            precio = get_price_by_pos_y(pos_y);
 
         }
 
@@ -1448,13 +1449,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         draw_bg (cr);
 
-        draw_horizontal_scale (cr);
-
         draw_chart (cr);
-
-        draw_cross_lines (cr);
-
-        draw_horizontal_scrollbar (cr);
 
         // Lleva el scroll al final cuando se carga un archivo.
         if (!scroll_from_file_setted) {
@@ -1468,8 +1463,13 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         draw_manager.show_all_in_vertical_scale (cr);
 
+        draw_cross_lines (cr);
+
+        draw_horizontal_scale (cr);
         draw_cursor_price_label (cr);
         draw_cursor_datetime_label (cr);
+
+        draw_horizontal_scrollbar (cr);
 
         draw_last_candle_price_label (cr); // Muestra el precio de la ultima vela.
 
