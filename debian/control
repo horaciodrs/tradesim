@@ -1,4 +1,4 @@
-Source: com.github.horaciodrs.TradeSim
+Source: com.github.horaciodrs.tradesim
 Section: x11
 Priority: extra
 Maintainer: Horacio Daniel Ros <horaciodrs@gmail.com>
@@ -10,7 +10,7 @@ Build-Depends: cmake (>= 2.8),
                valac (>= 0.40.0)
 Standards-Version: 3.9.3
 
-Package: com.github.horaciodrs.TradeSim
+Package: com.github.horaciodrs.tradesim
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Description: Hey young world
