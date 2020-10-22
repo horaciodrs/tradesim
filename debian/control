@@ -13,5 +13,5 @@ Standards-Version: 3.9.3
 Package: com.github.horaciodrs.tradesim
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
-Description: Hey young world
- This is a Hello World written in Vala using CMake build system.
+Description: TradeSim - The Linux Trading Simulator
+ This is a trading simulator for Linux.

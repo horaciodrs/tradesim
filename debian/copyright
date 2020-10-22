@@ -1,6 +1,6 @@
 Format: https://dep.debian.net/deps/dep5
 Upstream-Name: cmake-hello-world
-Source: https://github.com/horaciodrs/TradeSim
+Source: https://github.com/horaciodrs/tradesim
 
 Files: src/* data/* debian/*
 Copyright: 2020 Horacio Daniel Ros. <horaciodrs@gmail.com>
@@ -22,4 +22,3 @@ License: GPL-3.0+
  .
  On Debian systems, the complete text of the GNU General
  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
-
