@@ -712,8 +712,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
-    public void on_screen_changed(){
-
+    public void horizontal_scroll_position_update () {
         var velas_totales = data.quotes.length;
         var velas_left = get_candle_count_betwen_dates(date_inicial, date_from);
         var velas_left_total = velas_totales - total_candles_size;
@@ -722,6 +721,11 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         horizontal_scrollbar_width_calc ();
 
         _horizontal_scroll_x = (int) ((_width - vertical_scale_width - _horizontal_scroll_width) * porcentaje);
+    }
+
+    public void on_screen_changed(){
+
+        horizontal_scroll_position_update ();
 
     }
 
@@ -1281,7 +1285,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         ctext.fill_preserve ();
         ctext.stroke ();
 
-        write_text_color (ctext, mouse_x - label_width/2 + padding, _available_height + 4, txt_to_write, color_palette.canvas_horizontal_scale_label_fg);
+        write_text_color (ctext, mouse_x - label_width/2 + padding, _available_height + 4, txt_to_write, color_palette.canvas_cross_line_price_label_fg);
 
     }
 
@@ -1342,6 +1346,38 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     }
 
+    private void draw_horizontal_scale_labels (Cairo.Context ctext) {
+
+        /*********************************************/
+        /***********TEXT WIDTH CALCULATION************/
+        /*********************************************/
+        string txt_to_write = get_date_time_by_pos_x (100);
+        int txt_width;
+        int txt_height;
+        int padding = 5;
+
+        var aux_canvas = new Gtk.DrawingArea ();
+        var layout = aux_canvas.create_pango_layout (txt_to_write);
+        layout.get_pixel_size (out txt_width, out txt_height);
+        txt_width = (int)(txt_width * 1.2);
+        /***********************************************/
+        /***********************************************/
+
+        int step_label_date = txt_width;
+        int current_pos_x = 0;
+        bool seguir = true;
+
+        while(seguir){
+            txt_to_write = get_date_time_by_pos_x (current_pos_x);
+            write_text_color(ctext, current_pos_x, _available_height + padding, txt_to_write, color_palette.canvas_horizontal_scale_label_fg);
+            current_pos_x = current_pos_x + step_label_date;
+            if(current_pos_x > _width - vertical_scale_width){
+                seguir = false;
+            }
+        }
+
+    }
+
     public void draw_horizontal_scale (Cairo.Context ctext) {
 
         ctext.set_dash ({}, 0);
@@ -1355,6 +1391,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         ctext.move_to (0, _available_height);
         ctext.line_to (_width, _available_height);
         ctext.stroke ();
+
+        draw_horizontal_scale_labels (ctext);
 
     }
 

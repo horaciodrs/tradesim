@@ -58,7 +58,7 @@ public class TradeSim.Utils.ColorPalette {
         canvas_vertical_scale_price_label_bg = new TradeSim.Utils.Color(13, 82, 191); //Color del Precio de la ultima vela.
         canvas_vertical_scale_price_label_fg = new TradeSim.Utils.Color(255, 255, 255);
         canvas_cross_line_price_label_bg = new TradeSim.Utils.Color(173, 95, 0);
-        canvas_cross_line_price_label_fg = new TradeSim.Utils.Color(255, 255, 255);
+        canvas_cross_line_price_label_fg = new TradeSim.Utils.Color(0, 0, 0);
         canvas_border = new TradeSim.Utils.Color(212, 142, 21);
         canvas_vertical_scale_bg = new TradeSim.Utils.Color(255, 226, 107);
         canvas_cross_line = new TradeSim.Utils.Color(0, 0, 0);
@@ -75,7 +75,7 @@ public class TradeSim.Utils.ColorPalette {
         canvas_bg = new TradeSim.Utils.Color(40, 40, 40);
         canvas_horizontal_scroll_bg = new TradeSim.Utils.Color(50, 50, 50);
         canvas_horizontal_scale_label_bg = new TradeSim.Utils.Color(30, 30, 30);
-        canvas_horizontal_scale_label_fg = new TradeSim.Utils.Color(128, 128, 128);
+        canvas_horizontal_scale_label_fg = new TradeSim.Utils.Color(50, 50, 50);
         canvas_vertical_scale_label_bg = new TradeSim.Utils.Color(30, 30, 30);
         canvas_vertical_scale_label_fg = new TradeSim.Utils.Color(128, 128, 128);
         canvas_vertical_scale_price_label_bg = new TradeSim.Utils.Color(13, 82, 191); //Color del Precio de la ultima vela.
