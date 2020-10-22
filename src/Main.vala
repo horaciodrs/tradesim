@@ -35,9 +35,8 @@
  */
 
 namespace TradeSim.Data {
-    public const string APP_VERSION = "2020.10.21";
+    public const string APP_VERSION = "2020.10.22";
 }
-
 
 public static int main (string[] args) {
 
