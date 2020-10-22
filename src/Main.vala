@@ -30,6 +30,7 @@
         vsfont theme: AcPlus IBM VGA 8x16-2x    dfsdfsdf
 
         //Comienza la rama canvas_improvements
+        print("\033[2J"); //borra la consola.
 
  */
 

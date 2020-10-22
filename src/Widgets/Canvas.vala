@@ -412,8 +412,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
             change_zoom_level (zoom_factor);
 
-            // print("date_from:" + date_from.to_string() + " date_to:" + date_to.to_string() + "\n");
-
             horizontal_scroll_position_end (); // _horizontal_scroll_x = _width - vertical_scale_width - _horizontal_scroll_width;
 
             check_operations_tp_and_sl ();
@@ -669,15 +667,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         var cont_value = (int)(1000 * zoom_factor);
         var aux_max_price = get_media_figura_up (max_price);
         var aux_min_price = get_media_figura (min_price);
-        var resta = aux_max_price - aux_min_price;
 
         var cantidad = (aux_max_price - aux_min_price) / cont_value;
-
-        print("\033[2J");
-        print("cont_value:" + cont_value.to_string() + "\n");
-        print("resta:" + resta.to_string() + "\n");
-        print("cantidad:" + cantidad.to_string() + "\n");
-        print("vertical_scale:" + vertical_scale.to_string() + "\n");
 
         if(cantidad == 0){
             cantidad = 1;
@@ -787,15 +778,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             date_from = date_add_int_by_time_frame (fecha_inicial, time_frame, velas_step); // date_from = fecha_inicial.add_minutes (velas_step);
 
             change_zoom_level (zoom_factor);
-
-            /*print("\033[2J");
-            print("Fecha inicial:" + date_inicial.to_string() + "\n");
-            print("Date From:" + date_from.to_string() + "\n");
-            print("Date To:" + date_to.to_string() + "\n");
-            print("Date Final:" + last_candle_date.to_string() + "\n");
-            print("velas totales:" + data.quotes.length.to_string() + "\n");
-            print("total_candles_size:" + total_candles_size.to_string() + "\n");
-            print("velas_step:" + velas_step.to_string() + "\n");*/
 
         }
 
@@ -939,7 +921,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public void draw_candle (Cairo.Context ctext, TradeSim.Services.QuoteItem candle_data) {
 
         if (candle_data.date_time == null) {
-            // print("saliendo...\n");
             return;
         }
 
@@ -1187,8 +1168,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         uint display_size = data.quotes.length;
         double scrollbar_size_factor = displayed_size * 1.00 / display_size; // por ejemplo si es 0.5 la barra tiene la mitad de available_width;
         double aux = (_width - vertical_scale_width - 1.00) * scrollbar_size_factor;
-
-        // print("displayed:" + displayed_size.to_string() + "display:" + display_size.to_string() + "\n");
 
         _horizontal_scroll_width = int.parse (aux.to_string ());*/
         horizontal_scrollbar_width_calc ();

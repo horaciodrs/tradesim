@@ -84,6 +84,12 @@ public class TradeSim.Drawings.Line {
 
         update_data ();
 
+        if(date1.compare(ref_canvas.date_from) < 0){
+            if(date2.compare(ref_canvas.date_from) < 0){
+                return;
+            }
+        }
+
         ctext.set_dash ({}, 0);
         ctext.set_line_width (thickness);
         color.apply_to (ctext);

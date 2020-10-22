@@ -18,6 +18,12 @@ public class TradeSim.Drawings.Fibonacci : TradeSim.Drawings.Line {
 
         update_data ();
 
+        if(date1.compare(ref_canvas.date_from) < 0){
+            if(date2.compare(ref_canvas.date_from) < 0){
+                return;
+            }
+        }
+
         int distancia_vertical = y2 - y1;
         int x_fibo = x2;
 

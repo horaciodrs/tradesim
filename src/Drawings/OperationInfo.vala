@@ -210,6 +210,12 @@ public class TradeSim.Drawings.OperationInfo : TradeSim.Drawings.Line {
 
         if (operation_data.state == TradeSim.Objects.OperationItem.State.CLOSED) {
 
+            if(operation_data.operation_date.compare(ref_canvas.date_from) < 0){
+                if(operation_data.close_date.compare(ref_canvas.date_from) < 0){
+                    return;
+                }
+            }
+
             int xi = ref_canvas.get_pos_x_by_date (operation_data.operation_date);
             int xf = ref_canvas.get_pos_x_by_date (operation_data.close_date);
             int yi = ref_canvas.get_pos_y_by_price (operation_data.price);
