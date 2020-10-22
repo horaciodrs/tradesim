@@ -433,7 +433,8 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         for (int i = 1 ; i <= 12 ; i++) {
 
-            string url = "https://raw.githubusercontent.com/horaciodrs/TradeSim/master/data/quotes";
+            string url = main_window.settings.get_string("tradesim-datasource-url");
+
             string mes = i.to_string ();
 
             mes = "00" + mes;

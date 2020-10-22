@@ -41,5 +41,10 @@
             <summary>Licence Agreement</summary>
             <description>Licence Agreement.</description>
         </key>
+        <key name="tradesim-datasource-url" type="s">
+            <default>"https://raw.githubusercontent.com/horaciodrs/TradeSim/master/data/quotes"</default>
+            <summary>Data source URL</summary>
+            <description>Data source URL.</description>
+        </key>
     </schema>
 </schemalist>
