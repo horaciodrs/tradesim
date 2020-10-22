@@ -593,16 +593,34 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         bool exit = false;
         int return_value = 0;
 
-        while (!exit) {
+        if(d1.compare(d2) < 0){
+            while (!exit) {
 
-            aux_date = date_add_int_by_time_frame (aux_date, time_frame, 1); // aux_date = aux_date.add_minutes (1);
+                aux_date = date_add_int_by_time_frame (aux_date, time_frame, 1); // aux_date = aux_date.add_minutes (1);
 
-            if (aux_date.compare (d2) > 0) {
-                exit = true;
-            } else {
-                return_value++;
+                if (aux_date.compare (d2) > 0) {
+                    exit = true;
+                } else {
+                    return_value++;
+                }
+
             }
+        }else{
 
+            aux_date = d2;
+
+            while (!exit) {
+
+                aux_date = date_add_int_by_time_frame (aux_date, time_frame, 1); // aux_date = aux_date.add_minutes (1);
+
+                if (aux_date.compare (d1) > 0) {
+                    exit = true;
+                } else {
+                    return_value++;
+                }
+
+            }
+            return_value = return_value * (-1);
         }
 
         return return_value;
