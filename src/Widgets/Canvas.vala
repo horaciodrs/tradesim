@@ -45,6 +45,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     private bool _vertical_scroll_moving;
     private bool _vertical_scroll_active;
     private int _vertical_scroll_distancia;
+    private int _vertical_scroll_current_max;
+    private int _vertical_scroll_current_min;
+    private int _vertical_scroll_current_max_visible;
+    private int _vertical_scroll_current_min_visible;
 
     private double zoom_factor;
     public int vertical_scale_width;
@@ -490,12 +494,12 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             max_price = (int) (1.001 * data.get_max_price_by_datetimes (date_from, date_to));
             min_price_visible = (int) (0.995 * data.get_min_price_by_datetimes (date_from, date_to));
             max_price_visible = (int) (1.001 * data.get_max_price_by_datetimes (date_from, date_to));
-        }else{
-            min_price = (int) (0.995 * data.get_min_price_by_datetimes (date_inicial, last_candle_date));
-            max_price = (int) (1.001 * data.get_max_price_by_datetimes (date_inicial, last_candle_date));
+        }/*else{
+            //min_price = (int) (0.995 * data.get_min_price_by_datetimes (date_inicial, last_candle_date));
+            //max_price = (int) (1.001 * data.get_max_price_by_datetimes (date_inicial, last_candle_date));
             //min_price_visible = (int) (0.995 * data.get_min_price_by_datetimes (date_from, date_to));
             //max_price_visible = (int) (1.001 * data.get_max_price_by_datetimes (date_from, date_to));
-        }
+        }*/
 
     }
 
@@ -711,6 +715,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         }
 
         if ((_vertical_scroll_moving) && (_vertical_scroll_active)) {
+
             var cont_value = (int)(1000 * zoom_factor);
             var aux_max_price = get_media_figura_up (max_price);
             var aux_min_price = get_media_figura (min_price);
@@ -720,11 +725,13 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             var cambio = mouse_y - _vertical_scroll_distancia;
 
             if(mouse_x > _width - vertical_scale_width){
-                min_price = min_price - cambio*cantidad/2;
-                max_price = max_price + cambio*cantidad/2;
+                //Permite el cambio de escala vertical...
+                min_price = min_price - cambio*cantidad;
+                max_price = max_price + cambio*cantidad;
             }else{
-                min_price_visible = min_price - cambio*cantidad/2;
-                max_price_visible = max_price + cambio*cantidad/2;
+                //Permite el scroll vertical...
+                min_price_visible = _vertical_scroll_current_min_visible - cambio*cantidad;
+                max_price_visible = _vertical_scroll_current_max_visible + cambio*cantidad;
             }
 
         }
@@ -790,9 +797,15 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             _horizontal_scroll_moving = true;
         }
 
-        _vertical_scroll_moving = true;
-        _vertical_scroll_active = true;
-        _vertical_scroll_distancia = mouse_y;
+        if(mouse_y < _height - _horizontal_scale_height){
+            _vertical_scroll_current_max = max_price;
+            _vertical_scroll_current_min = min_price;
+            _vertical_scroll_current_max_visible = max_price_visible;
+            _vertical_scroll_current_min_visible = min_price_visible;
+            _vertical_scroll_moving = true;
+            _vertical_scroll_active = true;
+            _vertical_scroll_distancia = mouse_y;
+        }
 
         if (draw_mode_line == true) {
             // comenzar a dibujar la linea.
