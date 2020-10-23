@@ -644,7 +644,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         var aux = aux_max_price - aux_precio;
 
         // si 10 es vertical_scale cuanto es aux
-
         return (int) (aux * vertical_scale) / cont_value;
 
     }
@@ -684,7 +683,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         var cont_value = (int) (1000 * zoom_factor);
         var aux_max_price = get_media_figura_up (max_price);
         var aux_min_price = get_media_figura (min_price);
-
         var cantidad = (aux_max_price - aux_min_price) / cont_value;
 
         if (cantidad == 0) {
@@ -716,7 +714,11 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         var velas_totales = data.quotes.length;
         var velas_left = get_candle_count_betwen_dates (date_inicial, date_from);
         var velas_left_total = velas_totales - total_candles_size;
-        var porcentaje = velas_left / velas_left_total;
+        double porcentaje = 0;
+
+        if(velas_left_total != 0){
+            porcentaje = velas_left / velas_left_total;
+        }
 
         horizontal_scrollbar_width_calc ();
 
