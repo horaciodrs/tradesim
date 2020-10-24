@@ -38,7 +38,7 @@ New simulation dialog...
 ![GitHub Logo](/data/screenshots/20200910-3.png)
 
 ## Installation:
-Remember **TradeSim it's under development and it's on alpha state**. Only install for testing.
+Remember **TradeSim it's under development and it's on beta state**. Please test and give your feedback.
 
 Run the following commands into the terminal:
 
