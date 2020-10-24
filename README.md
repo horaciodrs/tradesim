@@ -1,6 +1,6 @@
 # TradeSim
 
-![GitHub Logo](/data/icons/128/com.github.horaciodrs.TradeSim.svg)
+![GitHub Logo](/data/icons/128/com.github.horaciodrs.tradesim.svg)
 
 TradeSim is a Trading Simulator application write in Vala for Elementary OS.
 

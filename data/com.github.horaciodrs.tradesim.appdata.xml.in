@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2020 Horacio Daniel Ros <horaciodrs@gmail.com> -->
 <component type="desktop">
-  <id>com.github.horaciodrs.TradeSim</id>
+  <id>com.github.horaciodrs.tradesim</id>
   <metadata_license>CC0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <name>TradeSim</name>
@@ -25,7 +25,7 @@
     </release>
   </releases>
   <provides>
-    <binary>com.github.horaciodrs.TradeSim</binary>
+    <binary>com.github.horaciodrs.tradesim</binary>
   </provides>
   <content_rating type="oars-1.1">
     <content_attribute id="violence-cartoon">none</content_attribute>

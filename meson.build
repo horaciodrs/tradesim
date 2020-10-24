@@ -1,4 +1,4 @@
-project('com.github.horaciodrs.TradeSim', 'vala', 'c')
+project('com.github.horaciodrs.tradesim', 'vala', 'c')
 
 i18n = import('i18n')
 # Set our translation domain

@@ -686,7 +686,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         grid.halign = Gtk.Align.CENTER;
 
         var app_icon = new Gtk.Image ();
-        app_icon.gicon = new ThemedIcon ("com.github.horaciodrs.TradeSim");
+        app_icon.gicon = new ThemedIcon ("com.github.horaciodrs.tradesim");
         app_icon.pixel_size = 64;
         app_icon.margin_top = 12;
 

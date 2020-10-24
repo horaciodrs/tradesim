@@ -60,7 +60,7 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
         try {
 
-            css_provider.load_from_path ("/usr/share/com.github.horaciodrs.TradeSim/stylesheet.css");
+            css_provider.load_from_path ("/usr/share/com.github.horaciodrs.tradesim/stylesheet.css");
 
             Gtk.StyleContext.add_provider_for_screen (
                 Gdk.Screen.get_default (), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
