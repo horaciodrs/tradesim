@@ -109,6 +109,10 @@ public class TradeSim.Services.OperationsManager {
 
     public void close_operation (TradeSim.Objects.OperationItem _operation, double price, DateTime _date) {
 
+        if (_operation.state == TradeSim.Objects.OperationItem.State.CLOSED){
+            return;
+        }
+
         _operation.profit = get_operation_profit_by_price (_operation, price);
         _operation.close_price = price;
         _operation.close_date = _date;
