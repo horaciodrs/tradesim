@@ -382,6 +382,11 @@ msgstr "Por favor ingrese el balance inicial"
 msgid "Please enter a valid initial balance"
 msgstr "El balance inicial no es válido"
 
+
+#: src/Dialogs/NewChartDialog.vala:390
+msgid "Market closed. Please select another date."
+msgstr "El mercado se encuentra cerrado. Por favor seleccione otra fecha."
+
 #: src/Dialogs/DrawEditDialog.vala:60
 #: src/Dialogs/DrawEditDialog.vala:95
 msgid "Edit Object"

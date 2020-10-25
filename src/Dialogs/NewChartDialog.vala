@@ -47,7 +47,6 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
     private Gtk.InfoBar info_alert;
     private Gtk.Label info_label;
-    private bool validation_date;
 
     private TradeSim.Services.Database db;
 
@@ -69,8 +68,6 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         aux_provider_name = _provider_name;
         aux_ticker_name = _ticker_name;
         aux_time_frame_name = "H1";
-
-        validation_date = false;
 
         init ();
 
@@ -182,23 +179,14 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         label_date.halign = Gtk.Align.END;
 
         entry_date.date_changed.connect (() => {
-            // La fecha elegida ha cambiado...
-            // validar que sea una fecha que contenga datos importados
-            // get_available_quotes
-            int count = db.get_available_quotes (aux_provider_name, aux_ticker_name, aux_time_frame_name, entry_date.date);
-            const uint MIN_ALERT_QUOTES = 100;
 
-            validation_date = false;
+            string str_validation = date_validation ();
 
-            if (count == 0) {
+            if(str_validation.length > 0){
+                info_label.set_text (str_validation);
                 info_alert.set_revealed (true);
-                info_label.set_text (_ ("There is not imported data to the selected date."));
-            } else if ((count > 0) && (count < MIN_ALERT_QUOTES)) {
-                info_alert.set_revealed (true);
-                info_label.set_text (_ ("There are not engouth imported data to run a simulation."));
-            } else {
+            }else{
                 info_alert.set_revealed (false);
-                validation_date = true;
             }
 
         });
@@ -369,6 +357,25 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
     }
 
+    private string date_validation(){
+
+        string return_value = "";
+        int count = db.get_available_quotes (aux_provider_name, aux_ticker_name, aux_time_frame_name, entry_date.date);
+        const uint MIN_ALERT_QUOTES = 100;
+
+        if (count == 0) {
+            return_value = _ ("There is not imported data to the selected date.");
+        } else if ((count > 0) && (count < MIN_ALERT_QUOTES)) {
+            return_value = _ ("There are not engouth imported data to run a simulation.");
+        } else if ((count > 0) && (count < MIN_ALERT_QUOTES)) {
+        }else if(!is_valid_market_date(entry_date.date)){
+            return_value = _ ("Market closed. Please select another date.");
+        }
+
+        return return_value;
+
+    }
+
     private string validate_data () {
 
         if (txt_name.get_text ().length < 1) {
@@ -393,6 +400,12 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
             return _ ("Please enter a valid initial balance");
         }
 
+        string str_validation = date_validation ();
+
+        if(str_validation.length < 1){
+            return str_validation;
+        }
+
         return "";
     }
 
@@ -409,10 +422,6 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
                 dialog.destroy ();
                 return;
 
-            }
-
-            if (validation_date == false) {
-                return;
             }
 
         }
