@@ -445,6 +445,10 @@ msgstr "Importar cotizaciones desde internet"
 msgid "Are you sure you want to exit without save changes?"
 msgstr "Esta seguro que quiere salir sin guardar los cambios?"
 
+#: src/Layouts/Main.vala:224
+msgid "There are unsaved simulation/s. ¿Are you sure you want to exit?"
+msgstr "Existen simulaciones sin guardar. Esta seguro que quiere salir?"
+
 #: src/Widgets/OperationsPanel.vala:184
 msgid "Code"
 msgstr "Código"

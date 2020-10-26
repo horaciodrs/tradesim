@@ -139,7 +139,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         draw_mode_rectangle = false;
         draw_mode_hline = false;
         draw_mode = false;
-        need_save = true;
+        need_save = false;
 
         add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK | Gdk.EventMask.POINTER_MOTION_MASK | Gdk.EventMask.LEAVE_NOTIFY_MASK);
 

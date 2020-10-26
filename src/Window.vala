@@ -216,6 +216,10 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
     public bool before_destroy () {
 
+        if (main_layout.check_unsaved_tab_before_close ()) {
+            return true;
+        }
+
         int window_left;
         int window_top;
         int window_width;

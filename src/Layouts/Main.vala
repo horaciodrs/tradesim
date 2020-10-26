@@ -82,6 +82,28 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
     }
 
+    public bool check_unsaved_tab_before_close () {
+
+        int pages = nb_chart_container.get_n_pages ();
+
+        for(int i=0; i<pages; i++){
+            var item = nb_chart_container.get_nth_page (i);
+            if (item.get_type () == typeof (TradeSim.Widgets.CanvasContainer)){
+                var cb_cont = ((TradeSim.Widgets.CanvasContainer) item);
+                if(cb_cont.chart_canvas.need_save){
+                    if(confirm(_ ("There are unsaved simulation/s. ¿Are you sure you want to exit?"), main_window, Gtk.MessageType.QUESTION)){
+                        continue;
+                    }else {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+
+    }
+
     public void on_change_canvas_focus (Gtk.Notebook nb, Gtk.Widget tab, uint order) {
 
         if (current_canvas != null) {
