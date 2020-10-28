@@ -1,16 +1,16 @@
 # TradeSim
 
-<p align="center">
-    <a href="https://flathub.org/apps/details/com.github.horaciodrs.tradesim">
-        <img height="50" alt="Download on Flathub" src="https://flathub.org/assets/badges/flathub-badge-en.png"/>
-    </a>
-</p>
-
 ![TradeSim Icon](/data/icons/128/com.github.horaciodrs.tradesim.svg)
 
 TradeSim is a Trading Simulator application write in Vala for Elementary OS.
 
 Test your strategies on the Linux Trading Simulator, Create reports, learn, try or develop new strategies for your trading.
+
+<p align="center">
+    <a href="https://flathub.org/apps/details/com.github.horaciodrs.tradesim">
+        <img height="50" alt="Download on Flathub" src="https://flathub.org/assets/badges/flathub-badge-en.png"/>
+    </a>
+</p>
 
 ## Good news!:
 The first beta version of TradeSim has been released and its available for download in realse section https://github.com/horaciodrs/TradeSim/releases as a deb file to install on any ubuntu based distro.
