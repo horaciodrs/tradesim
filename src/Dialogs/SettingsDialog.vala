@@ -282,8 +282,8 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
     private void configure_year () {
 
-        int min_year = 2010;
-        int max_year = 2020;
+        int min_year = 2019;
+        int max_year = new DateTime.now_local().get_year();
 
         scroll_year = new Gtk.ScrolledWindow (null, null);
         scroll_year.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
