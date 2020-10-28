@@ -1,6 +1,12 @@
 # TradeSim
 
-![GitHub Logo](/data/icons/128/com.github.horaciodrs.tradesim.svg)
+<p align="center">
+    <a href="https://flathub.org/apps/details/com.github.horaciodrs.tradesim">
+        <img height="50" alt="Download on Flathub" src="https://flathub.org/assets/badges/flathub-badge-en.png"/>
+    </a>
+</p>
+
+![TradeSim Icon](/data/icons/128/com.github.horaciodrs.tradesim.svg)
 
 TradeSim is a Trading Simulator application write in Vala for Elementary OS.
 
@@ -11,7 +17,7 @@ The first beta version of TradeSim has been released and its available for downl
 Please test and give your feedback.
 
 ## A quick look:
-![GitHub Logo](/data/screenshots/tradesim-video1.gif)
+![TradeSim QuickView](/data/screenshots/tradesim-video1.gif)
 
 ## Support
 If you like TradeSim and you want to support this development, please consider donating via:
@@ -26,16 +32,16 @@ If you like TradeSim and you want to support this development, please consider d
 - Draw Fibonacci analisys tool.
 
 ## Screenshot:
-![GitHub Logo](/data/screenshots/Main.png)
+![TradeSim Screenshot1](/data/screenshots/Main.png)
 
 Empty window...
-![GitHub Logo](/data/screenshots/20200910-1.png)
+![TradeSim Screenshot2](/data/screenshots/20200910-1.png)
 
 Data source window...
-![GitHub Logo](/data/screenshots/20200910-2.png)
+![TradeSim Screenshot3](/data/screenshots/20200910-2.png)
 
 New simulation dialog...
-![GitHub Logo](/data/screenshots/20200910-3.png)
+![TradeSim Screenshot4](/data/screenshots/20200910-3.png)
 
 ## Installation:
 Remember **TradeSim it's under development and it's on beta state**. Please test and give your feedback.
