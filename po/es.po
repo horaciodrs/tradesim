@@ -157,9 +157,42 @@ msgstr "Rectángulo"
 msgid "Fibonacci Retracement"
 msgstr "Retroceso de Fibonacci"
 
+#: src/Dialogs/SettingsDialog.vala:671
+msgid "Reset"
+msgstr "Reiniciar"
+
+#: src/Dialogs/SettingsDialog.vala:673
+msgid "Database"
+msgstr "Base de Datos"
+
+#: src/Dialogs/SettingsDialog.vala:673
+msgid "Export"
+msgstr "Exportar"
+
+#: src/Dialogs/SettingsDialog.vala:673
+msgid "Import"
+msgstr "Importar"
+
 #: src/Dialogs/SettingsDialog.vala:76
 msgid "Preferences"
 msgstr "Preferencias"
+
+
+#: src/Dialogs/SettingsDialog.vala:677
+msgid "Export database file"
+msgstr "Esportara archivo de base de datos"
+
+#: src/Dialogs/SettingsDialog.vala:677
+msgid "Are you sure you want to database reset?"
+msgstr "¿Esta seguro que quiere reiniciar la base de datos?"
+
+#: src/Dialogs/SettingsDialog.vala:677
+msgid "Warning! All previous data will be lost. Are you sure you want to import this database file?"
+msgstr "Atención! Todos la información actual se perderá. ¿Desea continuar?"
+
+#: src/Dialogs/SettingsDialog.vala:677
+msgid "Import Database file"
+msgstr "Importar archivo de base de datos"
 
 #: src/Dialogs/SettingsDialog.vala:103
 msgid "Interface"

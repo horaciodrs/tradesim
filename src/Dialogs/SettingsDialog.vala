@@ -668,13 +668,141 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         spiner_data_source.halign = Gtk.Align.END;
         label_waiting.halign = Gtk.Align.START;
 
-        grid.attach (new SettingsHeader (_ ("Data Source")), 0, 0);
-        grid.attach (scroll_provider, 0, 1, 1, 2);
-        grid.attach (scroll_ticker, 1, 1, 1, 2);
-        grid.attach (scroll_year, 2, 1, 1, 2);
-        grid.attach (scroll_quotes, 0, 3, 3, 3);
-        grid.attach (grid_waiting, 0, 7, 3);
-        grid.attach (progress_import, 0, 8, 3);
+        var delete_button = new Gtk.Button.with_label (_ ("Reset"));
+        var backup_button = new Gtk.Button.with_label (_ ("Export"));
+        var restore_button = new Gtk.Button.with_label (_ ("Import"));
+
+
+        restore_button.clicked.connect ( () => {
+
+            var dialog = new Gtk.FileChooserDialog (_ ("Import Database file"), this,
+                                                Gtk.FileChooserAction.OPEN,
+                                                _ ("Open"),
+                                                Gtk.ResponseType.OK,
+                                                _ ("Cancel"),
+                                                Gtk.ResponseType.CANCEL
+                                                );
+
+            dialog.set_modal (true);
+
+            Gtk.FileFilter filter = new Gtk.FileFilter ();
+            filter.add_pattern ("*.db");
+            filter.set_filter_name (_ ("Sqlite files"));
+            dialog.add_filter (filter);
+
+            filter = new Gtk.FileFilter ();
+            filter.add_pattern ("*");
+            filter.set_filter_name (_ ("All files"));
+
+            dialog.add_filter (filter);
+
+            dialog.response.connect ((dialog, response_id) => {
+
+                var dlg = (Gtk.FileChooserDialog)dialog;
+
+                switch (response_id) {
+                case Gtk.ResponseType.OK:
+                    string file_path = dlg.get_filename ();
+                    if (file_path.index_of (".db") < 0) {
+                        file_path += ".db";
+                    }
+                    if (confirm ("Warning! All previous data will be lost. Are you sure you want to import this database file?", main_window, Gtk.MessageType.WARNING)){
+                        qm.db.import (file_path);
+                        qm = new TradeSim.Services.QuotesManager ();
+                        main_window.main_layout.providers_panel.refresh_providers ();
+                        update_quotes_by_filter ();
+                    }
+                    break;
+                case Gtk.ResponseType.CANCEL:
+                    print ("Cancel\n");
+                    break;
+                }
+
+                dlg.destroy ();
+
+            });
+
+            dialog.show ();
+ 
+
+        });
+
+        backup_button.clicked.connect ( () => {
+
+            var dialog = new Gtk.FileChooserDialog (_ ("Export database file"), main_window,
+                                                    Gtk.FileChooserAction.SAVE,
+                                                    _ ("Save"),
+                                                    Gtk.ResponseType.OK,
+                                                    _ ("Cancel"),
+                                                    Gtk.ResponseType.CANCEL
+                                                    );
+
+            dialog.set_do_overwrite_confirmation (true);
+            dialog.set_modal (true);
+
+            Gtk.FileFilter filter = new Gtk.FileFilter ();
+            filter.add_pattern ("*.db");
+            filter.set_filter_name (_ ("Sqlite files"));
+            dialog.add_filter (filter);
+
+            filter = new Gtk.FileFilter ();
+            filter.add_pattern ("*");
+            filter.set_filter_name (_ ("All files"));
+
+            dialog.add_filter (filter);
+
+            dialog.response.connect ((dialog, response_id) => {
+
+                var dlg = (Gtk.FileChooserDialog)dialog;
+
+                switch (response_id) {
+                case Gtk.ResponseType.OK:
+                    string file_path = dlg.get_filename ();
+                    if (file_path.index_of (".db") < 0) {
+                        file_path += ".db";
+                    }
+                    qm.db.export (file_path);
+                    break;
+                case Gtk.ResponseType.CANCEL:
+                    print ("Cancel\n");
+                    break;
+                }
+
+                dlg.destroy ();
+
+            });
+
+            dialog.show ();
+
+
+        });
+
+        delete_button.clicked.connect ( () => {
+
+            if( confirm(_("Are you sure you want to database reset?"), main_window, Gtk.MessageType.QUESTION)){
+
+                qm.db.reset ();
+
+                main_window.main_layout.providers_panel.refresh_providers ();
+
+                start_update_quotes_by_filter ();
+
+            }
+
+        });
+
+        grid.attach (new SettingsHeader (_ ("Database")), 0, 0);
+        grid.attach (delete_button, 0, 1);
+        grid.attach (backup_button, 1, 1);
+        grid.attach (restore_button, 2, 1);
+
+        grid.attach (new SettingsHeader (_ ("Data Source")), 0, 2);
+        grid.attach (scroll_provider, 0, 3, 1, 2);
+        grid.attach (scroll_ticker, 1, 3, 1, 2);
+        grid.attach (scroll_year, 2, 3, 1, 2);
+        grid.attach (scroll_quotes, 0, 5, 3, 3);
+        grid.attach (grid_waiting, 0, 8, 3);
+        grid.attach (progress_import, 0, 9, 3);
 
         return grid;
     }

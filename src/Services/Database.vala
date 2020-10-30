@@ -23,6 +23,7 @@ public class TradeSim.Services.Database : GLib.Object {
 
     private Sqlite.Database db;
     private string db_path;
+    private string db_path_folder;
 
     public bool import_is_working;
     public int import_total_lines;
@@ -31,8 +32,67 @@ public class TradeSim.Services.Database : GLib.Object {
     /*DEPENDENCIA: sudo apt install libsqlite3-dev  */
 
     public Database (bool skip_tables = false) {
+
+        init (skip_tables);
+
+    }
+
+    public void reset () {
+
+        try{
+
+            GLib.File db_file = GLib.File.new_for_path (db_path);
+
+            db_file.delete ();
+
+            init ();
+
+        }catch (Error e){
+            print("Error: %s\n", e.message);
+            return;
+        }
+
+    }
+
+    public void export (string to_path) {
+
+        try{
+            
+            GLib.File source_file = GLib.File.new_for_path (db_path);
+            GLib.File dest_file = GLib.File.new_for_path (to_path);
+
+            source_file.copy (dest_file, GLib.FileCopyFlags.OVERWRITE, null, null);
+
+        }catch(Error e){
+            print("Error: %s\n", e.message);
+            return;
+        }
+
+    }
+
+
+    public void import (string from_path) {
+
+        try{
+            
+            GLib.File source_file = GLib.File.new_for_path (from_path);
+            GLib.File dest_file = GLib.File.new_for_path (db_path_folder + "/database.db");
+
+            source_file.copy (dest_file, GLib.FileCopyFlags.OVERWRITE, null, null);
+
+
+        }catch(Error e){
+            print("Error: %s\n", e.message);
+            return;
+        }
+
+    }
+
+    private void init (bool skip_tables = false) {
+        
         int rc = 0;
-        db_path = Environment.get_home_dir () + "/.local/share/com.github.horaciodrs.tradesim/database.db";
+        db_path_folder = Environment.get_home_dir () + "/.local/share/com.github.horaciodrs.tradesim";
+        db_path = db_path_folder + "/database.db";
 
         if (!skip_tables) {
             if (create_tables () != Sqlite.OK) {
@@ -47,6 +107,7 @@ public class TradeSim.Services.Database : GLib.Object {
             stderr.printf ("Can't open database: %d, %s\n", rc, db.errmsg ());
             Gtk.main_quit ();
         }
+
     }
 
     public void start_import_quotes (int quotes) {

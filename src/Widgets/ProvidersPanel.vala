@@ -85,6 +85,7 @@ public class TradeSim.Widgets.ProvidersPanel : Gtk.Grid {
     }
 
     public void refresh_providers () {
+        qm = new TradeSim.Services.QuotesManager ();
         tree_view_providers.get_selection ().unselect_all ();
         load_providers ();
         tree_view_providers.expand_all ();
