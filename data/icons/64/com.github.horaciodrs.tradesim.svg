@@ -13,7 +13,7 @@
    height="64"
    id="svg4379"
    sodipodi:docname="com.github.horaciodrs.tradesim.svg"
-   inkscape:version="1.0 (4035a4fb49, 2020-05-01)">
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
   <sodipodi:namedview
      inkscape:guide-bbox="true"
      showguides="true"
@@ -26,11 +26,11 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
+     inkscape:window-width="3840"
+     inkscape:window-height="2020"
      id="namedview52"
      showgrid="false"
-     inkscape:zoom="9.122229"
+     inkscape:zoom="18.244458"
      inkscape:cx="42.149876"
      inkscape:cy="36.7866"
      inkscape:window-x="0"
@@ -719,78 +719,78 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
-     sodipodi:insensitive="true"
      inkscape:groupmode="layer"
      id="layer1"
      inkscape:label="Fondo"
-     style="display:inline;opacity:1" />
+     style="display:inline;opacity:1"
+     sodipodi:insensitive="true" />
   <g
-     sodipodi:insensitive="true"
      inkscape:groupmode="layer"
      id="layer4"
      inkscape:label="BordeClaro"
-     style="display:inline" />
+     style="display:inline"
+     sodipodi:insensitive="true" />
   <g
-     sodipodi:insensitive="true"
      inkscape:groupmode="layer"
      id="layer7"
      inkscape:label="Sombra1"
-     style="display:inline" />
+     style="display:inline"
+     sodipodi:insensitive="true" />
   <g
-     sodipodi:insensitive="true"
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Grafico1"
-     style="display:inline" />
+     style="display:inline"
+     sodipodi:insensitive="true" />
   <g
-     sodipodi:insensitive="true"
      inkscape:groupmode="layer"
      id="layer5"
      inkscape:label="Grafico2"
-     style="display:inline" />
+     style="display:inline"
+     sodipodi:insensitive="true" />
   <g
-     sodipodi:insensitive="true"
      inkscape:groupmode="layer"
      id="layer13"
      inkscape:label="Oso Contorno"
-     style="display:inline" />
+     style="display:inline"
+     sodipodi:insensitive="true" />
   <g
-     sodipodi:insensitive="true"
      inkscape:groupmode="layer"
      id="layer14"
      inkscape:label="Oso Contorno 2"
-     style="display:inline" />
+     style="display:inline"
+     sodipodi:insensitive="true" />
   <g
-     sodipodi:insensitive="true"
      style="display:inline"
      inkscape:label="OsoPluma"
      id="layer10"
-     inkscape:groupmode="layer" />
+     inkscape:groupmode="layer"
+     sodipodi:insensitive="true" />
   <g
-     sodipodi:insensitive="true"
      inkscape:groupmode="layer"
      id="layer15"
      inkscape:label="OsoPluma 2"
-     style="display:inline" />
+     style="display:inline"
+     sodipodi:insensitive="true" />
   <g
-     sodipodi:insensitive="true"
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Borde1"
-     style="display:inline" />
+     style="display:inline"
+     sodipodi:insensitive="true" />
   <g
-     sodipodi:insensitive="true"
      inkscape:groupmode="layer"
      id="layer8"
      inkscape:label="Sombra2"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <g
-       transform="matrix(0.5,0,0,0.5,0.23143372,-0.06664387)"
+       transform="matrix(0.58324853,0,0,0.58324853,-5.0964722,-7.852374)"
        id="g1576">
       <rect
          width="103"

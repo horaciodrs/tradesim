@@ -13,7 +13,7 @@
    height="24"
    id="svg4379"
    sodipodi:docname="com.github.horaciodrs.tradesim.svg"
-   inkscape:version="1.0 (4035a4fb49, 2020-05-01)">
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
   <sodipodi:namedview
      inkscape:guide-bbox="true"
      showguides="true"
@@ -26,13 +26,13 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
+     inkscape:window-width="3840"
+     inkscape:window-height="2020"
      id="namedview52"
      showgrid="false"
-     inkscape:zoom="12.90078"
-     inkscape:cx="9.3570623"
-     inkscape:cy="22.353212"
+     inkscape:zoom="72.977832"
+     inkscape:cx="10.121796"
+     inkscape:cy="12.228609"
      inkscape:window-x="0"
      inkscape:window-y="30"
      inkscape:window-maximized="1"
@@ -719,7 +719,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -779,7 +779,7 @@
      inkscape:label="Sombra2"
      style="display:inline">
     <g
-       transform="matrix(0.18772727,0,0,0.18772727,-0.01454543,-0.09677268)"
+       transform="matrix(0.21400272,0,0,0.21400272,-1.6961742,-2.5230408)"
        id="g1822">
       <rect
          width="103"
