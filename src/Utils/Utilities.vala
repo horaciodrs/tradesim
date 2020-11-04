@@ -150,7 +150,7 @@ public int get_month_number (string month) {
     } else if (month == "August") {
         return 8;
     } else if (month == "September") {
-        return 8;
+        return 9;
     } else if (month == "Octover") {
         return 10;
     } else if (month == "November") {

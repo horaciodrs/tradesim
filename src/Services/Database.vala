@@ -112,6 +112,8 @@ public class TradeSim.Services.Database : GLib.Object {
 
     public void start_import_quotes (int quotes) {
 
+        print ("se importaran" + quotes.to_string () + " quotes\n");
+
         import_total_lines = quotes;
         imported_lines = 0;
         import_is_working = true;
