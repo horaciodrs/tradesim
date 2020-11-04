@@ -10,6 +10,9 @@ Test your strategies on the Linux Trading Simulator, Create reports, learn, try 
     <a href="https://flathub.org/apps/details/com.github.horaciodrs.tradesim">
         <img height="50" alt="Download on Flathub" src="https://flathub.org/assets/badges/flathub-badge-en.png"/>
     </a>
+    <a href="https://www.github.com/horaciodrs/tradesim/releases">
+        <img height="50" alt="Download as Debian Installer" src="https://raw.githubusercontent.com/horaciodrs/TradeSim/master/data/images/download-deb.png" />
+    </a>
 </p>
 
 ## Good news!:
