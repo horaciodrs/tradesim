@@ -35,10 +35,10 @@ If you like TradeSim and you want to support this development, please consider d
 ![TradeSim Screenshot1](/data/screenshots/tsim_screenshot_dl.png)
 
 Empty window...
-![TradeSim Screenshot2](/data/screenshots/20200910-1.png)
+![TradeSim Screenshot2](/data/screenshots/tsim_screenshot_welcome.png)
 
 Data source window...
-![TradeSim Screenshot3](/data/screenshots/20200910-2.png)
+![TradeSim Screenshot3](/data/screenshots/tsim_screenshot_settings.png)
 
 New simulation dialog...
 ![TradeSim Screenshot4](/data/screenshots/20200910-3.png)
