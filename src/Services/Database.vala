@@ -986,6 +986,63 @@ public class TradeSim.Services.Database : GLib.Object {
 
     }
 
+    /*******************************/
+
+    public bool exists_quotes_in_date (string _provider_name, string _ticker_name, string _time_frame, DateTime _date) {
+
+        int provider_id = get_db_id_by_table_and_field ("providers", "name", _provider_name);
+        int market_id = get_db_id_by_name ("markets", "Forex");
+        int ticker_id = get_db_id_by_name ("tickers", _ticker_name);
+        int time_frame_id = get_db_id_by_name ("time_frames", _time_frame);
+
+        int return_value = 0;
+
+        Sqlite.Statement stmt;
+        string sql;
+        int res;
+
+        sql = """SELECT COUNT(*) as RecordCount
+             FROM quotes
+            WHERE DATETIME(date_str) = DATETIME(?)
+              AND provider_id = ?
+              AND market_id = ?
+              AND ticker_id = ?
+              AND time_frame_id = ?
+        """;
+
+        res = db.prepare_v2 (sql, -1, out stmt);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_text (1, get_datetime_to_db (_date));
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (2, provider_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (3, market_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (4, ticker_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (5, time_frame_id);
+        assert (res == Sqlite.OK);
+
+        if ((res = stmt.step ()) == Sqlite.ROW) {
+            return_value = stmt.column_int (0);
+        }
+
+        if(return_value > 0) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+
+    /********************************/
+
     public DateTime get_min_date (string _provider_name, string _ticker_name, string _time_frame) {
 
         int provider_id = get_db_id_by_table_and_field ("providers", "name", _provider_name);

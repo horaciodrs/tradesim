@@ -367,9 +367,10 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
             return_value = _ ("There is not imported data to the selected date.");
         } else if ((count > 0) && (count < MIN_ALERT_QUOTES)) {
             return_value = _ ("There are not engouth imported data to run a simulation.");
-        } else if ((count > 0) && (count < MIN_ALERT_QUOTES)) {
         }else if(!is_valid_market_date(entry_date.date)){
             return_value = _ ("Market closed. Please select another date.");
+        }else if (!db.exists_quotes_in_date(aux_provider_name, aux_ticker_name, aux_time_frame_name, entry_date.date)){
+            return_value = _ ("There are not imported quotes for the selected date.");
         }
 
         return return_value;
@@ -402,7 +403,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
         string str_validation = date_validation ();
 
-        if(str_validation.length < 1){
+        if(str_validation.length > 0){
             return str_validation;
         }
 

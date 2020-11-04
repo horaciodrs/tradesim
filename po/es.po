@@ -420,6 +420,10 @@ msgstr "El balance inicial no es válido"
 msgid "Market closed. Please select another date."
 msgstr "El mercado se encuentra cerrado. Por favor seleccione otra fecha."
 
+#: src/Dialogs/NewChartDialog.vala:373
+msgid "There are not imported quotes for the selected date."
+msgstr "No hay datos importados para la fecha seleccionada."
+
 #: src/Dialogs/DrawEditDialog.vala:60
 #: src/Dialogs/DrawEditDialog.vala:95
 msgid "Edit Object"

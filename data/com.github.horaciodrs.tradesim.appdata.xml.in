@@ -18,7 +18,7 @@
         </ul>
     </description>
     <releases>
-        <release version="2020.10.30" date="2020-10-30">
+        <release version="2020.11.03" date="2020-11-03">
             <description>
                 <p>A reset database option has been added</p>
                 <p>An import database option has been added</p>
@@ -72,7 +72,13 @@
     <update_contact>horaciodrs@gmail.com</update_contact>
     <screenshots>
         <screenshot type="default">
-            <image>https://raw.githubusercontent.com/horaciodrs/TradeSim/master/data/screenshots/Main.png</image>
+            <image>https://raw.githubusercontent.com/horaciodrs/TradeSim/master/data/screenshots/tsim_screenshot_dl.png</image>
+        </screenshot>
+        <screenshot>
+            <image>https://raw.githubusercontent.com/horaciodrs/TradeSim/master/data/screenshots/tsim_screenshot_welcome.png</image>
+        </screenshot>
+        <screenshot>
+            <image>https://raw.githubusercontent.com/horaciodrs/TradeSim/master/data/screenshots/tsim_screenshot_settings.png</image>
         </screenshot>
     </screenshots>
     <custom>
