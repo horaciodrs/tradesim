@@ -32,7 +32,7 @@ If you like TradeSim and you want to support this development, please consider d
 - Draw Fibonacci analisys tool.
 
 ## Screenshot:
-![TradeSim Screenshot1](/data/screenshots/Main.png)
+![TradeSim Screenshot1](/data/screenshots/tsim_screenshot_dl.png)
 
 Empty window...
 ![TradeSim Screenshot2](/data/screenshots/20200910-1.png)
