@@ -44,12 +44,11 @@
 
         //Comienza la rama canvas_improvements
         print("\033[2J"); //borra la consola...
-        //bnd.
 
  */
 
 namespace TradeSim.Data {
-    public const string APP_VERSION = "2020.11.03 - BETA";
+    public const string APP_VERSION = "2020.11.10 - BETA";
 }
 
 public static int main (string[] args) {

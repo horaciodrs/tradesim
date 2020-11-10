@@ -18,12 +18,12 @@
         </ul>
     </description>
     <releases>
-        <release version="2020.11.03" date="2020-11-03">
+        <release version="2020.11.10" date="2020-11-10">
             <description>
                 <p>A reset database option has been added</p>
                 <p>An import database option has been added</p>
                 <p>An export database option has been added</p>
-                <p>Date validation improvements on the New Simulation dialog</p> 
+                <p>Date validation improvements on the New Simulation dialog</p>
                 <p>General code improvements</p>
             </description>
         </release>
