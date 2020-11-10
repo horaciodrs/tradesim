@@ -24,7 +24,9 @@ public class TradeSim.Drawings.Fibonacci : TradeSim.Drawings.Line {
             }
         }
 
-        handler.draw (ctext);
+        if(ref_canvas.draw_mode_fibo){
+            handler.draw (ctext);
+        }
 
         int distancia_vertical = y2 - y1;
         int x_fibo = x2;

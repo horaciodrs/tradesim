@@ -710,7 +710,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
                         qm.db.import (file_path);
                         qm = new TradeSim.Services.QuotesManager ();
                         main_window.main_layout.providers_panel.refresh_providers ();
-                        update_quotes_by_filter ();
+                        update_quotes_by_filter.begin ((obj, res) => {});
                     }
                     break;
                 case Gtk.ResponseType.CANCEL:
@@ -723,7 +723,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             });
 
             dialog.show ();
- 
+
 
         });
 

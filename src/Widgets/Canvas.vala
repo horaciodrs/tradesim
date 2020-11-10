@@ -100,10 +100,10 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     private int draw_mode_objects;
     private string draw_mode_id;
-    private bool draw_mode_line;
-    private bool draw_mode_fibo;
-    private bool draw_mode_rectangle;
-    private bool draw_mode_hline;
+    public bool draw_mode_line;
+    public bool draw_mode_fibo;
+    public bool draw_mode_rectangle;
+    public bool draw_mode_hline;
     private bool draw_mode;
 
     public string ? file_url;

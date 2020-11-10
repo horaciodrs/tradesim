@@ -40,7 +40,7 @@ public class TradeSim.Drawings.Line {
     protected int ? x2; // Se calcula en base a date2.
     protected int ? y1; // Se calcula en base a price1.
     protected int ? y2; // Se calcula en base a price2.
-    
+
     protected TradeSim.Drawings.DrawHandler handler;
 
     public Line (TradeSim.Widgets.Canvas _canvas, string _id) {
@@ -93,7 +93,9 @@ public class TradeSim.Drawings.Line {
             }
         }
 
-        handler.draw (ctext);
+        if(ref_canvas.draw_mode_line){
+            handler.draw (ctext);
+        }
 
         ctext.set_dash ({}, 0);
         ctext.set_line_width (thickness);
