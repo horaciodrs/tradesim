@@ -1,3 +1,13 @@
+com.github.horaciodrs.tradesim (2020.11.10) bionic; urgency=medium
+
+  * A reset database option has been added.
+  * An import database option has been added.
+  * An export database option has been added.
+  * Date validation improvements on the New Simulation dialog.
+  * General code improvements.
+
+ -- Horacio Daniel Ros <horaciodrs@gmail.com>  Wed, 11 Nov 2020 12:45:52 -0500
+
 com.github.horaciodrs.tradesim (2020.10.22) bionic; urgency=medium
 
   * Initial Release.
