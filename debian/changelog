@@ -1,3 +1,9 @@
+com.github.horaciodrs.tradesim (2020.11.14) bionic; urgency=medium
+
+  * An alternative method to download quotes has been added.
+
+ -- Horacio Daniel Ros <horaciodrs@gmail.com>  Wed, 14 Nov 2020 12:45:52 -0500
+
 com.github.horaciodrs.tradesim (2020.11.10) bionic; urgency=medium
 
   * A reset database option has been added.

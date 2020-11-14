@@ -18,6 +18,11 @@
         </ul>
     </description>
     <releases>
+        <release version="2020.11.14" date="2020-11-14">
+            <description>
+                <p>An alternative method to download quotes has been added</p>
+            </description>
+        </release>
         <release version="2020.11.10" date="2020-11-10">
             <description>
                 <p>A reset database option has been added</p>
