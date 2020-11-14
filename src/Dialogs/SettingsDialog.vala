@@ -76,6 +76,8 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             title: _ ("Preferences")
             );
 
+        set_default_size (300, 500);
+
         delete_event.connect ((e) => {
             return before_destroy ();
         });
@@ -672,6 +674,23 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         var backup_button = new Gtk.Button.with_label (_ ("Export"));
         var restore_button = new Gtk.Button.with_label (_ ("Import"));
 
+        var download_label = new Gtk.Label (_ ("If you cannot import the quotes from under section. Try clicking the Download button and follow the steps."));
+        var download_button = new Gtk.Button.with_label (_ ("Download available quotes"));
+
+        download_label.justify = Gtk.Justification.CENTER;
+        download_label.get_style_context ().add_class ("warning-message");
+        download_label.max_width_chars = 60;
+        download_label.wrap = true;
+        download_label.margin_top = download_label.margin_bottom = 12;
+
+        download_button.clicked.connect (() => {
+            try {
+                AppInfo.launch_default_for_uri ("https://github.com/horaciodrs/tradesim/quotes", null);
+            } catch (Error e) {
+                warning (e.message);
+            }
+        });
+
 
         restore_button.clicked.connect ( () => {
 
@@ -796,13 +815,16 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         grid.attach (backup_button, 1, 1);
         grid.attach (restore_button, 2, 1);
 
-        grid.attach (new SettingsHeader (_ ("Data Source")), 0, 2);
-        grid.attach (scroll_provider, 0, 3, 1, 2);
-        grid.attach (scroll_ticker, 1, 3, 1, 2);
-        grid.attach (scroll_year, 2, 3, 1, 2);
-        grid.attach (scroll_quotes, 0, 5, 3, 3);
-        grid.attach (grid_waiting, 0, 8, 3);
-        grid.attach (progress_import, 0, 9, 3);
+        grid.attach (download_label, 0, 2, 3);
+        grid.attach (download_button, 0, 3, 3);
+
+        grid.attach (new SettingsHeader (_ ("Data Source")), 0, 4);
+        grid.attach (scroll_provider, 0, 5, 1, 2);
+        grid.attach (scroll_ticker, 1, 5, 1, 2);
+        grid.attach (scroll_year, 2, 5, 1, 2);
+        grid.attach (scroll_quotes, 0, 7, 3, 3);
+        grid.attach (grid_waiting, 0, 10, 3);
+        grid.attach (progress_import, 0, 11, 3);
 
         return grid;
     }
