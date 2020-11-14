@@ -302,6 +302,14 @@ msgstr "Sugerir Traducciones"
 msgid "Report a Problem"
 msgstr "Reportar un problema"
 
+#: src/Dialogs/SettingsDialog.vala
+msgid "If you cannot import the quotes from under section. Try clicking the Download button and follow the steps."
+msgstr "Si usted no puede importar las cotizaciones desde la sección inferior. Intente hacer click en el botón Descargar y siga los pasos."
+
+#: src/Dialogs/SettingsDialog.vala
+msgid "Download available quotes"
+msgstr "Descargar cotizaciones disponibles"
+
 #: src/Dialogs/NewOperationDialog.vala:66
 msgid "New Operation"
 msgstr "Nueva Operación"
