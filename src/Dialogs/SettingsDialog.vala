@@ -685,7 +685,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
         download_button.clicked.connect (() => {
             try {
-                AppInfo.launch_default_for_uri ("https://github.com/horaciodrs/tradesim/quotes.md", null);
+                AppInfo.launch_default_for_uri ("https://github.com/horaciodrs/TradeSim/blob/master/quotes.md", null);
             } catch (Error e) {
                 warning (e.message);
             }
