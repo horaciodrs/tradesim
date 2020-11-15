@@ -17,6 +17,11 @@ foreach i : icon_sizes
     #)
 endforeach
 
+install_data(
+    'icons/128/' + meson.project_name() + '.svg',
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', 'scalable', 'apps')
+)
+
 #Translate and install our .desktop file
 i18n.merge_file(
     input: meson.project_name() + '.desktop.in',
