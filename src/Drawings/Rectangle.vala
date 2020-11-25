@@ -47,9 +47,7 @@ public class TradeSim.Drawings.Rectangle : TradeSim.Drawings.Line {
             }
         }
 
-        if(ref_canvas.draw_mode_rectangle){
-            handler.draw (ctext);
-        }
+        handler.draw (ctext);
 
         color.apply_to (ctext);
         ctext.rectangle (x1, y1, x2 - x1, y2 - y1);

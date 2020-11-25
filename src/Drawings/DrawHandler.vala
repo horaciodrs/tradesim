@@ -49,7 +49,7 @@ public class TradeSim.Drawings.DrawHandler {
         ctext.set_line_width (1.0);
         ctext.arc (x1c, y1c, radius, 0, 2 * Math.PI);
         ctext.fill ();
-        
+
         var x2c = parent.get_x2 ();
         var y2c = ref_canvas.get_pos_y_by_price (parent.get_y2 ());
 
@@ -59,6 +59,14 @@ public class TradeSim.Drawings.DrawHandler {
         ctext.arc (x2c, y2c, radius, 0, 2 * Math.PI);
         ctext.fill ();
 
+    }
+
+    public void set_visible ( bool _visible) {
+        visible = _visible;
+    }
+
+    public bool get_visible () {
+        return visible;
     }
 
 }

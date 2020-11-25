@@ -52,6 +52,7 @@ public class TradeSim.Drawings.Line {
         visible = true;
         enabled = true;
         handler = new TradeSim.Drawings.DrawHandler (this);
+        handler.set_visible (true);
     }
 
     public Line.default () {
@@ -93,9 +94,7 @@ public class TradeSim.Drawings.Line {
             }
         }
 
-        if(ref_canvas.draw_mode_line){
-            handler.draw (ctext);
-        }
+        handler.draw (ctext);
 
         ctext.set_dash ({}, 0);
         ctext.set_line_width (thickness);
@@ -192,6 +191,14 @@ public class TradeSim.Drawings.Line {
 
     public void set_enabled (bool _enabled) {
         enabled = _enabled;
+    }
+
+    public void set_handler_visible (bool _visible) {
+        handler.set_visible (_visible);
+    }
+
+    public bool get_handler_visible () {
+        return handler.get_visible ();
     }
 
     public virtual void write_file (Xml.TextWriter writer, bool write_header = false) throws FileError {

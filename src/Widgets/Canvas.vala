@@ -914,6 +914,16 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             draw_manager.operations.index (i).drag_end ();
         }
 
+        /*Antes de dejar de dibujar vamos a ocultar los handlers*/
+
+        if((draw_mode) && (draw_mode_line)){
+            draw_manager.set_handler_visible_toggle(draw_mode_id, TradeSim.Services.Drawings.Type.LINE);
+        }else if((draw_mode) && (draw_mode_fibo)){
+            draw_manager.set_handler_visible_toggle(draw_mode_id, TradeSim.Services.Drawings.Type.FIBONACCI);
+        }else if((draw_mode) && (draw_mode_rectangle)){
+            draw_manager.set_handler_visible_toggle(draw_mode_id, TradeSim.Services.Drawings.Type.RECTANGLE);
+        }
+
         draw_mode_line = false; // Si se estaba dibujando se aborta.
         draw_mode_fibo = false; // Si se estaba dibujando se aborta.
         draw_mode_rectangle = false; // Si se estaba dibujando se aborta.

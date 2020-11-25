@@ -261,8 +261,23 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
 
             var edit_object_dialog = new TradeSim.Dialogs.DrawEditDialog (main_window, this, desc, type);
 
+            dm.set_handler_visible_toggle (desc, type);
+
             edit_object_dialog.show_all ();
             edit_object_dialog.present ();
+
+        }
+
+        if (event.type == Gdk.EventType .BUTTON_PRESS) {
+
+            var dm = main_window.main_layout.current_canvas.draw_manager;
+            bool enabled = dm.get_draw_enabled (desc, type);
+
+            if (!enabled) {
+                return true;
+            }
+
+            dm.set_handler_visible_toggle (desc, type);
 
         }
 
