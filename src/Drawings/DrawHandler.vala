@@ -69,4 +69,24 @@ public class TradeSim.Drawings.DrawHandler {
         return visible;
     }
 
+    public bool collision_check (){
+
+        var x1c = parent.get_x1 ();
+        var y1c = ref_canvas.get_pos_y_by_price (parent.get_y1 ());
+        int radius = 10;
+
+        if (visible == false) {
+            return false;
+        }
+
+        if ((ref_canvas.mouse_x > x1c -radius) && (ref_canvas.mouse_x < x1c + radius)){
+            if ((ref_canvas.mouse_y > y1c -radius) && (ref_canvas.mouse_y < y1c + radius)){
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
 }

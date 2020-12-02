@@ -753,67 +753,71 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             get_window ().set_cursor (new Gdk.Cursor.for_display (Gdk.Display.get_default (), Gdk.CursorType.DOUBLE_ARROW));
         }
 
-        if ((_vertical_scroll_moving) && (_vertical_scroll_active)) {
+        if (draw_manager.exists_handler_visible () == false) {
 
-            var cont_value = (int) (1000 * zoom_factor);
-            var aux_max_price = get_media_figura_up (max_price);
-            var aux_min_price = get_media_figura (min_price);
-            var cantidad = (int) ((aux_max_price - aux_min_price) / cont_value);
-            var cambio = mouse_y - _vertical_scroll_distancia;
+            if ((_vertical_scroll_moving) && (_vertical_scroll_active)) {
 
-            if (mouse_x > _width - vertical_scale_width) {
-                // Permite el cambio de escala vertical...
-                var test_min = min_price - cambio * cantidad;
-                var test_max = max_price + cambio * cantidad;
-                var test_cont_value = (int) (1000 * zoom_factor);
-                var test_aux_max_price = get_media_figura_up (test_max);
-                var test_aux_min_price = get_media_figura (test_min);
-                var resta = test_aux_max_price - test_aux_min_price;
+                var cont_value = (int) (1000 * zoom_factor);
+                var aux_max_price = get_media_figura_up (max_price);
+                var aux_min_price = get_media_figura (min_price);
+                var cantidad = (int) ((aux_max_price - aux_min_price) / cont_value);
+                var cambio = mouse_y - _vertical_scroll_distancia;
 
-                if (resta > test_cont_value) {
-                    // mediante las variables test_* se asegura de que los valores
-                    // de max_price y min_price no rompan el calculo de la
-                    // escala vertical.
-                    min_price = min_price - cambio * cantidad;
-                    max_price = max_price + cambio * cantidad;
+                if (mouse_x > _width - vertical_scale_width) {
+                    // Permite el cambio de escala vertical...
+                    var test_min = min_price - cambio * cantidad;
+                    var test_max = max_price + cambio * cantidad;
+                    var test_cont_value = (int) (1000 * zoom_factor);
+                    var test_aux_max_price = get_media_figura_up (test_max);
+                    var test_aux_min_price = get_media_figura (test_min);
+                    var resta = test_aux_max_price - test_aux_min_price;
+
+                    if (resta > test_cont_value) {
+                        // mediante las variables test_* se asegura de que los valores
+                        // de max_price y min_price no rompan el calculo de la
+                        // escala vertical.
+                        min_price = min_price - cambio * cantidad;
+                        max_price = max_price + cambio * cantidad;
+                    }
+
+                } else {
+                    // Permite el scroll vertical...
+                    min_price_visible = _vertical_scroll_current_min_visible - cambio * cantidad;
+                    max_price_visible = _vertical_scroll_current_max_visible + cambio * cantidad;
                 }
 
-            } else {
-                // Permite el scroll vertical...
-                min_price_visible = _vertical_scroll_current_min_visible - cambio * cantidad;
-                max_price_visible = _vertical_scroll_current_max_visible + cambio * cantidad;
             }
 
-        }
+            if ((_horizontal_scroll_moving) && (_horizontal_scroll_active)) {
 
-        if ((_horizontal_scroll_moving) && (_horizontal_scroll_active)) {
+                _horizontal_scroll_x = mouse_x - _horizontal_scroll_distancia;
 
-            _horizontal_scroll_x = mouse_x - _horizontal_scroll_distancia;
+                if (_horizontal_scroll_x < 0) {
+                    _horizontal_scroll_x = 0;
+                }
 
-            if (_horizontal_scroll_x < 0) {
-                _horizontal_scroll_x = 0;
+                var max_x = mouse_x - _horizontal_scroll_distancia + _horizontal_scroll_width;
+
+                if (max_x > _width - vertical_scale_width) {
+                    _horizontal_scroll_x = _width - vertical_scale_width - _horizontal_scroll_width;
+                }
+
+                DateTime fecha_inicial = date_inicial;
+
+                int pixeles_por_recorrer = (_width - vertical_scale_width) - _horizontal_scroll_width;
+                int pixeles_recorridos = _horizontal_scroll_x;
+                var porcentaje = (double) (1.00 * pixeles_recorridos / pixeles_por_recorrer);
+                var velas_entre_fechas = 0;
+
+                velas_entre_fechas = (int) (data.quotes.length) - total_candles_size;
+
+                var velas_step = (int) (velas_entre_fechas * porcentaje);
+
+                date_from = date_add_int_by_time_frame (fecha_inicial, time_frame, velas_step);
+
+                change_zoom_level (zoom_factor);
+
             }
-
-            var max_x = mouse_x - _horizontal_scroll_distancia + _horizontal_scroll_width;
-
-            if (max_x > _width - vertical_scale_width) {
-                _horizontal_scroll_x = _width - vertical_scale_width - _horizontal_scroll_width;
-            }
-
-            DateTime fecha_inicial = date_inicial;
-
-            int pixeles_por_recorrer = (_width - vertical_scale_width) - _horizontal_scroll_width;
-            int pixeles_recorridos = _horizontal_scroll_x;
-            var porcentaje = (double) (1.00 * pixeles_recorridos / pixeles_por_recorrer);
-            var velas_entre_fechas = 0;
-
-            velas_entre_fechas = (int) (data.quotes.length) - total_candles_size;
-
-            var velas_step = (int) (velas_entre_fechas * porcentaje);
-
-            date_from = date_add_int_by_time_frame (fecha_inicial, time_frame, velas_step);
-
-            change_zoom_level (zoom_factor);
 
         }
 
@@ -825,6 +829,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         user_draw_fibo ();
         user_draw_rectangle ();
         user_draw_hline ();
+
+        draw_manager.handlers_on_mouse_over (get_date_time_fecha_by_pos_x (mouse_x), get_price_by_pos_y (mouse_y) / 100000.00);
 
         return true;
 
@@ -854,6 +860,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             // comenzar a dibujar la linea.
             draw_mode = true;
             start_draw_mode (TradeSim.Services.Drawings.Type.LINE);
+        }else {
+            draw_manager.check_handlers_on_mouse_down ();
         }
 
         if (draw_mode_fibo == true) {
@@ -877,7 +885,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         for (int i = 0 ; i < draw_manager.operations.length ; i++) {
             draw_manager.operations.index (i).drag_start (mouse_x, mouse_y);
         }
-
 
 
         return true;
@@ -929,6 +936,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         draw_mode_rectangle = false; // Si se estaba dibujando se aborta.
         draw_mode_hline = false; // Si se estaba dibujando se aborta.
         draw_mode = false;
+
+        draw_manager.handlers_on_mouse_up ();
 
         return true;
     }

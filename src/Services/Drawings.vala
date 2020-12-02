@@ -95,6 +95,65 @@ public class TradeSim.Services.Drawings {
 
     }
 
+    public void check_handlers_on_mouse_down (){
+
+        // Esta función es llamada desde el canvas cuando el mouse es precionado.
+        // Se encarga de verificar si el puntero del mouse fue presionado
+        // de tal manera que se active el handler correspondiente a un dibujo determinado.
+        // En caso de detectarse esa situación ese dibujo debe recibir las coordenadas
+        // del mouse para redibujarse nuevamente según lo indica el puntero del mouse.
+
+        // Para esto vamos a utilizar una variable(re_draw=true) que se encuentra en cada tipo
+        // de dibujo para determinar si este se tiene o no que redibujar.
+
+        // Luego otra función se encargara de recorrer todos los dibujos
+        // y redibujar los que corresponda desde la funcion on_mouse_over del canvas.
+        // y por ultimo la funcion on_mouse_up del canvas pondra todos los dibujos
+        // en el estado en que no se redibujan (re_draw=false).
+
+        for (int i = 0 ; i < lines.length ; i++) {
+            if(lines.index (i).get_handler_collision_check () == true){
+                lines.index (i).set_re_draw (true);
+            }
+        }
+
+        /*for (int z = 0 ; z < fibonacci.length ; z++) {
+            fibonacci.index (z).render (ctext);
+        }
+
+        for (int z = 0 ; z < rectangles.length ; z++) {
+            rectangles.index (z).render (ctext);
+        }
+
+        for (int z = 0 ; z < hlines.length ; z++) {
+            hlines.index (z).render (ctext);
+        }
+
+        for (int z = 0 ; z < operations.length ; z++) {
+            operations.index (z).render (ctext);
+        }*/
+
+    }
+
+    public void handlers_on_mouse_over (DateTime d1, double p1) {
+
+        for (int i = 0 ; i < lines.length ; i++) {
+            if(lines.index (i).get_re_draw () == true) {
+                lines.index (i).set_x1 (d1);
+                lines.index (i).set_y1 (p1);
+            }
+        }
+
+    }
+
+    public void handlers_on_mouse_up () {
+
+        for (int i = 0 ; i < lines.length ; i++) {
+            lines.index (i).set_re_draw (false);
+        }
+
+    }
+
     public void draw_operation (TradeSim.Objects.OperationItem _op) {
 
         // Esta función debe ser llamada cada vez que se crea o modifica
@@ -712,6 +771,36 @@ public class TradeSim.Services.Drawings {
         writer.end_element ();
 
         writer.end_element ();
+
+    }
+
+    public bool exists_handler_visible () {
+
+        for (int i = 0 ; i < lines.length ; i++) {
+            if(lines.index (i).get_handler_visible ()) {
+                return true;
+            }
+        }
+
+        for (int i = 0 ; i < hlines.length ; i++) {
+            if(hlines.index (i).get_handler_visible ()) {
+                return true;
+            }
+        }
+
+        for (int i = 0 ; i < fibonacci.length ; i++) {
+            if(fibonacci.index (i).get_handler_visible ()) {
+                return true;
+            }
+        }
+
+        for (int i = 0 ; i < rectangles.length ; i++) {
+            if(rectangles.index (i).get_handler_visible ()) {
+                return true;
+            }
+        }
+
+        return false;
 
     }
 
