@@ -18,6 +18,12 @@
         </ul>
     </description>
     <releases>
+        <release version="2020.12.13" date="2020-12-13">
+            <description>
+                <p>Drawings handlers has been added to modify lines, rectangles and fibonacci retracements.</p>
+                <p>General code improvements</p>
+            </description>
+        </release>
         <release version="2020.11.14" date="2020-11-14">
             <description>
                 <p>An alternative method to download quotes has been added</p>
