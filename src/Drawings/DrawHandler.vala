@@ -23,6 +23,11 @@ public class TradeSim.Drawings.DrawHandler {
 
     public weak TradeSim.Drawings.Line parent;
 
+    public enum Position {
+        TOP,
+        BOTTOM
+    }
+
     public TradeSim.Widgets.Canvas ref_canvas;
 
     private bool visible;
@@ -69,20 +74,33 @@ public class TradeSim.Drawings.DrawHandler {
         return visible;
     }
 
-    public bool collision_check (){
+    public bool collision_check (int _position = 0){
 
-        var x1c = parent.get_x1 ();
-        var y1c = ref_canvas.get_pos_y_by_price (parent.get_y1 ());
         int radius = 10;
 
         if (visible == false) {
             return false;
         }
 
-        if ((ref_canvas.mouse_x > x1c -radius) && (ref_canvas.mouse_x < x1c + radius)){
-            if ((ref_canvas.mouse_y > y1c -radius) && (ref_canvas.mouse_y < y1c + radius)){
-                return true;
-            }
+        switch(_position){
+            case TradeSim.Drawings.DrawHandler.Position.TOP:
+                var x1c = parent.get_x1 ();
+                var y1c = ref_canvas.get_pos_y_by_price (parent.get_y1 ());
+                if ((ref_canvas.mouse_x > x1c -radius) && (ref_canvas.mouse_x < x1c + radius)){
+                    if ((ref_canvas.mouse_y > y1c -radius) && (ref_canvas.mouse_y < y1c + radius)){
+                        return true;
+                    }
+                }
+                break;
+            case TradeSim.Drawings.DrawHandler.Position.BOTTOM:
+                var x2c = parent.get_x2 ();
+                var y2c = ref_canvas.get_pos_y_by_price (parent.get_y2 ());
+                if ((ref_canvas.mouse_x > x2c -radius) && (ref_canvas.mouse_x < x2c + radius)){
+                    if ((ref_canvas.mouse_y > y2c -radius) && (ref_canvas.mouse_y < y2c + radius)){
+                        return true;
+                    }
+                }
+                break;
         }
 
         return false;

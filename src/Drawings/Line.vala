@@ -36,6 +36,7 @@ public class TradeSim.Drawings.Line {
     protected bool visible;
     protected bool enabled;
     protected bool re_draw;
+    protected bool re_draw_bottom;
 
     protected int ? x1; // Se calcula en base a date1.
     protected int ? x2; // Se calcula en base a date2.
@@ -53,6 +54,7 @@ public class TradeSim.Drawings.Line {
         visible = true;
         enabled = true;
         re_draw = false;
+        re_draw_bottom = false;
         handler = new TradeSim.Drawings.DrawHandler (this);
         handler.set_visible (true);
     }
@@ -203,8 +205,8 @@ public class TradeSim.Drawings.Line {
         return handler.get_visible ();
     }
 
-    public bool get_handler_collision_check (){
-        return handler.collision_check ();
+    public bool get_handler_collision_check (int _position){
+        return handler.collision_check (_position);
     }
 
     public void set_re_draw (bool _value) {
@@ -213,6 +215,14 @@ public class TradeSim.Drawings.Line {
 
     public bool get_re_draw () {
         return re_draw;
+    }
+
+    public void set_re_draw_bottom (bool _value) {
+        re_draw_bottom = _value;
+    }
+
+    public bool get_re_draw_bottom () {
+        return re_draw_bottom;
     }
 
     public virtual void write_file (Xml.TextWriter writer, bool write_header = false) throws FileError {

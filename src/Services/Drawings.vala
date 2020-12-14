@@ -112,26 +112,34 @@ public class TradeSim.Services.Drawings {
         // en el estado en que no se redibujan (re_draw=false).
 
         for (int i = 0 ; i < lines.length ; i++) {
-            if(lines.index (i).get_handler_collision_check () == true){
+            if(lines.index (i).get_handler_collision_check (TradeSim.Drawings.DrawHandler.Position.TOP) == true){
                 lines.index (i).set_re_draw (true);
+                lines.index (i).set_re_draw_bottom (false);
+            }else if(lines.index (i).get_handler_collision_check (TradeSim.Drawings.DrawHandler.Position.BOTTOM) == true){
+                lines.index (i).set_re_draw (false);
+                lines.index (i).set_re_draw_bottom (true);
             }
         }
 
-        /*for (int z = 0 ; z < fibonacci.length ; z++) {
-            fibonacci.index (z).render (ctext);
+        for (int i = 0 ; i < fibonacci.length ; i++) {
+            if(fibonacci.index (i).get_handler_collision_check (TradeSim.Drawings.DrawHandler.Position.TOP) == true){
+                fibonacci.index (i).set_re_draw (true);
+                fibonacci.index (i).set_re_draw_bottom (false);
+            }else if(fibonacci.index (i).get_handler_collision_check (TradeSim.Drawings.DrawHandler.Position.BOTTOM) == true){
+                fibonacci.index (i).set_re_draw (false);
+                fibonacci.index (i).set_re_draw_bottom (true);
+            }
         }
 
-        for (int z = 0 ; z < rectangles.length ; z++) {
-            rectangles.index (z).render (ctext);
+        for (int i = 0 ; i < rectangles.length ; i++) {
+            if(rectangles.index (i).get_handler_collision_check (TradeSim.Drawings.DrawHandler.Position.TOP) == true){
+                rectangles.index (i).set_re_draw (true);
+                rectangles.index (i).set_re_draw_bottom (false);
+            }else if(rectangles.index (i).get_handler_collision_check (TradeSim.Drawings.DrawHandler.Position.BOTTOM) == true){
+                rectangles.index (i).set_re_draw (false);
+                rectangles.index (i).set_re_draw_bottom (true);
+            }
         }
-
-        for (int z = 0 ; z < hlines.length ; z++) {
-            hlines.index (z).render (ctext);
-        }
-
-        for (int z = 0 ; z < operations.length ; z++) {
-            operations.index (z).render (ctext);
-        }*/
 
     }
 
@@ -141,6 +149,29 @@ public class TradeSim.Services.Drawings {
             if(lines.index (i).get_re_draw () == true) {
                 lines.index (i).set_x1 (d1);
                 lines.index (i).set_y1 (p1);
+            }else if(lines.index (i).get_re_draw_bottom () == true) {
+                lines.index (i).set_x2 (d1);
+                lines.index (i).set_y2 (p1);
+            }
+        }
+
+        for (int i = 0 ; i < fibonacci.length ; i++) {
+            if(fibonacci.index (i).get_re_draw () == true) {
+                fibonacci.index (i).set_x1 (d1);
+                fibonacci.index (i).set_y1 (p1);
+            }else if(fibonacci.index (i).get_re_draw_bottom () == true) {
+                fibonacci.index (i).set_x2 (d1);
+                fibonacci.index (i).set_y2 (p1);
+            }
+        }
+
+        for (int i = 0 ; i < rectangles.length ; i++) {
+            if(rectangles.index (i).get_re_draw () == true) {
+                rectangles.index (i).set_x1 (d1);
+                rectangles.index (i).set_y1 (p1);
+            }else if(rectangles.index (i).get_re_draw_bottom () == true) {
+                rectangles.index (i).set_x2 (d1);
+                rectangles.index (i).set_y2 (p1);
             }
         }
 
@@ -150,6 +181,17 @@ public class TradeSim.Services.Drawings {
 
         for (int i = 0 ; i < lines.length ; i++) {
             lines.index (i).set_re_draw (false);
+            lines.index (i).set_re_draw_bottom (false);
+        }
+
+        for (int i = 0 ; i < fibonacci.length ; i++) {
+            fibonacci.index (i).set_re_draw (false);
+            fibonacci.index (i).set_re_draw_bottom (false);
+        }
+
+        for (int i = 0 ; i < rectangles.length ; i++) {
+            rectangles.index (i).set_re_draw (false);
+            rectangles.index (i).set_re_draw_bottom (false);
         }
 
     }
