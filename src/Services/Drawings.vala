@@ -182,16 +182,50 @@ public class TradeSim.Services.Drawings {
         for (int i = 0 ; i < lines.length ; i++) {
             lines.index (i).set_re_draw (false);
             lines.index (i).set_re_draw_bottom (false);
+
+            if (lines.index (i).get_handler_visible () == true){
+                if (lines.index (i).mouse_over (ref_canvas.mouse_x, ref_canvas.mouse_y) == false){
+                    lines.index (i).set_handler_visible (false);
+                }
+            }else{
+                if (lines.index (i).mouse_over (ref_canvas.mouse_x, ref_canvas.mouse_y) == true){
+                    lines.index (i).set_handler_visible (true);
+                }
+            }
+
         }
 
         for (int i = 0 ; i < fibonacci.length ; i++) {
+
             fibonacci.index (i).set_re_draw (false);
             fibonacci.index (i).set_re_draw_bottom (false);
+
+            if (fibonacci.index (i).get_handler_visible () == true){
+                if (fibonacci.index (i).mouse_over (ref_canvas.mouse_x, ref_canvas.mouse_y) == false){
+                    fibonacci.index (i).set_handler_visible (false);
+                }
+            }else{
+                if (fibonacci.index (i).mouse_over (ref_canvas.mouse_x, ref_canvas.mouse_y) == true){
+                    fibonacci.index (i).set_handler_visible (true);
+                }
+            }
         }
 
         for (int i = 0 ; i < rectangles.length ; i++) {
+
             rectangles.index (i).set_re_draw (false);
             rectangles.index (i).set_re_draw_bottom (false);
+
+            if (rectangles.index (i).get_handler_visible () == true){
+                if (rectangles.index (i).mouse_over (ref_canvas.mouse_x, ref_canvas.mouse_y) == false){
+                    rectangles.index (i).set_handler_visible (false);
+                }
+            }else{
+                if (rectangles.index (i).mouse_over (ref_canvas.mouse_x, ref_canvas.mouse_y) == true){
+                    rectangles.index (i).set_handler_visible (true);
+                }
+            }
+
         }
 
     }

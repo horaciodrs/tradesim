@@ -33,6 +33,50 @@ public class TradeSim.Drawings.Rectangle : TradeSim.Drawings.Line {
         base.default ();
     }
 
+    public override bool mouse_over (int mx, int my){
+
+        if (x2 - x1 == 0) {
+            return false;
+        }
+
+        double error = 5.00;
+
+        if ((y1 < y2) && (x1 < x2)){
+            if ((mx + error > x1) && (mx - error < x2)){
+                if ((my + error > y1) && (my - error < y2)){
+                    return true;
+                }
+            }
+        }
+
+        if ((y1 < y2) && (x2 < x1)){
+            if ((mx + error > x2) && (mx - error < x1)){
+                if ((my + error > y1) && (my - error < y2)){
+                    return true;
+                }
+            }
+        }
+
+        if ((y2 < y1) && (x1 < x2)){
+            if ((mx - error > x1) && (mx + error < x2)){
+                if ((my - error > y2) && (my + error < y1)){
+                    return true;
+                }
+            }
+        }
+
+        if ((y2 < y1) && (x2 < x1)){
+            if ((mx - error > x2) && (mx + error < x1)){
+                if ((my + error > y2) && (my - error < y1)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+
+    }
+
     public override void render (Cairo.Context ctext) {
 
         if (!visible) {

@@ -84,6 +84,36 @@ public class TradeSim.Drawings.Line {
 
     }
 
+    public virtual bool mouse_over (int mx, int my){
+
+        if (enabled == false) {
+            return false;
+        }
+
+        double error = 10.00;
+
+        if (x2 - x1 == 0) {
+            return false;
+        }
+
+        double m = 0.00;
+        double b = 0.00;
+
+        m = (y2 - y1) * 1.00 / (x2 - x1); //Para optimizar estos calculos deben hacerse solo cuando haga falta.
+        b = y1 - m * x1; //Para optimizar estos calculos deben hacerse solo cuando haga falta.
+
+        double ytest = m * mx + b;
+
+        //print ("ytest:" + ytest.to_string() + " my:" + my.to_string() + "\n");
+
+        if ((my > ytest - error) && (my < ytest + error)){
+            return true;
+        }
+
+        return false;
+
+    }
+
     public virtual void render (Cairo.Context ctext) {
 
         if (!visible) {
