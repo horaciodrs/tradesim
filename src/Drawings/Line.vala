@@ -93,7 +93,20 @@ public class TradeSim.Drawings.Line {
         double error = 10.00;
 
         if (x2 - x1 == 0) {
+
+            if ((mx + error > x2) && (mx - error < x2)){
+                if ((my - error > y1) && (my + error < x2)){
+                    return true;
+                }
+
+                if ((my - error < y1) && (my + error > y2)){
+                    return true;
+                }
+
+            }
+
             return false;
+
         }
 
         double m = 0.00;
