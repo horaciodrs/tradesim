@@ -1,3 +1,9 @@
+com.github.horaciodrs.tradesim (2021.1.13) bionic; urgency=medium
+
+  * Drawings can be edited by mouse clicking.
+
+ -- Horacio Daniel Ros <horaciodrs@gmail.com>  Wed, 13 Jan 2021 12:45:52 -0500
+
 com.github.horaciodrs.tradesim (2020.12.13) bionic; urgency=medium
 
   * Drawings handlers has been added to modify lines, rectangles and fibonacci retracements.
