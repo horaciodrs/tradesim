@@ -18,6 +18,11 @@
         </ul>
     </description>
     <releases>
+        <release version="2021.2.8" date="2021-2-8">
+            <description>
+                <p>General code improvements</p>
+            </description>
+        </release>
         <release version="2021.2.7" date="2021-2-7">
             <description>
                 <p>General code improvements</p>
