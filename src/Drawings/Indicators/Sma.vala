@@ -50,6 +50,8 @@
 
         data = new Array<TradeSim.Drawings.Indicators.SmaDataItem> ();
 
+        calculate ();
+
     }
 
     public Sma.default () {
@@ -62,11 +64,10 @@
             return;
         }
 
-        calculate (); //Es necesario optimizar. No se puede calcular todo.
+        int from = ref_canvas.data.get_quote_index_by_time (ref_canvas.date_from);
+        int to = from + ref_canvas.drawed_candles;
 
-        // Lo mejor es calcular todo al principio y luego ir calculando solo las velas que se incorporan...
-
-        for (int i = 0; i < ref_canvas.data.quotes.length; i++) {
+        for (int i = from; i < to; i++) {
 
             if(i > 1){
 
@@ -79,6 +80,10 @@
                 int y1 = ref_canvas.get_pos_y_by_price (data.index(i-1).get_data ());
                 int y2 = ref_canvas.get_pos_y_by_price (data.index(i).get_data ());
 
+                if ((x1 > ref_canvas._width) || (x2 > ref_canvas._width)) {
+                    break;
+                }
+
                 ctext.set_dash ({}, 0);
                 ctext.set_line_width (thickness);
                 color.apply_to (ctext);
@@ -90,6 +95,17 @@
             
         }
 
+    }
+
+    public override void calculate_last_candle () {
+
+        periods = properties.get_int ("period");
+
+        int i = (int) (ref_canvas.data.quotes.length - 1);
+
+        var new_item = new TradeSim.Drawings.Indicators.SmaDataItem (get_average (i));
+        data.append_val (new_item);
+        
     }
 
     public override void calculate () {

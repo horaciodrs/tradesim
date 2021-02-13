@@ -94,6 +94,16 @@ public class TradeSim.Services.Drawings {
 
     }
 
+    public void indicators_calculate_last_candle () {
+
+        for (int z = 0 ; z < indicators.length ; z++) {
+
+            indicators.index (z).calculate_last_candle ();
+
+        }
+
+    }
+
     public void show_all_in_vertical_scale (Cairo.Context ctext) {
 
         for (int z = 0 ; z < hlines.length ; z++) {

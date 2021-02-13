@@ -284,4 +284,18 @@ public class TradeSim.Services.QuotesManager {
 
     }
 
+    public int get_quote_index_by_time (DateTime cuote_time) {
+
+        for (int i = 0 ; i < quotes.length ; i++) {
+
+            if (quotes.index (i).date_time.compare (cuote_time) == 0) {
+                return i;
+            }
+
+        }
+
+        return 0;
+
+    }
+
 }

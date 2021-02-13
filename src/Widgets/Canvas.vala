@@ -94,7 +94,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
     public TradeSim.Services.OperationsManager operations_manager;
 
     private int total_candles_size; // Indica la cantidad de velas que puedo dibujar...
-    private int drawed_candles;
+    public int drawed_candles;
 
     public TradeSim.Services.Drawings draw_manager;
 
@@ -412,6 +412,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
             need_save = true;
 
             data.load_next_quote ();
+
+            draw_manager.indicators_calculate_last_candle ();
 
             // Solo debe cambiar el date_from cuando ya no queda mas espacio para dibujar...
 

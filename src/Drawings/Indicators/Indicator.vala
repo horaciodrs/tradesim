@@ -131,6 +131,10 @@ public class TradeSim.Drawings.Indicators.Indicator {
 
     }
 
+    public virtual void calculate_last_candle () {
+        
+    }
+
     public virtual void render (Cairo.Context ctext) {
 
     }
