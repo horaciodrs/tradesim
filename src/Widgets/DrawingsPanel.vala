@@ -138,6 +138,11 @@ public class TradeSim.Widgets.DrawingsPanel : Gtk.Grid {
                     insert_object (dm.rectangles.index (i).id, type);
                 }
 
+                for (int i = 0 ; i < dm.indicators.length ; i++) {
+                    int type = TradeSim.Services.Drawings.Type.INDICATOR;
+                    insert_object (dm.indicators.index (i).id, type);
+                }
+
             }
 
         }
