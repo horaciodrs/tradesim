@@ -81,11 +81,9 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
             icon_name = "shape-fibonacci-symbolic";
             break;
         case TradeSim.Services.Drawings.Type.INDICATOR:
-            icon_name = "shape-fibonacci-symbolic";
+            icon_name = "shape-indicator-symbolic";
             break;
         }
-
-        
 
         init ();
 

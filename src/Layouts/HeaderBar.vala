@@ -249,7 +249,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         var draw_hline_button = create_model_button (_ ("Horizontal Line"), "shape-hline-symbolic");
         var draw_rect_button = create_model_button (_ ("Rectangle"), "shape-rectangle-symbolic");
         var draw_fibo_button = create_model_button (_ ("Fibonacci Retracement"), "shape-fibonacci-symbolic");
-        var draw_sma_button = create_model_button (_ ("Simple Moving Average"), "shape-line-symbolic");
+        var draw_sma_button = create_model_button (_ ("Simple Moving Average"), "shape-indicator-symbolic");
 
         draw_line_button.clicked.connect (e => {
 
