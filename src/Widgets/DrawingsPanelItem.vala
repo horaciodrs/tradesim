@@ -24,7 +24,7 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
     public weak TradeSim.MainWindow main_window;
 
     private int type;
-    private int itype; //indicator type.
+    private int ? itype; //indicator type.
     private bool hidden;
     // private bool enabled;
     public string desc;

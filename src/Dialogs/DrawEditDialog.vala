@@ -26,8 +26,8 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
 
     private string object_id;
     private string original_object_id;
-    private int wtype;  //drawing type
-    private int itype; //Indicator type
+    private int ? wtype;  //drawing type
+    private int ? itype; //Indicator type
     private int selected_thicness;
 
     public Gtk.Button acept_button;
@@ -60,7 +60,7 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
         , CBO_TIME
     }
 
-    public DrawEditDialog (TradeSim.MainWindow ? parent, TradeSim.Widgets.DrawingsPanelItem ? _item_to_update, string _id, int _type, int ? _itype) {
+    public DrawEditDialog (TradeSim.MainWindow ? parent, TradeSim.Widgets.DrawingsPanelItem ? _item_to_update, string _id, int ? _type, int ? _itype) {
 
         string dialog_title = _ ("Edit Object");
 
