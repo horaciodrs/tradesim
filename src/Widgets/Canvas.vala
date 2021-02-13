@@ -98,7 +98,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public TradeSim.Services.Drawings draw_manager;
 
-    private int draw_mode_objects;
+    public int draw_mode_objects;
     private string draw_mode_id;
     public bool draw_mode_line;
     public bool draw_mode_fibo;

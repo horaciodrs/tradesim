@@ -24,6 +24,7 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
     public weak TradeSim.MainWindow main_window;
 
     private int type;
+    private int itype; //indicator type.
     private bool hidden;
     // private bool enabled;
     public string desc;
@@ -39,12 +40,13 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
     public Gtk.Button trash_icon;
     public Gtk.ColorButton item_color;
 
-    public DrawingsPanelItem (TradeSim.MainWindow _window, string _name, int _type, string ? _css = null, Gdk.RGBA ? _color = null) {
+    public DrawingsPanelItem (TradeSim.MainWindow _window, string _name, int _type, string ? _css = null, Gdk.RGBA ? _color = null, int ? _itype = null) {
 
         main_window = _window;
 
         desc = _name;
         type = _type;
+        itype = _itype;
         css = _css;
 
         if (_color == null) {
@@ -78,7 +80,12 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
         case TradeSim.Services.Drawings.Type.FIBONACCI:
             icon_name = "shape-fibonacci-symbolic";
             break;
+        case TradeSim.Services.Drawings.Type.INDICATOR:
+            icon_name = "shape-fibonacci-symbolic";
+            break;
         }
+
+        
 
         init ();
 
@@ -259,7 +266,7 @@ public class TradeSim.Widgets.DrawingsPanelItem : Gtk.EventBox {
                 return true;
             }
 
-            var edit_object_dialog = new TradeSim.Dialogs.DrawEditDialog (main_window, this, desc, type);
+            var edit_object_dialog = new TradeSim.Dialogs.DrawEditDialog (main_window, this, desc, type, itype);
 
             dm.set_handler_visible_toggle (desc, type);
 

@@ -62,7 +62,7 @@ public class TradeSim.Widgets.DrawingsPanel : Gtk.Grid {
 
     }
 
-    public void insert_object (string _id, int type) {
+    public void insert_object (string _id, int type, int ? itype = null) {
 
         rows++;
 
@@ -72,7 +72,7 @@ public class TradeSim.Widgets.DrawingsPanel : Gtk.Grid {
             css = "scrolled-window-drawings-row-alternate";
         }
 
-        var new_obj = new TradeSim.Widgets.DrawingsPanelItem (main_window, _id, type, css);
+        var new_obj = new TradeSim.Widgets.DrawingsPanelItem (main_window, _id, type, css, null, itype);
 
         grid_data.attach (new_obj, 0, rows);
 

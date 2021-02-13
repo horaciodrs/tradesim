@@ -45,6 +45,9 @@
         //Comienza la rama canvas_improvements
         print("\033[2J"); //borra la consola...
 
+        //Ruta para probar los archivos de cotizaciones
+        //file:///home/horacio/github/TradeSim/data/quotes/
+
  */
 
 namespace TradeSim.Data {

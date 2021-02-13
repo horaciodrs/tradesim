@@ -453,9 +453,25 @@ msgstr "Opacidad:"
 msgid "Thickness:"
 msgstr "Grosor:"
 
-#: src/Dialogs/DrawEditDialog.vala:263
+#: src/Dialogs/DrawEditDialog.vala:71
 msgid "Please enter the object name"
 msgstr "Por favor ingrese un nombre para el objeto"
+
+#: src/Dialogs/DrawEditDialog.vala:307
+msgid "Period:"
+msgstr "Periodo:"
+
+#: src/Dialogs/DrawEditDialog.vala:307
+msgid "Please enter a valid period"
+msgstr "Por favor inserte un periodo valido"
+
+#: src/Dialogs/DrawEditDialog.vala:263
+msgid "Insert Simple Moving Average"
+msgstr "Insertar Media Movil Simple"
+
+#: src/Dialogs/DrawEditDialog.vala:263
+msgid "Simple Moving Average"
+msgstr "Media Movil Simple"
 
 #: src/Layouts/Welcome.vala:35
 #: src/Layouts/Main.vala:63

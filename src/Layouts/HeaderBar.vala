@@ -249,6 +249,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         var draw_hline_button = create_model_button (_ ("Horizontal Line"), "shape-hline-symbolic");
         var draw_rect_button = create_model_button (_ ("Rectangle"), "shape-rectangle-symbolic");
         var draw_fibo_button = create_model_button (_ ("Fibonacci Retracement"), "shape-fibonacci-symbolic");
+        var draw_sma_button = create_model_button (_ ("Simple Moving Average"), "shape-line-symbolic");
 
         draw_line_button.clicked.connect (e => {
 
@@ -290,6 +291,24 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
         });
 
+        draw_sma_button.clicked.connect (e => {
+
+            var canvas = main_window.main_layout.current_canvas;
+
+            if (canvas != null) {
+
+                canvas.draw_mode_objects++;
+                var indicator_id = "SMA " + canvas.draw_mode_objects.to_string ();
+    
+                var edit_object_dialog = new TradeSim.Dialogs.DrawEditDialog (main_window, null, indicator_id, TradeSim.Services.Drawings.Type.INDICATOR, TradeSim.Drawings.Indicators.Indicator.Type.SMA);
+    
+                edit_object_dialog.show_all ();
+                edit_object_dialog.present ();
+
+            }
+
+        });
+
         var separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
         separator.margin_top = separator.margin_bottom = 3;
 
@@ -298,6 +317,9 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
         var separator3 = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
         separator3.margin_top = separator.margin_bottom = 3;
+
+        var separator4 = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+        separator4.margin_top = separator.margin_bottom = 3;
 
         grid.add (draw_line_button);
         grid.add (separator);
@@ -309,6 +331,9 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         grid.add (separator3);
 
         grid.add (draw_fibo_button);
+        grid.add (separator4);
+
+        grid.add (draw_sma_button);
 
         grid.show_all ();
 

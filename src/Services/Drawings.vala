@@ -29,6 +29,7 @@ public class TradeSim.Services.Drawings {
         , RECTANGLE
         , FIBONACCI
         , OPERATION_INFO
+        , INDICATOR
     }
 
     public enum Thickness {
@@ -46,6 +47,7 @@ public class TradeSim.Services.Drawings {
     public Array<TradeSim.Drawings.Rectangle> rectangles;
     public Array<TradeSim.Drawings.HLine> hlines;
     public Array<TradeSim.Drawings.OperationInfo> operations;
+    public Array<TradeSim.Drawings.Indicators.Indicator> indicators;
 
     public Drawings (TradeSim.Widgets.Canvas _canvas) {
 
@@ -56,6 +58,7 @@ public class TradeSim.Services.Drawings {
         rectangles = new Array<TradeSim.Drawings.Rectangle> ();
         hlines = new Array<TradeSim.Drawings.HLine> ();
         operations = new Array<TradeSim.Drawings.OperationInfo> ();
+        indicators = new Array<TradeSim.Drawings.Indicators.Indicator> ();
 
     }
 
@@ -79,6 +82,14 @@ public class TradeSim.Services.Drawings {
 
         for (int z = 0 ; z < operations.length ; z++) {
             operations.index (z).render (ctext);
+        }
+
+        //INDICATORS
+        //Los indicadores tipo media movil se tienen que dibujar en el momento en el que se dibuja
+        //cada vela para más eficiencia.
+
+        for (int z = 0 ; z < indicators.length ; z++) {
+            indicators.index (z).render (ctext);
         }
 
     }
@@ -366,6 +377,31 @@ public class TradeSim.Services.Drawings {
 
     }
 
+    public void draw_indicator (string _id, Array<TradeSim.Drawings.Indicators.IndicatorProperty> properties) {
+
+        var new_indicator = indicator_exists (_id);
+        bool is_new_indicator = false;
+
+        if (new_indicator == null) {
+
+            var Propiedades = new TradeSim.Drawings.Indicators.PropertyManager (properties);
+
+            if(Propiedades.get_int ("type") == TradeSim.Drawings.Indicators.Indicator.Type.SMA) {
+                new_indicator = new TradeSim.Drawings.Indicators.Sma (ref_canvas, _id, properties);
+            }
+
+            new_indicator.calculate ();
+
+            is_new_indicator = true;
+
+        }
+
+        if (is_new_indicator) {
+            indicators.append_val (new_indicator);
+        }
+
+    }
+
     public TradeSim.Drawings.Line ? line_exists (string _id) {
 
         for (int i = 0 ; i < lines.length ; i++) {
@@ -426,6 +462,18 @@ public class TradeSim.Services.Drawings {
 
     }
 
+    public TradeSim.Drawings.Indicators.Indicator ? indicator_exists (string _id) {
+
+        for (int i = 0 ; i < lines.length ; i++) {
+            if (indicators.index (i).id == _id) {
+                return indicators.index (i);
+            }
+        }
+
+        return null;
+
+    }
+
     public void set_draw_color (string _id, int _type, Gdk.RGBA _c) {
 
         var _color = new TradeSim.Utils.Color.with_rgba (_c);
@@ -458,6 +506,13 @@ public class TradeSim.Services.Drawings {
                     break;
                 }
             }
+        } else if (_type == TradeSim.Services.Drawings.Type.INDICATOR) {
+            for (int i = 0 ; i < indicators.length ; i++) {
+                if (indicators.index (i).id == _id) {
+                    indicators.index (i).set_color (_color);
+                    break;
+                }
+            }
         }
     }
 
@@ -487,9 +542,32 @@ public class TradeSim.Services.Drawings {
                     return rectangles.index (i).get_color ();
                 }
             }
+        } else if (_type == TradeSim.Services.Drawings.Type.INDICATOR) {
+            for (int i = 0 ; i < indicators.length ; i++) {
+                if (indicators.index (i).id == _id) {
+                    return indicators.index (i).get_color ();
+                }
+            }
         }
 
         return new TradeSim.Utils.Color.default ();
+    }
+
+    public TradeSim.Drawings.Indicators.PropertyManager get_indicator_properties (string _id, int _type) {
+
+        var return_value = new TradeSim.Drawings.Indicators.PropertyManager(new Array<TradeSim.Drawings.Indicators.IndicatorProperty>());
+
+        for (int i = 0 ; i < indicators.length ; i++) {
+
+            if (indicators.index (i).id == _id) {
+                return_value = indicators.index (i).properties;
+                break;
+            }
+
+        }
+
+        return return_value;
+
     }
 
     public void set_draw_thickness (string _id, int _type, int _thicness) {
@@ -522,6 +600,13 @@ public class TradeSim.Services.Drawings {
                     break;
                 }
             }
+        } else if (_type == TradeSim.Services.Drawings.Type.INDICATOR) {
+            for (int i = 0 ; i < indicators.length ; i++) {
+                if (indicators.index (i).id == _id) {
+                    indicators.index (i).set_thickness (_thicness);
+                    break;
+                }
+            }
         }
     }
 
@@ -549,6 +634,12 @@ public class TradeSim.Services.Drawings {
             for (int i = 0 ; i < rectangles.length ; i++) {
                 if (rectangles.index (i).id == _id) {
                     return rectangles.index (i).get_thicness ();
+                }
+            }
+        } else if (_type == TradeSim.Services.Drawings.Type.INDICATOR) {
+            for (int i = 0 ; i < indicators.length ; i++) {
+                if (indicators.index (i).id == _id) {
+                    return indicators.index (i).get_thicness ();
                 }
             }
         }
@@ -587,6 +678,13 @@ public class TradeSim.Services.Drawings {
                     break;
                 }
             }
+        } else if (_type == TradeSim.Services.Drawings.Type.INDICATOR) {
+            for (int i = 0 ; i < indicators.length ; i++) {
+                if (indicators.index (i).id == _id) {
+                    indicators.index (i).id = _new_name;
+                    break;
+                }
+            }
         }
     }
 
@@ -614,6 +712,12 @@ public class TradeSim.Services.Drawings {
             for (int i = 0 ; i < rectangles.length ; i++) {
                 if (rectangles.index (i).id == _id) {
                     return rectangles.index (i).get_alpha ();
+                }
+            }
+        } else if (_type == TradeSim.Services.Drawings.Type.INDICATOR) {
+            for (int i = 0 ; i < indicators.length ; i++) {
+                if (indicators.index (i).id == _id) {
+                    return indicators.index (i).get_alpha ();
                 }
             }
         }
@@ -652,6 +756,13 @@ public class TradeSim.Services.Drawings {
                     break;
                 }
             }
+        } else if (_type == TradeSim.Services.Drawings.Type.INDICATOR) {
+            for (int i = 0 ; i < indicators.length ; i++) {
+                if (indicators.index (i).id == _id) {
+                    indicators.index (i).set_alpha (_alpha);
+                    break;
+                }
+            }
         }
     }
 
@@ -685,6 +796,13 @@ public class TradeSim.Services.Drawings {
                     break;
                 }
             }
+        } else if (_type == TradeSim.Services.Drawings.Type.INDICATOR) {
+            for (int i = 0 ; i < indicators.length ; i++) {
+                if (indicators.index (i).id == _id) {
+                    indicators.index (i).set_visible (_visible);
+                    break;
+                }
+            }
         }
     }
 
@@ -712,6 +830,12 @@ public class TradeSim.Services.Drawings {
             for (int i = 0 ; i < rectangles.length ; i++) {
                 if (rectangles.index (i).id == _id) {
                     return rectangles.index (i).get_visible ();
+                }
+            }
+        } else if (_type == TradeSim.Services.Drawings.Type.INDICATOR) {
+            for (int i = 0 ; i < indicators.length ; i++) {
+                if (indicators.index (i).id == _id) {
+                    return indicators.index (i).get_visible ();
                 }
             }
         }
@@ -752,6 +876,13 @@ public class TradeSim.Services.Drawings {
                     break;
                 }
             }
+        } else if (_type == TradeSim.Services.Drawings.Type.INDICATOR) {
+            for (int i = 0 ; i < indicators.length ; i++) {
+                if (indicators.index (i).id == _id) {
+                    indicators.index (i).set_enabled (_enabled);
+                    break;
+                }
+            }
         }
     }
 
@@ -779,6 +910,12 @@ public class TradeSim.Services.Drawings {
             for (int i = 0 ; i < rectangles.length ; i++) {
                 if (rectangles.index (i).id == _id) {
                     return rectangles.index (i).get_enabled ();
+                }
+            }
+        } else if (_type == TradeSim.Services.Drawings.Type.INDICATOR) {
+            for (int i = 0 ; i < indicators.length ; i++) {
+                if (indicators.index (i).id == _id) {
+                    return indicators.index (i).get_enabled ();
                 }
             }
         }
@@ -813,6 +950,12 @@ public class TradeSim.Services.Drawings {
             for (int i = 0 ; i < rectangles.length ; i++) {
                 if (rectangles.index (i).id == _id) {
                     rectangles.remove_index (i);
+                }
+            }
+        } else if (_type == TradeSim.Services.Drawings.Type.INDICATOR) {
+            for (int i = 0 ; i < indicators.length ; i++) {
+                if (indicators.index (i).id == _id) {
+                    indicators.remove_index (i);
                 }
             }
         }
@@ -949,6 +1092,12 @@ public class TradeSim.Services.Drawings {
         } else if (_type == TradeSim.Services.Drawings.Type.RECTANGLE) {
             for (int i = 0 ; i < rectangles.length ; i++) {
                 if (rectangles.index (i).id == _id) {
+                    return true;
+                }
+            }
+        } else if (_type == TradeSim.Services.Drawings.Type.INDICATOR) {
+            for (int i = 0 ; i < indicators.length ; i++) {
+                if (indicators.index (i).id == _id) {
                     return true;
                 }
             }

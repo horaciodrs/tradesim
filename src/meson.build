@@ -16,6 +16,8 @@ sources = files(
     'Drawings/OperationBox.vala',
     'Drawings/OperationInfo.vala',
     'Drawings/DrawHandler.vala',
+    'Drawings/Indicators/Indicator.vala',
+    'Drawings/Indicators/Sma.vala',
 
     'Services/Drawings.vala',
     'Services/Database.vala',
