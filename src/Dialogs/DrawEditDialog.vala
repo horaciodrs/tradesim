@@ -316,6 +316,8 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
         var txt_period = new Gtk.Entry ();
         var lbl_period = new Gtk.Label (_("Period:"));
 
+        txt_period.set_text ("8");
+
         var draw_manager = main_window.main_layout.current_canvas.draw_manager;
 
         if (draw_manager.exists(object_id, wtype) == true){
@@ -343,6 +345,9 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
 
         var txt_std_devs = new Gtk.Entry ();
         var lbl_std_devs = new Gtk.Label (_("Std Devs:"));
+
+        txt_period.set_text ("14");
+        txt_std_devs.set_text ("2");
 
         var draw_manager = main_window.main_layout.current_canvas.draw_manager;
 
