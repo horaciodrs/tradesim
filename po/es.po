@@ -481,6 +481,10 @@ msgstr "Insertar Bandas de Bollinger"
 msgid "Simple Moving Average"
 msgstr "Media Movil Simple"
 
+#: src/Dialogs/DrawEditDialog.vala:263
+msgid "Bollinger Bands"
+msgstr "Bandas de Bollinger"
+
 #: src/Layouts/Welcome.vala:35
 #: src/Layouts/Main.vala:63
 msgid "Welcome to TradeSim"
