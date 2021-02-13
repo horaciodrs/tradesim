@@ -465,9 +465,17 @@ msgstr "Periodo:"
 msgid "Please enter a valid period"
 msgstr "Por favor inserte un periodo valido"
 
+#: src/Dialogs/DrawEditDialog.vala:307
+msgid "Please enter a valid std devs"
+msgstr "Por favor inserte un std devs valido"
+
 #: src/Dialogs/DrawEditDialog.vala:263
 msgid "Insert Simple Moving Average"
 msgstr "Insertar Media Movil Simple"
+
+#: src/Dialogs/DrawEditDialog.vala:263
+msgid "Insert Bollinger Bands"
+msgstr "Insertar Bandas de Bollinger"
 
 #: src/Dialogs/DrawEditDialog.vala:263
 msgid "Simple Moving Average"

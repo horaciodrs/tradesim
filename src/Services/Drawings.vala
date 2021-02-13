@@ -396,8 +396,10 @@ public class TradeSim.Services.Drawings {
 
             var Propiedades = new TradeSim.Drawings.Indicators.PropertyManager (properties);
 
-            if(Propiedades.get_int ("type") == TradeSim.Drawings.Indicators.Indicator.Type.SMA) {
+            if (Propiedades.get_int ("type") == TradeSim.Drawings.Indicators.Indicator.Type.SMA) {
                 new_indicator = new TradeSim.Drawings.Indicators.Sma (ref_canvas, _id, properties);
+            } else if (Propiedades.get_int ("type") == TradeSim.Drawings.Indicators.Indicator.Type.BOLLINGER_BANDS) {
+                new_indicator = new TradeSim.Drawings.Indicators.BollingerBands (ref_canvas, _id, properties);
             }
 
             new_indicator.calculate ();

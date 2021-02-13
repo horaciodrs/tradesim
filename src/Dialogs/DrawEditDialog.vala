@@ -60,6 +60,11 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
         , CBO_TIME
     }
 
+    enum WidgetIndicatorBollingerBands {
+        TXT_PERIOD
+        , TXT_STD_DEVS
+    }
+
     public DrawEditDialog (TradeSim.MainWindow ? parent, TradeSim.Widgets.DrawingsPanelItem ? _item_to_update, string _id, int ? _type, int ? _itype) {
 
         string dialog_title = _ ("Edit Object");
@@ -69,6 +74,9 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
             switch (_itype) {
                 case TradeSim.Drawings.Indicators.Indicator.Type.SMA:
                     dialog_title = _ ("Insert Simple Moving Average");
+                    break;
+                case TradeSim.Drawings.Indicators.Indicator.Type.BOLLINGER_BANDS:
+                    dialog_title = _ ("Insert Bollinger Bands");
                     break;
                 default:
                     dialog_title = _ ("Edit Object");
@@ -297,6 +305,8 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
 
         if (itype == TradeSim.Drawings.Indicators.Indicator.Type.SMA) {
             get_sma_fields (grilla, row);
+        }else if (itype == TradeSim.Drawings.Indicators.Indicator.Type.BOLLINGER_BANDS) {
+            get_bollinger_bands_fields (grilla, row);
         }
 
     }
@@ -326,6 +336,40 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
         
     }
 
+    private void get_bollinger_bands_fields (Gtk.Grid grilla, int row) {
+
+        var txt_period = new Gtk.Entry ();
+        var lbl_period = new Gtk.Label (_("Period:"));
+
+        var txt_std_devs = new Gtk.Entry ();
+        var lbl_std_devs = new Gtk.Label (_("Std Devs:"));
+
+        var draw_manager = main_window.main_layout.current_canvas.draw_manager;
+
+        if (draw_manager.exists(object_id, wtype) == true){
+
+            var indicator_properties = draw_manager.get_indicator_properties (object_id, wtype);
+
+            txt_period.set_text (indicator_properties.get_int("period").to_string ());
+            txt_std_devs.set_text (indicator_properties.get_int("dvs").to_string ());
+
+        }
+
+
+        lbl_period.halign = Gtk.Align.END;
+        lbl_std_devs.halign = Gtk.Align.END;
+
+        indicator_fields.append_val (txt_period);
+        indicator_fields.append_val (txt_std_devs);
+
+        grilla.attach (lbl_period, 0, row);
+        grilla.attach (txt_period, 1, row);
+
+        grilla.attach (lbl_std_devs, 0, row + 1);
+        grilla.attach (txt_std_devs, 1, row + 1);
+        
+    }
+
     private string validate_indicators () {
 
         if (wtype == TradeSim.Services.Drawings.Type.INDICATOR){
@@ -336,6 +380,20 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
                 if (int.parse (widget_periodo.get_text ()) == 0){
                     return _ ("Please enter a valid period");
                 }
+            }else if (itype == TradeSim.Drawings.Indicators.Indicator.Type.BOLLINGER_BANDS){
+
+                var widget_periodo = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorBollingerBands.TXT_PERIOD));
+
+                if (int.parse (widget_periodo.get_text ()) == 0){
+                    return _ ("Please enter a valid period");
+                }
+
+                var widget_std_devs = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorBollingerBands.TXT_STD_DEVS));
+
+                if (int.parse (widget_std_devs.get_text ()) == 0){
+                    return _ ("Please enter a valid std devs");
+                }
+
             }
         }
 
@@ -385,13 +443,36 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
             if (item_to_update == null){
 
                 //Creacion de un Indicador
+                var canvas = main_window.main_layout.current_canvas;
+                var indicator_prop = new Array<TradeSim.Drawings.Indicators.IndicatorProperty> ();
+                var panel = main_window.main_layout.drawings_panel;
+
+                Value prop_thickness = Value (typeof (int));
+                prop_thickness.set_int (selected_thicness);
+                indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("thickness", prop_thickness));
+        
+                var aux_color = new TradeSim.Utils.Color.with_rgba (button_color.get_rgba ());
+        
+                Value prop_color_red = Value (typeof (int));
+                prop_color_red.set_int (aux_color.red);
+                indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("color_red", prop_color_red));
+        
+                Value prop_color_green = Value (typeof (int));
+                prop_color_green.set_int (aux_color.green);
+                indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("color_green", prop_color_green));
+        
+                Value prop_color_blue = Value (typeof (int));
+                prop_color_blue.set_int (aux_color.blue);
+                indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("color_blue", prop_color_blue));
+        
+                Value prop_color_alpha = Value (typeof (double));
+                prop_color_alpha.set_double (aux_color.alpha);
+                
+                indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("color_alpha", prop_color_alpha));
                 
                 if (itype == TradeSim.Drawings.Indicators.Indicator.Type.SMA){
 
                     var widget_periodo = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorSMA.TXT_PERIOD));
-            
-                    var canvas = main_window.main_layout.current_canvas;
-                    var indicator_prop = new Array<TradeSim.Drawings.Indicators.IndicatorProperty> ();
             
                     Value prop_tipo = Value (typeof (int));
                     prop_tipo.set_int (TradeSim.Drawings.Indicators.Indicator.Type.SMA);
@@ -401,38 +482,32 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
                     prop_period.set_int (int.parse (widget_periodo.get_text ()));
                     indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("period", prop_period));
             
-                    Value prop_thickness = Value (typeof (int));
-                    prop_thickness.set_int (selected_thicness);
-                    indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("thickness", prop_thickness));
-            
-                    var aux_color = new TradeSim.Utils.Color.with_rgba (button_color.get_rgba ());
-            
-                    Value prop_color_red = Value (typeof (int));
-                    prop_color_red.set_int (aux_color.red);
-                    indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("color_red", prop_color_red));
-            
-                    Value prop_color_green = Value (typeof (int));
-                    prop_color_green.set_int (aux_color.green);
-                    indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("color_green", prop_color_green));
-            
-                    Value prop_color_blue = Value (typeof (int));
-                    prop_color_blue.set_int (aux_color.blue);
-                    indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("color_blue", prop_color_blue));
-            
-                    Value prop_color_alpha = Value (typeof (double));
-                    prop_color_alpha.set_double (aux_color.alpha);
-                    
-                    indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("color_alpha", prop_color_alpha));
-            
                     canvas.draw_manager.draw_indicator (txt_name.get_text (), indicator_prop);
-            
-                    var panel = main_window.main_layout.drawings_panel;
-                        
-                    panel.insert_object (txt_name.get_text (), TradeSim.Services.Drawings.Type.INDICATOR, TradeSim.Drawings.Indicators.Indicator.Type.SMA);
 
-                    canvas.need_save = true;
+                }else if (itype == TradeSim.Drawings.Indicators.Indicator.Type.BOLLINGER_BANDS){
 
+                    var widget_periodo = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorBollingerBands.TXT_PERIOD));
+                    var widget_std_devs = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorBollingerBands.TXT_STD_DEVS));
+                
+                    Value prop_tipo = Value (typeof (int));
+                    prop_tipo.set_int (TradeSim.Drawings.Indicators.Indicator.Type.BOLLINGER_BANDS);
+                    indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("type", prop_tipo));
+                
+                    Value prop_period = Value (typeof (int));
+                    prop_period.set_int (int.parse (widget_periodo.get_text ()));
+                    indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("period", prop_period));
+                    
+                    Value prop_std_devs = Value (typeof (int));
+                    prop_std_devs.set_int (int.parse (widget_std_devs.get_text ()));
+                    indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("dvs", prop_std_devs));
+                
+                    canvas.draw_manager.draw_indicator (txt_name.get_text (), indicator_prop);
+                
                 }
+
+                panel.insert_object (txt_name.get_text (), TradeSim.Services.Drawings.Type.INDICATOR, itype);
+
+                canvas.need_save = true;
                     
             }else{
             
@@ -440,11 +515,25 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
                 
                 if (wtype == TradeSim.Services.Drawings.Type.INDICATOR){
 
+
                     //actualizar las propiedades del indicador
                     var indicator_properties = target.get_indicator_properties (object_id, wtype);
-                    var widget_periodo = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorSMA.TXT_PERIOD));
 
-                    indicator_properties.set_int("period", int.parse (widget_periodo.get_text ()));
+                    if (itype == TradeSim.Drawings.Indicators.Indicator.Type.SMA){
+
+                        var widget_periodo = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorSMA.TXT_PERIOD));
+
+                        indicator_properties.set_int("period", int.parse (widget_periodo.get_text ()));
+
+                    }else if (itype == TradeSim.Drawings.Indicators.Indicator.Type.BOLLINGER_BANDS){
+
+                        var widget_periodo = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorBollingerBands.TXT_PERIOD));
+                        var widget_std_devs = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorBollingerBands.TXT_STD_DEVS));
+
+                        indicator_properties.set_int("period", int.parse (widget_periodo.get_text ()));
+                        indicator_properties.set_int("dvs", int.parse (widget_std_devs.get_text ()));
+
+                    }
                 
                     target.set_draw_color (object_id, wtype, button_color.get_rgba ());
                     target.set_draw_thickness (object_id, wtype, selected_thicness);

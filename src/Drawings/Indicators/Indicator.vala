@@ -100,6 +100,7 @@ public class TradeSim.Drawings.Indicators.Indicator {
     public enum Type {
         SMA
         , EMA
+        , BOLLINGER_BANDS
     }
 
     public weak TradeSim.Widgets.Canvas ? ref_canvas;

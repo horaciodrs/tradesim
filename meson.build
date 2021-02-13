@@ -14,12 +14,15 @@ asresources = gnome.compile_resources(
 
 subdir('src')
 
+cc = meson.get_compiler('c')
+
 deps = [
  	 dependency('gtk+-3.0')
 	,dependency('glib-2.0')
 	,dependency('sqlite3')
-  ,dependency('libxml-2.0')
+    ,dependency('libxml-2.0')
 	,dependency('granite', version: '>= 5.3.0')
+	,cc.find_library('m', required : false)
 ]
 
 executable(
