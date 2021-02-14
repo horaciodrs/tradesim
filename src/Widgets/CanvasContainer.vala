@@ -13,6 +13,9 @@ public class TradeSim.Widgets.CanvasContainer : Gtk.Box {
     // public Gtk.Scrollbar hscollbar;
 
     public TradeSim.Widgets.Canvas chart_canvas;
+    public TradeSim.Widgets.OscilatorCanvas oscilator_canvas;
+
+    private Gtk.Paned pane_container;
 
     public CanvasContainer (TradeSim.MainWindow window, string _provider_name, string _ticker_name, string _time_frame, string _simulation_name, double _simulation_initial_balance, DateTime _initial_date, string ? from_file = null) {
         Object (
@@ -34,9 +37,23 @@ public class TradeSim.Widgets.CanvasContainer : Gtk.Box {
 
         // var ajuste = new Gtk.Adjustment (0, 0, 100, 1, 1, 50);
 
-        chart_canvas = new TradeSim.Widgets.Canvas (main_window, provider_name, ticker_name, time_frame, simulation_name, simulation_initial_balance, initial_date, file_name);
+        pane_container = new Gtk.Paned (Gtk.Orientation.VERTICAL);
 
-        pack_start (chart_canvas, true, true, 0);
+        chart_canvas = new TradeSim.Widgets.Canvas (main_window, provider_name, ticker_name, time_frame, simulation_name, simulation_initial_balance, initial_date, file_name);
+        oscilator_canvas = new TradeSim.Widgets.OscilatorCanvas (main_window);
+
+        pane_container.pack1(chart_canvas, true, true);
+        pane_container.pack2(oscilator_canvas, true, true);
+
+        /*
+            //De esta manera se puede ocultar el panel del oscilador.
+            var oc = main_window.main_layout.current_oscilator_canvas;
+            oc.set_size_request(100, -1);
+        */
+
+        oscilator_canvas.set_size_request(100, 100);
+
+        pack_start (pane_container, true, true, 0);
 
     }
 

@@ -39,6 +39,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
     public TradeSim.Widgets.DrawingsPanel drawings_panel;
 
     public TradeSim.Widgets.Canvas current_canvas;
+    public TradeSim.Widgets.OscilatorCanvas current_oscilator_canvas;
 
 
     public Main (TradeSim.MainWindow window) {
@@ -122,6 +123,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
             drawings_panel.delete_all ();
 
             current_canvas = container.chart_canvas;
+            current_oscilator_canvas = container.oscilator_canvas;
 
             main_window.headerbar.set_subtitle (current_canvas.simulation_name);
 
@@ -239,6 +241,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
         nb_chart_container.set_current_page (position);
 
         current_canvas = canvas_container.chart_canvas;
+        current_oscilator_canvas = canvas_container.oscilator_canvas;
 
     }
 

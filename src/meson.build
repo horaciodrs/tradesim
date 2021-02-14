@@ -41,6 +41,7 @@ sources = files(
     'Widgets/DrawingsPanel.vala',
     'Widgets/CanvasContainer.vala',
     'Widgets/Canvas.vala',
+    'Widgets/OscilatorCanvas.vala',
 
     'Dialogs/DrawEditDialog.vala',
     'Dialogs/NewOperationDialog.vala',

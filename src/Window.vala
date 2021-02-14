@@ -206,8 +206,10 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
             if (main_layout.current_canvas != null) {
                 if (value) {
                     main_layout.current_canvas.color_palette.set_dark_mode ();
+                    main_layout.current_oscilator_canvas.color_palette.set_dark_mode ();
                 } else {
                     main_layout.current_canvas.color_palette.set_light_mode ();
+                    main_layout.current_oscilator_canvas.color_palette.set_light_mode ();
                 }
             }
         }
