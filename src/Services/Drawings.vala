@@ -84,14 +84,14 @@ public class TradeSim.Services.Drawings {
             operations.index (z).render (ctext);
         }
 
-        //INDICATORS
-        //Los indicadores tipo media movil se tienen que dibujar en el momento en el que se dibuja
-        //cada vela para más eficiencia.
+    }
+
+    public void render_indicators_by_candle (Cairo.Context ctext, int i) {
 
         for (int z = 0 ; z < indicators.length ; z++) {
-            indicators.index (z).render (ctext);
+            indicators.index (z).render_by_candle (ctext, i);
         }
-
+        
     }
 
     public void indicators_calculate_last_candle () {

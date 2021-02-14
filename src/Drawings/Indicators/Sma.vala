@@ -58,6 +58,34 @@
         base.default ();
     }
 
+    public override void render_by_candle (Cairo.Context ctext, int i) {
+
+        if (!visible){
+            return;
+        }
+
+        if(i > 1){
+
+            if (data.index(i - 1).get_data () == 0){
+                return;
+            }
+
+            int x1 = ref_canvas.get_pos_x_by_date (ref_canvas.data.quotes.index(i - 1).date_time);
+            int x2 = ref_canvas.get_pos_x_by_date (ref_canvas.data.quotes.index(i).date_time);
+            int y1 = ref_canvas.get_pos_y_by_price (data.index(i-1).get_data ());
+            int y2 = ref_canvas.get_pos_y_by_price (data.index(i).get_data ());
+
+            ctext.set_dash ({}, 0);
+            ctext.set_line_width (thickness);
+            color.apply_to (ctext);
+            ctext.move_to (x1, y1);
+            ctext.line_to (x2, y2);
+            ctext.stroke ();
+
+        }
+        
+    }
+
     public override void render (Cairo.Context ctext) {
 
         if (!visible){
@@ -69,29 +97,7 @@
 
         for (int i = from; i < to; i++) {
 
-            if(i > 1){
-
-                if (data.index(i - 1).get_data () == 0){
-                    continue;
-                }
-
-                int x1 = ref_canvas.get_pos_x_by_date (ref_canvas.data.quotes.index(i - 1).date_time);
-                int x2 = ref_canvas.get_pos_x_by_date (ref_canvas.data.quotes.index(i).date_time);
-                int y1 = ref_canvas.get_pos_y_by_price (data.index(i-1).get_data ());
-                int y2 = ref_canvas.get_pos_y_by_price (data.index(i).get_data ());
-
-                if ((x1 > ref_canvas._width) || (x2 > ref_canvas._width)) {
-                    break;
-                }
-
-                ctext.set_dash ({}, 0);
-                ctext.set_line_width (thickness);
-                color.apply_to (ctext);
-                ctext.move_to (x1, y1);
-                ctext.line_to (x2, y2);
-                ctext.stroke ();
-
-            }
+            render_by_candle (ctext, i);
             
         }
 

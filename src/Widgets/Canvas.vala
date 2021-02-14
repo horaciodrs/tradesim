@@ -1463,9 +1463,15 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         drawed_candles = 0; // Se incrementa dentro de get_quote_by_time.
 
+        int candle_position = data.get_quote_index_by_time (cursor_date);
+
         while (cursor_date.compare (date_to) < 0) {
 
             draw_candle (ctext, data.get_quote_by_time (cursor_date));
+
+            draw_manager.render_indicators_by_candle(ctext, candle_position);
+
+            candle_position++;
 
             cursor_date = date_add_int_by_time_frame (cursor_date, time_frame, 1);
 

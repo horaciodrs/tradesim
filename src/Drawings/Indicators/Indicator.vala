@@ -136,6 +136,10 @@ public class TradeSim.Drawings.Indicators.Indicator {
         
     }
 
+    public virtual void render_by_candle (Cairo.Context ctext, int i) {
+        
+    }
+
     public virtual void render (Cairo.Context ctext) {
 
     }
