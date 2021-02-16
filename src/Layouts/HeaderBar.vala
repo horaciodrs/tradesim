@@ -251,6 +251,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         var draw_fibo_button = create_model_button (_ ("Fibonacci Retracement"), "shape-fibonacci-symbolic");
         var draw_sma_button = create_model_button (_ ("Simple Moving Average"), "shape-indicator-symbolic");
         var draw_bollinger_bands_button = create_model_button (_ ("Bollinger Bands"), "shape-indicator-symbolic");
+        var draw_rsi_button = create_model_button (_ ("RSI"), "shape-indicator-symbolic");
 
         draw_line_button.clicked.connect (e => {
 
@@ -328,6 +329,24 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
         });
 
+        draw_rsi_button.clicked.connect (e => {
+
+            var canvas = main_window.main_layout.current_canvas;
+
+            if (canvas != null) {
+
+                canvas.draw_mode_objects++;
+                var indicator_id = "RSI " + canvas.draw_mode_objects.to_string ();
+    
+                var edit_object_dialog = new TradeSim.Dialogs.DrawEditDialog (main_window, null, indicator_id, TradeSim.Services.Drawings.Type.INDICATOR, TradeSim.Drawings.Indicators.Indicator.Type.RSI);
+    
+                edit_object_dialog.show_all ();
+                edit_object_dialog.present ();
+
+            }
+
+        });
+
         var separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
         separator.margin_top = separator.margin_bottom = 3;
 
@@ -355,6 +374,8 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         grid.add (draw_sma_button);
         
         grid.add (draw_bollinger_bands_button);
+
+        grid.add (draw_rsi_button);
 
         grid.show_all ();
 

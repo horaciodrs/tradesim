@@ -51,9 +51,9 @@
     private int periods;
     private int dvs;
 
-    public BollingerBands (TradeSim.Widgets.Canvas canvas, string _id, Array<TradeSim.Drawings.Indicators.IndicatorProperty> _properties) {
+    public BollingerBands (TradeSim.Widgets.Canvas canvas, TradeSim.Widgets.OscilatorCanvas _oscilator_canvas, string _id, Array<TradeSim.Drawings.Indicators.IndicatorProperty> _properties) {
 
-        base (canvas, _id, _properties);
+        base (canvas, _oscilator_canvas, _id, _properties);
 
         periods = properties.get_int ("period");
         dvs = properties.get_int ("dvs");

@@ -42,9 +42,9 @@
     private Array<TradeSim.Drawings.Indicators.SmaDataItem> data;  //El indice se corresponde con la vela (fecha) y el valor es el promedio calculado para ser representado.
     private int periods;
 
-    public Sma (TradeSim.Widgets.Canvas canvas, string _id, Array<TradeSim.Drawings.Indicators.IndicatorProperty> _properties) {
+    public Sma (TradeSim.Widgets.Canvas canvas, TradeSim.Widgets.OscilatorCanvas _oscilator_canvas, string _id, Array<TradeSim.Drawings.Indicators.IndicatorProperty> _properties) {
 
-        base (canvas, _id, _properties);
+        base (canvas, _oscilator_canvas, _id, _properties);
 
         periods = properties.get_int ("period");
 

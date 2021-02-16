@@ -23,6 +23,8 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public weak TradeSim.MainWindow main_window;
 
+    public weak TradeSim.Widgets.OscilatorCanvas ref_oscilator_canvas;
+
     public enum Direccion {
         RIGHT
         , LEFT
@@ -95,6 +97,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     private int total_candles_size; // Indica la cantidad de velas que puedo dibujar...
     public int drawed_candles;
+    public int drawed_candle_position;
 
     public TradeSim.Services.Drawings draw_manager;
 
@@ -114,15 +117,18 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
     public TradeSim.Utils.ColorPalette color_palette;
 
-    public Canvas (TradeSim.MainWindow window, string _provider_name, string _ticker, string _time_frame, string _simulation_name = "Unnamed Simulation", double _simulation_initial_balance = 500.000, DateTime _initial_date, string ? load_file = null) {
+    public Canvas (TradeSim.MainWindow window, TradeSim.Widgets.OscilatorCanvas _oscilator_canvas, string _provider_name, string _ticker, string _time_frame, string _simulation_name = "Unnamed Simulation", double _simulation_initial_balance = 500.000, DateTime _initial_date, string ? load_file = null) {
 
         main_window = window;
+        ref_oscilator_canvas = _oscilator_canvas;
 
         ticker = _ticker;
         time_frame = _time_frame;
         provider_name = _provider_name;
 
         drawed_candles = 0;
+
+        drawed_candle_position = 0;
 
         end_simulation = true;
         simulation_vel = 1000;
@@ -223,7 +229,7 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         candles_cola_size = 0.8;
 
-        draw_manager = new TradeSim.Services.Drawings (this);
+        draw_manager = new TradeSim.Services.Drawings (this, ref_oscilator_canvas);
 
         operations_manager = new TradeSim.Services.OperationsManager ();
 
@@ -1463,15 +1469,17 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
 
         drawed_candles = 0; // Se incrementa dentro de get_quote_by_time.
 
-        int candle_position = data.get_quote_index_by_time (cursor_date);
+        drawed_candle_position = data.get_quote_index_by_time (cursor_date);
 
         while (cursor_date.compare (date_to) < 0) {
 
             draw_candle (ctext, data.get_quote_by_time (cursor_date));
 
-            draw_manager.render_indicators_by_candle(ctext, candle_position);
+            draw_manager.render_indicators_by_candle(ctext, drawed_candle_position);
 
-            candle_position++;
+            ref_oscilator_canvas.queue_draw ();
+
+            drawed_candle_position++;
 
             cursor_date = date_add_int_by_time_frame (cursor_date, time_frame, 1);
 

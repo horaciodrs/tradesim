@@ -39,8 +39,9 @@ public class TradeSim.Widgets.CanvasContainer : Gtk.Box {
 
         pane_container = new Gtk.Paned (Gtk.Orientation.VERTICAL);
 
-        chart_canvas = new TradeSim.Widgets.Canvas (main_window, provider_name, ticker_name, time_frame, simulation_name, simulation_initial_balance, initial_date, file_name);
         oscilator_canvas = new TradeSim.Widgets.OscilatorCanvas (main_window);
+        chart_canvas = new TradeSim.Widgets.Canvas (main_window, oscilator_canvas, provider_name, ticker_name, time_frame, simulation_name, simulation_initial_balance, initial_date, file_name);
+        
 
         pane_container.pack1(chart_canvas, true, true);
         pane_container.pack2(oscilator_canvas, true, true);

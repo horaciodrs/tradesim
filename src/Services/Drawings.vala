@@ -22,6 +22,7 @@
 public class TradeSim.Services.Drawings {
 
     public weak TradeSim.Widgets.Canvas ref_canvas;
+    public weak TradeSim.Widgets.OscilatorCanvas ref_oscilator_canvas;
 
     public enum Type {
         LINE
@@ -49,9 +50,10 @@ public class TradeSim.Services.Drawings {
     public Array<TradeSim.Drawings.OperationInfo> operations;
     public Array<TradeSim.Drawings.Indicators.Indicator> indicators;
 
-    public Drawings (TradeSim.Widgets.Canvas _canvas) {
+    public Drawings (TradeSim.Widgets.Canvas _canvas, TradeSim.Widgets.OscilatorCanvas _oscilator_canvas) {
 
         ref_canvas = _canvas;
+        ref_oscilator_canvas = _oscilator_canvas;
 
         lines = new Array<TradeSim.Drawings.Line> ();
         fibonacci = new Array<TradeSim.Drawings.Fibonacci> ();
@@ -89,7 +91,28 @@ public class TradeSim.Services.Drawings {
     public void render_indicators_by_candle (Cairo.Context ctext, int i) {
 
         for (int z = 0 ; z < indicators.length ; z++) {
-            indicators.index (z).render_by_candle (ctext, i);
+
+            var indicator_type = indicators.index (z).properties;
+
+            if (indicator_type.get_int("type") <= TradeSim.Drawings.Indicators.Indicator.Type.BOLLINGER_BANDS){
+                indicators.index (z).render_by_candle (ctext, i);
+            }
+            
+        }
+        
+    }
+
+    public void render_oscilators_by_candle (Cairo.Context ctext, int i) {
+
+        for (int z = 0 ; z < indicators.length ; z++) {
+
+            var indicator_type = indicators.index (z).properties;
+
+            if (indicator_type.get_int("type") > TradeSim.Drawings.Indicators.Indicator.Type.BOLLINGER_BANDS){
+                //indicators.index (z).render_by_candle (ctext, i);
+                indicators.index (z).render (ctext);
+            }
+            
         }
         
     }
@@ -397,9 +420,11 @@ public class TradeSim.Services.Drawings {
             var Propiedades = new TradeSim.Drawings.Indicators.PropertyManager (properties);
 
             if (Propiedades.get_int ("type") == TradeSim.Drawings.Indicators.Indicator.Type.SMA) {
-                new_indicator = new TradeSim.Drawings.Indicators.Sma (ref_canvas, _id, properties);
+                new_indicator = new TradeSim.Drawings.Indicators.Sma (ref_canvas, ref_oscilator_canvas, _id, properties);
             } else if (Propiedades.get_int ("type") == TradeSim.Drawings.Indicators.Indicator.Type.BOLLINGER_BANDS) {
-                new_indicator = new TradeSim.Drawings.Indicators.BollingerBands (ref_canvas, _id, properties);
+                new_indicator = new TradeSim.Drawings.Indicators.BollingerBands (ref_canvas, ref_oscilator_canvas, _id, properties);
+            } else if (Propiedades.get_int ("type") == TradeSim.Drawings.Indicators.Indicator.Type.RSI) {
+                new_indicator = new TradeSim.Drawings.Indicators.Rsi (ref_canvas, ref_oscilator_canvas, _id, properties);
             }
 
             new_indicator.calculate ();

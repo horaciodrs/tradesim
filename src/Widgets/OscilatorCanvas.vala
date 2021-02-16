@@ -100,6 +100,16 @@
 
     }
 
+    public int get_posy_by_p100 (double p100) {
+
+        double p = 100 - p100;
+        int padding = 20;
+        int available_height = _height - padding * 2;
+
+        return (int) (padding + available_height * p / 100.00);
+
+    }
+
     public void draw_bg (Cairo.Context ctext) {
 
         color_palette.canvas_bg.apply_to (ctext);
@@ -109,6 +119,10 @@
 
     }
 
+    /*public void draw_bg (Cairo.Context ctext) {
+
+    }*/
+
     public override bool draw (Cairo.Context ctext) {
 
         _width = get_allocated_width ();
@@ -116,6 +130,13 @@
 
         draw_bg (ctext);
         draw_vertical_scale (ctext);
+
+        var canvas = main_window.main_layout.current_canvas;
+
+        if (canvas != null) {
+            var dm = canvas.draw_manager;
+            dm.render_oscilators_by_candle (ctext, canvas.drawed_candle_position-1);
+        }
 
         return true;
 

@@ -101,9 +101,11 @@ public class TradeSim.Drawings.Indicators.Indicator {
         SMA
         , EMA
         , BOLLINGER_BANDS
+        , RSI
     }
 
     public weak TradeSim.Widgets.Canvas ? ref_canvas;
+    public weak TradeSim.Widgets.OscilatorCanvas ? ref_oscilator_canvas;
 
     public string id;
     public TradeSim.Drawings.Indicators.PropertyManager properties;
@@ -114,9 +116,10 @@ public class TradeSim.Drawings.Indicators.Indicator {
     protected bool visible;
     protected bool enabled;
 
-    public Indicator (TradeSim.Widgets.Canvas _canvas, string _id, Array<TradeSim.Drawings.Indicators.IndicatorProperty> _properties) {
+    public Indicator (TradeSim.Widgets.Canvas _canvas, TradeSim.Widgets.OscilatorCanvas _oscilator_canvas, string _id, Array<TradeSim.Drawings.Indicators.IndicatorProperty> _properties) {
         id = _id;
         ref_canvas = _canvas;
+        ref_oscilator_canvas = _oscilator_canvas;
         properties = new TradeSim.Drawings.Indicators.PropertyManager (_properties);
         color = new TradeSim.Utils.Color.with_alpha (properties.get_int("color_red"), properties.get_int("color_green"), properties.get_int("color_blue"), properties.get_double("color_alpha"));
         thickness = properties.get_int("thickness");

@@ -65,6 +65,10 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
         , TXT_STD_DEVS
     }
 
+    enum WidgetIndicatorRsi {
+        TXT_PERIOD
+    }
+
     public DrawEditDialog (TradeSim.MainWindow ? parent, TradeSim.Widgets.DrawingsPanelItem ? _item_to_update, string _id, int ? _type, int ? _itype) {
 
         string dialog_title = _ ("Edit Object");
@@ -77,6 +81,9 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
                     break;
                 case TradeSim.Drawings.Indicators.Indicator.Type.BOLLINGER_BANDS:
                     dialog_title = _ ("Insert Bollinger Bands");
+                    break;
+                case TradeSim.Drawings.Indicators.Indicator.Type.RSI:
+                    dialog_title = _ ("RSI");
                     break;
                 default:
                     dialog_title = _ ("Edit Object");
@@ -307,6 +314,8 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
             get_sma_fields (grilla, row);
         }else if (itype == TradeSim.Drawings.Indicators.Indicator.Type.BOLLINGER_BANDS) {
             get_bollinger_bands_fields (grilla, row);
+        }else if (itype == TradeSim.Drawings.Indicators.Indicator.Type.RSI) {
+            get_rsi_fields (grilla, row);
         }
 
     }
@@ -375,6 +384,33 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
         
     }
 
+    private void get_rsi_fields (Gtk.Grid grilla, int row) {
+
+        var txt_period = new Gtk.Entry ();
+        var lbl_period = new Gtk.Label (_("Period:"));
+
+        txt_period.set_text ("14");
+
+        var draw_manager = main_window.main_layout.current_canvas.draw_manager;
+
+        if (draw_manager.exists(object_id, wtype) == true){
+
+            var indicator_properties = draw_manager.get_indicator_properties (object_id, wtype);
+
+            txt_period.set_text (indicator_properties.get_int("period").to_string ());
+
+        }
+
+
+        lbl_period.halign = Gtk.Align.END;
+
+        indicator_fields.append_val (txt_period);
+
+        grilla.attach (lbl_period, 0, row);
+        grilla.attach (txt_period, 1, row);
+        
+    }
+
     private string validate_indicators () {
 
         if (wtype == TradeSim.Services.Drawings.Type.INDICATOR){
@@ -399,6 +435,13 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
                     return _ ("Please enter a valid std devs");
                 }
 
+            }else if (itype == TradeSim.Drawings.Indicators.Indicator.Type.RSI){
+
+                var widget_periodo = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorRsi.TXT_PERIOD));
+
+                if (int.parse (widget_periodo.get_text ()) == 0){
+                    return _ ("Please enter a valid period");
+                }
             }
         }
 
@@ -508,6 +551,20 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
                 
                     canvas.draw_manager.draw_indicator (txt_name.get_text (), indicator_prop);
                 
+                }else if (itype == TradeSim.Drawings.Indicators.Indicator.Type.RSI){
+
+                    var widget_periodo = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorRsi.TXT_PERIOD));
+            
+                    Value prop_tipo = Value (typeof (int));
+                    prop_tipo.set_int (TradeSim.Drawings.Indicators.Indicator.Type.RSI);
+                    indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("type", prop_tipo));
+            
+                    Value prop_period = Value (typeof (int));
+                    prop_period.set_int (int.parse (widget_periodo.get_text ()));
+                    indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("period", prop_period));
+            
+                    canvas.draw_manager.draw_indicator (txt_name.get_text (), indicator_prop);
+
                 }
 
                 panel.insert_object (txt_name.get_text (), TradeSim.Services.Drawings.Type.INDICATOR, itype);
@@ -537,6 +594,12 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
 
                         indicator_properties.set_int("period", int.parse (widget_periodo.get_text ()));
                         indicator_properties.set_int("dvs", int.parse (widget_std_devs.get_text ()));
+
+                    }else if (itype == TradeSim.Drawings.Indicators.Indicator.Type.RSI){
+
+                        var widget_periodo = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorRsi.TXT_PERIOD));
+
+                        indicator_properties.set_int("period", int.parse (widget_periodo.get_text ()));
 
                     }
                 
