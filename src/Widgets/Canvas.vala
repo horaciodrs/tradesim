@@ -744,7 +744,6 @@ public class TradeSim.Widgets.Canvas : Gtk.DrawingArea {
         mouse_x = (int) event.x;
         mouse_y = (int) event.y;
 
-
         if (mouse_y > _available_height) {
             show_cross_lines = false;
             show_horizontal_scale_label = false;

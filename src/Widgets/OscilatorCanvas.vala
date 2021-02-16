@@ -27,6 +27,8 @@
 
     public int _width;
     public int _height;
+    public int mouse_x;
+    public int mouse_y;
 
     public int vertical_scale_width;
 
@@ -35,6 +37,10 @@
         main_window = window;
 
         vertical_scale_width = 55;
+
+        add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK | Gdk.EventMask.POINTER_MOTION_MASK | Gdk.EventMask.LEAVE_NOTIFY_MASK);
+
+        motion_notify_event.connect (on_mouse_over);
 
         init ();
 
@@ -49,6 +55,36 @@
         } else {
             color_palette.set_light_mode ();
         }
+
+    }
+
+    public bool on_mouse_over (Gdk.EventMotion event) {
+
+        mouse_x = (int) event.x;
+        mouse_y = (int) event.y;
+
+        get_window ().set_cursor (new Gdk.Cursor.for_display (Gdk.Display.get_default (), Gdk.CursorType.CROSS));
+
+        return true;
+
+    }
+
+    public void draw_cross_lines (Cairo.Context ctext) {
+
+        // horizontal
+        ctext.set_dash ({ 5.0 }, 0);
+        ctext.set_line_width (0.2);
+        color_palette.canvas_cross_line.apply_to (ctext);
+        ctext.move_to (0, mouse_y);
+        ctext.line_to (_width, mouse_y);
+        ctext.stroke ();
+
+        // vertical
+        ctext.set_line_width (0.2);
+        color_palette.canvas_cross_line.apply_to (ctext);
+        ctext.move_to (mouse_x, 0);
+        ctext.line_to (mouse_x, _height);
+        ctext.stroke ();
 
     }
 
@@ -136,7 +172,10 @@
         if (canvas != null) {
             var dm = canvas.draw_manager;
             dm.render_oscilators_by_candle (ctext, canvas.drawed_candle_position-1);
+            canvas.queue_draw ();
         }
+
+        draw_cross_lines (ctext);
 
         return true;
 
