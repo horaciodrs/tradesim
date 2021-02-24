@@ -79,6 +79,8 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
         build_content ();
 
+        check_imported_data_on_start ();
+
         response.connect (on_response);
 
     }
@@ -192,6 +194,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
         });
 
         info_label = new Gtk.Label ("");
+        info_label.set_max_width_chars (50);
 
         info_alert = new Gtk.InfoBar ();
         info_alert.set_message_type (Gtk.MessageType.WARNING);
@@ -227,6 +230,24 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
         add_action_widget (acept_button, Action.OK);
         add_action_widget (cancel_button, Action.CANCEL);
+
+    }
+
+    private void check_imported_data_on_start () {
+
+        string str_validation = data_validation ();
+
+        info_label.set_line_wrap_mode (Pango.WrapMode.WORD);
+        info_label.set_line_wrap (true);
+        info_label.set_lines (2);
+
+
+        if(str_validation.length > 0){
+            info_label.set_text (str_validation);
+            info_alert.set_revealed (true);
+        }else{
+            info_alert.set_revealed (false);
+        }
 
     }
 
@@ -357,7 +378,16 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
 
     }
 
-    private string date_validation(){
+    private string data_validation () {
+
+        if (db.is_database_empty () == true) {
+            return _("There is not imported data. Please go to the Data Source section into the Settings Dialog and proceed to import quotes by any method.");
+        }
+
+        return "";
+    }
+
+    private string date_validation () {
 
         string return_value = "";
         int count = db.get_available_quotes (aux_provider_name, aux_ticker_name, aux_time_frame_name, entry_date.date);
@@ -378,6 +408,12 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
     }
 
     private string validate_data () {
+
+        string test_data = data_validation ();
+
+        if (test_data.length > 0) {
+            return test_data;
+        }
 
         if (txt_name.get_text ().length < 1) {
             return _ ("Please enter the simulation name");
