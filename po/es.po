@@ -198,6 +198,10 @@ msgstr "Importar archivo de base de datos"
 msgid "Interface"
 msgstr "Interfaz"
 
+#: src/Dialogs/SettingsDialog.vala
+msgid "General"
+msgstr "General"
+
 #: src/Dialogs/SettingsDialog.vala:104
 #: src/Dialogs/SettingsDialog.vala:669
 msgid "Data Source"

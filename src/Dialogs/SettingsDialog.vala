@@ -102,7 +102,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         stack.margin = 6;
         stack.margin_bottom = 15;
         stack.margin_top = 15;
-        stack.add_titled (grid_aparence, "interface", _ ("Interface"));
+        stack.add_titled (grid_aparence, "interface", _ ("General"));
         stack.add_titled (grid_data_source, "datasource", _ ("Data Source"));
         stack.add_titled (grid_about_us, "about", _ ("About"));
         stack.set_hexpand (true);
