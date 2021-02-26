@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-<img src="/data/icons/128/com.github.horaciodrs.tradesim.svg" />
+<img src="/data/icons/128/com.github.horaciodrs.tradesim.svg" style="width: 512px;" />
 </p>
 
 TradeSim is a Trading Simulator application write in Vala for Elementary OS.
