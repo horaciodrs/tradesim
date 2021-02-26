@@ -5,7 +5,9 @@
             src="https://img.shields.io/badge/patreon-donate-orange.svg?logo=patreon" alt="TradeSim on Patreon"></a>
 </p>
 
+<p align="center">
 ![TradeSim Icon](/data/icons/128/com.github.horaciodrs.tradesim.svg)
+</p>
 
 TradeSim is a Trading Simulator application write in Vala for Elementary OS.
 
