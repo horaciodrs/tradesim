@@ -1,5 +1,10 @@
 # TradeSim
 
+<p align="center">
+    <a href="https://www.patreon.com/horaciodrs"><img
+            src="https://img.shields.io/badge/patreon-donate-orange.svg?logo=patreon" alt="TradeSim on Patreon"></a>
+</p>
+
 ![TradeSim Icon](/data/icons/128/com.github.horaciodrs.tradesim.svg)
 
 TradeSim is a Trading Simulator application write in Vala for Elementary OS.
