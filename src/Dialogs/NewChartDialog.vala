@@ -381,7 +381,7 @@ public class TradeSim.Dialogs.NewChartDialog : Gtk.Dialog {
     private string data_validation () {
 
         if (db.is_database_empty () == true) {
-            return _("There is not imported data. Please go to the Data Source section into the Settings Dialog and proceed to import quotes by any method.");
+            return _("There is not imported data. Please go to the Data Source section into the Settings Dialog\n and proceed to import quotes by any method.");
         }
 
         return "";
