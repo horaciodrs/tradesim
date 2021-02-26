@@ -366,8 +366,8 @@ msgid "New Simulation"
 msgstr "Nueva Simulación"
 
 #: src/Dialogs/NewChartDialog.vala
-msgid "There is not imported data. Please go to the Data Source section into the Settings Dialog\n and proceed to import quotes by any method."
-msgstr "No hay datos importados. Vaya a la sección Fuente de datos en el cuadro de diálogo Configuración\n y proceda a importar cotizaciones por cualquier método."
+msgid "There is not imported data. Please go to the Data Source section into the Settings Dialog and proceed to import quotes by any method."
+msgstr "No hay datos importados. Vaya a la sección Fuente de datos en el cuadro de diálogo Configuración y proceda a importar cotizaciones por cualquier método."
 
 #: src/Dialogs/NewChartDialog.vala:159
 msgid "Simulation Name:"
