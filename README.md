@@ -1,9 +1,9 @@
-# TradeSim
-
 <p align="center">
     <a href="https://www.patreon.com/horaciodrs"><img
             src="https://img.shields.io/badge/patreon-donate-orange.svg?logo=patreon" alt="TradeSim on Patreon"></a>
 </p>
+
+# TradeSim
 
 <p align="center">
 <img src="/data/icons/128/com.github.horaciodrs.tradesim.svg" width="256" />
