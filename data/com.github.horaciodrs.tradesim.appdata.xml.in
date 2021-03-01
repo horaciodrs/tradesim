@@ -18,6 +18,15 @@
         </ul>
     </description>
     <releases>
+        <release version="2021.3.1" date="2021-3-1">
+            <description>
+                <p>General code improvements</p>
+                <p>Simple Moving Average Indicator added</p>
+                <p>Bollinger Bands Indicator added</p>
+                <p>Relative Strength Index Indicator added</p>
+                <p>New Simulation dialog improvements</p>
+            </description>
+        </release>
         <release version="2021.2.9" date="2021-2-9">
             <description>
                 <p>General code improvements</p>

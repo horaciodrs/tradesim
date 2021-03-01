@@ -1,3 +1,13 @@
+com.github.horaciodrs.tradesim (2021.3.1) bionic; urgency=medium
+
+  * General code improvements
+  * Simple Moving Average Indicator added.
+  * Bollinger Bands Indicator added.
+  * Relative Strength Index Indicator added.
+  * New Simulation dialog improvements.
+
+ -- Horacio Daniel Ros <horaciodrs@gmail.com>  Wed, 3 Mar 2021 12:45:52 -0500
+
 com.github.horaciodrs.tradesim (2021.2.7) bionic; urgency=medium
 
   * General code improvements
