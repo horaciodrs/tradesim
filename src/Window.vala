@@ -93,8 +93,8 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
 
         show_all ();
 
-        open_dialog_licence ();
         check_version ();
+        open_dialog_licence ();
 
     }
 
