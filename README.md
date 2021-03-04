@@ -9,7 +9,7 @@
 <img src="/data/icons/128/com.github.horaciodrs.tradesim.svg" width="256" />
 </p>
 
-TradeSim is a Trading Simulator application write in Vala for Elementary OS.
+TradeSim is a Trading Simulator application writen in Vala for Elementary OS.
 
 Test your strategies on the Linux Trading Simulator, Create reports, learn, try or develop new strategies for your trading.
 
