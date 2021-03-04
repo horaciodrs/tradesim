@@ -46,5 +46,10 @@
             <summary>Data source URL</summary>
             <description>Data source URL.</description>
         </key>
+        <key name="app-version" type="s">
+            <default>"2011.2.21"</default>
+            <summary>Installed Version</summary>
+            <description>Installed Version of TradeSim.</description>
+        </key>
     </schema>
 </schemalist>

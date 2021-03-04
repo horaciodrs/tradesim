@@ -94,6 +94,23 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
         show_all ();
 
         open_dialog_licence ();
+        check_version ();
+
+    }
+
+    private void check_version () {
+
+        string target_key = "app-version";
+        string installed_version = settings.get_string (target_key);
+
+        if (installed_version != TradeSim.Data.APP_VERSION) {
+            //Actualizar Version instalada.
+            settings.set_string (target_key, TradeSim.Data.APP_VERSION);
+            //Mostrar dialogo con la nueva version.
+            var settings_dialog = new TradeSim.Dialogs.SettingsDialog (this, SettingsActions.ABOUT_US, true);
+            settings_dialog.show_all ();
+            settings_dialog.present ();
+        }
 
     }
 

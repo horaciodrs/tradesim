@@ -61,11 +61,12 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
     public Gtk.Label label_waiting;
     public int data_files_found;
     public bool working;
+    public bool is_new_version;
 
 
     int item_focus;
 
-    public SettingsDialog (TradeSim.MainWindow window, int _item_focus) {
+    public SettingsDialog (TradeSim.MainWindow window, int _item_focus, bool _is_new_version = false) {
 
         Object (
             main_window: window,
@@ -75,6 +76,8 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
             modal: true,
             title: _ ("Preferences")
             );
+
+        is_new_version = _is_new_version;
 
         set_default_size (300, 500);
 
@@ -851,7 +854,13 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
         app_version.get_style_context ().add_class ("dim-label");
         app_version.selectable = true;
 
-        var disclaimer = new Gtk.Label (_ ("Remember!\n TradeSim it's under development and it's on beta state. Only install for testing."));
+        string disclaimer_text = _ ("Remember!\n TradeSim it's under development and it's on beta state. Only install for testing.");
+
+        if (is_new_version) {
+            disclaimer_text = _ ("TradeSim has been updated to the last version on this PC. If you like TradeSim and you want to support this development, please consider donating via our patreon account. From this way you can help me to develop and maintain this project periodically.");
+        }
+
+        var disclaimer = new Gtk.Label (disclaimer_text);
 
         disclaimer.justify = Gtk.Justification.CENTER;
         disclaimer.get_style_context ().add_class ("warning-message");

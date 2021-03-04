@@ -292,7 +292,11 @@ msgstr "Gracias a quienes nos apoyan con sus donaciones!"
 
 #: src/Dialogs/SettingsDialog.vala:715
 msgid "View the list of supporters"
-msgstr "Ver el listado de personas que apoyan este protecto"
+msgstr "Ver el listado de personas que apoyan este proyecto"
+
+#: src/Dialogs/SettingsDialog.vala
+msgid "TradeSim has been updated to the last version on this PC. If you like TradeSim and you want to support this development, please consider donating via our patreon account. From this way you can help me to develop and maintain this project periodically."
+msgstr "TradeSim se ha actualizado a la última versión en esta PC. Si le gusta TradeSim y desea apoyar este desarrollo, considere donar a través de nuestra cuenta de Patreon. De esta manera, puede ayudarme a desarrollar y mantener este proyecto periódicamente."
 
 #: src/Dialogs/SettingsDialog.vala:733
 msgid "Make a Donation"
