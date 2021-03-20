@@ -59,7 +59,7 @@ Data source window...
 Insert Objects Menu...
 ![TradeSim Screenshot4](/data/screenshots/tsim_screenshot_insert_mnu.png)
 
-## Installation:
+## Manual Installation:
 Remember **TradeSim it's under development and it's on beta state**. Please test and give your feedback.
 
 Run the following commands into the terminal:
@@ -68,5 +68,3 @@ Run the following commands into the terminal:
 - **cd build**
 - **meson build --prefix=/usr**
 - **sudo ninja install**
-
-In the future you can install from **Elementary Os App Center.**
