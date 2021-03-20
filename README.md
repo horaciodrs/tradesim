@@ -14,6 +14,9 @@ TradeSim is a Trading Simulator application writen in Vala for Elementary OS.
 Test your strategies on the Linux Trading Simulator, Create reports, learn, try or develop new strategies for your trading.
 
 <p align="center">
+    <a href="https://appcenter.elementary.io/com.github.horaciodrs.tradesim/">
+        <img height="50" alt="Get it on AppCenter" src="https://appcenter.elementary.io/badge.svg"/>
+    </a>
     <a href="https://flathub.org/apps/details/com.github.horaciodrs.tradesim">
         <img height="50" alt="Download on Flathub" src="https://flathub.org/assets/badges/flathub-badge-en.png"/>
     </a>
