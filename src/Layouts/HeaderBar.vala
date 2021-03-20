@@ -36,6 +36,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
     public TradeSim.Widgets.HeaderBarButton buy;
     public TradeSim.Widgets.HeaderBarButton sell;
     public TradeSim.Widgets.MenuButton insert;
+    public TradeSim.Widgets.HeaderBarButton oscilator;
     public TradeSim.Widgets.HeaderBarButton reporte;
     public TradeSim.Widgets.HeaderBarButton preferencias;
 
@@ -63,8 +64,11 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         buy = new TradeSim.Widgets.HeaderBarButton (main_window, "go-up", _ ("Buy"), { "<Ctrl>p" });
         sell = new TradeSim.Widgets.HeaderBarButton (main_window, "go-down", _ ("Sell"), { "<Ctrl>p" });
         insert = new TradeSim.Widgets.MenuButton ("insert-object", _ ("Insert"), { "<Ctrl>p" });
+        oscilator = new TradeSim.Widgets.HeaderBarButton (main_window, "oscilator-show-symbolic", _ ("Oscilator"), { "<Ctrl>p" });
         reporte = new TradeSim.Widgets.HeaderBarButton (main_window, "x-office-presentation", _ ("Report"), { "<Ctrl>p" });
         preferencias = new TradeSim.Widgets.HeaderBarButton (main_window, "open-menu", _ ("Settings"), { "<Ctrl>p" });
+
+        oscilator.set_alternative_icon_name ("oscilator-hidden-symbolic");
 
         var insert_popover = get_insert_menu ();
         insert.button.popover = insert_popover;
@@ -159,6 +163,10 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
         });
 
+        oscilator.button.clicked.connect (() => {
+            oscilator.change_alternative_icon ();
+        });
+
         reporte.button.clicked.connect (() => {
             alert (_ ("Please support this project to help me to implement this feature. Visit http://www.github.com/horaciodrs/TradeSim"), (Gtk.Window)main_window);
         });
@@ -227,6 +235,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
         pack_end (preferencias);
         pack_end (reporte);
+        pack_end (oscilator);
         pack_end (new Gtk.Separator (Gtk.Orientation.VERTICAL));
         pack_end (insert);
         pack_end (new Gtk.Separator (Gtk.Orientation.VERTICAL));

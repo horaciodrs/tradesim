@@ -18,6 +18,8 @@
     <file alias="shape-thickness3-symbolic.svg">icons/symbolic/shape-thickness3-symbolic.svg</file>
     <file alias="shape-thickness4-symbolic.svg">icons/symbolic/shape-thickness4-symbolic.svg</file>
     <file alias="draw-item-trash-symbolic.svg">icons/symbolic/draw-item-trash-symbolic.svg</file>
+    <file alias="oscilator-show-symbolic.png">icons/symbolic/oscilator-show-symbolic.png</file>
+    <file alias="oscilator-hidden-symbolic.png">icons/symbolic/oscilator-hidden-symbolic.png</file>
     
   </gresource>
 </gresources>

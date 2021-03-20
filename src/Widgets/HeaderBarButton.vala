@@ -26,9 +26,16 @@ public class TradeSim.Widgets.HeaderBarButton : Gtk.Grid {
     public Gtk.Label label_btn;
     public TradeSim.Widgets.ButtonImage image;
 
-    public HeaderBarButton (TradeSim.MainWindow window, string icon_name, string name, string[] ? accels = null) {
+    private string setted_icon_name;
+    public string icon_name;
+    public string alternative_icon_name;
+
+    public HeaderBarButton (TradeSim.MainWindow window, string _icon_name, string name, string[] ? accels = null) {
 
         mainWindow = window;
+
+        icon_name = _icon_name;
+        setted_icon_name = icon_name;
 
         label_btn = new Gtk.Label (name);
         label_btn.get_style_context ().add_class ("headerbar-label");
@@ -47,6 +54,10 @@ public class TradeSim.Widgets.HeaderBarButton : Gtk.Grid {
 
     }
 
+    public void set_alternative_icon_name (string _name) {
+        alternative_icon_name = _name;
+    }
+
     public void change_icon (string icon_name) {
 
         foreach (var item in button.get_children ()) {
@@ -54,6 +65,30 @@ public class TradeSim.Widgets.HeaderBarButton : Gtk.Grid {
             if (item.get_type () == typeof (ButtonImage)) {
 
                 ((ButtonImage) item).change_icon (icon_name);
+
+                return;
+            }
+        }
+
+    }
+
+    public void change_alternative_icon () {
+
+        foreach (var item in button.get_children ()) {
+
+            if (item.get_type () == typeof (ButtonImage)) {
+
+                string new_icon_name = "";
+
+                if (setted_icon_name == icon_name){
+                    new_icon_name = alternative_icon_name;
+                }else {
+                    new_icon_name = icon_name;
+                }
+
+                ((ButtonImage) item).change_icon (new_icon_name);
+                
+                setted_icon_name = new_icon_name;
 
                 return;
             }
