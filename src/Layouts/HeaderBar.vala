@@ -64,11 +64,11 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         buy = new TradeSim.Widgets.HeaderBarButton (main_window, "go-up", _ ("Buy"), { "<Ctrl>p" });
         sell = new TradeSim.Widgets.HeaderBarButton (main_window, "go-down", _ ("Sell"), { "<Ctrl>p" });
         insert = new TradeSim.Widgets.MenuButton ("insert-object", _ ("Insert"), { "<Ctrl>p" });
-        oscilator = new TradeSim.Widgets.HeaderBarButton (main_window, "oscilator-show-symbolic", _ ("Oscilator"), { "<Ctrl>p" });
+        oscilator = new TradeSim.Widgets.HeaderBarButton (main_window, "oscilator-hidden-symbolic", _ ("Oscilator"), { "<Ctrl>p" });
         reporte = new TradeSim.Widgets.HeaderBarButton (main_window, "x-office-presentation", _ ("Report"), { "<Ctrl>p" });
         preferencias = new TradeSim.Widgets.HeaderBarButton (main_window, "open-menu", _ ("Settings"), { "<Ctrl>p" });
 
-        oscilator.set_alternative_icon_name ("oscilator-hidden-symbolic");
+        oscilator.set_alternative_icon_name ("oscilator-show-symbolic");
 
         var insert_popover = get_insert_menu ();
         insert.button.popover = insert_popover;
@@ -164,7 +164,17 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
         });
 
         oscilator.button.clicked.connect (() => {
-            oscilator.change_alternative_icon ();
+
+            var canvas_container = main_window.main_layout.current_canvas_container;
+
+            if (canvas_container != null) {
+
+                oscilator.change_alternative_icon ();
+        
+                canvas_container.oscilator_visible_change ();
+
+            }
+
         });
 
         reporte.button.clicked.connect (() => {

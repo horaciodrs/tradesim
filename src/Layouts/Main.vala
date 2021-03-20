@@ -38,6 +38,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
     public TradeSim.Widgets.OperationsPanel operations_panel;
     public TradeSim.Widgets.DrawingsPanel drawings_panel;
 
+    public TradeSim.Widgets.CanvasContainer current_canvas_container;
     public TradeSim.Widgets.Canvas current_canvas;
     public TradeSim.Widgets.OscilatorCanvas current_oscilator_canvas;
 
@@ -122,6 +123,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
             drawings_panel.delete_all ();
 
+            current_canvas_container = container;
             current_canvas = container.chart_canvas;
             current_oscilator_canvas = container.oscilator_canvas;
 
@@ -132,6 +134,15 @@ public class TradeSim.Layouts.Main : Gtk.Box {
             operations_panel.update_bottom_info ();
 
             main_window.headerbar.zoom.zoom_set (current_canvas.get_zoom_factor ());
+
+            //Ponemos el icono del oscilador correspondiente. Dependiendo de si
+            //se esta mostrando o no el oscilador.
+
+            if (container.get_oscilator_visible () == true){
+                main_window.headerbar.oscilator.set_alternative_icon ();
+            }else {
+                main_window.headerbar.oscilator.set_primary_icon ();
+            }
 
         } else if (tab.get_type () == typeof (TradeSim.Layouts.Welcome)) {
             main_window.headerbar.set_subtitle (_ ("The Linux Trading Simulator"));
@@ -240,6 +251,7 @@ public class TradeSim.Layouts.Main : Gtk.Box {
 
         nb_chart_container.set_current_page (position);
 
+        current_canvas_container = canvas_container;
         current_canvas = canvas_container.chart_canvas;
         current_oscilator_canvas = canvas_container.oscilator_canvas;
 

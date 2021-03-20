@@ -96,4 +96,36 @@ public class TradeSim.Widgets.HeaderBarButton : Gtk.Grid {
 
     }
 
+    public void set_primary_icon () {
+
+        foreach (var item in button.get_children ()) {
+
+            if (item.get_type () == typeof (ButtonImage)) {
+
+                ((ButtonImage) item).change_icon (icon_name);
+                
+                setted_icon_name = icon_name;
+
+                return;
+            }
+        }
+
+    }
+
+    public void set_alternative_icon () {
+
+        foreach (var item in button.get_children ()) {
+
+            if (item.get_type () == typeof (ButtonImage)) {
+
+                ((ButtonImage) item).change_icon (alternative_icon_name);
+                
+                setted_icon_name = alternative_icon_name;
+
+                return;
+            }
+        }
+
+    }
+
 }

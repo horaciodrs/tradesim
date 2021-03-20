@@ -15,6 +15,8 @@ public class TradeSim.Widgets.CanvasContainer : Gtk.Box {
     public TradeSim.Widgets.Canvas chart_canvas;
     public TradeSim.Widgets.OscilatorCanvas oscilator_canvas;
 
+    private bool oscilator_visible;
+
     private Gtk.Paned pane_container;
 
     public CanvasContainer (TradeSim.MainWindow window, string _provider_name, string _ticker_name, string _time_frame, string _simulation_name, double _simulation_initial_balance, DateTime _initial_date, string ? from_file = null) {
@@ -52,10 +54,37 @@ public class TradeSim.Widgets.CanvasContainer : Gtk.Box {
             oc.set_size_request(100, -1);
         */
 
-        oscilator_canvas.set_size_request(100, 100);
+        oscilator_hide ();
 
         pack_start (pane_container, true, true, 0);
 
+    }
+
+    public void oscilator_visible_change ()  {
+
+        if (oscilator_visible == true) {
+            oscilator_hide ();
+        }else {
+            oscilator_show ();
+        }
+    }
+
+    private void oscilator_hide () {
+
+        oscilator_canvas.set_size_request(100, -1);
+        oscilator_visible = false;
+
+    }
+
+    private void oscilator_show () {
+
+        oscilator_canvas.set_size_request(100, 100);
+        oscilator_visible = true;
+        
+    }
+
+    public bool get_oscilator_visible () {
+        return oscilator_visible;
     }
 
     public void set_page (int p) {
