@@ -425,6 +425,8 @@ public class TradeSim.Services.Drawings {
                 new_indicator = new TradeSim.Drawings.Indicators.BollingerBands (ref_canvas, ref_oscilator_canvas, _id, properties);
             } else if (Propiedades.get_int ("type") == TradeSim.Drawings.Indicators.Indicator.Type.RSI) {
                 new_indicator = new TradeSim.Drawings.Indicators.Rsi (ref_canvas, ref_oscilator_canvas, _id, properties);
+            } else if (Propiedades.get_int ("type") == TradeSim.Drawings.Indicators.Indicator.Type.MACD) {
+                new_indicator = new TradeSim.Drawings.Indicators.MacD (ref_canvas, ref_oscilator_canvas, _id, properties);
             }
 
             new_indicator.calculate ();

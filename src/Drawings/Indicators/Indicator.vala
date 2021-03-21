@@ -102,6 +102,7 @@ public class TradeSim.Drawings.Indicators.Indicator {
         , EMA
         , BOLLINGER_BANDS
         , RSI
+        , MACD
     }
 
     public weak TradeSim.Widgets.Canvas ? ref_canvas;

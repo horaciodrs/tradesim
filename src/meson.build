@@ -20,6 +20,7 @@ sources = files(
     'Drawings/Indicators/Sma.vala',
     'Drawings/Indicators/BollingerBands.vala',
     'Drawings/Indicators/Rsi.vala',
+    'Drawings/Indicators/MacD.vala',
 
     'Services/Drawings.vala',
     'Services/Database.vala',

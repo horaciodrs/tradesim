@@ -146,6 +146,36 @@
 
     }
 
+    public int get_posy_by_range (double value, double min, double max) {
+
+        //Pensado para el macd donde el centro del espacio vertical representa el cero.
+
+        int padding = 20;
+        int available_height = _height - padding * 2;
+        int center = (int)(available_height / 2); //Tambien representa el recorrido positivo y negativo.
+
+        int center_dy = 0;
+
+        if (value >= 0) {
+            center_dy = (int) (value * center / max);
+            return padding + center - center_dy;
+        }else{
+            center_dy = (int) (value * center / min);
+            return padding + center + center_dy;
+        }
+
+    }
+
+    public int get_range_center (){
+
+        int padding = 20;
+        int available_height = _height - padding * 2;
+        int center = (int)(available_height / 2);
+
+        return center + padding;
+
+    }
+
     public void draw_bg (Cairo.Context ctext) {
 
         color_palette.canvas_bg.apply_to (ctext);

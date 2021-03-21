@@ -69,6 +69,11 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
         TXT_PERIOD
     }
 
+    enum WidgetIndicatorMacD {
+        TXT_SLOW_PERIODS
+        , TXT_FAST_PERIODS
+    }
+
     public DrawEditDialog (TradeSim.MainWindow ? parent, TradeSim.Widgets.DrawingsPanelItem ? _item_to_update, string _id, int ? _type, int ? _itype) {
 
         string dialog_title = _ ("Edit Object");
@@ -84,6 +89,9 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
                     break;
                 case TradeSim.Drawings.Indicators.Indicator.Type.RSI:
                     dialog_title = _ ("RSI");
+                    break;
+                case TradeSim.Drawings.Indicators.Indicator.Type.MACD:
+                    dialog_title = _ ("MACD");
                     break;
                 default:
                     dialog_title = _ ("Edit Object");
@@ -316,6 +324,8 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
             get_bollinger_bands_fields (grilla, row);
         }else if (itype == TradeSim.Drawings.Indicators.Indicator.Type.RSI) {
             get_rsi_fields (grilla, row);
+        }else if (itype == TradeSim.Drawings.Indicators.Indicator.Type.MACD) {
+            get_macd_fields (grilla, row);
         }
 
     }
@@ -411,6 +421,42 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
         
     }
 
+    private void get_macd_fields (Gtk.Grid grilla, int row) {
+
+        var txt_slow_periods = new Gtk.Entry ();
+        var txt_fast_periods = new Gtk.Entry ();
+        var lbl_slow_periods = new Gtk.Label (_("Slow Length:"));
+        var lbl_fast_periods = new Gtk.Label (_("Fast Length:"));
+
+        txt_slow_periods.set_text ("12");
+        txt_fast_periods.set_text ("26");
+
+        var draw_manager = main_window.main_layout.current_canvas.draw_manager;
+
+        if (draw_manager.exists(object_id, wtype) == true){
+
+            var indicator_properties = draw_manager.get_indicator_properties (object_id, wtype);
+
+            txt_slow_periods.set_text (indicator_properties.get_int("slow_periods").to_string ());
+            txt_fast_periods.set_text (indicator_properties.get_int("fast_periods").to_string ());
+
+        }
+
+
+        lbl_slow_periods.halign = Gtk.Align.END;
+        lbl_fast_periods.halign = Gtk.Align.END;
+
+        indicator_fields.append_val (txt_slow_periods);
+        indicator_fields.append_val (txt_fast_periods);
+
+        grilla.attach (lbl_slow_periods, 0, row);
+        grilla.attach (txt_slow_periods, 1, row);
+
+        grilla.attach (lbl_fast_periods, 0, row + 1);
+        grilla.attach (txt_fast_periods, 1, row + 1);
+        
+    }
+
     private string validate_indicators () {
 
         if (wtype == TradeSim.Services.Drawings.Type.INDICATOR){
@@ -442,6 +488,19 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
                 if (int.parse (widget_periodo.get_text ()) == 0){
                     return _ ("Please enter a valid period");
                 }
+            }else if (itype == TradeSim.Drawings.Indicators.Indicator.Type.MACD){
+
+                var widget_slow_periodo = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorMacD.TXT_SLOW_PERIODS));
+                var widget_fast_periodo = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorMacD.TXT_FAST_PERIODS));
+
+                if (int.parse (widget_slow_periodo.get_text ()) == 0){
+                    return _ ("Please enter a valid slow length");
+                }
+
+                if (int.parse (widget_fast_periodo.get_text ()) == 0){
+                    return _ ("Please enter a valid fast length");
+                }
+
             }
         }
 
@@ -565,6 +624,25 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
             
                     canvas.draw_manager.draw_indicator (txt_name.get_text (), indicator_prop);
 
+                }else if (itype == TradeSim.Drawings.Indicators.Indicator.Type.MACD){
+
+                    var widget_slow_periodo = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorMacD.TXT_SLOW_PERIODS));
+                    var widget_fast_periodo = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorMacD.TXT_FAST_PERIODS));
+            
+                    Value prop_tipo = Value (typeof (int));
+                    prop_tipo.set_int (TradeSim.Drawings.Indicators.Indicator.Type.MACD);
+                    indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("type", prop_tipo));
+            
+                    Value prop_slow_period = Value (typeof (int));
+                    prop_slow_period.set_int (int.parse (widget_slow_periodo.get_text ()));
+                    indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("slow_periods", prop_slow_period));
+
+                    Value prop_fast_period = Value (typeof (int));
+                    prop_fast_period.set_int (int.parse (widget_fast_periodo.get_text ()));
+                    indicator_prop.append_val (new TradeSim.Drawings.Indicators.IndicatorProperty("fast_periods", prop_fast_period));
+            
+                    canvas.draw_manager.draw_indicator (txt_name.get_text (), indicator_prop);
+
                 }
 
                 panel.insert_object (txt_name.get_text (), TradeSim.Services.Drawings.Type.INDICATOR, itype);
@@ -600,6 +678,14 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
                         var widget_periodo = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorRsi.TXT_PERIOD));
 
                         indicator_properties.set_int("period", int.parse (widget_periodo.get_text ()));
+
+                    }else if (itype == TradeSim.Drawings.Indicators.Indicator.Type.MACD){
+
+                        var widget_slow_periodo = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorMacD.TXT_SLOW_PERIODS));
+                        var widget_fast_periodo = (Gtk.Entry) (indicator_fields.index (WidgetIndicatorMacD.TXT_FAST_PERIODS));
+
+                        indicator_properties.set_int("slow_periods", int.parse (widget_slow_periodo.get_text ()));
+                        indicator_properties.set_int("fast_periods", int.parse (widget_fast_periodo.get_text ()));
 
                     }
                 
