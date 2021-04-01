@@ -67,19 +67,21 @@ public class TradeSim.Widgets.CanvasContainer : Gtk.Box {
         }else {
             oscilator_show ();
         }
+               
     }
-
-    private void oscilator_hide () {
+    public void oscilator_hide () {
 
         oscilator_canvas.set_size_request(100, -1);
         oscilator_visible = false;
+        main_window.headerbar.oscilator.change_alternative_icon ();
 
     }
 
-    private void oscilator_show () {
+    public void oscilator_show () {
 
         oscilator_canvas.set_size_request(100, 100);
         oscilator_visible = true;
+        main_window.headerbar.oscilator.change_alternative_icon ();
         
     }
 

@@ -169,7 +169,7 @@ public class TradeSim.Layouts.HeaderBar : Gtk.HeaderBar {
 
             if (canvas_container != null) {
 
-                oscilator.change_alternative_icon ();
+                //oscilator.change_alternative_icon ();
         
                 canvas_container.oscilator_visible_change ();
 

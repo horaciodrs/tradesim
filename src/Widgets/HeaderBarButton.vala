@@ -79,7 +79,7 @@ public class TradeSim.Widgets.HeaderBarButton : Gtk.Grid {
             if (item.get_type () == typeof (ButtonImage)) {
 
                 string new_icon_name = "";
-
+                               
                 if (setted_icon_name == icon_name){
                     new_icon_name = alternative_icon_name;
                 }else {

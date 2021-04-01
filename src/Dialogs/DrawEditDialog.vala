@@ -648,6 +648,9 @@ public class TradeSim.Dialogs.DrawEditDialog : Gtk.Dialog {
                 panel.insert_object (txt_name.get_text (), TradeSim.Services.Drawings.Type.INDICATOR, itype);
 
                 canvas.need_save = true;
+
+                //Tengo que mostrar el oscilator_canvas...
+                objetivo.current_canvas_container.oscilator_show ();
                     
             }else{
             
