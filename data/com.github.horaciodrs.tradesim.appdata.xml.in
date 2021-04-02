@@ -18,6 +18,13 @@
         </ul>
     </description>
     <releases>
+        <release version="2021.4.1" date="2021-4-1">
+            <description>
+                <p>General code improvements</p>
+                <p>GBPUSD quotes added</p>
+                <p>MACD Indicator added</p>
+            </description>
+        </release>
         <release version="2021.3.1" date="2021-3-1">
             <description>
                 <p>General code improvements</p>
@@ -122,7 +129,7 @@
         </screenshot>
     </screenshots>
     <custom>
-        <value key="x-appcenter-color-primary">#d48e15</value>
+        <value key="x-appcenter-color-primary">#fff394</value>
         <value key="x-appcenter-color-primary-text">#ad5f00</value>
         <value key="x-appcenter-suggested-price">0</value>
     </custom>
