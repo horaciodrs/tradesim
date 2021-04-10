@@ -19,7 +19,7 @@
 .banner {
     background-color: @bg_color;
     background-image:
-        url("/com/github/akiraux/akira/akira-banner.jpg"),
+        url("/com/github/TradeSimux/TradeSim/TradeSim-banner.jpg"),
         linear-gradient(
             to bottom,
             shade(@bg_color, 1.02),
