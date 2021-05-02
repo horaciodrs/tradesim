@@ -298,4 +298,10 @@ public class TradeSim.Services.QuotesManager {
 
     }
 
+    public void generate_synthetic_quotes (string provider, string market, string ticker, string time_frame, int year, int month) {
+
+        //TradeSim.Services.QuoteItem last_quote =
+
+    }
+
 }

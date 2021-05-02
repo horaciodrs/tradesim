@@ -57,7 +57,7 @@ public class TradeSim.Services.Database : GLib.Object {
     public void export (string to_path) {
 
         try{
-            
+
             GLib.File source_file = GLib.File.new_for_path (db_path);
             GLib.File dest_file = GLib.File.new_for_path (to_path);
 
@@ -74,7 +74,7 @@ public class TradeSim.Services.Database : GLib.Object {
     public void import (string from_path) {
 
         try{
-            
+
             GLib.File source_file = GLib.File.new_for_path (from_path);
             GLib.File dest_file = GLib.File.new_for_path (db_path_folder + "/database.db");
 
@@ -89,7 +89,7 @@ public class TradeSim.Services.Database : GLib.Object {
     }
 
     private void init (bool skip_tables = false) {
-        
+
         int rc = 0;
         db_path_folder = Environment.get_home_dir () + "/.local/share/com.github.horaciodrs.tradesim";
         db_path = db_path_folder + "/database.db";
@@ -202,10 +202,8 @@ public class TradeSim.Services.Database : GLib.Object {
         int id_forex = insert_market ("Forex", "");
 
         insert_ticker ("EURUSD", id_forex);
-        // insert_ticker ("USDJPY", id_forex);
         insert_ticker ("GBPUSD", id_forex);
-        // insert_ticker ("USDCHF", id_forex);
-        // insert_ticker ("USDCAD", id_forex);
+        insert_ticker ("SYNIDX", id_forex);
 
         insert_time_frames ("D1");
         insert_time_frames ("H4");

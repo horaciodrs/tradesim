@@ -519,6 +519,16 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             }
 
+            //TODO:Si se trata de un indice genero las cotizacones. Si no lo importo desde internet.
+
+            if (ds_selected_ticker == "SYNIDX") {
+
+                //qm.generate_synthetic_quotes ();
+
+                return;
+
+            }
+
             spiner_data_source.set_visible (true);
             spiner_data_source.start ();
             label_waiting.set_text (_ ("Importing data..."));
