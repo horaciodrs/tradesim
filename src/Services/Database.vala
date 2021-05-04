@@ -1212,4 +1212,98 @@ public class TradeSim.Services.Database : GLib.Object {
         return null;
     }
 
+    public TradeSim.Services.QuoteItem ? get_last_quote_by_date (string _provider_name, string _ticker_name, string _time_frame, int year, int month) {
+
+        int provider_id = get_db_id_by_table_and_field ("providers", "name", _provider_name);
+        int market_id = get_db_id_by_name ("markets", "Forex");
+        int ticker_id = get_db_id_by_name ("tickers", _ticker_name);
+        int time_frame_id = get_db_id_by_name ("time_frames", _time_frame);
+
+        Sqlite.Statement stmt;
+        string sql;
+        int res;
+
+        sql = """ SELECT DATE(quotes.date_str)
+                         provider_id
+                        ,market_id
+                        ,ticker_id
+                        ,time_frame_id
+                        ,date_year
+                        ,date_month
+                        ,date_day
+                        ,date_hour
+                        ,date_minute
+                        ,date_str
+                        ,price_open
+                        ,price_close
+                        ,price_max
+                        ,price_min
+                        ,providers.folder_name
+                    FROM quotes
+                   INNER JOIN providers ON quotes.provider_id = providers.id
+                   WHERE quotes.date_year <= ?
+                     AND quotes.date_month < ?
+                     AND provider_id = ?
+                     AND market_id = ?
+                     AND ticker_id = ?
+                     AND time_frame_id = ?
+                    ORDER BY DATETIME(date_str) DESC
+                    LIMIT 1;
+        """;
+
+        res = db.prepare_v2 (sql, -1, out stmt);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (1, year);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (2, month);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (3, provider_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (4, market_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (5, ticker_id);
+        assert (res == Sqlite.OK);
+
+        res = stmt.bind_int (6, time_frame_id);
+        assert (res == Sqlite.OK);
+
+        if ((res = stmt.step ()) == Sqlite.ROW) {
+
+            var quote_item = new TradeSim.Services.QuoteItem (_ticker_name);
+
+            var date_year = stmt.column_int (4);
+            var date_month = stmt.column_int (5);
+            var date_day = stmt.column_int (6);
+            var date_hour = stmt.column_int (7);
+            var date_minute = stmt.column_int (8);
+            var item_open = stmt.column_double (10);
+            var item_close = stmt.column_double (11);
+            var item_min = stmt.column_double (13);
+            var item_max = stmt.column_double (12);
+            var item_folder_name = stmt.column_text (14);
+
+            DateTime item_date = new DateTime.local (date_year, date_month, date_day, date_hour, date_minute, 0);
+
+            quote_item.set_provider_name (_provider_name);
+            quote_item.set_provider_folder_name (item_folder_name);
+            quote_item.set_time_frame_name (_time_frame);
+            quote_item.set_date_time (item_date);
+            quote_item.set_open_price (item_open);
+            quote_item.set_close_price (item_close);
+            quote_item.set_min_price (item_min);
+            quote_item.set_max_price (item_max);
+
+            return quote_item;
+
+        }
+
+        return null;
+        
+    }
+
 }

@@ -65,8 +65,8 @@ public class TradeSim.Application : Gtk.Application {
 
         WindowTradeSim = new TradeSim.MainWindow (this);
 
-        Gtk.Settings.get_default ().set_property ("gtk-icon-theme-name", "elementary");
-        Gtk.Settings.get_default ().set_property ("gtk-theme-name", "elementary");
+        Gtk.Settings.get_default ().set_property ("gtk-icon-theme-name", TradeSim.Data.APP_ICON_THEME);
+        Gtk.Settings.get_default ().set_property ("gtk-theme-name", TradeSim.Data.APP_GTK_THEME);
 
         weak Gtk.IconTheme default_theme = Gtk.IconTheme.get_default ();
         default_theme.add_resource_path ("/com/github/horaciodrs/tradesim");

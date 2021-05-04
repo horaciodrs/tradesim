@@ -21,14 +21,14 @@
 
 /*
 
-  /$$$$$$$$                           /$$            /$$$$$$  /$$
+   /$$$$$$$$                           /$$            /$$$$$$  /$$
  |__  $$__/                          | $$           /$$__  $$|__/
-    | $$     /$$$$$$   /$$$$$$   /$$$$$$$  /$$$$$$ | $$  \__/ /$$ /$$$$$$/$$$$
-    | $$    /$$__  $$ |____  $$ /$$__  $$ /$$__  $$|  $$$$$$ | $$| $$_  $$_  $$
-    | $$   | $$  \__/  /$$$$$$$| $$  | $$| $$$$$$$$ \____  $$| $$| $$ \ $$ \ $$
-    | $$   | $$       /$$__  $$| $$  | $$| $$_____/ /$$  \ $$| $$| $$ | $$ | $$
-    | $$   | $$      |  $$$$$$$|  $$$$$$$|  $$$$$$$|  $$$$$$/| $$| $$ | $$ | $$
-    |__/   |__/       \_______/ \_______/ \_______/ \______/ |__/|__/ |__/ |__/
+ | $$     /$$$$$$   /$$$$$$   /$$$$$$$  /$$$$$$ | $$  \__/ /$$ /$$$$$$/$$$$
+ | $$    /$$__  $$ |____  $$ /$$__  $$ /$$__  $$|  $$$$$$ | $$| $$_  $$_  $$
+ | $$   | $$  \__/  /$$$$$$$| $$  | $$| $$$$$$$$ \____  $$| $$| $$ \ $$ \ $$
+ | $$   | $$       /$$__  $$| $$  | $$| $$_____/ /$$  \ $$| $$| $$ | $$ | $$
+ | $$   | $$      |  $$$$$$$|  $$$$$$$|  $$$$$$$|  $$$$$$/| $$| $$ | $$ | $$
+ |__/   |__/       \_______/ \_______/ \_______/ \______/ |__/|__/ |__/ |__/
 
  */
 
@@ -52,9 +52,25 @@
 
 namespace TradeSim.Data {
     public const string APP_VERSION = "2021.4.1 - BETA";
+    public string APP_GTK_THEME;
+    public const string APP_ICON_THEME = "elementary";
 }
 
 public static int main (string[] args) {
+
+    string version_os = GLib.Environment.get_os_info (GLib.OsInfoKey.VERSION_CODENAME);
+
+    switch (version_os) {
+    case "odin":
+        TradeSim.Data.APP_GTK_THEME = "io.elementary.stylesheet.blueberry";
+        break;
+    case "hera":
+        TradeSim.Data.APP_GTK_THEME = "elementary";
+        break;
+    default:
+        TradeSim.Data.APP_GTK_THEME = "elementary";
+        break;
+    }
 
     TradeSim.Application AppTradeSim = new TradeSim.Application ();
 

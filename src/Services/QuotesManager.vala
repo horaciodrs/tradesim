@@ -300,7 +300,19 @@ public class TradeSim.Services.QuotesManager {
 
     public void generate_synthetic_quotes (string provider, string market, string ticker, string time_frame, int year, int month) {
 
-        //TradeSim.Services.QuoteItem last_quote =
+        print ("generando cotizaciones...\n");
+        print ("provider:" + provider + "\n");
+        print ("ticker:" + ticker + "\n");
+        print ("time_frame:" + time_frame + "\n");
+        print ("year:" + year.to_string () + "\n");
+        print ("month:" + month.to_string () + "\n");
+        print ("===============================================<<<<.\n");
+
+        
+        //Obtener la ultima cotización del mes anterior
+        TradeSim.Services.QuoteItem ? last_quote = db.get_last_quote_by_date(provider, ticker, time_frame, year, month);
+
+        
 
     }
 

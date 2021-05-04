@@ -46,8 +46,10 @@ public class TradeSim.MainWindow : Gtk.ApplicationWindow {
     construct {
         // inicializacion de la ventana...
 
-        Gtk.Settings.get_default ().set_property ("gtk-icon-theme-name", "elementary");
-        Gtk.Settings.get_default ().set_property ("gtk-theme-name", "elementary");
+        //io.elementary.stylesheet.blueberry
+
+        Gtk.Settings.get_default ().set_property ("gtk-icon-theme-name", TradeSim.Data.APP_ICON_THEME);
+        Gtk.Settings.get_default ().set_property ("gtk-theme-name", TradeSim.Data.APP_GTK_THEME);
 
         create_dir_with_parents ("/.local/share/com.github.horaciodrs.tradesim");
 
