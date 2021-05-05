@@ -531,9 +531,7 @@ public class TradeSim.Dialogs.SettingsDialog : Gtk.Dialog {
 
             if (ds_selected_ticker == "SYNIDX") {
 
-                // qm.generate_synthetic_quotes ();
                 qm.generate_synthetic_quotes (ds_selected_provider, "Forex", ds_selected_ticker, ds_selected_time_frame, int.parse (ds_selected_year), get_month_number (mes.get_string ()));
-                //print ("generar cotizaciones para el año:" + ds_selected_year.to_string () + " mes:" + mes.get_string () + "\n");
 
                 return;
 

@@ -1219,6 +1219,8 @@ public class TradeSim.Services.Database : GLib.Object {
         int ticker_id = get_db_id_by_name ("tickers", _ticker_name);
         int time_frame_id = get_db_id_by_name ("time_frames", _time_frame);
 
+        DateTime search_date = new DateTime.local(year, month,1,0,0,0);
+
         Sqlite.Statement stmt;
         string sql;
         int res;
@@ -1241,12 +1243,11 @@ public class TradeSim.Services.Database : GLib.Object {
                         ,providers.folder_name
                     FROM quotes
                    INNER JOIN providers ON quotes.provider_id = providers.id
-                   WHERE quotes.date_year <= ?
-                     AND quotes.date_month < ?
-                     AND provider_id = ?
+                   WHERE provider_id = ?
                      AND market_id = ?
                      AND ticker_id = ?
                      AND time_frame_id = ?
+                     AND DATETIME(date_str) < ?
                     ORDER BY DATETIME(date_str) DESC
                     LIMIT 1;
         """;
@@ -1254,22 +1255,19 @@ public class TradeSim.Services.Database : GLib.Object {
         res = db.prepare_v2 (sql, -1, out stmt);
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (1, year);
+        res = stmt.bind_int (1, provider_id);
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (2, month);
+        res = stmt.bind_int (2, market_id);
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (3, provider_id);
+        res = stmt.bind_int (3, ticker_id);
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (4, market_id);
+        res = stmt.bind_int (4, time_frame_id);
         assert (res == Sqlite.OK);
 
-        res = stmt.bind_int (5, ticker_id);
-        assert (res == Sqlite.OK);
-
-        res = stmt.bind_int (6, time_frame_id);
+        res = stmt.bind_text (5, get_datetime_to_db(search_date));
         assert (res == Sqlite.OK);
 
         if ((res = stmt.step ()) == Sqlite.ROW) {
