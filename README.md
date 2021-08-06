@@ -29,6 +29,8 @@ Test your strategies on the Linux Trading Simulator, Create reports, learn, try 
 </p>
 
 ## Good news!:
+Now, TradeSim, can be executed from web browser http://www.tradesim.xyz
+
 The first beta version of TradeSim has been released and its available for download in realse section https://github.com/horaciodrs/TradeSim/releases as a deb file to install on any ubuntu based distro.
 Please test and give your feedback.
 
